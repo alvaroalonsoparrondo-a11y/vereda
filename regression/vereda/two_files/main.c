@@ -1,6 +1,5 @@
-// Two translation units linked with llvm-link. The call into the second one
-// needs the walker to enter defined functions, which it cannot yet.
-// MODE: FUTURE
+// Two translation units linked with llvm-link; the call walks into the
+// second one.
 // FILES: helper.c
 // EXPECT: ^VERIFICATION SUCCESSFUL$
 extern void __VERIFIER_assert(int);

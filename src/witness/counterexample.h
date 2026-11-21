@@ -7,10 +7,11 @@
 
 namespace vereda::witness {
 
-// Prints the steps the model reaches with their values, then the violated
-// check as the final state, in ESBMC's layout. The solver must hold the
-// model from the check that found the violation.
+// Prints the steps the model reaches with their values, up to the first
+// instance of checks[violated] the model violates, in ESBMC's layout. The
+// solver must hold the model from the check that found the violation.
 void printCounterexample(camada::SMTSolver &s, const walker::Trace &trace,
-                         const checks::Check &violated, llvm::raw_ostream &os);
+                         const checks::Checks &checks, unsigned violated,
+                         llvm::raw_ostream &os);
 
 } // namespace vereda::witness

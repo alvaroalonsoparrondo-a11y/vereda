@@ -19,6 +19,12 @@ static cl::opt<std::string> inputFile(cl::Positional, cl::desc("<file.bc|file.ll
                                       cl::Required);
 static cl::opt<bool> dumpIR("dump-ir", cl::desc("Print the IR after the pass list and exit"));
 static cl::opt<std::string> entry("entry", cl::desc("Entry function"), cl::init("main"));
+static cl::opt<unsigned> unwind("unwind",
+                                cl::desc("Loop iterations and recursion depth (default: "
+                                         "unroll until the next iteration is unreachable)"),
+                                cl::init(0));
+static cl::opt<bool> noUnwindingAssertions(
+    "no-unwinding-assertions", cl::desc("Assume the unwinding bound instead of checking it"));
 static cl::opt<std::string> solverName("solver", cl::desc("SMT solver: bitwuzla, z3, cvc5"),
                                        cl::init("bitwuzla"));
 
@@ -69,7 +75,8 @@ int main(int argc, char **argv) {
   vereda::encode::Encoder enc(**solver);
   vereda::checks::Checks checks;
   vereda::walker::Trace trace;
-  if (Error e = vereda::walker::walk(*fn, enc, checks, trace))
+  vereda::walker::Options walkOpts{unwind, !noUnwindingAssertions};
+  if (Error e = vereda::walker::walk(*fn, walkOpts, enc, checks, trace))
     return unknown(toString(std::move(e)));
   outs() << "Walk time: " << walkTime.elapsed() << " (" << checks.size() << " checks, "
          << enc.symbolCount() << " symbols)\n";
@@ -84,7 +91,8 @@ int main(int argc, char **argv) {
 
   if (verdict.check) {
     progress("Building error trace");
-    vereda::witness::printCounterexample(**solver, trace, *verdict.check, outs());
+    vereda::witness::printCounterexample(**solver, trace, checks,
+                                         verdict.check - checks.data(), outs());
   }
   if (!checks.empty()) {
     outs() << "\n** Results:\n";

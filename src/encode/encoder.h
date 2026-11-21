@@ -26,6 +26,8 @@ public:
   // The term bound to v, or a constant. Undef and poison are a fresh value per use.
   camada::SMTExprRef value(const llvm::Value *v);
   void bind(const llvm::Value *v, camada::SMTExprRef term) { env[v] = std::move(term); }
+  // The term bound to v, or a null term.
+  camada::SMTExprRef bound(const llvm::Value *v) const { return env.lookup(v); }
   // A fresh unconstrained term of v's type, named after its origin (nondet calls, arguments).
   camada::SMTExprRef fresh(llvm::Type *ty, const std::string &name);
   // Encodes arithmetic, comparison, cast, select and freeze, binding the result.

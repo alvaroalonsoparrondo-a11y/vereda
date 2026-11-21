@@ -9,18 +9,23 @@
 
 namespace vereda::checks {
 
-enum class Property { Reachability };
+enum class Property { Assertion, Unwinding, Recursion };
 
 struct Check {
   Property property;
   ir::SourceLoc loc;
   std::string comment; // the callee, e.g. "__VERIFIER_assert"
   std::string expr;    // the asserted expression's source text, if any
-  unsigned index;      // per function, from 1
+  unsigned index;      // assertions per function from 1; loops by number
   camada::SMTExprRef violated;
 
-  // ESBMC's property id, e.g. "main.assertion.1".
-  std::string id() const { return loc.function + ".assertion." + std::to_string(index); }
+  // ESBMC's property id, e.g. "main.assertion.1" or "main.unwind.0".
+  std::string id() const {
+    const char *kind = property == Property::Assertion ? "assertion"
+                       : property == Property::Unwinding ? "unwind"
+                                                          : "recursion";
+    return loc.function + "." + kind + "." + std::to_string(index);
+  }
 };
 
 using Checks = std::vector<Check>;

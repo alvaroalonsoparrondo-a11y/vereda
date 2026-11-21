@@ -9,12 +9,13 @@
 namespace vereda::walker {
 
 struct Step {
-  enum Kind { Assignment, Assumption } kind;
-  camada::SMTExprRef guard; // path condition at the step
+  enum Kind { Assignment, Assumption, Check } kind;
+  camada::SMTExprRef guard; // path condition at the step; for Check, the violation
   ir::SourceLoc loc;
   std::string text;         // the variable, or the assumed expression
   camada::SMTExprRef value; // assignments only
   bool isUnsigned = false;  // from the debug type; bitvectors carry no sign
+  unsigned check = 0;       // for Check, the index of the claim in the checks
 };
 
 using Trace = std::vector<Step>;
