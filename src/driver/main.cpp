@@ -8,6 +8,7 @@
 
 #include <llvm/Config/llvm-config.h>
 #include <llvm/Support/CommandLine.h>
+#include <llvm/Support/WithColor.h>
 #include <llvm/Support/raw_ostream.h>
 
 using namespace llvm;
@@ -78,11 +79,15 @@ int main(int argc, char **argv) {
 
   switch (verdict.kind) {
   case vereda::solver::Verdict::Safe:
-    outs() << "\nVERIFICATION SUCCESSFUL\n";
+    outs() << "\n";
+    WithColor(outs(), raw_ostream::GREEN, /*Bold=*/true) << "VERIFICATION SUCCESSFUL";
+    outs() << "\n";
     return 0;
   case vereda::solver::Verdict::Violated:
     outs() << "\nViolated property:\n  " << verdict.check->location << "\n  "
-           << verdict.check->what << "\n\nVERIFICATION FAILED\n";
+           << verdict.check->what << "\n\n";
+    WithColor(outs(), raw_ostream::RED, /*Bold=*/true) << "VERIFICATION FAILED";
+    outs() << "\n";
     return 1;
   case vereda::solver::Verdict::Unknown:
     return unknown(verdict.detail);
