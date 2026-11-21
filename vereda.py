@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Front-end driver: compiles C to LLVM bitcode with clang and runs the
+"""Front-end vereda.py: compiles C to LLVM bitcode with clang and runs the
 verifier binary on it. Only front-end flags are defined here; every other
 argument is forwarded to the binary unchanged, so each flag lives in one
 place. Inputs are recognised by extension (.c .i .ll .bc)."""
@@ -25,12 +25,12 @@ CLANG_FLAGS = [
 
 
 def find_binary():
-    for candidate in (os.path.join(HERE, "placeholder"),
-                      os.path.join(HERE, "build", "placeholder"),
-                      shutil.which("placeholder")):
+    for candidate in (os.path.join(HERE, "vereda"),
+                      os.path.join(HERE, "build", "vereda"),
+                      shutil.which("vereda")):
         if candidate and os.access(candidate, os.X_OK):
             return candidate
-    sys.exit("driver: verifier binary not found; pass --bin")
+    sys.exit("vereda.py: verifier binary not found; pass --bin")
 
 
 def main():
@@ -60,7 +60,7 @@ def main():
     forwarded = [a for a in rest if a not in inputs]
     if len(inputs) != 1:
         # ponytail: one input; llvm-link the rest when a task needs it.
-        sys.exit("driver: expected exactly one input file, got %r" % inputs)
+        sys.exit("vereda.py: expected exactly one input file, got %r" % inputs)
     source = inputs[0]
 
     def run(cmd):

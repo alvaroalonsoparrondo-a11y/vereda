@@ -7,8 +7,7 @@ option(DOWNLOAD_DEPENDENCIES
 # to be the compiler and linker.
 include(cmake/Dependencies.cmake)
 
-# ponytail: the tool has no name yet; rename the project and target when it gets one.
-project(placeholder LANGUAGES C CXX)
+project(vereda LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -28,22 +27,22 @@ message(STATUS "Using camada from ${camada_DIR}")
 
 llvm_map_components_to_libnames(llvm_libs core irreader support passes)
 
-add_executable(placeholder src/main.cpp)
-target_include_directories(placeholder SYSTEM PRIVATE ${LLVM_INCLUDE_DIRS})
+add_executable(vereda src/main.cpp)
+target_include_directories(vereda SYSTEM PRIVATE ${LLVM_INCLUDE_DIRS})
 separate_arguments(llvm_definitions NATIVE_COMMAND "${LLVM_DEFINITIONS}")
-target_compile_definitions(placeholder PRIVATE ${llvm_definitions})
+target_compile_definitions(vereda PRIVATE ${llvm_definitions})
 if(NOT LLVM_ENABLE_RTTI)
-  target_compile_options(placeholder PRIVATE -fno-rtti)
+  target_compile_options(vereda PRIVATE -fno-rtti)
 endif()
-target_link_libraries(placeholder PRIVATE ${llvm_libs} camada::camada)
+target_link_libraries(vereda PRIVATE ${llvm_libs} camada::camada)
 
 enable_testing()
-add_test(NAME smoke COMMAND placeholder "${CMAKE_CURRENT_SOURCE_DIR}/tests/smoke.ll")
+add_test(NAME smoke COMMAND vereda "${CMAKE_CURRENT_SOURCE_DIR}/tests/smoke.ll")
 set_tests_properties(smoke PROPERTIES PASS_REGULAR_EXPRESSION "main\nsolver: sat")
-add_test(NAME driver_loop
-         COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/driver.py" --bin $<TARGET_FILE:placeholder>
+add_test(NAME vereda_loop
+         COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/vereda.py" --bin $<TARGET_FILE:vereda>
                  --clang "${LLVM_TOOLS_BINARY_DIR}/clang" --dump-ir
                  "${CMAKE_CURRENT_SOURCE_DIR}/tests/loop.c")
-set_tests_properties(driver_loop PROPERTIES
+set_tests_properties(vereda_loop PROPERTIES
                      PASS_REGULAR_EXPRESSION "phi i32"
                      FAIL_REGULAR_EXPRESSION "mustprogress|nsw|nuw|inbounds|optnone|noundef")

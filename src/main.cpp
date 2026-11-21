@@ -101,7 +101,7 @@ static void runPipeline(Module &m, StringRef pipeline) {
 }
 
 int main(int argc, char **argv) {
-  cl::ParseCommandLineOptions(argc, argv, "LLVM-IR verifier\n");
+  cl::ParseCommandLineOptions(argc, argv, "vereda: LLVM-IR verifier\n");
   LLVMContext ctx;
   SMDiagnostic err;
   std::unique_ptr<Module> module = parseIRFile(inputFile, err, ctx);
