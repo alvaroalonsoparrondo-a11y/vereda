@@ -2,13 +2,20 @@
 #pragma once
 #include <llvm/ADT/Twine.h>
 #include <llvm/Support/Format.h>
+#include <llvm/Support/WithColor.h>
 #include <llvm/Support/raw_ostream.h>
 #include <chrono>
 
 namespace vereda::util {
 
-inline void progress(const llvm::Twine &msg) { llvm::outs() << "[PROGRESS] " << msg << "\n"; }
-inline void warning(const llvm::Twine &msg) { llvm::outs() << "[WARNING] " << msg << "\n"; }
+inline void progress(const llvm::Twine &msg) {
+  llvm::WithColor(llvm::outs(), llvm::raw_ostream::CYAN) << "[PROGRESS]";
+  llvm::outs() << " " << msg << "\n";
+}
+inline void warning(const llvm::Twine &msg) {
+  llvm::WithColor(llvm::outs(), llvm::raw_ostream::YELLOW, /*Bold=*/true) << "[WARNING]";
+  llvm::outs() << " " << msg << "\n";
+}
 
 class Stopwatch {
 public:

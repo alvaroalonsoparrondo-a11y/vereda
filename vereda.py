@@ -73,7 +73,8 @@ def main():
     with tempfile.TemporaryDirectory() as tmp:
         ir = source
         if source.endswith(SOURCE_EXTS):
-            print("[PROGRESS] Compiling", source)
+            tag = "\033[36m[PROGRESS]\033[0m" if sys.stdout.isatty() else "[PROGRESS]"
+            print(tag, "Compiling", source)
             ir = os.path.join(tmp, os.path.basename(source) + (".ll" if args.keep_ir else ".bc"))
             cmd = ([args.clang] + CLANG_FLAGS + arch + ["-I" + d for d in args.I]
                    + ["-D" + d for d in args.D] + (["-S"] if args.keep_ir else [])

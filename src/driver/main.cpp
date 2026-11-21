@@ -22,7 +22,7 @@ static cl::opt<std::string> solverName("solver", cl::desc("SMT solver: bitwuzla,
                                        cl::init("bitwuzla"));
 
 static void printVersion(raw_ostream &os) {
-  os << "vereda " VEREDA_VERSION " (LLVM " LLVM_VERSION_STRING ", camada " VEREDA_CAMADA_VERSION
+  os << "Vereda " VEREDA_VERSION " (LLVM " LLVM_VERSION_STRING ", camada " VEREDA_CAMADA_VERSION
         ")\n";
 }
 
@@ -33,7 +33,7 @@ static int unknown(const Twine &reason) {
 
 int main(int argc, char **argv) {
   cl::SetVersionPrinter(printVersion);
-  cl::ParseCommandLineOptions(argc, argv, "vereda: LLVM-IR verifier\n");
+  cl::ParseCommandLineOptions(argc, argv, "Vereda: LLVM-IR verifier\n");
 
   progress("Loading " + inputFile);
   vereda::util::Stopwatch loadTime;

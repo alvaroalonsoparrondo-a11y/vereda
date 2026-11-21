@@ -1,4 +1,4 @@
-# vereda
+# Vereda
 
 A bounded model checker and k-induction prover for C on LLVM IR. Vereda is
 Portuguese for a narrow trail: the walker follows every one through the
