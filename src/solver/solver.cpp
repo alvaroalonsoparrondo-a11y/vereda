@@ -24,17 +24,20 @@ Expected<camada::SMTSolverRef> create(const std::string &name) {
 }
 
 Verdict decide(camada::SMTSolver &s, const checks::Checks &checks) {
+  unsigned checked = 0;
   for (const checks::Check &check : checks) {
+    ++checked;
     switch (s.checkSatAssuming({check.violated})) {
     case camada::CheckResult::SAT:
-      return {Verdict::Violated, &check, ""};
+      return {Verdict::Violated, &check, "", checked};
     case camada::CheckResult::UNSAT:
       break;
     case camada::CheckResult::UNKNOWN:
-      return {Verdict::Unknown, &check, "solver answered unknown: " + s.reasonUnknownDetail()};
+      return {Verdict::Unknown, &check, "solver answered unknown: " + s.reasonUnknownDetail(),
+              checked};
     }
   }
-  return {Verdict::Safe};
+  return {Verdict::Safe, nullptr, "", checked};
 }
 
 } // namespace vereda::solver

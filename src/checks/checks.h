@@ -2,6 +2,7 @@
 // that is satisfiable only if the property is violated, tagged with its
 // property and source location so one walk can serve several properties.
 #pragma once
+#include "ir/debug.h"
 #include <camada/camada.h>
 #include <string>
 #include <vector>
@@ -12,9 +13,13 @@ enum class Property { Reachability };
 
 struct Check {
   Property property;
-  std::string location; // file:line:col
-  std::string what;     // e.g. "reach_error is reachable"
+  ir::SourceLoc loc;
+  std::string comment; // the callee, e.g. "__VERIFIER_assert"
+  unsigned index;      // per function, from 1
   camada::SMTExprRef violated;
+
+  // ESBMC's property id, e.g. "main.assertion.1".
+  std::string id() const { return loc.function + ".assertion." + std::to_string(index); }
 };
 
 using Checks = std::vector<Check>;

@@ -19,6 +19,8 @@ CLANG_FLAGS = [
     # C11 lets the compiler assume loops without side effects terminate;
     # clang would mark them mustprogress and the binary rejects that.
     "-fno-finite-loops",
+    # Old-style C calls undeclared functions; clang 16+ makes that an error.
+    "-Wno-error=implicit-function-declaration",
     # ponytail: no -fsanitize checks until the overflow and bounds properties
     # (plan section 7.2) are encoded.
 ]

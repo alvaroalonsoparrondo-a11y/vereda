@@ -79,21 +79,35 @@ int main(int argc, char **argv) {
   vereda::solver::Verdict verdict = vereda::solver::decide(**solver, checks);
   outs() << "Solving time: " << solveTime.elapsed() << "\n";
 
-  switch (verdict.kind) {
-  case vereda::solver::Verdict::Safe:
-    outs() << "\n";
-    WithColor(outs(), raw_ostream::GREEN, /*Bold=*/true) << "VERIFICATION SUCCESSFUL";
-    outs() << "\n";
-    return 0;
-  case vereda::solver::Verdict::Violated:
-    outs() << "\n";
-    vereda::witness::printCounterexample(**solver, trace, outs());
-    outs() << "\nViolated property:\n  " << verdict.check->location << "\n  "
-           << verdict.check->what << "\n\n";
+  if (verdict.kind == vereda::solver::Verdict::Unknown)
+    return unknown(verdict.detail);
+
+  if (verdict.check) {
+    progress("Building error trace");
+    vereda::witness::printCounterexample(**solver, trace, *verdict.check, outs());
+  }
+  if (!checks.empty()) {
+    outs() << "\n** Results:\n";
+    std::string lastUnit;
+    for (unsigned i = 0; i < verdict.checked; ++i) {
+      const vereda::checks::Check &c = checks[i];
+      std::string unit = c.loc.file + ", function " + c.loc.function;
+      if (unit != lastUnit)
+        outs() << (lastUnit.empty() ? "" : "\n") << unit << "\n";
+      lastUnit = unit;
+      outs() << (&c == verdict.check ? "  FAILED       [" : "  SUCCESS      [") << c.id()
+             << "]  line " << c.loc.line << "  " << c.comment << "\n";
+    }
+    outs() << "\n** " << (verdict.check ? 1 : 0) << " of " << verdict.checked
+           << " properties failed\n";
+  }
+  outs() << "\n";
+  if (verdict.check) {
     WithColor(outs(), raw_ostream::RED, /*Bold=*/true) << "VERIFICATION FAILED";
     outs() << "\n";
     return 1;
-  case vereda::solver::Verdict::Unknown:
-    return unknown(verdict.detail);
   }
+  WithColor(outs(), raw_ostream::GREEN, /*Bold=*/true) << "VERIFICATION SUCCESSFUL";
+  outs() << "\n";
+  return 0;
 }

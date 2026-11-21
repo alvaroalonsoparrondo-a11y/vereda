@@ -75,8 +75,7 @@ private:
       for (const DbgRecord &rec : inst.getDbgRecordRange())
         if (std::optional<ir::DbgAssign> a = ir::dbgAssign(rec))
           if (a->value->getType()->isIntegerTy())
-            trace.push_back({guard, a->location, bb.getParent()->getName().str(), a->name,
-                             enc.value(a->value), a->isUnsigned});
+            trace.push_back({guard, a->loc, a->name, enc.value(a->value), a->isUnsigned});
       if (isa<PHINode>(inst))
         continue;
       if (inst.isTerminator()) {
@@ -97,9 +96,9 @@ private:
   SMTExprRef call(CallBase &c, SMTExprRef guard) {
     Function *callee = c.getCalledFunction();
     if (!callee)
-      throw Unsupported("indirect call at " + ir::location(c));
+      throw Unsupported("indirect call at " + ir::location(c).str());
     StringRef name = callee->getName();
-    std::string tag = name.str() + "@" + ir::location(c);
+    std::string tag = name.str() + "@" + ir::location(c).str();
 
     if (callee->isIntrinsic()) {
       if (name.starts_with("llvm.lifetime") || name.starts_with("llvm.dbg") ||
@@ -123,13 +122,11 @@ private:
       return s.mkAnd(guard, enc.isTrue(c.getArgOperand(0)));
     if (name == "__assert_fail" || name == "reach_error" || name == "__VERIFIER_error" ||
         name == "__builtin_unreachable") {
-      checks.push_back({checks::Property::Reachability, ir::location(c), "assertion fails",
-                        guard});
+      check(c, guard);
       return s.mkBool(false);
     }
     if (name == "__VERIFIER_assert") {
-      checks.push_back({checks::Property::Reachability, ir::location(c), "assertion fails",
-                        s.mkAnd(guard, s.mkNot(enc.isTrue(c.getArgOperand(0))))});
+      check(c, s.mkAnd(guard, s.mkNot(enc.isTrue(c.getArgOperand(0)))));
       return guard;
     }
     if (name == "abort" || name == "exit" || name == "_Exit")
@@ -143,9 +140,16 @@ private:
     return guard;
   }
 
+  void check(const CallBase &c, SMTExprRef violated) {
+    checks.push_back({checks::Property::Reachability, ir::location(c),
+                      c.getCalledFunction()->getName().str(), ++checksIn[c.getFunction()],
+                      violated});
+  }
+
   encode::Encoder &enc;
   camada::SMTSolver &s;
   checks::Checks &checks;
+  DenseMap<const Function *, unsigned> checksIn;
   Trace &trace;
   DenseMap<const BasicBlock *, SMTExprRef> exitGuard; // path condition at block end
   SmallPtrSet<const Function *, 8> warned;

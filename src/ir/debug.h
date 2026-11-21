@@ -4,28 +4,36 @@
 #include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/DebugLoc.h>
 #include <llvm/IR/DebugProgramInstruction.h>
+#include <llvm/IR/Function.h>
 #include <llvm/IR/Instruction.h>
 #include <optional>
 #include <string>
 
 namespace vereda::ir {
 
-// "file:line:col", or "<unknown>" when the instruction carries no location.
-inline std::string location(const llvm::Instruction &inst) {
-  const llvm::DebugLoc &loc = inst.getDebugLoc();
+// A source location in ESBMC's spelling: "file F line L column C function Fn".
+struct SourceLoc {
+  std::string file;
+  unsigned line = 0;
+  unsigned col = 0;
+  std::string function;
+
+  std::string str() const {
+    std::string out = "file " + file + " line " + std::to_string(line);
+    if (col)
+      out += " column " + std::to_string(col);
+    return out + " function " + function;
+  }
+};
+
+inline SourceLoc location(const llvm::DebugLoc &loc, llvm::StringRef function) {
   if (!loc)
-    return "<unknown>";
-  return (loc->getFilename() + ":" + std::to_string(loc.getLine()) + ":" +
-          std::to_string(loc.getCol()))
-      .str();
+    return {"<unknown>", 0, 0, function.str()};
+  return {loc->getFilename().str(), loc.getLine(), loc.getCol(), function.str()};
 }
 
-inline std::string location(const llvm::DebugLoc &loc) {
-  if (!loc)
-    return "<unknown>";
-  return (loc->getFilename() + ":" + std::to_string(loc.getLine()) + ":" +
-          std::to_string(loc.getCol()))
-      .str();
+inline SourceLoc location(const llvm::Instruction &inst) {
+  return location(inst.getDebugLoc(), inst.getFunction()->getName());
 }
 
 // A #dbg_value record that assigns one whole value to a source variable.
@@ -33,7 +41,7 @@ struct DbgAssign {
   std::string name;
   const llvm::Value *value;
   bool isUnsigned;
-  std::string location;
+  SourceLoc loc;
 };
 
 inline std::optional<DbgAssign> dbgAssign(const llvm::DbgRecord &rec) {
@@ -51,9 +59,10 @@ inline std::optional<DbgAssign> dbgAssign(const llvm::DbgRecord &rec) {
                  basic->getEncoding() == llvm::dwarf::DW_ATE_boolean;
   // mem2reg leaves many records at line 0; the declaration is the next best place.
   const llvm::DILocalVariable *var = dvr->getVariable();
-  std::string loc = dvr->getDebugLoc() && dvr->getDebugLoc().getLine() != 0
-                        ? location(dvr->getDebugLoc())
-                        : (var->getFilename() + ":" + std::to_string(var->getLine())).str();
+  llvm::StringRef function = dvr->getFunction()->getName();
+  SourceLoc loc = dvr->getDebugLoc() && dvr->getDebugLoc().getLine() != 0
+                      ? location(dvr->getDebugLoc(), function)
+                      : SourceLoc{var->getFilename().str(), var->getLine(), 0, function.str()};
   return DbgAssign{var->getName().str(), v, isUnsigned, loc};
 }
 

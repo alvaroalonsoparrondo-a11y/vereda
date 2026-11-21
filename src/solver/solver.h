@@ -14,10 +14,11 @@ struct Verdict {
   enum Kind { Safe, Violated, Unknown } kind;
   const checks::Check *check = nullptr; // the violated check, for Violated
   std::string detail;                   // reason, for Unknown
+  unsigned checked = 0;                 // checks decided before stopping
 };
 
-// Asks the solver about each check under its own assumption; the first
-// satisfiable one is the verdict.
+// Asks the solver about each check in order under its own assumption and
+// stops at the first satisfiable one, whose model stays available.
 Verdict decide(camada::SMTSolver &s, const checks::Checks &checks);
 
 } // namespace vereda::solver
