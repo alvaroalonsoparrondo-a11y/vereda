@@ -26,7 +26,7 @@ message(STATUS "Using LLVM ${LLVM_PACKAGE_VERSION} from ${LLVM_DIR}")
 find_package(camada CONFIG REQUIRED)
 message(STATUS "Using camada from ${camada_DIR}")
 
-llvm_map_components_to_libnames(llvm_libs core irreader support)
+llvm_map_components_to_libnames(llvm_libs core irreader support passes)
 
 add_executable(placeholder src/main.cpp)
 target_include_directories(placeholder SYSTEM PRIVATE ${LLVM_INCLUDE_DIRS})
@@ -40,3 +40,10 @@ target_link_libraries(placeholder PRIVATE ${llvm_libs} camada::camada)
 enable_testing()
 add_test(NAME smoke COMMAND placeholder "${CMAKE_CURRENT_SOURCE_DIR}/tests/smoke.ll")
 set_tests_properties(smoke PROPERTIES PASS_REGULAR_EXPRESSION "main\nsolver: sat")
+add_test(NAME driver_loop
+         COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/driver.py" --bin $<TARGET_FILE:placeholder>
+                 --clang "${LLVM_TOOLS_BINARY_DIR}/clang" --dump-ir
+                 "${CMAKE_CURRENT_SOURCE_DIR}/tests/loop.c")
+set_tests_properties(driver_loop PROPERTIES
+                     PASS_REGULAR_EXPRESSION "phi i32"
+                     FAIL_REGULAR_EXPRESSION "mustprogress|nsw|nuw|inbounds|optnone|noundef")
