@@ -38,7 +38,7 @@ def main():
     parser.add_argument("-h", "--help", action="store_true")
     parser.add_argument("--bin", help="verifier binary (default: next to this script or build/)")
     parser.add_argument("--clang", default=os.environ.get("CLANG", "clang"),
-                        help="clang of the same LLVM version as the binary (default: $CLANG or clang)")
+                        help="clang matching the binary's LLVM (default: $CLANG or clang)")
     parser.add_argument("-m32", action="store_true", help="32-bit target, forwarded to clang")
     parser.add_argument("-m64", action="store_true", help="64-bit target, forwarded to clang")
     parser.add_argument("-I", action="append", default=[], help="include directory for clang")
@@ -60,7 +60,7 @@ def main():
     forwarded = [a for a in rest if a not in inputs]
     if len(inputs) != 1:
         # ponytail: one input; llvm-link the rest when a task needs it.
-        sys.exit("vereda.py: expected exactly one input file, got %r" % inputs)
+        sys.exit(f"vereda.py: expected exactly one input file, got {inputs!r}")
     source = inputs[0]
 
     def run(cmd):
