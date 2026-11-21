@@ -33,6 +33,34 @@ def find_binary():
     sys.exit("vereda.py: verifier binary not found; pass --bin")
 
 
+def compile_and_link(args, arch, inputs, tmp, run):
+    """Compiles each C input with clang and links several modules with
+    llvm-link. Returns the IR file to verify, or None on failure."""
+    tag = "\033[36m[PROGRESS]\033[0m" if sys.stdout.isatty() else "[PROGRESS]"
+    ext = ".ll" if args.keep_ir else ".bc"
+    textual = ["-S"] if args.keep_ir else []
+    irs = []
+    for source in inputs:
+        if not source.endswith(SOURCE_EXTS):
+            irs.append(source)
+            continue
+        print(tag, "Compiling", source)
+        ir = os.path.join(tmp, os.path.basename(source) + ext)
+        cmd = ([args.clang] + CLANG_FLAGS + arch + ["-I" + d for d in args.I]
+               + ["-D" + d for d in args.D] + textual + [source, "-o", ir])
+        if run(cmd) != 0:
+            return None
+        irs.append(ir)
+    if len(irs) == 1:
+        return irs[0]
+    print(tag, "Linking", len(irs), "modules")
+    ir = os.path.join(tmp, "linked" + ext)
+    llvm_link = os.path.join(os.path.dirname(args.clang), "llvm-link")
+    if run([llvm_link] + textual + irs + ["-o", ir]) != 0:
+        return None
+    return ir
+
+
 def main():
     parser = argparse.ArgumentParser(add_help=False, description=__doc__)
     parser.add_argument("-h", "--help", action="store_true")
@@ -58,10 +86,8 @@ def main():
 
     inputs = [a for a in rest if a.endswith(SOURCE_EXTS + IR_EXTS)]
     forwarded = [a for a in rest if a not in inputs]
-    if len(inputs) != 1:
-        # ponytail: one input; llvm-link the rest when a task needs it.
-        sys.exit(f"vereda.py: expected exactly one input file, got {inputs!r}")
-    source = inputs[0]
+    if not inputs:
+        sys.exit("vereda.py: no input file (.c .i .ll .bc)")
 
     def run(cmd):
         if args.verbose:
@@ -71,18 +97,11 @@ def main():
 
     run([binary, "--version"])
     with tempfile.TemporaryDirectory() as tmp:
-        ir = source
-        if source.endswith(SOURCE_EXTS):
-            tag = "\033[36m[PROGRESS]\033[0m" if sys.stdout.isatty() else "[PROGRESS]"
-            print(tag, "Compiling", source)
-            ir = os.path.join(tmp, os.path.basename(source) + (".ll" if args.keep_ir else ".bc"))
-            cmd = ([args.clang] + CLANG_FLAGS + arch + ["-I" + d for d in args.I]
-                   + ["-D" + d for d in args.D] + (["-S"] if args.keep_ir else [])
-                   + [source, "-o", ir])
-            if run(cmd) != 0:
-                return 1
-            if args.keep_ir:
-                shutil.copy(ir, source + ".ll")
+        ir = compile_and_link(args, arch, inputs, tmp, run)
+        if ir is None:
+            return 1
+        if args.keep_ir:
+            shutil.copy(ir, inputs[0] + ".ll")
         return run([binary] + forwarded + [ir])
 
 

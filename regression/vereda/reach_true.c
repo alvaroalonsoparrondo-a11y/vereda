@@ -1,3 +1,4 @@
+// EXPECT: ^VERIFICATION SUCCESSFUL$
 // Neither reach_error is reachable: x > 0 rules out x < 0, and x % 7 is
 // never 7.
 extern int __VERIFIER_nondet_int(void);

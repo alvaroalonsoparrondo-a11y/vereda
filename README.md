@@ -24,3 +24,19 @@ ctest --test-dir build
 ```
 
 `vereda.py -h` lists the front-end flags followed by the binary's.
+
+## Tests
+
+A test is a C or IR file under `regression/<suite>/` whose comment header
+says how to run it and what to expect:
+
+```c
+// RUN: --unwind 5
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT-NOT: VERIFICATION SUCCESSFUL
+// MODE: FUTURE          (optional: CORE, THOROUGH, KNOWNBUG, FUTURE)
+// FILES: helper.c       (optional: extra sources next to the test)
+```
+
+`ctest -L <suite>` runs one suite. KNOWNBUG and FUTURE tests must fail; a
+run that passes asks to be promoted.

@@ -29,7 +29,8 @@ vereda/
 │   │                    validation mode
 │   ├── util/            options, diagnostics, logging
 │   └── driver/          main.cpp: parse options, run the stages, print the verdict
-├── regression/          test.desc runner and tests, by category like ESBMC
+├── regression/          tests by suite; each test is a source file whose comment
+│                    header gives flags and expected output (regression/run.py)
 ├── scripts/             benchexec tool-info, SV-COMP wrapper, release
 └── docs/                the plan and this file
 ```
