@@ -19,8 +19,8 @@ namespace {
 
 class Walk {
 public:
-  Walk(encode::Encoder &enc, checks::Checks &checks)
-      : enc(enc), s(enc.solver()), checks(checks) {}
+  Walk(encode::Encoder &enc, checks::Checks &checks, Trace &trace)
+      : enc(enc), s(enc.solver()), checks(checks), trace(trace) {}
 
   void function(Function &f) {
     for (Argument &arg : f.args())
@@ -72,6 +72,11 @@ private:
       enc.bind(&phi, r);
     }
     for (Instruction &inst : bb) {
+      for (const DbgRecord &rec : inst.getDbgRecordRange())
+        if (std::optional<ir::DbgAssign> a = ir::dbgAssign(rec))
+          if (a->value->getType()->isIntegerTy())
+            trace.push_back({guard, a->location, bb.getParent()->getName().str(), a->name,
+                             enc.value(a->value), a->isUnsigned});
       if (isa<PHINode>(inst))
         continue;
       if (inst.isTerminator()) {
@@ -136,15 +141,16 @@ private:
   encode::Encoder &enc;
   camada::SMTSolver &s;
   checks::Checks &checks;
+  Trace &trace;
   DenseMap<const BasicBlock *, SMTExprRef> exitGuard; // path condition at block end
   SmallPtrSet<const Function *, 8> warned;
 };
 
 } // namespace
 
-Error walk(Function &entry, encode::Encoder &enc, checks::Checks &checks) {
+Error walk(Function &entry, encode::Encoder &enc, checks::Checks &checks, Trace &trace) {
   try {
-    Walk(enc, checks).function(entry);
+    Walk(enc, checks, trace).function(entry);
   } catch (const Unsupported &e) {
     return createStringError(inconvertibleErrorCode(), "unsupported: %s", e.what());
   }

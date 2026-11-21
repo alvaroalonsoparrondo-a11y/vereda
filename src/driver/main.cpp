@@ -5,6 +5,7 @@
 #include "solver/solver.h"
 #include "util/log.h"
 #include "walker/walker.h"
+#include "witness/counterexample.h"
 
 #include <llvm/Config/llvm-config.h>
 #include <llvm/Support/CommandLine.h>
@@ -67,7 +68,8 @@ int main(int argc, char **argv) {
   vereda::util::Stopwatch walkTime;
   vereda::encode::Encoder enc(**solver);
   vereda::checks::Checks checks;
-  if (Error e = vereda::walker::walk(*fn, enc, checks))
+  vereda::walker::Trace trace;
+  if (Error e = vereda::walker::walk(*fn, enc, checks, trace))
     return unknown(toString(std::move(e)));
   outs() << "Walk time: " << walkTime.elapsed() << " (" << checks.size() << " checks, "
          << enc.symbolCount() << " symbols)\n";
@@ -84,6 +86,8 @@ int main(int argc, char **argv) {
     outs() << "\n";
     return 0;
   case vereda::solver::Verdict::Violated:
+    outs() << "\n";
+    vereda::witness::printCounterexample(**solver, trace, outs());
     outs() << "\nViolated property:\n  " << verdict.check->location << "\n  "
            << verdict.check->what << "\n\n";
     WithColor(outs(), raw_ostream::RED, /*Bold=*/true) << "VERIFICATION FAILED";

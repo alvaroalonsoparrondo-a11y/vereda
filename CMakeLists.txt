@@ -32,7 +32,8 @@ add_library(libvereda STATIC
   src/ir/load.cpp
   src/encode/encoder.cpp
   src/walker/walker.cpp
-  src/solver/solver.cpp)
+  src/solver/solver.cpp
+  src/witness/counterexample.cpp)
 set_target_properties(libvereda PROPERTIES OUTPUT_NAME vereda)
 target_include_directories(libvereda PUBLIC src)
 target_include_directories(libvereda SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
