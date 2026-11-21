@@ -1,27 +1,19 @@
-// Verifier binary. Takes LLVM bitcode or IR, runs the short pass list from the
-// plan (section 4.1), and either dumps the IR or hands it to the walker (not
-// written yet; for now a camada smoke query stands in).
-#include <camada/camada.h>
-#include <camada/camadafeatures.h>
+#include "ir/load.h"
+
 #include <llvm/IR/AttributeMask.h>
 #include <llvm/IR/Attributes.h>
 #include <llvm/IR/InstIterator.h>
 #include <llvm/IR/InstrTypes.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/IR/LLVMContext.h>
-#include <llvm/IR/Module.h>
 #include <llvm/IR/Operator.h>
 #include <llvm/IRReader/IRReader.h>
 #include <llvm/Passes/PassBuilder.h>
-#include <llvm/Support/CommandLine.h>
 #include <llvm/Support/SourceMgr.h>
-#include <llvm/Support/raw_ostream.h>
 
 using namespace llvm;
 
-static cl::opt<std::string> inputFile(cl::Positional, cl::desc("<file.bc|file.ll>"),
-                                      cl::Required);
-static cl::opt<bool> dumpIR("dump-ir", cl::desc("Print the IR after the pass list and exit"));
+namespace vereda::ir {
 
 // Poison-generating flags, attributes and metadata let LLVM assume no
 // undefined behaviour; the walker must not. Strip them before InstCombine
@@ -83,7 +75,7 @@ static bool hasMustProgress(const Module &m) {
   return false;
 }
 
-static void runPipeline(Module &m, StringRef pipeline) {
+static Error runPipeline(Module &m, StringRef pipeline) {
   LoopAnalysisManager lam;
   FunctionAnalysisManager fam;
   CGSCCAnalysisManager cgam;
@@ -96,51 +88,33 @@ static void runPipeline(Module &m, StringRef pipeline) {
   pb.crossRegisterProxies(lam, fam, cgam, mam);
   ModulePassManager mpm;
   if (Error e = pb.parsePassPipeline(mpm, pipeline))
-    report_fatal_error(std::move(e));
+    return e;
   mpm.run(m, mam);
+  return Error::success();
 }
 
-int main(int argc, char **argv) {
-  cl::ParseCommandLineOptions(argc, argv, "vereda: LLVM-IR verifier\n");
-  LLVMContext ctx;
-  SMDiagnostic err;
-  std::unique_ptr<Module> module = parseIRFile(inputFile, err, ctx);
+Expected<std::unique_ptr<Module>> load(StringRef path, LLVMContext &ctx) {
+  SMDiagnostic diag;
+  std::unique_ptr<Module> module = parseIRFile(path, diag, ctx);
   if (!module) {
-    err.print(argv[0], errs());
-    return 1;
+    std::string msg;
+    raw_string_ostream os(msg);
+    diag.print(nullptr, os, /*ShowColors=*/false);
+    return createStringError(inconvertibleErrorCode(), StringRef(msg).rtrim());
   }
-  if (hasMustProgress(*module)) {
-    errs() << argv[0] << ": " << inputFile
-           << " carries mustprogress; compile with -fno-finite-loops\n";
-    return 1;
-  }
+  if (hasMustProgress(*module))
+    return createStringError(inconvertibleErrorCode(),
+                             path + " carries mustprogress; compile with -fno-finite-loops");
 
   stripUBAssumptions(*module);
-  runPipeline(*module, "function(mem2reg,sroa)");
+  if (Error e = runPipeline(*module, "function(mem2reg,sroa)"))
+    return std::move(e);
   // ponytail: plain instcombine; the plan wants a "careful" one that folds
   // nothing on undefined behaviour. Revisit when a folded check shows up.
-  runPipeline(*module, "function(instcombine,loop-simplify,lcssa)");
+  if (Error e = runPipeline(*module, "function(instcombine,loop-simplify,lcssa)"))
+    return std::move(e);
   stripUBAssumptions(*module);
-
-  if (dumpIR) {
-    module->print(outs(), nullptr);
-    return 0;
-  }
-
-  for (const Function &f : *module)
-    if (!f.isDeclaration())
-      outs() << f.getName() << "\n";
-
-#if CAMADA_HAVE_BITWUZLA
-  camada::SMTSolverRef solver = camada::createBitwuzlaSolver();
-#elif CAMADA_HAVE_Z3
-  camada::SMTSolverRef solver = camada::createZ3Solver();
-#else
-#error "camada was built without Bitwuzla or Z3"
-#endif
-  camada::SMTExprRef x = solver->mkSymbol("x", solver->mkBVSort(32));
-  solver->addConstraint(solver->mkEqual(x, solver->mkBVFromDec(7, 32)));
-  bool sat = solver->check() == camada::CheckResult::SAT;
-  outs() << "solver: " << (sat ? "sat" : "unsat") << "\n";
-  return sat ? 0 : 1;
+  return module;
 }
+
+} // namespace vereda::ir

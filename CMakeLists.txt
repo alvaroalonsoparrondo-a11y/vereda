@@ -27,18 +27,24 @@ message(STATUS "Using camada from ${camada_DIR}")
 
 llvm_map_components_to_libnames(llvm_libs core irreader support passes)
 
-add_executable(vereda src/main.cpp)
-target_include_directories(vereda SYSTEM PRIVATE ${LLVM_INCLUDE_DIRS})
+# One static library for every stage; the driver and the unit tests link it.
+add_library(libvereda STATIC src/ir/load.cpp)
+set_target_properties(libvereda PROPERTIES OUTPUT_NAME vereda)
+target_include_directories(libvereda PUBLIC src)
+target_include_directories(libvereda SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
 separate_arguments(llvm_definitions NATIVE_COMMAND "${LLVM_DEFINITIONS}")
-target_compile_definitions(vereda PRIVATE ${llvm_definitions})
+target_compile_definitions(libvereda PUBLIC ${llvm_definitions})
 if(NOT LLVM_ENABLE_RTTI)
-  target_compile_options(vereda PRIVATE -fno-rtti)
+  target_compile_options(libvereda PUBLIC -fno-rtti)
 endif()
-target_link_libraries(vereda PRIVATE ${llvm_libs} camada::camada)
+target_link_libraries(libvereda PUBLIC ${llvm_libs} camada::camada)
+
+add_executable(vereda src/driver/main.cpp)
+target_link_libraries(vereda PRIVATE libvereda)
 
 enable_testing()
 add_test(NAME smoke COMMAND vereda "${CMAKE_CURRENT_SOURCE_DIR}/tests/smoke.ll")
-set_tests_properties(smoke PROPERTIES PASS_REGULAR_EXPRESSION "main\nsolver: sat")
+set_tests_properties(smoke PROPERTIES PASS_REGULAR_EXPRESSION "^main\n$")
 add_test(NAME vereda_loop
          COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/vereda.py" --bin $<TARGET_FILE:vereda>
                  --clang "${LLVM_TOOLS_BINARY_DIR}/clang" --dump-ir
