@@ -8,29 +8,32 @@ namespace vereda::witness {
 
 static const char *separator = "----------------------------------------------------";
 
-// "99 (00000000 00000000 00000000 01100011)", or "?" when the model has no value.
-static std::string valueOf(camada::SMTSolver &s, const walker::Step &step) {
+// Prints "99 (00000000 00000000 00000000 01100011)", the bits in grey, or
+// "?" when the model has no value.
+static void printValue(camada::SMTSolver &s, const walker::Step &step, raw_ostream &os) {
   if (step.value->isBoolSort()) {
     auto b = s.getBool(step.value);
-    return b ? (b.value() ? "true" : "false") : "?";
+    os << (b ? (b.value() ? "true" : "false") : "?");
+    return;
   }
   auto bits = s.getBVInBin(step.value);
-  if (!bits)
-    return "?";
-  std::string out;
+  if (!bits) {
+    os << "?";
+    return;
+  }
   if (step.value->getWidth() > 64)
-    out = "0b" + bits.value();
+    os << "0b" << bits.value();
   else if (step.isUnsigned)
-    out = std::to_string(s.getBVUnsigned(step.value).value());
+    os << s.getBVUnsigned(step.value).value();
   else
-    out = std::to_string(s.getBV(step.value).value());
-  out += " (";
+    os << s.getBV(step.value).value();
+  std::string grouped = " (";
   for (size_t i = 0; i < bits.value().size(); ++i) {
     if (i && (bits.value().size() - i) % 8 == 0)
-      out += ' ';
-    out += bits.value()[i];
+      grouped += ' ';
+    grouped += bits.value()[i];
   }
-  return out + ")";
+  WithColor(os, raw_ostream::BRIGHT_BLACK) << grouped << ")";
 }
 
 void printCounterexample(camada::SMTSolver &s, const walker::Trace &trace,
@@ -43,11 +46,20 @@ void printCounterexample(camada::SMTSolver &s, const walker::Trace &trace,
     auto reached = s.getBool(step.guard);
     if (!reached || !reached.value())
       continue;
+    if (step.kind == walker::Step::Assumption) {
+      os << "\nAssumption:\n  " << step.loc.str() << "\n  " << step.text << "\n";
+      continue;
+    }
     os << "\nState " << ++n << " " << step.loc.str() << " thread 0\n" << separator << "\n  "
-       << step.name << " = " << valueOf(s, step) << "\n";
+       << step.text << " = ";
+    printValue(s, step, os);
+    os << "\n";
   }
   os << "\nState " << ++n << " " << violated.loc.str() << " thread 0\n" << separator << "\n"
-     << "Violated property:\n  " << violated.loc.str() << "\n  " << violated.comment << "\n\n";
+     << "Violated property:\n  " << violated.loc.str() << "\n  " << violated.comment << "\n";
+  if (!violated.expr.empty())
+    os << "  " << violated.expr << "\n";
+  os << "\n";
 }
 
 } // namespace vereda::witness

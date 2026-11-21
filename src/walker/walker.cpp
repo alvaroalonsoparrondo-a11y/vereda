@@ -1,6 +1,7 @@
 #include "walker/walker.h"
 
 #include "ir/debug.h"
+#include "ir/source.h"
 #include "util/log.h"
 #include <llvm/ADT/DenseMap.h>
 #include <llvm/ADT/SmallPtrSet.h>
@@ -75,7 +76,8 @@ private:
       for (const DbgRecord &rec : inst.getDbgRecordRange())
         if (std::optional<ir::DbgAssign> a = ir::dbgAssign(rec))
           if (a->value->getType()->isIntegerTy())
-            trace.push_back({guard, a->loc, a->name, enc.value(a->value), a->isUnsigned});
+            trace.push_back({Step::Assignment, guard, a->loc, a->name, enc.value(a->value),
+                             a->isUnsigned});
       if (isa<PHINode>(inst))
         continue;
       if (inst.isTerminator()) {
@@ -118,15 +120,18 @@ private:
       enc.bind(&c, enc.fresh(c.getType(), tag));
       return guard;
     }
-    if (name == "__VERIFIER_assume")
+    if (name == "__VERIFIER_assume") {
+      trace.push_back({Step::Assumption, guard, ir::location(c), ir::callArgumentText(c), {}});
       return s.mkAnd(guard, enc.isTrue(c.getArgOperand(0)));
+    }
     if (name == "__assert_fail" || name == "reach_error" || name == "__VERIFIER_error" ||
         name == "__builtin_unreachable") {
-      check(c, guard);
+      check(c, guard, "");
       return s.mkBool(false);
     }
     if (name == "__VERIFIER_assert") {
-      check(c, s.mkAnd(guard, s.mkNot(enc.isTrue(c.getArgOperand(0)))));
+      check(c, s.mkAnd(guard, s.mkNot(enc.isTrue(c.getArgOperand(0)))),
+            ir::callArgumentText(c));
       return guard;
     }
     if (name == "abort" || name == "exit" || name == "_Exit")
@@ -140,10 +145,10 @@ private:
     return guard;
   }
 
-  void check(const CallBase &c, SMTExprRef violated) {
+  void check(const CallBase &c, SMTExprRef violated, std::string expr) {
     checks.push_back({checks::Property::Reachability, ir::location(c),
-                      c.getCalledFunction()->getName().str(), ++checksIn[c.getFunction()],
-                      violated});
+                      c.getCalledFunction()->getName().str(), std::move(expr),
+                      ++checksIn[c.getFunction()], violated});
   }
 
   encode::Encoder &enc;

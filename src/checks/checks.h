@@ -15,6 +15,7 @@ struct Check {
   Property property;
   ir::SourceLoc loc;
   std::string comment; // the callee, e.g. "__VERIFIER_assert"
+  std::string expr;    // the asserted expression's source text, if any
   unsigned index;      // per function, from 1
   camada::SMTExprRef violated;
 
