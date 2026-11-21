@@ -3,11 +3,10 @@
 // MODE: FUTURE
 // FILES: helper.c
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-extern void reach_error(void);
+extern void __VERIFIER_assert(int);
 int helper(int x);
 
 int main(void) {
-  if (helper(2) != 4)
-    reach_error();
+  __VERIFIER_assert(helper(2) == 4);
   return 0;
 }
