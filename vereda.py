@@ -66,11 +66,14 @@ def main():
     def run(cmd):
         if args.verbose:
             print("+", " ".join(cmd), file=sys.stderr)
+        sys.stdout.flush()
         return subprocess.call(cmd)
 
+    run([binary, "--version"])
     with tempfile.TemporaryDirectory() as tmp:
         ir = source
         if source.endswith(SOURCE_EXTS):
+            print("[PROGRESS] Compiling", source)
             ir = os.path.join(tmp, os.path.basename(source) + (".ll" if args.keep_ir else ".bc"))
             cmd = ([args.clang] + CLANG_FLAGS + arch + ["-I" + d for d in args.I]
                    + ["-D" + d for d in args.D] + (["-S"] if args.keep_ir else [])

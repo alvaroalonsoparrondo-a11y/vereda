@@ -7,7 +7,7 @@ option(DOWNLOAD_DEPENDENCIES
 # to be the compiler and linker.
 include(cmake/Dependencies.cmake)
 
-project(vereda LANGUAGES C CXX)
+project(vereda VERSION 0.1.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -37,7 +37,8 @@ set_target_properties(libvereda PROPERTIES OUTPUT_NAME vereda)
 target_include_directories(libvereda PUBLIC src)
 target_include_directories(libvereda SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
 separate_arguments(llvm_definitions NATIVE_COMMAND "${LLVM_DEFINITIONS}")
-target_compile_definitions(libvereda PUBLIC ${llvm_definitions})
+target_compile_definitions(libvereda PUBLIC ${llvm_definitions}
+  VEREDA_VERSION="${PROJECT_VERSION}" VEREDA_CAMADA_VERSION="${camada_VERSION}")
 if(NOT LLVM_ENABLE_RTTI)
   target_compile_options(libvereda PUBLIC -fno-rtti)
 endif()

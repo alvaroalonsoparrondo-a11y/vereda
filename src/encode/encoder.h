@@ -20,6 +20,7 @@ class Encoder {
 public:
   explicit Encoder(camada::SMTSolver &solver) : s(solver) {}
   camada::SMTSolver &solver() { return s; }
+  unsigned symbolCount() const { return freshCount; }
 
   camada::SMTSortRef sort(llvm::Type *ty);
   // The term bound to v, or a constant. Undef and poison are a fresh value per use.

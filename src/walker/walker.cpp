@@ -1,7 +1,9 @@
 #include "walker/walker.h"
 
 #include "ir/debug.h"
+#include "util/log.h"
 #include <llvm/ADT/DenseMap.h>
+#include <llvm/ADT/SmallPtrSet.h>
 #include <llvm/ADT/PostOrderIterator.h>
 #include <llvm/IR/CFG.h>
 #include <llvm/IR/Constants.h>
@@ -124,6 +126,8 @@ private:
       throw Unsupported("call to " + name.str()); // walked in a new context, later
     // ponytail: an unknown external returns an unconstrained value. Sound
     // while nothing has memory; revisit with the memory model.
+    if (warned.insert(callee).second)
+      util::warning("no body for function " + name);
     if (!c.getType()->isVoidTy())
       enc.bind(&c, enc.fresh(c.getType(), tag));
     return guard;
@@ -133,6 +137,7 @@ private:
   camada::SMTSolver &s;
   checks::Checks &checks;
   DenseMap<const BasicBlock *, SMTExprRef> exitGuard; // path condition at block end
+  SmallPtrSet<const Function *, 8> warned;
 };
 
 } // namespace

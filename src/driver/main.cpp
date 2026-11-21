@@ -3,12 +3,15 @@
 #include "encode/encoder.h"
 #include "ir/load.h"
 #include "solver/solver.h"
+#include "util/log.h"
 #include "walker/walker.h"
 
+#include <llvm/Config/llvm-config.h>
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/raw_ostream.h>
 
 using namespace llvm;
+using vereda::util::progress;
 
 static cl::opt<std::string> inputFile(cl::Positional, cl::desc("<file.bc|file.ll>"),
                                       cl::Required);
@@ -17,19 +20,32 @@ static cl::opt<std::string> entry("entry", cl::desc("Entry function"), cl::init(
 static cl::opt<std::string> solverName("solver", cl::desc("SMT solver: bitwuzla, z3, cvc5"),
                                        cl::init("bitwuzla"));
 
+static void printVersion(raw_ostream &os) {
+  os << "vereda " VEREDA_VERSION " (LLVM " LLVM_VERSION_STRING ", camada " VEREDA_CAMADA_VERSION
+        ")\n";
+}
+
 static int unknown(const Twine &reason) {
-  outs() << "VERIFICATION UNKNOWN: " << reason << "\n";
+  outs() << "\nVERIFICATION UNKNOWN: " << reason << "\n";
   return 2;
 }
 
 int main(int argc, char **argv) {
+  cl::SetVersionPrinter(printVersion);
   cl::ParseCommandLineOptions(argc, argv, "vereda: LLVM-IR verifier\n");
+
+  progress("Loading " + inputFile);
+  vereda::util::Stopwatch loadTime;
   LLVMContext ctx;
   Expected<std::unique_ptr<Module>> module = vereda::ir::load(inputFile, ctx);
   if (!module) {
     errs() << argv[0] << ": " << toString(module.takeError()) << "\n";
     return 1;
   }
+  outs() << "Target: " << (*module)->getDataLayout().getPointerSizeInBits() << "-bit "
+         << ((*module)->getDataLayout().isLittleEndian() ? "little" : "big") << "-endian "
+         << (*module)->getTargetTriple().str() << "\n";
+  outs() << "IR preparation time: " << loadTime.elapsed() << "\n";
   if (dumpIR) {
     (*module)->print(outs(), nullptr);
     return 0;
@@ -45,18 +61,27 @@ int main(int argc, char **argv) {
     errs() << argv[0] << ": " << toString(solver.takeError()) << "\n";
     return 1;
   }
+
+  progress("Walking " + entry);
+  vereda::util::Stopwatch walkTime;
   vereda::encode::Encoder enc(**solver);
   vereda::checks::Checks checks;
   if (Error e = vereda::walker::walk(*fn, enc, checks))
     return unknown(toString(std::move(e)));
+  outs() << "Walk time: " << walkTime.elapsed() << " (" << checks.size() << " checks, "
+         << enc.symbolCount() << " symbols)\n";
 
+  progress("Solving with " + (*solver)->getSolverNameAndVersion());
+  vereda::util::Stopwatch solveTime;
   vereda::solver::Verdict verdict = vereda::solver::decide(**solver, checks);
+  outs() << "Solving time: " << solveTime.elapsed() << "\n";
+
   switch (verdict.kind) {
   case vereda::solver::Verdict::Safe:
-    outs() << "VERIFICATION SUCCESSFUL\n";
+    outs() << "\nVERIFICATION SUCCESSFUL\n";
     return 0;
   case vereda::solver::Verdict::Violated:
-    outs() << "Violated property:\n  " << verdict.check->location << "\n  "
+    outs() << "\nViolated property:\n  " << verdict.check->location << "\n  "
            << verdict.check->what << "\n\nVERIFICATION FAILED\n";
     return 1;
   case vereda::solver::Verdict::Unknown:
