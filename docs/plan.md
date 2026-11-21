@@ -1,6 +1,6 @@
 # An LLVM-IR verifier: plan
 
-Status: draft, 2026-11-20. Nothing here is built or measured yet unless it
+Status: draft, 2026-11-20; milestone 0 and review notes added 2026-11-21. Nothing here is built or measured yet unless it
 says so.
 
 ## 1. Purpose
@@ -46,7 +46,8 @@ ESBMC's limits come from its architecture, not from bugs that will run out.
 
 What the new tool costs, and does not fix:
 
-- Breadth: only C, C++ (and Rust for free). Other languages stay in ESBMC.
+- Breadth: only C and C++. Other languages stay in ESBMC. Rust is not free:
+  its IR brings its own panic paths and intrinsics.
 - Correctness witnesses: invariants must be written over C source variables;
   after `mem2reg` those are SSA values, so mapping back through debug info is
   real work.
@@ -64,8 +65,10 @@ does not help, and the effort belongs inside ESBMC.
 - **camada** for the solver backends.
 - **ESBMC's C operational models.** They are C, so clang compiles them; the
   `__ESBMC_*` and `__VERIFIER_*` intrinsics need mapping.
-- **ESBMC's regression suite.** About 3,400 C tests with expected verdicts; a
-  runner for `test.desc` gives a test suite on day one.
+- **ESBMC's regression suite.** About 3,400 C tests with expected verdicts.
+  Many `test.desc` files match ESBMC-specific flags and messages, so sort
+  early which ones translate (verdict-only tests do) before counting on it as
+  a day-one suite.
 - **Clang's sanitizers** (`-fsanitize=signed-integer-overflow,shift,bounds,...
   -fsanitize-trap`) insert undefined-behaviour checks at source level, before
   any optimisation.
@@ -202,7 +205,9 @@ walk(region, ctx):                      # ctx = call stack + iteration numbers
 6. Every nondet value is tagged with the source call that made it, for
    witnesses and test generation.
 7. Counterexample replay: run the IR on the trace's nondet values with `lli`
-   or the JIT; a mismatch is an encoder bug.
+   or the JIT; a mismatch is an encoder bug. The tool reports FALSE only when
+   the replay reaches the failing check, and UNKNOWN otherwise, as ESBMC's
+   Python wrapper does. Encoder bugs then cost unknowns, not wrong FALSEs.
 8. An ABI rule: clang packs small by-value structs into `i64` arguments, which
    looks like a pointer-to-integer cast to points-to, so pointers inside such
    structs would point anywhere. Undo the coercion, or make the analysis see
@@ -365,6 +370,23 @@ linearizability.
 
 ## 9. Milestones
 
+### Milestone 0: memory spike (4–6 weeks)
+
+Test the core bet before building the rest. The walker plus one flat byte
+array, with no partitions, models or witnesses, on the 5–10 tasks where ESBMC
+blows up: #9785's altera task, the list-model tasks, fuzzle, the large
+drivers. Measure the walker's memory and the solver's memory separately.
+Several of ESBMC's blow-ups live in the formula, not in unrolling (#10541's
+144 MB formula, the list model's memcpy chains); if the solver dominates, the
+walker alone does not fix them, and partitions and the memory encoding come
+first.
+
+Run SeaHorn (its SeaBMC engine is a bounded model checker on LLVM IR), SMACK
+and Symbiotic (all LLVM-based, archives public) on the
+same tasks. If they solve what ESBMC cannot, read how; if they fail too, their
+failures show where byte memory or LLVM IR hurts. The gate below compares
+with ESBMC, which is the wrong bar if another tool already wins there.
+
 ### Milestone 1
 
 C only, one thread, ReachSafety, violation witnesses: the walker, byte memory
@@ -380,6 +402,12 @@ those large tasks, with no wrong verdicts. If it does not, the core bet
 
 ### After the gate
 
+Ship early inside ESBMC's SV-COMP entry: once the new engine beats ESBMC on
+some kind of program, the wrapper calls it for those. That earns points a
+year or two sooner and answers the bus-factor risk (§12). The choice may use
+only the property file and program features, never the category name, which
+the SV-COMP rules forbid as a tuning input.
+
 1. Memory safety and overflow.
 2. k-induction and correctness witnesses.
 3. Termination.
@@ -392,6 +420,9 @@ those large tasks, with no wrong verdicts. If it does not, the core bet
 
 One experienced developer, full time, with agent help. Every number is
 ±50%; with half the time on ESBMC upkeep, double the calendar time.
+
+Milestone 0 (§9): 4–6 weeks, most of it reused by the walker and encoder rows
+below.
 
 ### Milestone 1
 
@@ -435,8 +466,16 @@ witness mapping through optimised IR.
 
 Each needs an explicit rule before the walker meets SV-COMP code.
 
-- SMT meaning of `undef`, `poison` and `freeze` (beyond SROA's uninitialised
-  reads).
+- SMT meaning of `undef`, `poison` and `freeze`. Settle it before the
+  encoder, since every instruction depends on it. Proposed default: an
+  `undef` read is a fresh nondet value at each use (SV-COMP treats
+  uninitialised locals as nondet); `freeze` makes it one fixed nondet value;
+  with the no-wrap flags stripped, `poison` comes mostly from out-of-range
+  shifts and similar, which the clang checks catch first, so it is also a
+  nondet value, and a test pins each source that slips past the checks.
+- Benchmark harness: each task in its own systemd scope with `RuntimeMaxSec`
+  and `MemoryMax`, BenchExec for published numbers. On 2026-11-18 a batch
+  under `timeout -s KILL 120` ran most jobs past 120 s and one for 3 days.
 - Constructs: inline `asm` (common in LDV drivers), `va_arg` (lowered per
   ABI), `setjmp`/`longjmp`, `indirectbr` (computed goto), `x86_fp80` long
   double, `i128`, vector types, `cmpxchg`/`atomicrmw`/fences in
