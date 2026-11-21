@@ -109,26 +109,31 @@ private:
         return s.mkBool(false);
       throw Unsupported("intrinsic " + name.str());
     }
+    if (!callee->isDeclaration())
+      throw Unsupported("call to " + name.str()); // walked in a new context, later
+
+    // Bodyless verifier functions, as ESBMC treats them by default: a defined
+    // one is an ordinary call. An unreachability-intrinsic flag that skips
+    // the body comes with the SV-COMP wrapper.
     if (name.starts_with("__VERIFIER_nondet_")) {
       enc.bind(&c, enc.fresh(c.getType(), tag));
       return guard;
     }
     if (name == "__VERIFIER_assume")
       return s.mkAnd(guard, enc.isTrue(c.getArgOperand(0)));
-    if (name == "reach_error" || name == "__VERIFIER_error" || name == "__assert_fail") {
-      checks.push_back({checks::Property::Reachability, ir::location(c),
-                        name.str() + " is reachable", guard});
+    if (name == "__assert_fail" || name == "reach_error" || name == "__VERIFIER_error" ||
+        name == "__builtin_unreachable") {
+      checks.push_back({checks::Property::Reachability, ir::location(c), "assertion fails",
+                        guard});
       return s.mkBool(false);
     }
-    if (name == "__VERIFIER_assert" && callee->isDeclaration()) {
-      checks.push_back({checks::Property::Reachability, ir::location(c),
-                        "assertion fails", s.mkAnd(guard, s.mkNot(enc.isTrue(c.getArgOperand(0))))});
+    if (name == "__VERIFIER_assert") {
+      checks.push_back({checks::Property::Reachability, ir::location(c), "assertion fails",
+                        s.mkAnd(guard, s.mkNot(enc.isTrue(c.getArgOperand(0))))});
       return guard;
     }
     if (name == "abort" || name == "exit" || name == "_Exit")
       return s.mkBool(false);
-    if (!callee->isDeclaration())
-      throw Unsupported("call to " + name.str()); // walked in a new context, later
     // ponytail: an unknown external returns an unconstrained value. Sound
     // while nothing has memory; revisit with the memory model.
     if (warned.insert(callee).second)
