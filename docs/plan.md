@@ -376,6 +376,14 @@ Test the core bet before building the rest. The walker plus one flat byte
 array, with no partitions, models or witnesses, on the 5–10 tasks where ESBMC
 blows up: #9785's altera task, the list-model tasks, fuzzle, the large
 drivers. Measure the walker's memory and the solver's memory separately.
+
+ESBMC's SV-COMP runs use k-induction, so a blow-up in its results may come
+from the inductive step, which this tool does not have yet. Before a task
+enters the spike, rerun ESBMC on it in plain BMC (`--incremental-bmc`, same
+flags and limits) and keep it only if ESBMC still blows up there. Features
+outside the memory stage, such as function pointers, stay out: a task that
+needs one is swapped for another, not served. The survey in
+`docs/spike-survey.md` records the candidates and what each needs.
 Several of ESBMC's blow-ups live in the formula, not in unrolling (#10541's
 144 MB formula, the list model's memcpy chains); if the solver dominates, the
 walker alone does not fix them, and partitions and the memory encoding come
