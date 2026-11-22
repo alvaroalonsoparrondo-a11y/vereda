@@ -23,26 +23,39 @@ Expected<camada::SMTSolverRef> create(const std::string &name) {
                            name.c_str());
 }
 
-Verdict decide(camada::SMTSolver &s, const checks::Checks &checks) {
+Verdict decide(camada::SMTSolver &s, const checks::Checks &checks, bool all,
+               function_ref<void(const checks::Check &)> violated) {
   // Assertions first, then unwinding assertions, as ESBMC's incremental BMC:
   // a bug within the bound is reported even where a loop is not unwound.
-  unsigned checked = 0;
+  Verdict v;
+  v.status.assign(checks.size(), Status::NotChecked);
   for (bool unwinding : {false, true})
-    for (const checks::Check &check : checks) {
+    for (size_t i = 0; i < checks.size(); ++i) {
+      const checks::Check &check = checks[i];
       if ((check.property != checks::Property::Assertion) != unwinding)
         continue;
-      ++checked;
       switch (s.checkSatAssuming({check.violated})) {
       case camada::CheckResult::SAT:
-        return {Verdict::Violated, &check, "", checked};
+        v.status[i] = Status::Fails;
+        if (!v.check) {
+          v.kind = Verdict::Violated;
+          v.check = &check;
+        }
+        violated(check);
+        if (!all)
+          return v;
+        break;
       case camada::CheckResult::UNSAT:
+        v.status[i] = Status::Holds;
         break;
       case camada::CheckResult::UNKNOWN:
+        if (v.check) // a violation found stands
+          return v;
         return {Verdict::Unknown, &check, "solver answered unknown: " + s.reasonUnknownDetail(),
-                checked};
+                std::move(v.status)};
       }
     }
-  return {Verdict::Safe, nullptr, "", checked};
+  return v;
 }
 
 } // namespace vereda::solver

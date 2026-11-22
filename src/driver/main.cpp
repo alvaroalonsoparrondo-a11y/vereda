@@ -43,6 +43,9 @@ static cl::opt<bool> incrementalBMC(
     cl::desc("Check bounds 1, 2, ... until the verdict does not depend on the bound"));
 static cl::opt<unsigned> maxKStep("max-k-step", cl::desc("Largest bound for --incremental-bmc"),
                                   cl::init(50));
+static cl::opt<bool> multiProperty("multi-property",
+                                   cl::desc("Check every property instead of stopping at the "
+                                            "first violation"));
 static cl::opt<std::string> solverName("solver", cl::desc("SMT solver: bitwuzla, z3, cvc5"),
                                        cl::init("bitwuzla"));
 
@@ -136,38 +139,52 @@ static int bmc(Function &fn, unsigned bound) {
 
   progress("Solving with " + solver.getSolverNameAndVersion());
   vereda::util::Stopwatch solveTime;
-  vereda::solver::Verdict verdict = vereda::solver::decide(solver, checks);
+  using vereda::solver::Status;
+  auto isAssertion = [](const vereda::checks::Check &c) {
+    return c.property == vereda::checks::Property::Assertion;
+  };
+  vereda::solver::Verdict verdict =
+      vereda::solver::decide(solver, checks, multiProperty, [&](const vereda::checks::Check &c) {
+        // Under --incremental-bmc an unwound loop asks for a larger bound;
+        // it is not a bug to show.
+        if (incrementalBMC && !isAssertion(c))
+          return;
+        progress("Building error trace");
+        vereda::witness::printCounterexample(solver, trace, checks, &c - checks.data(), outs());
+      });
   outs() << "Solving time: " << solveTime.elapsed() << " (peak memory "
          << vereda::util::peakMemory() << ")\n";
 
   if (verdict.kind == vereda::solver::Verdict::Unknown)
     return unknown(verdict.detail);
 
-  if (incrementalBMC && verdict.check &&
-      verdict.check->property != vereda::checks::Property::Assertion) {
+  bool bug = false;
+  for (size_t i = 0; i < checks.size(); ++i)
+    bug |= verdict.status[i] == Status::Fails && isAssertion(checks[i]);
+  if (incrementalBMC && verdict.check && !bug) {
     outs() << "Bound " << bound << " too small: " << verdict.check->comment << "\n";
     return BoundTooSmall;
   }
 
-  if (verdict.check) {
-    progress("Building error trace");
-    vereda::witness::printCounterexample(solver, trace, checks,
-                                         verdict.check - checks.data(), outs());
-  }
   if (!checks.empty()) {
     outs() << "\n** Results:\n";
     std::string lastUnit;
-    for (unsigned i = 0; i < verdict.checked; ++i) {
+    unsigned checked = 0, failed = 0;
+    for (size_t i = 0; i < checks.size(); ++i) {
+      if (verdict.status[i] == Status::NotChecked)
+        continue;
       const vereda::checks::Check &c = checks[i];
+      bool fails = verdict.status[i] == Status::Fails;
+      ++checked;
+      failed += fails;
       std::string unit = c.loc.file + ", function " + c.loc.function;
       if (unit != lastUnit)
         outs() << (lastUnit.empty() ? "" : "\n") << unit << "\n";
       lastUnit = unit;
-      outs() << (&c == verdict.check ? "  FAILED       [" : "  SUCCESS      [") << c.id()
-             << "]  line " << c.loc.line << "  " << c.comment << "\n";
+      outs() << (fails ? "  FAILED       [" : "  SUCCESS      [") << c.id() << "]  line "
+             << c.loc.line << "  " << c.comment << "\n";
     }
-    outs() << "\n** " << (verdict.check ? 1 : 0) << " of " << verdict.checked
-           << " properties failed\n";
+    outs() << "\n** " << failed << " of " << checked << " properties failed\n";
   }
   outs() << "\n";
   if (verdict.check) {
