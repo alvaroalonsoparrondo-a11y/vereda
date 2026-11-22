@@ -197,5 +197,7 @@ the plan already lists, now with evidence for their order:
    on the ECA tasks.
 3. Incremental BMC (section 4.2), so a run stops re-walking lower bounds.
 
-Not measured yet: SeaHorn, SMACK and Symbiotic on the same tasks (plan,
-milestone 0), and Problem14 at k = 2.
+Not measured: Problem14 at k = 2. SeaHorn, SMACK and Symbiotic (plan,
+milestone 0) were skipped. SeaHorn ships only as a Docker image, and the
+Symbiotic (SV-COMP 2026) and SMACK (SV-COMP 2022) archives were not run
+outside a container, so ESBMC is the only comparison here.
