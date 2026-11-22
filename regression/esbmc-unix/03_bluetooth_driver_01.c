@@ -3,8 +3,8 @@
 #define TRUE  (1)
 #define FALSE (0)
 
-void __ESBMC_atomic_begin();
-void __ESBMC_atomic_end();
+void __VERIFIER_atomic_begin();
+void __VERIFIER_atomic_end();
 void __ESBMC_yield();
 
 typedef struct DEVICE {
@@ -20,9 +20,9 @@ int BCSP_IoIncrement(DEVICE_EXTENSION *e)
   if (e->stoppingFlag)
     return -1;
 
-  __ESBMC_atomic_begin();
+  __VERIFIER_atomic_begin();
   e->pendingIo = e->pendingIo + 1;
-  __ESBMC_atomic_end();  
+  __VERIFIER_atomic_end();  
   
   return 0;
 }
@@ -31,10 +31,10 @@ void BCSP_IoDecrement(DEVICE_EXTENSION *e)
 {
   int pendingIo;
 
-  __ESBMC_atomic_begin();
+  __VERIFIER_atomic_begin();
   e->pendingIo = e->pendingIo - 1;
   pendingIo = e->pendingIo;
-  __ESBMC_atomic_end();  
+  __VERIFIER_atomic_end();  
 
   if (pendingIo)
     e->stoppingEvent = TRUE;

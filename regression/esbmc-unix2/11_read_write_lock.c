@@ -4,21 +4,21 @@ int w, r, x, y;
 void thr1() { //writer
   glb_init(w==0);
   glb_init(r==0);
-  { __ESBMC_atomic_begin();
+  { __VERIFIER_atomic_begin();
     __VERIFIER_assume(w==0);
     __VERIFIER_assume(r==0);
     w = 1;
-    __ESBMC_atomic_end();
+    __VERIFIER_atomic_end();
   }
   x = 3;
   w = 0;
 }
 
 void thr2() { //reader
-  { __ESBMC_atomic_begin();
+  { __VERIFIER_atomic_begin();
     __VERIFIER_assume(w==0);
     r = r+1;
-    __ESBMC_atomic_end();
+    __VERIFIER_atomic_end();
   }
   y = x;
   assert(y == x);

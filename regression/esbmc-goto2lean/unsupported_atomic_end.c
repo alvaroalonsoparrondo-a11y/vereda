@@ -1,5 +1,5 @@
 int main(void) {
-  __ESBMC_atomic_end();
+  __VERIFIER_atomic_end();
   return 0;
 }
 // Imported from ESBMC regression/goto2lean/unsupported_atomic_end

@@ -5,25 +5,25 @@
 int token;
 _Bool event_E1=0, event_E2=0, event_E3=0, event_E4=0, event_E5=0, event_EM=0;
 int __VERIFIER_nondet_int();
-void __ESBMC_atomic_begin();
-void __ESBMC_atomic_end();
+void __VERIFIER_atomic_begin();
+void __VERIFIER_atomic_end();
 
 void wait_event(_Bool e1, _Bool *e2)
 {
-__ESBMC_atomic_begin();
+__VERIFIER_atomic_begin();
   _Bool unlocked = (e1==0);
   if (unlocked)
     __VERIFIER_assume(0);
   else
     e2=0;
-__ESBMC_atomic_end();
+__VERIFIER_atomic_end();
 }
 
 int notify_event(void)
 {
-__ESBMC_atomic_begin();
+__VERIFIER_atomic_begin();
   return 1;
-__ESBMC_atomic_end();
+__VERIFIER_atomic_end();
 }
 
 void* SC_THREAD_master(void* arg)

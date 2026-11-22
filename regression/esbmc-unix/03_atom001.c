@@ -17,8 +17,8 @@
 extern void inspect_atom_start(int);
 extern void inspect_atom_end(int);
 
-void __ESBMC_atomic_begin();
-void __ESBMC_atomic_end();
+void __VERIFIER_atomic_begin();
+void __VERIFIER_atomic_end();
 
 #define InitLock(A) pthread_mutex_init  (&A,0)
 #define Lock(A)     pthread_mutex_lock  (&A)

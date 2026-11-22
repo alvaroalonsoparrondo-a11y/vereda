@@ -6,9 +6,9 @@ void *
 thread1(void *dummy)
 {
 
-	__ESBMC_atomic_begin();
+	__VERIFIER_atomic_begin();
 	aglobal++;
-	__ESBMC_atomic_end();
+	__VERIFIER_atomic_end();
 	return NULL;
 }
 
@@ -16,9 +16,9 @@ void *
 thread2(void *dummy)
 {
 
-	__ESBMC_atomic_begin();
+	__VERIFIER_atomic_begin();
 	aglobal++;
-	__ESBMC_atomic_end();
+	__VERIFIER_atomic_end();
 	pthread_exit(NULL);
 }
 

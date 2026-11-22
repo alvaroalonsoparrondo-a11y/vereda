@@ -2,16 +2,16 @@
 
 int g;
 
-void __ESBMC_atomic_begin();
-void __ESBMC_atomic_end();
+void __VERIFIER_atomic_begin();
+void __VERIFIER_atomic_end();
 
 void *t1(void *arg)
 {
   // this is atomic!  
-  __ESBMC_atomic_begin();
+  __VERIFIER_atomic_begin();
   g=2;
   g=1;
-  __ESBMC_atomic_end();
+  __VERIFIER_atomic_end();
 }
 
 int main()

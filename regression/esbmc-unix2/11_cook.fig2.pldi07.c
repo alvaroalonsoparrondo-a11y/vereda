@@ -4,10 +4,10 @@ int x;
 
 
 #define acquire_thread_id1(tid, l) \
-{ __ESBMC_atomic_begin(); \
+{ __VERIFIER_atomic_begin(); \
     __VERIFIER_assume(l==0); \
     l = tid; \
-    __ESBMC_atomic_end(); \
+    __VERIFIER_atomic_end(); \
 }
 
 

@@ -14,20 +14,20 @@ void* qrcu_reader1() {
   while (1) {
     myidx = idx;
     if (NONDET) {
-      { __ESBMC_atomic_begin();
+      { __VERIFIER_atomic_begin();
 	__VERIFIER_assume(myidx <= 0);
 	__VERIFIER_assume(ctr1>0);
 	ctr1++;
-       __ESBMC_atomic_end();
+       __VERIFIER_atomic_end();
       }
       break;
     } else {
       if (NONDET) {
-	{ __ESBMC_atomic_begin();
+	{ __VERIFIER_atomic_begin();
 	  __VERIFIER_assume(myidx > 0);
 	  __VERIFIER_assume(ctr2>0);
 	  ctr2++;
-      __ESBMC_atomic_end();
+      __VERIFIER_atomic_end();
 	}
 	break;
       } else {}
@@ -49,10 +49,10 @@ void* qrcu_reader1() {
   readerprogress1 = 2; /*** readerprogress[me] = 2 ***/
 
   /* rcu_read_unlock */
-  { __ESBMC_atomic_begin();
+  { __VERIFIER_atomic_begin();
       if (myidx <= 0) { ctr1--; } // use ctr1
       else { ctr2--; } // use ctr2
-    __ESBMC_atomic_end();
+    __VERIFIER_atomic_end();
   }
   pthread_exit(NULL);
 }
@@ -81,10 +81,10 @@ void* qrcu_updater() {
   glb_init(mutex==0);  
 
   /* Snapshot reader state. */
-  { __ESBMC_atomic_begin();
+  { __VERIFIER_atomic_begin();
       readerstart1 = readerprogress1;
       readerstart2 = readerprogress2;
-   __ESBMC_atomic_end();
+   __VERIFIER_atomic_end();
   }
 
   sum_unordered;
@@ -99,7 +99,7 @@ void* qrcu_updater() {
   }
 
   /* Verify reader progress. */
-  { __ESBMC_atomic_begin();
+  { __VERIFIER_atomic_begin();
       if (NONDET) {
 	__VERIFIER_assume(readerstart1 == 1);
 	__VERIFIER_assume(readerprogress1 == 1);
@@ -111,7 +111,7 @@ void* qrcu_updater() {
 	  assert(0);
 	} else { }
       }
-    __ESBMC_atomic_end();
+    __VERIFIER_atomic_end();
   }
   /* Frontend generates too many transitions:
   { __blockattribute__((atomic))
@@ -132,20 +132,20 @@ void* qrcu_reader2() {
   while (1) {
     myidx = idx;
     if (NONDET) {
-      { __ESBMC_atomic_begin();
+      { __VERIFIER_atomic_begin();
 	__VERIFIER_assume(myidx <= 0);
 	__VERIFIER_assume(ctr1>0);
 	ctr1++;
-       __ESBMC_atomic_end();
+       __VERIFIER_atomic_end();
       }
       break;
     } else {
       if (NONDET) {
-	{ __ESBMC_atomic_begin();
+	{ __VERIFIER_atomic_begin();
 	  __VERIFIER_assume(myidx > 0);
 	  __VERIFIER_assume(ctr2>0);
 	  ctr2++;
-      __ESBMC_atomic_end();
+      __VERIFIER_atomic_end();
 	}
 	break;
       } else {}
@@ -164,10 +164,10 @@ void* qrcu_reader2() {
 }
 
 #define acquire_thread_id(tid, l) \
-  { __ESBMC_atomic_begin(); \
+  { __VERIFIER_atomic_begin(); \
     __VERIFIER_assume(l==0); \
     l = tid; \
-    __ESBMC_atomic_end(); \
+    __VERIFIER_atomic_end(); \
   }
 
 

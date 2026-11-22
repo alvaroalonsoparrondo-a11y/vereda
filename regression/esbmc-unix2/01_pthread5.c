@@ -1,7 +1,7 @@
 #include <pthread.h>
 
-void __ESBMC_atomic_begin();
-void __ESBMC_atomic_end();
+void __VERIFIER_atomic_begin();
+void __VERIFIER_atomic_end();
 
 int g, x;
 _Bool lock=0;

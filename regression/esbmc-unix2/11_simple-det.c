@@ -4,10 +4,10 @@ int can_start = 0;
 int done = 0;
 
 void thr1() {
-  { __ESBMC_atomic_begin();
+  { __VERIFIER_atomic_begin();
     can_start = can_start - 1;
     __VERIFIER_assume(can_start >= 0);
-    __ESBMC_atomic_end();
+    __VERIFIER_atomic_end();
   }
   acquire(m); // m=0 /\ m'=1
   x = 2;
@@ -16,10 +16,10 @@ void thr1() {
 }
 
 void thr2() {
-  { __ESBMC_atomic_begin();
+  { __VERIFIER_atomic_begin();
     can_start = can_start - 1;
     __VERIFIER_assume(can_start >= 0);
-    __ESBMC_atomic_end();
+    __VERIFIER_atomic_end();
   }
   acquire(m); // m=0 /\ m'=1
   if (x == 0) { x = x + 2; }

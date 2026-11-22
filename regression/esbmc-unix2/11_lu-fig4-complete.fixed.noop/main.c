@@ -15,14 +15,14 @@ inline void DoneWaitingOnThisThread(PRThread thread)
 
 	_PR_INTSOFF(is);
 	PR_Lock(thread_md_asyncIOLock);
-	{ __ESBMC_atomic_begin();
+	{ __VERIFIER_atomic_begin();
 	if (__COUNT__ == 1) {
 	  thread_io_pending = PR_FALSE; // check for order violation
 	  __COUNT__ = __COUNT__ + 1;
 	} else {
 	  assert(0);
 	}
-     __ESBMC_atomic_end();
+     __VERIFIER_atomic_end();
 	}
 	// let the waiting thread know that async IO completed
 	PR_NotifyCondVar(thread_md_asyncIOCVar);

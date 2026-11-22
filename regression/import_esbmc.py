@@ -10,9 +10,11 @@ unless it already starts with "esbmc". The test.desc goes into a comment
 header at the end of the C file, so that line numbers in the expected
 output still hold. A rerun replaces earlier copies.
 
-__ESBMC_assert, __ESBMC_assume, __ESBMC_memset and __ESBMC_memcpy become
-__VERIFIER_assert, __VERIFIER_assume, memset and memcpy in the copied
-sources, and __ESBMC_unreachable becomes reach_error in tests run with
+__ESBMC_assert, __ESBMC_assume, __ESBMC_atomic_begin,
+__ESBMC_atomic_end, __ESBMC_memset and __ESBMC_memcpy become
+__VERIFIER_assert, __VERIFIER_assume, __VERIFIER_atomic_begin,
+__VERIFIER_atomic_end, memset and memcpy in the copied sources, and
+__ESBMC_unreachable becomes reach_error in tests run with
 --enable-unreachability-intrinsic, a flag then dropped. Setting
 __ESBMC_rounding_mode becomes fesetround() where that covers every use
 of it, and nondet_X becomes __VERIFIER_nondet_X. ESBMC flags with a
@@ -156,7 +158,9 @@ def copy_files(src, dest, source, tracked):
 # ESBMC builtins with an equivalent that Vereda models. The others
 # (contracts, quantifiers, atomics, ...) have none and keep their names.
 RENAMES = {"__ESBMC_assert": "__VERIFIER_assert", "__ESBMC_assume": "__VERIFIER_assume",
-           "__ESBMC_memset": "memset", "__ESBMC_memcpy": "memcpy"}
+           "__ESBMC_memset": "memset", "__ESBMC_memcpy": "memcpy",
+           "__ESBMC_atomic_begin": "__VERIFIER_atomic_begin",
+           "__ESBMC_atomic_end": "__VERIFIER_atomic_end"}
 # __ESBMC_unreachable() is a no-op unless this flag makes reaching it a
 # violation, as reach_error() always is in Vereda.
 UNREACHABLE_FLAG = "--enable-unreachability-intrinsic"

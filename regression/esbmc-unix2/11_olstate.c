@@ -29,20 +29,20 @@ int x=0;
 uint8_t state;
 uint8_t tosPort; // check dataraces on this variable
 
-void __ESBMC_atomic_begin();
-void __ESBMC_atomic_end();
+void __VERIFIER_atomic_begin();
+void __VERIFIER_atomic_end();
 
 inline result_t dataReady(uint16_t data) {
   uint8_t port;
   uint8_t oldState;
   result_t ok;
-  { __ESBMC_atomic_begin();
+  { __VERIFIER_atomic_begin();
       // port = tosPort;
     oldState = state;
     if (state == SINGLE_CONVERSION) {
       state = IDLE;
     }
-   __ESBMC_atomic_end();
+   __VERIFIER_atomic_end();
   }
     
   switch (oldState) {
@@ -72,12 +72,12 @@ inline result_t dataReady(uint16_t data) {
 inline result_t startGet(uint8_t newState, uint8_t port) {
     uint8_t oldState;
     {
-    __ESBMC_atomic_begin();
+    __VERIFIER_atomic_begin();
 	oldState = state;
       if (state == IDLE) {
 	state = newState;
       }
-     __ESBMC_atomic_end();
+     __VERIFIER_atomic_end();
     }
     if (oldState == IDLE) {
       if ( x<=0 ) x++;
