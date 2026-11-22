@@ -16,4 +16,4 @@ int main(void)
 // EXPECT: type: "function_return"
 // EXPECT: file_name: "[^"]*first\.c"
 // EXPECT: line: 12$
-// EXPECT: (?s)- "[^"]*first\.c".*- "[^"]*main.c"
+// EXPECT: (?s)- "[^"]*first\.c".*- "[^"]*main\.c"

@@ -18,7 +18,8 @@ foreach(suite IN LISTS suites)
        "${CMAKE_CURRENT_SOURCE_DIR}/${suite}/*.ll"
        "${CMAKE_CURRENT_SOURCE_DIR}/${suite}/*/main.c")
   foreach(test IN LISTS tests)
-    get_filename_component(name "${test}" NAME_WE)
+    # The last extension only: some test names hold dots.
+    get_filename_component(name "${test}" NAME_WLE)
     if(name STREQUAL "main")
       get_filename_component(name "${test}" DIRECTORY)
       get_filename_component(name "${name}" NAME)

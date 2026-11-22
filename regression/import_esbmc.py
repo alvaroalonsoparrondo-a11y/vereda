@@ -3,11 +3,12 @@
 
     regression/import_esbmc.py ~/tools/esbmc/regression [suite ...]
 
-Each ESBMC test <suite>/<test>/ with a C input becomes
-regression/<name>/<test>/main.c plus the test's other files, where <name>
-is the suite, prefixed with "esbmc-" unless it already starts with "esbmc".
-The test.desc goes into a comment header at the end of main.c, so that line
-numbers in the expected output still hold. A rerun replaces earlier copies.
+Each ESBMC test <suite>/<test>/ with a C input becomes regression/<name>/
+<test>.c when the source is its only file, and <test>/main.c next to the
+other files otherwise, where <name> is the suite, prefixed with "esbmc-"
+unless it already starts with "esbmc". The test.desc goes into a comment
+header at the end of the C file, so that line numbers in the expected
+output still hold. A rerun replaces earlier copies.
 
 ESBMC flags with a Vereda equivalent are translated. Flags that only turn
 off a check Vereda does not have are dropped. A test that needs any other
@@ -114,9 +115,40 @@ def outside(test_dir, path):
     return os.path.commonpath([real, os.path.realpath(test_dir)]) != os.path.realpath(test_dir)
 
 
+def copy_files(src, dest, source, tracked):
+    """Copies the test's files from src, renaming source to dest.c when it
+    is the only one and to dest/main.c otherwise. Returns that path, or
+    None when another file is already main.c."""
+    def ignored(directory, names):
+        # A test's directory can hold other tests; each is copied on its own.
+        def untracked(p):
+            return tracked is not None and os.path.isfile(p) and os.path.realpath(p) not in tracked
+        paths = {n: os.path.join(directory, n) for n in names}
+        return {n for n, p in paths.items() if n == "test.desc" or untracked(p)
+                or os.path.exists(os.path.join(p, "test.desc"))}
+
+    shutil.rmtree(dest, ignore_errors=True)
+    if os.path.exists(dest + ".c"):
+        os.remove(dest + ".c")
+    shutil.copytree(src, dest, ignore=ignored)
+    for root, _, _ in os.walk(dest, topdown=False):  # what the filters emptied
+        if not os.listdir(root):
+            os.rmdir(root)
+    if os.listdir(dest) == [source]:
+        os.replace(os.path.join(dest, source), dest + ".c")
+        os.rmdir(dest)
+        return dest + ".c"
+    if source != "main.c" and os.path.exists(os.path.join(dest, "main.c")):
+        shutil.rmtree(dest)
+        return None
+    os.replace(os.path.join(dest, source), os.path.join(dest, "main.c"))
+    return os.path.join(dest, "main.c")
+
+
 def import_test(src, dest, origin, tracked):
-    """Copies one test from src to dest. Returns "copied", or why not. When
-    tracked is a set of paths, files outside it are left behind."""
+    """Copies one test from src to dest, or to dest.c when it has one file.
+    Returns the C file written, or why there is none. When tracked is a set
+    of paths, files outside it are left behind."""
     with open(os.path.join(src, "test.desc"), encoding="utf-8", errors="replace") as f:
         lines = f.read().split("\n")
     if len(lines) < 3 or not lines[1].strip().endswith(".c"):
@@ -128,33 +160,23 @@ def import_test(src, dest, origin, tracked):
         return "unreadable flags"
     if any(outside(src, p) for p in paths):
         return "files outside the test"
-    if source != "main.c" and os.path.exists(os.path.join(src, "main.c")):
-        return "a main.c besides the source"
     regexes = [r.strip() for r in lines[3:] if r.strip()]
 
-    def other_tests(directory, names):
-        # A test's directory can hold other tests; each is copied on its own.
-        def untracked(p):
-            return tracked is not None and os.path.isfile(p) and os.path.realpath(p) not in tracked
-        paths = {n: os.path.join(directory, n) for n in names}
-        return {n for n, p in paths.items() if n == "test.desc" or untracked(p)
-                or os.path.exists(os.path.join(p, "test.desc"))}
-
-    shutil.rmtree(dest, ignore_errors=True)
-    shutil.copytree(src, dest, ignore=other_tests)
-    entry = os.path.join(dest, "main.c")
-    if source != "main.c":
-        os.replace(os.path.join(dest, source), entry)
+    entry = copy_files(src, dest, source, tracked)
+    if not entry:
+        return "a main.c besides the source"
+    name = os.path.basename(entry)
+    if source != name:
         # The output names the source file, so the expectations follow it.
         old = re.compile(r"(?<![\w-])" + "".join(r"\\?\." if c == "." else re.escape(c)
                                                  for c in source))
-        regexes = [old.sub("main.c", r) for r in regexes]
+        regexes = [old.sub(lambda _: re.escape(name), r) for r in regexes]
 
     with open(entry, "rb") as f:
         newline = b"" if f.read().endswith(b"\n") else b"\n"
     with open(entry, "ab") as f:
         f.write(newline + ("\n".join(header(origin, mode, args, regexes, src)) + "\n").encode())
-    return "copied"
+    return entry
 
 
 def mark(tests, runner):
@@ -234,9 +256,10 @@ def import_suites(args):
             name = "root" if rel == "." else rel.replace(os.sep, "__")
             dest = os.path.join(args.out, suite_name(suite), name)
             result = import_test(root, dest, os.path.join(suite, rel), tracked)
+            if result.endswith(".c"):
+                copied_tests.append(result)
+                result = "copied"
             counts[result] = counts.get(result, 0) + 1
-            if result == "copied":
-                copied_tests.append(os.path.join(dest, "main.c"))
         copied = counts.pop("copied", 0)
         counts.pop("not C", None)
         if copied or counts:
