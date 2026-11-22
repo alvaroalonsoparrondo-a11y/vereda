@@ -12,7 +12,7 @@ int main()
     n++;
     i = g(i);
   }
-  __ESBMC_assert(n != 4, "the loop ran 4 times");
+  __VERIFIER_assert(n != 4); // the loop ran 4 times
   return 0;
 }
 // Imported from ESBMC regression/esbmc/goto_unwind_counter_from_call_fail

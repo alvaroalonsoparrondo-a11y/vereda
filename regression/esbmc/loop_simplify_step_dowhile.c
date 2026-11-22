@@ -9,7 +9,7 @@ int main()
   do {
     i++;
   } while (i < 17);
-  __ESBMC_assert(i == 17, "do-while reaches exit at i = 17");
+  __VERIFIER_assert(i == 17); // do-while reaches exit at i = 17
   return 0;
 }
 // Imported from ESBMC regression/esbmc/loop_simplify_step_dowhile

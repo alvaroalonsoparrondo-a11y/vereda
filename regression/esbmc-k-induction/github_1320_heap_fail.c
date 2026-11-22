@@ -9,7 +9,7 @@ int main()
 {
   char *d = calloc(7, 1);
   strcpy(d, "abcdef");
-  __ESBMC_assert(d[0] != 'a', "strcpy copies the first byte");
+  __VERIFIER_assert(d[0] != 'a'); // strcpy copies the first byte
   return 0;
 }
 // Imported from ESBMC regression/k-induction/github_1320_heap_fail

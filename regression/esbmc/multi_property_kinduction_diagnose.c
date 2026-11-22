@@ -7,7 +7,7 @@ unsigned nondet_uint();
 int main()
 {
   unsigned n = nondet_uint();
-  __ESBMC_assume(n < 10);
+  __VERIFIER_assume(n < 10);
   unsigned i = 0, j = 3;
   while (nondet_bool())
   {

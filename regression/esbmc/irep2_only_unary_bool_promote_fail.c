@@ -4,7 +4,7 @@ int b;
 
 int main(void)
 {
-  __ESBMC_assert(~(1 || b) == -1, "~1 is -2, not -1");
+  __VERIFIER_assert(~(1 || b) == -1); // ~1 is -2, not -1
   return 0;
 }
 // Imported from ESBMC regression/esbmc/irep2_only_unary_bool_promote_fail

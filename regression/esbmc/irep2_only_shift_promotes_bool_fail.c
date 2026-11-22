@@ -6,7 +6,7 @@ int main(void)
 
   int found = (j > nc_B - 1) << i;
 
-  __ESBMC_assert(found == 1, "the shift result is one");
+  __VERIFIER_assert(found == 1); // the shift result is one
   return 0;
 }
 // Imported from ESBMC regression/esbmc/irep2_only_shift_promotes_bool_fail

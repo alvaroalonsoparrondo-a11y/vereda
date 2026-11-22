@@ -10,7 +10,7 @@ void g(P *a, P *b, int n) {
   __ESBMC_requires(n <= 0 || (__ESBMC_is_fresh(a, sizeof(P)) && __ESBMC_is_fresh(b, sizeof(P))));
   __ESBMC_ensures(1);
 }
-int main(void){ P *o=(P*)malloc(sizeof(P)); __ESBMC_assume(o!=0); g(o,o,0); return 0; }
+int main(void){ P *o=(P*)malloc(sizeof(P)); __VERIFIER_assume(o!=0); g(o,o,0); return 0; }
 // Imported from ESBMC regression/function_contract/github_6551_cond_is_fresh_pass
 // Needs: --replace-call-with-contract g
 // RUN: --replace-call-with-contract g --unwind 8

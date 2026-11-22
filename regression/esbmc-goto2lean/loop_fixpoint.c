@@ -6,7 +6,7 @@ int main(void) {
     s = s + 1;
     i = i + 1;
   }
-  __ESBMC_assert(s == n, "s counts the iterations");
+  __VERIFIER_assert(s == n); // s counts the iterations
   return 0;
 }
 // Imported from ESBMC regression/goto2lean/loop_fixpoint

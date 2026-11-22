@@ -3,7 +3,7 @@ extern float __VERIFIER_nondet_float(void);
 int main(void)
 {
   float x = __VERIFIER_nondet_float();
-  __ESBMC_assert(x == x, "target");
+  __VERIFIER_assert(x == x); // target
 }
 // Imported from ESBMC regression/esbmc/witness_float_return_nan
 // Needs: --witness-output-yaml w.yml CHECK_FILE w.yml contains type: "target" CHECK_FILE w.yml absent function_return

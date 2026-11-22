@@ -14,7 +14,7 @@ int main(void)
   __ESBMC_loop_invariant(s.i >= 0 && s.i <= 10 && s.n == 10);
   while (s.i < s.n)
     s.i++;
-  __ESBMC_assert(s.i == 10, "post");
+  __VERIFIER_assert(s.i == 10); // post
   return 0;
 }
 // Imported from ESBMC regression/esbmc/scalarize_structs_loop_invariant

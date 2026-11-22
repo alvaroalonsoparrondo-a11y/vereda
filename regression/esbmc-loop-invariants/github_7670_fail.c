@@ -12,7 +12,7 @@ int main(void)
   uint64_t a;
   uint64_t i = 1, sn = 0;
 
-  __ESBMC_assume(n >= 1);
+  __VERIFIER_assume(n >= 1);
 
   __ESBMC_loop_invariant(
     (i <= (uint64_t)n || i == (uint64_t)n + 1) && i >= 1 &&

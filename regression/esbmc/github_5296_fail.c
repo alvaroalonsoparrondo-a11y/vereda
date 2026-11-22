@@ -11,7 +11,7 @@ extern unsigned long __VERIFIER_nondet_ulong(void);
 
 uint64_t uhash(const void *a) // 1-argument
 {
-  __ESBMC_assert(a != NULL, "uhash argument must be non-null");
+  __VERIFIER_assert(a != NULL); // uhash argument must be non-null
   return (uint64_t)a ? (uint64_t)a : 1ull;
 }
 

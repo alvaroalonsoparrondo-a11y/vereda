@@ -11,7 +11,7 @@ int main()
     inner();
   }
   outer();
-  __ESBMC_assert(x == 99, "doubly nested function");
+  __VERIFIER_assert(x == 99); // doubly nested function
   return 0;
 }
 // Imported from ESBMC regression/esbmc/gcc_nested_func_05

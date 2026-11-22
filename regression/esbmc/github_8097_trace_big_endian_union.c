@@ -20,7 +20,7 @@ int main()
   union V w;
   w.i = nondet_uint();
   u.s.v[0] = w;
-  __ESBMC_assert(u.s.v[0].i != 0x01020304u, "show");
+  __VERIFIER_assert(u.s.v[0].i != 0x01020304u); // show
 }
 // Imported from ESBMC regression/esbmc/github_8097_trace_big_endian_union
 // Needs: --big-endian

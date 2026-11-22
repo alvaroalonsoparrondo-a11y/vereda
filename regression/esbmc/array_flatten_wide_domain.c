@@ -8,11 +8,11 @@
 int main()
 {
   unsigned n;
-  __ESBMC_assume(n > 0 && n <= 8);
+  __VERIFIER_assume(n > 0 && n <= 8);
   int a[n]; // nondet size -> 64-bit index domain -> unbounded array
 
   unsigned i;
-  __ESBMC_assume(i < n);
+  __VERIFIER_assume(i < n);
   a[i] = 42;
   assert(a[i] == 42);
   return 0;

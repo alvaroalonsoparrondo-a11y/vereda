@@ -21,10 +21,10 @@ int main()
   else
     u.p = &x;
   u.s.c = 4;
-  __ESBMC_assert(u.s.a == &x, "a is x");
+  __VERIFIER_assert(u.s.a == &x); // a is x
 }
 // Imported from ESBMC regression/esbmc/github_9937_branch_fail
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: \[main.assertion.1\]  line 24  a is x
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: \[main.assertion.1\]  line 24  a is x
 // MODE: FUTURE

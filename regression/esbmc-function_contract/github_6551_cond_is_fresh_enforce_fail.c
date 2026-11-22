@@ -15,8 +15,8 @@ void g(P *a, P *b, int n) {
   __ESBMC_ensures(b->coeffs[0] == __ESBMC_old(b->coeffs[0]));
   a->coeffs[0] = 1;
 }
-int main(void){ P *o=(P*)malloc(sizeof(P)); __ESBMC_assume(o!=0); o->coeffs[0]=5;
-  g(o,o,0); __ESBMC_assert(o->coeffs[0]==5,"implied by second ensures"); return 0; }
+int main(void){ P *o=(P*)malloc(sizeof(P)); __VERIFIER_assume(o!=0); o->coeffs[0]=5;
+  g(o,o,0); __VERIFIER_assert(o->coeffs[0]==5); return 0; } // implied by second ensures
 // Imported from ESBMC regression/function_contract/github_6551_cond_is_fresh_enforce_fail
 // Needs: --enforce-contract g
 // RUN: --function g --enforce-contract g --unwind 8

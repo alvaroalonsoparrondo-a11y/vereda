@@ -10,7 +10,7 @@ int main(void)
   if (!f)
     return 0;
   int r = fseeko(f, 0, SEEK_SET);
-  __ESBMC_assume(r == 0); /* the success outcome is reachable */
+  __VERIFIER_assume(r == 0); /* the success outcome is reachable */
   assert(r == 0);
   fclose(f);
   return 0;

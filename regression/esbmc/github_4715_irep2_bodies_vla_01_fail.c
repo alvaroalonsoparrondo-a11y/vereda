@@ -16,7 +16,7 @@ int main()
 {
   int a = 5;
   char *b[++a];                            // a becomes 6
-  __ESBMC_assert(a == 5, "a is 6 after ++a, so this fails");
+  __VERIFIER_assert(a == 5); // a is 6 after ++a, so this fails
   foo(b);
   return 0;
 }

@@ -10,7 +10,7 @@ v4si vsi = (v4si){0, 1, 2, 3};
 int main() {
     vsi = 1.5 * vsi;
    for(int i = 0; i < 4; i++)
-      __ESBMC_assert(vsi[i] == i, "The vector should be initialized correctly");
+      __VERIFIER_assert(vsi[i] == i); // The vector should be initialized correctly
    return 0;
 }
 // Imported from ESBMC regression/extensions/vector_gcc_literal_operator_float_mul_1_false

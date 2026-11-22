@@ -19,7 +19,7 @@ int main(void)
   __real__ z = nondet_double();
   __imag__ z = nondet_double();
   double zr = __real__ z, zi = __imag__ z;
-  __ESBMC_assume(zr > 1.0 && zr < 2.0 && zi > 3.0 && zi < 4.0);
+  __VERIFIER_assume(zr > 1.0 && zr < 2.0 && zi > 3.0 && zi < 4.0);
 
   double _Complex n = -z;
   assert(__real__ n == -zr && __imag__ n == -zi);

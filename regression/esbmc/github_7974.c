@@ -2,13 +2,13 @@
 int main()
 {
   int var1;
-  __ESBMC_assume(var1 == 352005173);
-  __ESBMC_assert(var1 != -7, "symbol == constant");
+  __VERIFIER_assume(var1 == 352005173);
+  __VERIFIER_assert(var1 != -7); // symbol == constant
 
   int x;
-  __ESBMC_assume(3 == x);
+  __VERIFIER_assume(3 == x);
   x++;
-  __ESBMC_assert(x == 4, "constant == symbol");
+  __VERIFIER_assert(x == 4); // constant == symbol
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7974

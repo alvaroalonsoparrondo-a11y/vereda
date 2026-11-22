@@ -4,7 +4,7 @@ int main()
 
   if(a < 10)
   {
-    __ESBMC_assert(a > 10, "");
+    __VERIFIER_assert(a > 10);
   }
 
   return 0;

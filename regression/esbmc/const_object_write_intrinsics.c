@@ -9,7 +9,7 @@ int main()
 {
   int s[2] = {7, 8};
   int *p = nondet_bool() ? (int *)t : g;
-  __ESBMC_assume(p == g);
+  __VERIFIER_assume(p == g);
   memcpy(p, s, sizeof g);
   assert(g[1] == 8);
   memmove(p, s, sizeof g);
@@ -18,7 +18,7 @@ int main()
   __ESBMC_init_object(g);
   memcpy((void *)t, s, 0);
   unsigned n = nondet_uint();
-  __ESBMC_assume(n <= sizeof g);
+  __VERIFIER_assume(n <= sizeof g);
   memcpy(g, s, n);
   if (n == 0)
     memcpy((void *)t, s, n);

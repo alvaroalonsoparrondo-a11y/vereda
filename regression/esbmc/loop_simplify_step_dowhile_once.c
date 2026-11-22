@@ -15,7 +15,7 @@ int main()
   do {
     i++;
   } while (i < 17);
-  __ESBMC_assert(i == 21, "do-while runs body once before testing cond");
+  __VERIFIER_assert(i == 21); // do-while runs body once before testing cond
   return 0;
 }
 // Imported from ESBMC regression/esbmc/loop_simplify_step_dowhile_once

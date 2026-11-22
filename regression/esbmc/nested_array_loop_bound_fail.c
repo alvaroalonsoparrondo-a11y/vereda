@@ -7,7 +7,7 @@ int main(void)
   for (int i = 0; i < a[1][1]; i++)
     s++;
 
-  __ESBMC_assert(s == 5, "the loop runs one time too many");
+  __VERIFIER_assert(s == 5); // the loop runs one time too many
   return 0;
 }
 // Imported from ESBMC regression/esbmc/nested_array_loop_bound_fail

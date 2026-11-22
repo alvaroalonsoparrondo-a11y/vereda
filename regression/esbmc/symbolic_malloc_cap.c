@@ -12,7 +12,7 @@ size_t nondet_size(void);
 int main(void)
 {
   size_t n = nondet_size();
-  __ESBMC_assume(n > (size_t)PTRDIFF_MAX && n <= 0xFFFFFFFFFFFFFF00UL);
+  __VERIFIER_assume(n > (size_t)PTRDIFF_MAX && n <= 0xFFFFFFFFFFFFFF00UL);
 
   char *b = malloc(n);
   assert(b == NULL);
@@ -20,5 +20,3 @@ int main(void)
 }
 // Imported from ESBMC regression/esbmc/symbolic_malloc_cap
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

@@ -29,10 +29,12 @@ int main()
 {
   int vec[SIZE] = {0, 1, 2, 3};
 
-  __ESBMC_assert(all_lt(vec, SIZE), "all elements below SIZE");
-  __ESBMC_assert(all_unique(vec, SIZE), "all elements unique");
+  __VERIFIER_assert(all_lt(vec, SIZE)); // all elements below SIZE
+  __VERIFIER_assert(all_unique(vec, SIZE)); // all elements unique
 }
 // Imported from ESBMC regression/z3/github_6123
 // RUN: --solver z3 --incremental-bmc
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

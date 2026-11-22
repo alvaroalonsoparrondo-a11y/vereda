@@ -23,7 +23,7 @@ int main()
 {
   void (*f)(void) = nondet_int() ? t1 : t2;
   f();
-  __ESBMC_assert(g != 11, "g");
+  __VERIFIER_assert(g != 11); // g
   return 0;
 }
 // Imported from ESBMC regression/witnesses_validate/reachsafety-violationwitness/branching_in_other_fp_target

@@ -17,7 +17,7 @@ int main() {
    int n = 0;
    int j = 1;
    int k = __VERIFIER_nondet_int();
-  __ESBMC_assume(k == j * -1);
+  __VERIFIER_assume(k == j * -1);
   __VERIFIER_assert(k == (2 - 1) * j * -1);
 }
 // Imported from ESBMC regression/smtlib/github_1366

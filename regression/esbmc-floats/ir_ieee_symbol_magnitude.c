@@ -11,8 +11,8 @@
 int main(void)
 {
   double f;
-  __ESBMC_assume(f == f);
-  __ESBMC_assume(f != INF && f != -INF);
+  __VERIFIER_assume(f == f);
+  __VERIFIER_assume(f != INF && f != -INF);
 
   assert(f <= DBL_MAX);
   assert(f >= -DBL_MAX);

@@ -2,18 +2,16 @@
 int main()
 {
   unsigned u;
-  __ESBMC_assume(u >= 1 && u <= 4);
+  __VERIFIER_assume(u >= 1 && u <= 4);
   int n = 0;
   while (u < 5)
   {
     u += 0xFFFFFFFEu;
     ++n;
   }
-  __ESBMC_assert(n < 3, "iterations");
+  __VERIFIER_assert(n < 3); // iterations
   return 0;
 }
 // Imported from ESBMC regression/esbmc/interval_symex_guard_wrap_fail
 // RUN: --unwind 4
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

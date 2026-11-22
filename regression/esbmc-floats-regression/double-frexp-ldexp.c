@@ -26,7 +26,7 @@ int main()
 	double y = nondet_double();
 	int ye;
 	double ym = frexp(y, &ye);
-	__ESBMC_assume(ym == 0.0 || (ym >= 0.5 && ym < 1));
+	__VERIFIER_assume(ym == 0.0 || (ym >= 0.5 && ym < 1));
 	assert(isfinite(y));
 
 	int ze;

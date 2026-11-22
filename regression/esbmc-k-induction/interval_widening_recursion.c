@@ -8,7 +8,7 @@ int sum(int n)
 }
 int main()
 {
-  __ESBMC_assert(sum(5) == 15, "sum");
+  __VERIFIER_assert(sum(5) == 15); // sum
 }
 // Imported from ESBMC regression/k-induction/interval_widening_recursion
 // Needs: --k-induction --interval-analysis --interval-analysis-arithmetic --interval-analysis-extrapolate --interval-analysis-extrapolate-under-approximate

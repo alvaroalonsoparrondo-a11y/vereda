@@ -13,7 +13,7 @@ union U nondet_U();
 int main()
 {
   union U h = nondet_U();
-  __ESBMC_assume(h.i == 0x01020304u);
+  __VERIFIER_assume(h.i == 0x01020304u);
   assert(h.s != 0x0102);
   return 0;
 }

@@ -5,7 +5,7 @@ int main()
   int steps = 0;
   for (unsigned i = 0; i < n; i++)
     steps++;
-  __ESBMC_assert(steps == 5, "the array has five elements");
+  __VERIFIER_assert(steps == 5); // the array has five elements
   return 0;
 }
 // Imported from ESBMC regression/esbmc/no_simplify_sizeof_bound

@@ -4,12 +4,12 @@
 int main()
 {
   int x;
-  __ESBMC_assume(x >= 0 && x <= 2);
+  __VERIFIER_assume(x >= 0 && x <= 2);
   do
   {
     x++;
   } while (x < 3);
-  __ESBMC_assert(x >= 3, "x must be at least 3 after loop");
+  __VERIFIER_assert(x >= 3); // x must be at least 3 after loop
   return 0;
 }
 // Imported from ESBMC regression/esbmc/interval_symex_guard_dowhile

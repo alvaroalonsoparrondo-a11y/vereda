@@ -21,12 +21,12 @@ int main()
   data_t a_vec[SIZE];
   idx_t a_idx_vfy;
   // Every element occurs at least once: the element at the witness index.
-  __ESBMC_assert(
+  __VERIFIER_assert(
     __ESBMC_exists(
       &a_idx_vfy,
       (0 <= a_idx_vfy && a_idx_vfy < SIZE) &&
-        count(a_vec[a_idx_vfy], a_vec) != 0),
-    "some element occurs in the array");
+        count(a_vec[a_idx_vfy], a_vec) != 0)
+); // some element occurs in the array
   return 0;
 }
 // Imported from ESBMC regression/bitwuzla/github_6154_count_exists_size10

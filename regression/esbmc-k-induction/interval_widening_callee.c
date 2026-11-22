@@ -2,7 +2,7 @@
 // overflow and j came back unbounded.
 void check(int c)
 {
-  __ESBMC_assert(c, "j >= 0");
+  __VERIFIER_assert(c); // j >= 0
 }
 int main()
 {

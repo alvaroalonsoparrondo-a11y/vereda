@@ -15,7 +15,7 @@ int main()
   a[i] = 42;
   p.x = a[i];
   p.y = 1.5f;
-  __ESBMC_assert(p.x == 41 && p.y == 1.5f, "flattened features round-trip (unsafe)");
+  __VERIFIER_assert(p.x == 41 && p.y == 1.5f); // flattened features round-trip (unsafe)
   return 0;
 }
 // Imported from ESBMC regression/neurosym/flatten-unsafe

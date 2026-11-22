@@ -7,7 +7,7 @@ long nondet_long(void);
 int main(void)
 {
   long v = nondet_long();
-  __ESBMC_assume(v != 0);
+  __VERIFIER_assume(v != 0);
 
   char *raw = malloc(64);
   if (raw == 0)
@@ -16,7 +16,7 @@ int main(void)
   long *s = (long *)raw;
   *s = v;
 
-  __ESBMC_assert(*s != 0, "a stored non-zero long reads back non-zero");
+  __VERIFIER_assert(*s != 0); // a stored non-zero long reads back non-zero
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_5393_long_byte_alloc

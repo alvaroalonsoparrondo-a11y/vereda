@@ -14,7 +14,7 @@ L2:
   x = 2;
   goto END;
 END:
-  __ESBMC_assert(x == 1, "must not reach L1");
+  __VERIFIER_assert(x == 1); // must not reach L1
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_4083_fail

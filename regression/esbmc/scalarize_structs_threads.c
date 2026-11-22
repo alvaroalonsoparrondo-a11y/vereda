@@ -23,7 +23,7 @@ int main(void)
   pthread_t t;
   pthread_create(&t, 0, writer, 0);
   struct pair seen = shared;
-  __ESBMC_assert(seen.x == seen.y || seen.x == 1, "x is written first");
+  __VERIFIER_assert(seen.x == seen.y || seen.x == 1); // x is written first
   return 0;
 }
 // Imported from ESBMC regression/esbmc/scalarize_structs_threads

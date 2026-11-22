@@ -7,9 +7,9 @@ unsigned int nondet_uint(void);
 int main(void)
 {
   unsigned int u = nondet_uint();
-  __ESBMC_assume(u == (unsigned int)-4);
+  __VERIFIER_assume(u == (unsigned int)-4);
   unsigned int q = u / 3u;
-  __ESBMC_assert(q == 9, "cex");
+  __VERIFIER_assert(q == 9); // cex
   return 0;
 }
 // Imported from ESBMC regression/smtlib/github_7929_unsigned

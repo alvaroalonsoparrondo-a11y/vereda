@@ -3,7 +3,7 @@ int value;
 int main(void)
 {
   value = __VERIFIER_nondet_int();
-  __ESBMC_assert(value != 1, "target");
+  __VERIFIER_assert(value != 1); // target
 }
 // Imported from ESBMC regression/witnesses_validate/reachsafety-violationwitness/nondet_assignment_return_avoid
 // Needs: --validate-violation-witness --witness witness.yml

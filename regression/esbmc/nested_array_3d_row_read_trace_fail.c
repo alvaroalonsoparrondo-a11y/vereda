@@ -10,18 +10,16 @@ int main(void)
 {
   int a[2][2][2];
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 2);
+  __VERIFIER_assume(i >= 0 && i < 2);
 
   a[1][1][0] = 5;
   a[1][1][1] = 4;
 
   int v = a[1][1][i];
-  __ESBMC_assert(v == 5, "the trace must name the element the row read reached");
+  __VERIFIER_assert(v == 5); // the trace must name the element the row read reached
   return 0;
 }
 // Imported from ESBMC regression/esbmc/nested_array_3d_row_read_trace_fail
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^\[Counterexample\]$
 // EXPECT: ^  v = 4
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

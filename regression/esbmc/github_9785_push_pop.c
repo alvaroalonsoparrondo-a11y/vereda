@@ -13,7 +13,7 @@ int main(void)
   if (!h)
     return 0;
   if ((uintptr_t)p == (uintptr_t)h)
-    __ESBMC_assert(0, "the addresses compare equal");
+    __VERIFIER_assert(0); // the addresses compare equal
   free(h);
   return 0;
 }

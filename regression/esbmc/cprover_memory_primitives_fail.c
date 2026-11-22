@@ -5,11 +5,9 @@ int main(void)
   char *p = malloc(8);
   if (!p)
     return 0;
-  __ESBMC_assert(__CPROVER_OBJECT_SIZE(p) == 16, "wrong size on purpose");
+  __VERIFIER_assert(__CPROVER_OBJECT_SIZE(p) == 16); // wrong size on purpose
   free(p);
   return 0;
 }
 // Imported from ESBMC regression/esbmc/cprover_memory_primitives_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

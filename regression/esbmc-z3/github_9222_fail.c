@@ -3,7 +3,7 @@ int nondet_int(void);
 int main(void)
 {
   int a = nondet_int(), b = nondet_int();
-  __ESBMC_assume(a > 0 && b < 0);
+  __VERIFIER_assume(a > 0 && b < 0);
   return a * b;
 }
 // Imported from ESBMC regression/z3/github_9222_fail

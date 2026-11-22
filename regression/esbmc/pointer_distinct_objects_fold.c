@@ -23,7 +23,7 @@ int main(void)
   int n = 0;
   for (unsigned short i = 0; i < (h == dec ? 300 : 2); i++)
     n++;
-  __ESBMC_assert(n == 2, "distinct functions fold unequal");
+  __VERIFIER_assert(n == 2); // distinct functions fold unequal
 
   /* Object addresses through constant offsets and casts. */
   int *p = &a[1];
@@ -34,7 +34,7 @@ int main(void)
   else
     for (unsigned short i = 0; i < 300; i++)
       m++;
-  __ESBMC_assert(m == 2, "distinct arrays fold unequal");
+  __VERIFIER_assert(m == 2); // distinct arrays fold unequal
   return 0;
 }
 // Imported from ESBMC regression/esbmc/pointer_distinct_objects_fold

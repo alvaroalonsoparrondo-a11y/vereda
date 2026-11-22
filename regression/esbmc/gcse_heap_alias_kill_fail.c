@@ -6,7 +6,7 @@
 int main()
 {
   int *p = malloc(sizeof(int));
-  __ESBMC_assume(p != 0);
+  __VERIFIER_assume(p != 0);
   int *q = p;
   *p = 1;
   int y = *q + 1;

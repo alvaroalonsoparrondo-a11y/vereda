@@ -9,7 +9,7 @@ int main()
   int y = 0;
   f();
   y = ext();
-  __ESBMC_assert(y == 0, "y");
+  __VERIFIER_assert(y == 0); // y
 }
 // Imported from ESBMC regression/esbmc/interval_return_bodiless_call_fail
 // Needs: --interval-analysis

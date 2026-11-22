@@ -13,7 +13,7 @@ L2:
   x = 2;
   goto END;
 END:
-  __ESBMC_assert(x == 2, "computed goto lands on L2");
+  __VERIFIER_assert(x == 2); // computed goto lands on L2
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_4083

@@ -15,7 +15,7 @@ int main(void) {
   head = NULL;
 
   curr = (item *)malloc(sizeof(item));
-  __ESBMC_assume(curr);
+  __VERIFIER_assume(curr);
   curr->next  = head;
 
   while(curr) {
@@ -27,5 +27,3 @@ int main(void) {
 // Imported from ESBMC regression/cbmc/01_cbmc_Malloc15
 // RUN: --unwind 2
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

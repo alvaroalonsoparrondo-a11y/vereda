@@ -3,8 +3,8 @@
 int main()
 {
   int x;
-  __ESBMC_assume(x >= 0 && x <= 100);
-  __ESBMC_assert(x <= 60, "x must be at most 60");
+  __VERIFIER_assume(x >= 0 && x <= 100);
+  __VERIFIER_assert(x <= 60); // x must be at most 60
   return 0;
 }
 // Imported from ESBMC regression/esbmc/interval_symex_assert_no_prune

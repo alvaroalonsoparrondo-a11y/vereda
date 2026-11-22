@@ -30,7 +30,7 @@ int main(void)
 {
   pthread_t t;
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 2);
+  __VERIFIER_assume(i >= 0 && i < 2);
   pp = &arr[i].p;
   pthread_create(&t, 0, writer, 0);
   g = 2;

@@ -7,8 +7,8 @@ int main(void)
 {
   int x = nondet_int();
   int b = nondet_int();
-  __ESBMC_assert(x + x == (x << 2), "x + x is not x << 2");
-  __ESBMC_assert(~b + 1 == b, "~b + 1 is not b");
+  __VERIFIER_assert(x + x == (x << 2)); // x + x is not x << 2
+  __VERIFIER_assert(~b + 1 == b); // ~b + 1 is not b
   return 0;
 }
 // Imported from ESBMC regression/esbmc/add_peephole_identities_fail

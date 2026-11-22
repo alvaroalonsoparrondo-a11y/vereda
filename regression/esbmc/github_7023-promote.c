@@ -2,10 +2,10 @@ int main()
 {
   unsigned a, b;
 
-  __ESBMC_assume(a < 10);
-  __ESBMC_assume(b < 10);
-  __ESBMC_assert(a + b < 20, "sum stays bounded");
-  __ESBMC_assert(a < 10, "a stays bounded");
+  __VERIFIER_assume(a < 10);
+  __VERIFIER_assume(b < 10);
+  __VERIFIER_assert(a + b < 20); // sum stays bounded
+  __VERIFIER_assert(a < 10); // a stays bounded
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7023-promote

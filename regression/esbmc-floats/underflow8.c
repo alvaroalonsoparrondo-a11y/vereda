@@ -6,8 +6,8 @@ int main() {
     double x = nondet_double();
     double y = nondet_double();
  
-    __ESBMC_assume(x > 0.0 && x < 1.0e-154);
-    __ESBMC_assume(y > 0.0 && y < 1.0e-154);
+    __VERIFIER_assume(x > 0.0 && x < 1.0e-154);
+    __VERIFIER_assume(y > 0.0 && y < 1.0e-154);
  
     double product = x * y;
     double ulp;
@@ -15,7 +15,7 @@ int main() {
     if (product < DBL_MIN) {
         // Force underflow
         product = nondet_double();
-        __ESBMC_assume(product == 0.0);
+        __VERIFIER_assume(product == 0.0);
         ulp = DBL_MIN * 0x1p-52;
     } else {
         ulp = product * 0x1p-52;
@@ -23,7 +23,7 @@ int main() {
  
     // Model IEEE-754 rounding error
     double rounding_error = nondet_double();
-    __ESBMC_assume(rounding_error >= -ulp/2 && rounding_error <= ulp/2);
+    __VERIFIER_assume(rounding_error >= -ulp/2 && rounding_error <= ulp/2);
  
     double result = product + rounding_error;
  

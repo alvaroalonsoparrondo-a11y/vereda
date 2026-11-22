@@ -46,10 +46,8 @@ int main(void)
   s += *((unsigned long *)(base + 104));
   s += *((unsigned long *)(base + 112));
   s += *((unsigned long *)(base + 120));
-  __ESBMC_assert(s == 121UL, "sum of the stored fields");
+  __VERIFIER_assert(s == 121UL); // sum of the stored fields
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9785_int_base_stores_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

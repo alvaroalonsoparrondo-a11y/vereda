@@ -6,7 +6,7 @@ int main(void)
    * nondet, so the division cannot be resolved by ESBMC's own constant
    * folder and must pass through the actual SMT encoding. */
   double x = __VERIFIER_nondet_double();
-  __ESBMC_assume(x > 0.0);
+  __VERIFIER_assume(x > 0.0);
 
   double neg = x / (-0.0);
 
@@ -17,9 +17,9 @@ int main(void)
    * true and the test would flip to VERIFICATION SUCCESSFUL -- catching
    * the regression in the opposite direction from the passing
    * companion. */
-  __ESBMC_assert(
-    neg > 0.0,
-    "dividing a positive value by literal -0.0 must not give +infinity");
+  __VERIFIER_assert(
+    neg > 0.0
+); // dividing a positive value by literal -0.0 must not give +infinity
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-neg-zero-literal-div-sign-fail

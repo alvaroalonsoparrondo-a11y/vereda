@@ -1,10 +1,10 @@
 int main()
 {
   int a[12], b[12], i, j;
-  __ESBMC_assume(__ESBMC_forall(&j, !(0 <= j && j < 12) || b[j] == 7));
-  __ESBMC_assert(__ESBMC_forall(&j, !(0 <= j && j < 12) || b[j] == 7), "holds");
-  __ESBMC_assert(
-    __ESBMC_forall(&i, !(0 <= i && i < 12) || a[i] != a[0]), "genuine");
+  __VERIFIER_assume(__ESBMC_forall(&j, !(0 <= j && j < 12) || b[j] == 7));
+  __VERIFIER_assert(__ESBMC_forall(&j, !(0 <= j && j < 12) || b[j] == 7)); // holds
+  __VERIFIER_assert(
+    __ESBMC_forall(&i, !(0 <= i && i < 12) || a[i] != a[0])); // genuine
   return 0;
 }
 // Imported from ESBMC regression/z3/github_6191_attribution

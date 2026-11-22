@@ -29,7 +29,7 @@ int state_index;
 
 void coder(int len)
 {
- __ESBMC_assume(len>=0 && len<=39);
+ __VERIFIER_assume(len>=0 && len<=39);
  /* SPARK - no more pointers */
  // short *inp;			// Input buffer pointer 
  /// signed char *outp;		// output buffer pointer 
@@ -149,5 +149,3 @@ void coder(int len)
 // Imported from ESBMC regression/esbmc/08_adpcm_encode_nopointer
 // RUN: --unwind 42 --entry coder
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

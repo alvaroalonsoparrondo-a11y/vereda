@@ -74,10 +74,10 @@ main (int argc, char **argv)
 {
   int res, verbose;
 
-__ESBMC_assume(argc>=0 && argc<(sizeof(argv)/sizeof(char)));
+__VERIFIER_assume(argc>=0 && argc<(sizeof(argv)/sizeof(char)));
 int counter;
 for(counter=0; counter<argc; counter++)
-  __ESBMC_assume(argv[counter]!=NULL);
+  __VERIFIER_assume(argv[counter]!=NULL);
 
   for (verbose = argc - 1; verbose; verbose--)
     if (!strcmp (argv[verbose], "-v"))

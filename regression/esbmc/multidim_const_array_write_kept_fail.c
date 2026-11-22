@@ -6,7 +6,7 @@ int main(void)
   int r[2][2];
   _Bool c = nondet_bool();
 
-  __ESBMC_assume(c);
+  __VERIFIER_assume(c);
   if (c)
   {
     r[0][0] = 1;

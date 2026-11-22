@@ -4,7 +4,7 @@
 int main(void)
 {
   unsigned int u;
-  __ESBMC_assume(u > 10u && u < 2147483648u);
+  __VERIFIER_assume(u > 10u && u < 2147483648u);
   int i = (int)u;
   return i;
 }

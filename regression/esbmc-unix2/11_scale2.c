@@ -6,8 +6,8 @@
 int g, g1;
 
 void* thr(void *arg) {
-  __ESBMC_assume(g>0);
-  __ESBMC_assume(g1==0);
+  __VERIFIER_assume(g>0);
+  __VERIFIER_assume(g1==0);
   while (g1 < g) {
     g1 = g1 + 1;
   }

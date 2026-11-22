@@ -14,7 +14,7 @@ void callee(unsigned char *b, unsigned long n) {
 
 int main(void) {
   unsigned char *p = (unsigned char *)malloc(16);
-  __ESBMC_assume(p != 0);
+  __VERIFIER_assume(p != 0);
   callee(p, 16);
   return 0;
 }

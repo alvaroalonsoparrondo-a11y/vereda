@@ -138,7 +138,7 @@ int main(void)
     u32 len;
     u32 consumed;
 
-    __ESBMC_assume(len > 0 && len <= 128);
+    __VERIFIER_assume(len > 0 && len <= 128);
 
     int ret = parse_message(buffer, len, &consumed);
 

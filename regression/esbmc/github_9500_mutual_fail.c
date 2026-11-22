@@ -6,7 +6,7 @@ void f(_Bool r, int *p) {
   int l = nondet_int();
   if (r) {
     *p = 20;
-    __ESBMC_assume(l == 30);
+    __VERIFIER_assume(l == 30);
   } else {
     g(1, &l);
     assert(l != 20);

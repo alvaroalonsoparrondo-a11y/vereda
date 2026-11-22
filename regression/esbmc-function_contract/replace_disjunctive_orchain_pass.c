@@ -25,8 +25,8 @@ int main(void)
   S s;
   s.a = 5;
   f(&s);
-  __ESBMC_assert(
-    s.a == 5 || s.a == 6 || s.a == 7, "a stays within old..old+2");
+  __VERIFIER_assert(
+    s.a == 5 || s.a == 6 || s.a == 7); // a stays within old..old+2
   return 0;
 }
 // Imported from ESBMC regression/function_contract/replace_disjunctive_orchain_pass

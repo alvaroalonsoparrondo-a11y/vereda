@@ -8,7 +8,7 @@ int nondet_int();
 int main()
 {
   int a = nondet_int();
-  __ESBMC_assume(a >= 0 && a < 32);
+  __VERIFIER_assume(a >= 0 && a < 32);
   assert((0 >> a) == 0);
   return 0;
 }

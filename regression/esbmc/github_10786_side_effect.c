@@ -11,7 +11,7 @@ int main()
   assert(n == 3);
 
   unsigned char m = nondet_uchar();
-  __ESBMC_assume(m > 0 && m < 10);
+  __VERIFIER_assume(m > 0 && m < 10);
   assert(sizeof(int[m][3]) == 12u * m);
   assert(sizeof(char[3][m]) == 3u * m);
   return 0;

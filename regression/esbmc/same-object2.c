@@ -23,14 +23,14 @@ int main()
 
   // Negated case should not trivially hold (let solver decide)
   // For example, sp and sq *could* point to the same object
-  __ESBMC_assume(sp == &sx || sp == &sy);
-  __ESBMC_assume(sq == &sx || sq == &sy);
+  __VERIFIER_assume(sp == &sx || sp == &sy);
+  __VERIFIER_assume(sq == &sx || sq == &sy);
   // At this point, __ESBMC_same_object(sp, sq) is solver-dependent
 
   int arr[4];
   int idx1, idx2;
-  __ESBMC_assume(idx1 >= 0 && idx1 < 4);
-  __ESBMC_assume(idx2 >= 0 && idx2 < 4);
+  __VERIFIER_assume(idx1 >= 0 && idx1 < 4);
+  __VERIFIER_assume(idx2 >= 0 && idx2 < 4);
 
   // Same array, symbolic indices → must be same object
   assert(__ESBMC_same_object(&arr[idx1], &arr[idx2]));

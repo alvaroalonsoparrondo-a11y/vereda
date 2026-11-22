@@ -10,20 +10,20 @@ int main(void)
   int a = nondet_int();
   int b = nondet_int();
 
-  __ESBMC_assert(x + x == (x << 1), "x + x is x << 1");
-  __ESBMC_assert(~b + 1 == -b, "~b + 1 is -b");
-  __ESBMC_assert((a + 1) + ~b == a - b, "(a + 1) + ~b is a - b");
-  __ESBMC_assert(~b + (a + 1) == a - b, "~b + (a + 1) is a - b");
-  __ESBMC_assert((a + ~b) + 1 == a - b, "(a + ~b) + 1 is a - b");
-  __ESBMC_assert((~b + a) + 1 == a - b, "(~b + a) + 1 is a - b");
-  __ESBMC_assert(~b + 3 == 2 - b, "~b + C is (C - 1) - b");
+  __VERIFIER_assert(x + x == (x << 1)); // x + x is x << 1
+  __VERIFIER_assert(~b + 1 == -b); // ~b + 1 is -b
+  __VERIFIER_assert((a + 1) + ~b == a - b); // (a + 1) + ~b is a - b
+  __VERIFIER_assert(~b + (a + 1) == a - b); // ~b + (a + 1) is a - b
+  __VERIFIER_assert((a + ~b) + 1 == a - b); // (a + ~b) + 1 is a - b
+  __VERIFIER_assert((~b + a) + 1 == a - b); // (~b + a) + 1 is a - b
+  __VERIFIER_assert(~b + 3 == 2 - b); // ~b + C is (C - 1) - b
 
   // The same identities on an unsigned type, where the wrap is the point.
   unsigned u = nondet_uint();
   unsigned v = nondet_uint();
-  __ESBMC_assert(u + u == (u << 1), "unsigned x + x is x << 1");
-  __ESBMC_assert(~v + 1u == -v, "unsigned ~v + 1 is -v");
-  __ESBMC_assert((u + 1u) + ~v == u - v, "unsigned (u + 1) + ~v is u - v");
+  __VERIFIER_assert(u + u == (u << 1)); // unsigned x + x is x << 1
+  __VERIFIER_assert(~v + 1u == -v); // unsigned ~v + 1 is -v
+  __VERIFIER_assert((u + 1u) + ~v == u - v); // unsigned (u + 1) + ~v is u - v
 
   return 0;
 }

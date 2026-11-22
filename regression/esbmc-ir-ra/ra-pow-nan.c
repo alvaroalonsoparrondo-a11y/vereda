@@ -6,7 +6,7 @@ int main(void)
    * --unwind 1 bounds the exp/expm1 path that is unreachable for this
    * concrete input; unwinding assertions remain active by default. */
   double r = pow(-2.0, 0.5);
-  __ESBMC_assert(r != r, "pow(-2.0, 0.5) must be NaN");
+  __VERIFIER_assert(r != r); // pow(-2.0, 0.5) must be NaN
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-pow-nan

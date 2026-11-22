@@ -13,7 +13,7 @@ static int apply(int (*f)(int), int v)
 
 int main(void)
 {
-  __ESBMC_assert(apply(callee, 1) == 2, "a function designator decays");
+  __VERIFIER_assert(apply(callee, 1) == 2); // a function designator decays
   return 0;
 }
 // Imported from ESBMC regression/esbmc/irep2_only_fn_designator

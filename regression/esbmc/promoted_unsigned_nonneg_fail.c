@@ -18,16 +18,16 @@ short nondet_s2(void);
 int main(void)
 {
   int x = nondet_int();
-  __ESBMC_assert(x >= 0, "a signed nondet can be negative");
+  __VERIFIER_assert(x >= 0); // a signed nondet can be negative
 
   int same_width = (int)nondet_u4();
-  __ESBMC_assert(same_width >= 0, "same-width cast keeps the sign bit");
+  __VERIFIER_assert(same_width >= 0); // same-width cast keeps the sign bit
 
   short narrowed = (short)nondet_u4();
-  __ESBMC_assert(narrowed >= 0, "narrowing keeps the sign bit");
+  __VERIFIER_assert(narrowed >= 0); // narrowing keeps the sign bit
 
   int sign_extended = (int)nondet_s2();
-  __ESBMC_assert(sign_extended >= 0, "sign-extension keeps a negative");
+  __VERIFIER_assert(sign_extended >= 0); // sign-extension keeps a negative
   return 0;
 }
 // Imported from ESBMC regression/esbmc/promoted_unsigned_nonneg_fail

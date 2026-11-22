@@ -214,7 +214,7 @@ static void dma_read(uint32_t *dst, uint32_t nwords)
 int main(void)
 {
   uint32_t n = nondet_uint();
-  __ESBMC_assume(n <= 1000000u);
+  __VERIFIER_assume(n <= 1000000u);
   for (uint32_t i = 0; i < n; i++)
   {
     for (uint32_t page = 0; page < 3u; page++)

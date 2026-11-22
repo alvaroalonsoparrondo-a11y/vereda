@@ -20,12 +20,12 @@ int main()
 {
   data_t a_vec[SIZE] = {7, 7, 7, 1, 2, 3, 4, 5, 6, 7};
   idx_t a_idx_vfy;
-  __ESBMC_assert(
+  __VERIFIER_assert(
     __ESBMC_exists(
       &a_idx_vfy,
       (0 <= a_idx_vfy && a_idx_vfy < SIZE) &&
-        count(a_vec[a_idx_vfy], a_vec) == 5),
-    "no element occurs five times");
+        count(a_vec[a_idx_vfy], a_vec) == 5)
+); // no element occurs five times
   return 0;
 }
 // Imported from ESBMC regression/z3/github_6154_count_exists_size10_fail

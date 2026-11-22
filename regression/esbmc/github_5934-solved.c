@@ -5,9 +5,9 @@
 int main(void)
 {
   int x;
-  __ESBMC_assume(x > 0);
-  __ESBMC_assert(x > 0, "a");
-  __ESBMC_assert(x > 1, "b");
+  __VERIFIER_assume(x > 0);
+  __VERIFIER_assert(x > 0); // a
+  __VERIFIER_assert(x > 1); // b
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_5934-solved

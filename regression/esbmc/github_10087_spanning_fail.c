@@ -5,7 +5,7 @@ struct S s[2];
 int main(void)
 {
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 2);
+  __VERIFIER_assume(i >= 0 && i < 2);
   *(unsigned int *)&s[i] = 0x12340005u;
   assert(s[i].b == 0);
   return 0;

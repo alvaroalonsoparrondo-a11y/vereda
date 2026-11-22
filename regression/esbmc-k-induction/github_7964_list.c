@@ -8,7 +8,7 @@ int main()
   struct node *p = &n1;
   while (p)
   {
-    __ESBMC_assert(p->v == 1, "every node holds 1");
+    __VERIFIER_assert(p->v == 1); // every node holds 1
     p = p->next;
   }
   return 0;

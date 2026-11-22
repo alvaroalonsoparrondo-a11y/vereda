@@ -7,9 +7,9 @@ int main()
   *lp = (long)&x;
   int *q = (int *)*lp;
   int a = x + 1;
-  __ESBMC_assert(*q == 1, "q aliases x");
+  __VERIFIER_assert(*q == 1); // q aliases x
   int b = x + 1;
-  __ESBMC_assert(a == b, "x unchanged");
+  __VERIFIER_assert(a == b); // x unchanged
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_8008_int_slot

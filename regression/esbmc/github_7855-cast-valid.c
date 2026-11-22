@@ -8,11 +8,11 @@ int g;
 int main(void)
 {
   const void *key;
-  __ESBMC_assume(key == &g || key == 0);
+  __VERIFIER_assume(key == &g || key == 0);
   uintptr_t address = (uintptr_t)key;
   const void *back = (const void *)address;
 
-  __ESBMC_assert(back == key, "C17 7.20.1.4p1: the round trip compares equal");
+  __VERIFIER_assert(back == key); // C17 7.20.1.4p1: the round trip compares equal
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7855-cast-valid

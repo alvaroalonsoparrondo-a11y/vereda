@@ -10,7 +10,7 @@ int main()
   char dst[8] = {7, 7, 7, 7, 7, 7, 7, 7};
 
   unsigned long n = nondet_ulong();
-  __ESBMC_assume(n == 3);
+  __VERIFIER_assume(n == 3);
 
   void *r = memcpy(dst, src, n);
 
@@ -26,5 +26,5 @@ int main()
 // RUN: --unwind 20
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^ *FAILED .*assertion dst\[3\] == 4$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^ *FAILED .*assertion dst\[3\] == 4$
 // MODE: FUTURE

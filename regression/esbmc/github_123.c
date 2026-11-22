@@ -698,7 +698,7 @@ void __DSVERIFIER_assert_msg(_Bool expression, char *msg)
 // file /home/lucascordeiro/dsverifier/bmc/core/compatibility.h line 21
 void __DSVERIFIER_assume(_Bool expression)
 {
-  __ESBMC_assume(expression);
+  __VERIFIER_assume(expression);
 }
 
 // call_closedloop_verification_task

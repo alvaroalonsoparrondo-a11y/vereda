@@ -18,12 +18,12 @@ int main(void)
   const void *key, *other;
   slots[1].key = key;
 
-  __ESBMC_assert(slots[1].key == other, "an unrelated pointer reads back equal");
+  __VERIFIER_assert(slots[1].key == other); // an unrelated pointer reads back equal
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7855_fail
 // RUN: -m64 --incremental-bmc
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^  FAILED +\[main\.assertion\.\d+\] +line +\d+ +an unrelated pointer reads back equal$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  FAILED +\[main\.assertion\.\d+\] +line +\d+ +an unrelated pointer reads back equal$
 // MODE: FUTURE

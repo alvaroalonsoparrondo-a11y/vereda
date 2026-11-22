@@ -26,7 +26,7 @@ int main(void)
 {
   T t2;
   int c;
-  __ESBMC_assume(c == 1);
+  __VERIFIER_assume(c == 1);
   if (c == 0)
   {
     fb(&t2, 2);
@@ -35,7 +35,7 @@ int main(void)
   {
     fb(&t2, 2);
   }
-  __ESBMC_assert(!b_done, "b_done is set by fb's contract, so this must fail");
+  __VERIFIER_assert(!b_done); // b_done is set by fb's contract, so this must fail
   return 0;
 }
 // Imported from ESBMC regression/function_contract/replace_call_branch_target_fail

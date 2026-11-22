@@ -19,9 +19,9 @@ int main()
    * a y-iteration BigInt multiply loop, so only a shift amount this large
    * makes the missing guard exceed the test timeout. A solver left free to
    * pick any y >= 32 picks a small one, and the test stops biting. */
-  __ESBMC_assume(y == 100000000u);
+  __VERIFIER_assume(y == 100000000u);
   w.f = x << y;
-  __ESBMC_assert(w.f == 0u, "shift by at least the width is zero");
+  __VERIFIER_assert(w.f == 0u); // shift by at least the width is zero
   return 0;
 }
 // Imported from ESBMC regression/neurosym/shift-ge-width-safe

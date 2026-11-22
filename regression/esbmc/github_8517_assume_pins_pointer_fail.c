@@ -18,7 +18,7 @@ int big(const struct desc *d)
 
 int unpack(const struct desc *d)
 {
-  __ESBMC_assume(d == &the_desc);
+  __VERIFIER_assume(d == &the_desc);
   int v = 0;
   if (d->init != NULL)
     d->init(&v);

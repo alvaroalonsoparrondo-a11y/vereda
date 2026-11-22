@@ -11,7 +11,7 @@ void *thread1(void *arg)
   if(lock)
   {
     x=1;
-    __ESBMC_assert(g==1, "property");
+    __VERIFIER_assert(g==1); // property
   }
 }
 

@@ -5,7 +5,7 @@ int nondet_int();
 int main()
 {
   int n = nondet_int();
-  __ESBMC_assume(n == 3);
+  __VERIFIER_assume(n == 3);
 
   int i = 0;
   while (i < n)

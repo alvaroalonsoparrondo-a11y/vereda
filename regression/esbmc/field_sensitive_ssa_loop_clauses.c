@@ -22,7 +22,7 @@ int main(void)
     s.i++;
     t.i = s.i;
   }
-  __ESBMC_assert(s.i == 10 && t.n == 2 && u.i + u.n == 7, "post");
+  __VERIFIER_assert(s.i == 10 && t.n == 2 && u.i + u.n == 7); // post
   return 0;
 }
 // Imported from ESBMC regression/esbmc/field_sensitive_ssa_loop_clauses

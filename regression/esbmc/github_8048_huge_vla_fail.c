@@ -6,7 +6,7 @@ unsigned __VERIFIER_nondet_uint(void);
 int main()
 {
   unsigned n = __VERIFIER_nondet_uint();
-  __ESBMC_assume(n > 2147483648u && n < 4000000000u);
+  __VERIFIER_assume(n > 2147483648u && n < 4000000000u);
   char a[n];
   char *p = a + 3;
   assert((char *)(uintptr_t)p == p);

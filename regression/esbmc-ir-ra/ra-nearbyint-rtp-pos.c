@@ -8,9 +8,9 @@ int main(void)
 {
   __ESBMC_rounding_mode = 2; /* ROUND_TO_PLUS_INF */
   double x = __VERIFIER_nondet_double();
-  __ESBMC_assume(x > 0.0 && x < 1.0);
+  __VERIFIER_assume(x > 0.0 && x < 1.0);
   double y = nearbyint(x);
-  __ESBMC_assert(y == 1.0, "RTP: nearbyint of (0,1) is 1");
+  __VERIFIER_assert(y == 1.0); // RTP: nearbyint of (0,1) is 1
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-nearbyint-rtp-pos

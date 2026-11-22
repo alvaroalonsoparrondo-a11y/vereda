@@ -10,7 +10,7 @@ int main()
   assert(__builtin_strlen(src) == 88); // should be 8
   return 0;
 #else
-  __ESBMC_assert(0, "This test requires __builtin_strlen support");
+  __VERIFIER_assert(0); // This test requires __builtin_strlen support
 #endif
 }
 // Imported from ESBMC regression/esbmc/builtin_strlen-fail

@@ -11,13 +11,13 @@ int main(void)
   char *q = malloc(16);
   if (!q)
     return 0;
-  __ESBMC_assume((uintptr_t)q != 0);
+  __VERIFIER_assume((uintptr_t)q != 0);
   unsigned long u = nondet_ulong();
   char *p = (char *)(u * 8 - (uintptr_t)&a[0]);
   if ((uintptr_t)p == (uintptr_t)q)
   {
     free(p);
-    __ESBMC_assert(0, "valid free is reachable");
+    __VERIFIER_assert(0); // valid free is reachable
   }
   return 0;
 }
@@ -26,5 +26,5 @@ int main(void)
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^.*FAILED.*valid free is reachable$
 // EXPECT: ^.*PASSED.*dereference failure: invalid pointer freed$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^.*FAILED.*valid free is reachable$
 // MODE: FUTURE

@@ -19,9 +19,9 @@ double foo(double addr) {
 
 int main() {
   double nondet = __VERIFIER_nondet_double();
-  __ESBMC_assume(!isnan(nondet));
+  __VERIFIER_assume(!isnan(nondet));
    union_t x = (union_t) foo(nondet);
-   __ESBMC_assert(x.raw64 == (nondet+100), "double value should initialize union_t properly");
+   __VERIFIER_assert(x.raw64 == (nondet+100)); // double value should initialize union_t properly
    return 0;
 }
 // Imported from ESBMC regression/esbmc/to_union_github_314_float

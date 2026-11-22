@@ -11,7 +11,7 @@ int half(int c)
 {
   __ESBMC_requires(c > 0);
   __ESBMC_ensures(1);
-  __ESBMC_assert(c > 0, "half needs a positive argument");
+  __VERIFIER_assert(c > 0); // half needs a positive argument
   return c / 2;
 }
 int main()

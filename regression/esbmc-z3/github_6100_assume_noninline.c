@@ -13,8 +13,8 @@ int impure(int a)
 int main()
 {
   int x;
-  __ESBMC_assume(__ESBMC_forall(&x, impure(x) >= 0));
-  __ESBMC_assert(0, "unreachable when the assume is mismodelled");
+  __VERIFIER_assume(__ESBMC_forall(&x, impure(x) >= 0));
+  __VERIFIER_assert(0); // unreachable when the assume is mismodelled
 }
 // Imported from ESBMC regression/z3/github_6100_assume_noninline
 // RUN: --solver z3

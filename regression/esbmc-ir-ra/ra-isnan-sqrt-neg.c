@@ -7,10 +7,10 @@ int main(void)
 {
   __ESBMC_rounding_mode = 0; /* ROUND_TO_EVEN */
   double x = __VERIFIER_nondet_double();
-  __ESBMC_assume(x == -1.0);
+  __VERIFIER_assume(x == -1.0);
   double z = sqrt(x);
 
-  __ESBMC_assert(isnan(z), "isnan(sqrt(-1.0)) is true");
+  __VERIFIER_assert(isnan(z)); // isnan(sqrt(-1.0)) is true
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-isnan-sqrt-neg

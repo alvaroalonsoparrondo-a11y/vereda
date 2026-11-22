@@ -9,7 +9,7 @@ int main()
   {
     i = i + 2;
   L:
-    __ESBMC_assert(0, "v");
+    __VERIFIER_assert(0); // v
     i = i + 1;
   }
   assert(i < 500);

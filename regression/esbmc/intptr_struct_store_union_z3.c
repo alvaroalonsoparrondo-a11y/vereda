@@ -32,12 +32,12 @@ static struct dev devs[2];
 int main(void)
 {
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 2);
+  __VERIFIER_assume(i >= 0 && i < 2);
   unsigned long p = (unsigned long)devs + (unsigned long)i * sizeof(struct dev);
   *(unsigned long *)(p + __builtin_offsetof(struct dev, port.mapbase)) = 1;
   *(unsigned int *)(p + __builtin_offsetof(struct dev, port.tx)) = 7;
-  __ESBMC_assert(devs[i].port.tx == 7, "tx stored");
-  __ESBMC_assert(devs[i].port.lock.rlock.magic == 0, "lock untouched");
+  __VERIFIER_assert(devs[i].port.tx == 7); // tx stored
+  __VERIFIER_assert(devs[i].port.lock.rlock.magic == 0); // lock untouched
   return 0;
 }
 // Imported from ESBMC regression/esbmc/intptr_struct_store_union_z3

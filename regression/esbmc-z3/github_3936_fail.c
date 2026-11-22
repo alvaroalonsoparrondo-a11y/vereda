@@ -21,7 +21,7 @@ int main()
   for (idx = 0; idx < 3; ++idx)
   {
     sum += idx;
-    __ESBMC_assert(idx > 3, "this is genuinely false");
+    __VERIFIER_assert(idx > 3); // this is genuinely false
   }
 
   return 0;

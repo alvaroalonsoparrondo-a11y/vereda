@@ -7,11 +7,11 @@ int main()
   u.p = arr + 100;
   u.s.b = 0;
   u.p = u.p;
-  __ESBMC_assert(u.p != arr + 100, "p kept");
+  __VERIFIER_assert(u.p != arr + 100); // p kept
 }
 // Imported from ESBMC regression/esbmc/github_9937_nested_fail
 // RUN: -m64
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^  FAILED +\[main\.assertion\.1\] +line 10 +p kept$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  FAILED +\[main\.assertion\.1\] +line 10 +p kept$
 // MODE: FUTURE

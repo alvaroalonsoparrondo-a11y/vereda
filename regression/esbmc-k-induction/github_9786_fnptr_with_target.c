@@ -14,7 +14,7 @@ int main(void)
   while (1)
   {
     i = (i + 1) % 4;
-    __ESBMC_assert(i < 4, "i stays below 4");
+    __VERIFIER_assert(i < 4); // i stays below 4
   }
   return 0;
 }

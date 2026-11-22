@@ -9,8 +9,8 @@ void multi_loop() {
   int prod = 1;
   int limit1, limit2;
 
-  __ESBMC_assume(limit1 == 5);
-  __ESBMC_assume(limit2 == 3);
+  __VERIFIER_assume(limit1 == 5);
+  __VERIFIER_assume(limit2 == 3);
 
   // First loop (index 0) - needs 5 unwinds
   for (i = 0; i < limit1; i++) {

@@ -28,11 +28,11 @@ void accumulate(int x)
 int main(void)
 {
     int result = add(3, 4);
-    __ESBMC_assert(result == 7, "3 + 4 should be 7");
+    __VERIFIER_assert(result == 7); // 3 + 4 should be 7
 
     global_sum = 0;
     accumulate(10);
-    __ESBMC_assert(global_sum == 10, "global_sum should be 10");
+    __VERIFIER_assert(global_sum == 10); // global_sum should be 10
 
     return 0;
 }

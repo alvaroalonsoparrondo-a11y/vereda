@@ -7,10 +7,10 @@ int __CPROVER_uninterpreted_f(int);
 int main()
 {
   int x, y;
-  __ESBMC_assume(x != y);
+  __VERIFIER_assume(x != y);
   int a = __CPROVER_uninterpreted_f(x);
   int b = __CPROVER_uninterpreted_f(y);
-  __ESBMC_assert(a == b, "distinct arguments need not give equal results");
+  __VERIFIER_assert(a == b); // distinct arguments need not give equal results
   return 0;
 }
 // Imported from ESBMC regression/esbmc/cprover_uninterpreted_distinct_fail

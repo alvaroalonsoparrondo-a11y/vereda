@@ -5,10 +5,10 @@ int main(void)
   int i = nondet_int();
   int k = nondet_int();
   int m = nondet_int();
-  __ESBMC_assume(i >= 200000);
-  __ESBMC_assume(k >= 300000);
-  __ESBMC_assume(m <= -400000);
-  __ESBMC_assert(i >= 0 && k >= 0 && m <= 0, "each bound prints on its own line");
+  __VERIFIER_assume(i >= 200000);
+  __VERIFIER_assume(k >= 300000);
+  __VERIFIER_assume(m <= -400000);
+  __VERIFIER_assert(i >= 0 && k >= 0 && m <= 0); // each bound prints on its own line
   return 0;
 }
 // Imported from ESBMC regression/esbmc/interval_dump_unbounded

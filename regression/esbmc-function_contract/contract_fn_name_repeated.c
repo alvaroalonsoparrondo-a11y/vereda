@@ -14,7 +14,7 @@ int main(void)
 {
   int a = f(3);
   int b = g(3);
-  __ESBMC_assert(b == 3, "true of g's body, not of g's contract");
+  __VERIFIER_assert(b == 3); // true of g's body, not of g's contract
   return a - a;
 }
 // Imported from ESBMC regression/function_contract/contract_fn_name_repeated

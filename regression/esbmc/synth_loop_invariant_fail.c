@@ -12,7 +12,7 @@ int main(void)
   uint32_t n;
   uint64_t a;
 
-  __ESBMC_assume(n >= 1);
+  __VERIFIER_assume(n >= 1);
 
   while (i <= n)
   {

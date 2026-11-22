@@ -21,7 +21,7 @@ int main(void) {
   unsigned char nar = a;
   unsigned same = x;
   _Bool tb = 1;
-  __ESBMC_assert(a != b || 1, "ne");
+  __VERIFIER_assert(a != b || 1); // ne
   return 0;
 }
 // Imported from ESBMC regression/goto2lean/value_operators

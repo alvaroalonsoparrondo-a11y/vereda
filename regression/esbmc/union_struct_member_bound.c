@@ -27,7 +27,7 @@ int main(void)
   for (int i = 0; i < x.u.a.n; i++)
     s++;
 
-  __ESBMC_assert(s == 8, "both loops read the member write");
+  __VERIFIER_assert(s == 8); // both loops read the member write
   return 0;
 }
 // Imported from ESBMC regression/esbmc/union_struct_member_bound

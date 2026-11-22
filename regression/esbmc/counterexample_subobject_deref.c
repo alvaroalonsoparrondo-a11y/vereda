@@ -22,7 +22,7 @@ int main(void)
 {
   o.g = 9;
   set(&o.in);
-  __ESBMC_assert(o.in.g == 5, "in.g is 5");
+  __VERIFIER_assert(o.in.g == 5); // in.g is 5
   return 0;
 }
 // Imported from ESBMC regression/esbmc/counterexample_subobject_deref

@@ -39,7 +39,7 @@ int main() {
   pthread_join(t1, 0);
   pthread_join(t2, 0);
   
-  __ESBMC_assert(iA != iB, "iA and iB must be equal");
+  __VERIFIER_assert(iA != iB); // iA and iB must be equal
 }
 // Imported from ESBMC regression/esbmc-unix/github_538_weaver_false
 // Needs: --k-step 2 --unlimited-k-steps --context-bound 3 --interval-analysis

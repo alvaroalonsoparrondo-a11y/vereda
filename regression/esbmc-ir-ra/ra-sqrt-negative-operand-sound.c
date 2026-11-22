@@ -24,9 +24,9 @@ extern double __VERIFIER_nondet_double(void);
 int main(void)
 {
   double x = __VERIFIER_nondet_double();
-  __ESBMC_assume(x < -1.0); /* operand definitely negative */
+  __VERIFIER_assume(x < -1.0); /* operand definitely negative */
   double s = sqrt(x);
-  __ESBMC_assert(s > 0.0, "falsifiable: NaN is not > 0");
+  __VERIFIER_assert(s > 0.0); // falsifiable: NaN is not > 0
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-sqrt-negative-operand-sound

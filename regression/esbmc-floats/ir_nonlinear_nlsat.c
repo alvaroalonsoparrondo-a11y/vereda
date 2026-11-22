@@ -13,7 +13,7 @@ int main(void)
   float z = x * y;
   float w = z * z;
 
-  __ESBMC_assume(z == z && w == w);
+  __VERIFIER_assume(z == z && w == w);
 
   assert(w == z * z);
   return 0;

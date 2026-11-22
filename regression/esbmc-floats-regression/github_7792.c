@@ -25,8 +25,8 @@ int main(void)
     hy = u.word;
   } while (0);
 
-  __ESBMC_assert(hx == 0x80000000u, "-0.0f puns to 0x80000000");
-  __ESBMC_assert(hy == 0x00000000u, "+0.0f puns to 0x00000000");
+  __VERIFIER_assert(hx == 0x80000000u); // -0.0f puns to 0x80000000
+  __VERIFIER_assert(hy == 0x00000000u); // +0.0f puns to 0x00000000
   return 0;
 }
 // Imported from ESBMC regression/floats-regression/github_7792

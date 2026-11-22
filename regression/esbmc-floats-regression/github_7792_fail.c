@@ -25,8 +25,8 @@ int main(void)
     hy = u.word;
   } while (0);
 
-  __ESBMC_assert(hx == 0x80000000u, "-0.0f puns to 0x80000000");
-  __ESBMC_assert(hy == 0x80000000u, "+0.0f does not pun to 0x80000000");
+  __VERIFIER_assert(hx == 0x80000000u); // -0.0f puns to 0x80000000
+  __VERIFIER_assert(hy == 0x80000000u); // +0.0f does not pun to 0x80000000
   return 0;
 }
 // Imported from ESBMC regression/floats-regression/github_7792_fail
@@ -34,5 +34,5 @@ int main(void)
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^  PASSED +\[main\.assertion\.\d+\] +line +\d+ +-0\.0f puns to 0x80000000$
 // EXPECT: ^  FAILED +\[main\.assertion\.\d+\] +line +\d+ +\+0\.0f does not pun to 0x80000000$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  PASSED +\[main\.assertion\.\d+\] +line +\d+ +-0\.0f puns to 0x80000000$
 // MODE: FUTURE

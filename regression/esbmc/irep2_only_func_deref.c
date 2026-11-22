@@ -11,10 +11,10 @@ int main(void)
 {
   int (*p)(void) = &f;
 
-  __ESBMC_assert(*f == &f, "*f is f");
-  __ESBMC_assert(***f == &f, "repeated dereference is still f");
-  __ESBMC_assert(*p == &f, "through a pointer variable too");
-  __ESBMC_assert((*f)() == 7, "and it is still callable");
+  __VERIFIER_assert(*f == &f); // *f is f
+  __VERIFIER_assert(***f == &f); // repeated dereference is still f
+  __VERIFIER_assert(*p == &f); // through a pointer variable too
+  __VERIFIER_assert((*f)() == 7); // and it is still callable
   return 0;
 }
 // Imported from ESBMC regression/esbmc/irep2_only_func_deref

@@ -6,7 +6,7 @@ int main()
   int i;
   for (i = 17; i > 0; i--)
     ;
-  __ESBMC_assert(i == 0, "decrement step recognition");
+  __VERIFIER_assert(i == 0); // decrement step recognition
   return 0;
 }
 // Imported from ESBMC regression/esbmc/loop_simplify_step_for_dec

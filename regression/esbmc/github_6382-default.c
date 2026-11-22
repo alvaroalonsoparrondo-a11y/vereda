@@ -16,7 +16,7 @@ void *prod_task(void *arg)
 void *cons_task(void *arg)
 {
   sem_wait(&sem);
-  __ESBMC_assert(data == data_vfy, "assert data equal");
+  __VERIFIER_assert(data == data_vfy); // assert data equal
   return NULL;
 }
 

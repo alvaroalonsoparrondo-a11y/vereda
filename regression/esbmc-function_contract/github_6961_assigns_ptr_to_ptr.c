@@ -15,7 +15,7 @@ int main(void)
 {
   int *r = 0;
   setp(&r);
-  __ESBMC_assert(r == &gv, "r points at gv");
+  __VERIFIER_assert(r == &gv); // r points at gv
   return 0;
 }
 // Imported from ESBMC regression/function_contract/github_6961_assigns_ptr_to_ptr

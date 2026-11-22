@@ -6,7 +6,7 @@ int main(void)
 
   /* Both operands of the outer == are boolean; the usual arithmetic
      conversions promote them to int before it compares them. */
-  __ESBMC_assert((-x == -y) == (x == y), "negation preserves equality");
+  __VERIFIER_assert((-x == -y) == (x == y)); // negation preserves equality
   return 0;
 }
 // Imported from ESBMC regression/esbmc/irep2_only_rel_bool_operands

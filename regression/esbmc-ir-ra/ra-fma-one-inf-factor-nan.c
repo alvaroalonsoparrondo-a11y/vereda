@@ -11,11 +11,11 @@ int main(void)
   double z = __VERIFIER_nondet_double();
   /* fma(+inf, 2.0, -inf): one infinite factor, finite nonzero second factor.
    * Product is +inf; adding -inf is an invalid operation (NaN). */
-  __ESBMC_assume(x > DBL_MAX);
-  __ESBMC_assume(z < -DBL_MAX);
+  __VERIFIER_assume(x > DBL_MAX);
+  __VERIFIER_assume(z < -DBL_MAX);
   double r = fma(x, 2.0, z);
 
-  __ESBMC_assert(!(r > -100.0), "fma(+inf, 2.0, -inf) > -100.0 is false (NaN)");
+  __VERIFIER_assert(!(r > -100.0)); // fma(+inf, 2.0, -inf) > -100.0 is false (NaN)
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-fma-one-inf-factor-nan

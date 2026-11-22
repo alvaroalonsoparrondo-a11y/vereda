@@ -19,7 +19,7 @@ int main(void)
 {
   struct S *s = alloc(sizeof(struct S));
   s->x = __VERIFIER_nondet_ulong();
-  __ESBMC_assert(s->x != 5, "x is 5");
+  __VERIFIER_assert(s->x != 5); // x is 5
 }
 // Imported from ESBMC regression/esbmc/github_9881_function_return_byte_store
 // Needs: --witness-output-yaml -

@@ -4,7 +4,7 @@ int main()
 
   int read = flag;
 
-  __ESBMC_assert(read, "");
+  __VERIFIER_assert(read);
 }
 // Imported from ESBMC regression/esbmc/volatile_02
 // Needs: --volatile-check

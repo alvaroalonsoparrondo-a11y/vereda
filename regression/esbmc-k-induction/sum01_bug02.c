@@ -8,7 +8,7 @@ int main() {
     j--;
     //if (i==4) sn=-10; //third case OK
   }
-  //__ESBMC_assume(i>n);
+  //__VERIFIER_assume(i>n);
   assert(sn==n*a || sn == 0);
 }
 // Imported from ESBMC regression/k-induction/sum01_bug02

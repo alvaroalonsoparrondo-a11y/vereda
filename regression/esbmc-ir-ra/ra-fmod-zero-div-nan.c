@@ -9,10 +9,10 @@ int main(void)
   __ESBMC_rounding_mode = 0; /* ROUND_TO_EVEN */
   double x = __VERIFIER_nondet_double();
   /* fmod(x, 0): zero divisor is an invalid operation (NaN) */
-  __ESBMC_assume(x > 0.0 && x < DBL_MAX);
+  __VERIFIER_assume(x > 0.0 && x < DBL_MAX);
   double r = fmod(x, 0.0);
 
-  __ESBMC_assert(!(r > -100.0), "fmod(finite, 0) > -100.0 is false (NaN)");
+  __VERIFIER_assert(!(r > -100.0)); // fmod(finite, 0) > -100.0 is false (NaN)
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-fmod-zero-div-nan

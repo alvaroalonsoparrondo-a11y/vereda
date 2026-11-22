@@ -10,7 +10,7 @@ int nondet_int();
 
 int main() {
   int x = nondet_int();
-  __ESBMC_assume(x == INT_MIN);
+  __VERIFIER_assume(x == INT_MIN);
   // -INT_MIN overflows. The cond's negation arm is exercised when x < 0.
   int y = (x >= 0) ? x : -x;
   return y;

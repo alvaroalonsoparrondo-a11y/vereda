@@ -12,7 +12,7 @@ int main(void)
   assert(strncasecmp("x", "y", 0) == 0);
 
   char c;
-  __ESBMC_assume(c >= 'A' && c <= 'Z');
+  __VERIFIER_assume(c >= 'A' && c <= 'Z');
   char s[2] = {c, 0};
   char t[2] = {c + ('a' - 'A'), 0};
   assert(strcasecmp(s, t) == 0);

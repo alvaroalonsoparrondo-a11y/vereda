@@ -4,9 +4,9 @@
 int main()
 {
   int x;
-  __ESBMC_assume(x >= -3 && x <= 3);
-  __ESBMC_assert(x >= -3, "x lower bound");
-  __ESBMC_assert(x <= 3, "x upper bound");
+  __VERIFIER_assume(x >= -3 && x <= 3);
+  __VERIFIER_assert(x >= -3); // x lower bound
+  __VERIFIER_assert(x <= 3); // x upper bound
   return 0;
 }
 // Imported from ESBMC regression/esbmc/interval_symex_assert_silent

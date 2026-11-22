@@ -8,7 +8,7 @@ unsigned nondet_uint(void);
 int main(void)
 {
   uint32_t x = nondet_uint();
-  __ESBMC_assume((x & 0x7f800000u) == 0x7f800000u && (x & 0x007fffffu) > 1);
+  __VERIFIER_assume((x & 0x7f800000u) == 0x7f800000u && (x & 0x007fffffu) > 1);
   float f;
   memcpy(&f, &x, sizeof f);
   ((unsigned char *)&f)[0] ^= 1;

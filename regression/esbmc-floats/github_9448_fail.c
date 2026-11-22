@@ -9,7 +9,7 @@ float nondet_float(void);
 int main(void)
 {
   float f1 = nondet_float(), f2 = nondet_float();
-  __ESBMC_assume(isnan(f1) && f2 > 1e30f);
+  __VERIFIER_assume(isnan(f1) && f2 > 1e30f);
   int a = (int)f1;
   int b = (int)f2;
   assert(a == b);

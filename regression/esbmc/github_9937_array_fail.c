@@ -6,7 +6,7 @@ int main()
   int arr[2];
   u.p[0] = arr + 100;
   u.l = u.l;
-  __ESBMC_assert(u.p[0] != arr + 100, "copied pointer");
+  __VERIFIER_assert(u.p[0] != arr + 100); // copied pointer
 }
 // Imported from ESBMC regression/esbmc/github_9937_array_fail
 // Needs: --result-only

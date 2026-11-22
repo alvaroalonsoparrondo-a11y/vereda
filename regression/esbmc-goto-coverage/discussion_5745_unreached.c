@@ -8,27 +8,27 @@ int main()
 {
   if (3 > 0)
   {
-    __ESBMC_assert(1, "reachable concrete then");
+    __VERIFIER_assert(1); // reachable concrete then
   }
   else
   {
-    __ESBMC_assert(0, "dead concrete else A");
-    __ESBMC_assert(1, "dead concrete else B");
+    __VERIFIER_assert(0); // dead concrete else A
+    __VERIFIER_assert(1); // dead concrete else B
   }
 
   int a = nondet_int();
   if (a % 2)
     ++a;
-  __ESBMC_assert(a % 2 == 0, "a is even");
+  __VERIFIER_assert(a % 2 == 0); // a is even
 
   if (a % 2)
   {
-    __ESBMC_assert(0, "dead symbolic then A");
-    __ESBMC_assert(1, "dead symbolic then B");
+    __VERIFIER_assert(0); // dead symbolic then A
+    __VERIFIER_assert(1); // dead symbolic then B
   }
   else
   {
-    __ESBMC_assert(1, "reachable symbolic else");
+    __VERIFIER_assert(1); // reachable symbolic else
   }
 }
 // Imported from ESBMC regression/goto-coverage/discussion_5745_unreached

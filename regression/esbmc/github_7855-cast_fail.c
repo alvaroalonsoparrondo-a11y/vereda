@@ -10,12 +10,12 @@ int main(void)
   uintptr_t address = (uintptr_t)key;
   const void *back = (const void *)(address + 1);
 
-  __ESBMC_assert(back == key, "a different address is a different pointer");
+  __VERIFIER_assert(back == key); // a different address is a different pointer
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7855-cast_fail
 // RUN: -m64 --incremental-bmc
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^  FAILED +\[main\.assertion\.1\] +line +\d+ +a different address is a different pointer$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  FAILED +\[main\.assertion\.1\] +line +\d+ +a different address is a different pointer$
 // MODE: FUTURE

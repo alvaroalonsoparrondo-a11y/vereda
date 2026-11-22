@@ -7,7 +7,7 @@ char b[64];
 int main(void)
 {
   char *p = nondet_charp();
-  __ESBMC_assume(p == &b[0]);
+  __VERIFIER_assume(p == &b[0]);
   *p = 3;
   assert(b[0] == 0);
   return 0;

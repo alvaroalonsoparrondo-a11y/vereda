@@ -11,7 +11,7 @@ int main()
   *p = nondet_int();
   y = 3;
   *p = nondet_int();
-  __ESBMC_assert(y == 3, "y still 3");
+  __VERIFIER_assert(y == 3); // y still 3
 }
 // Imported from ESBMC regression/esbmc/interval_symex_assert_clear_state
 // Needs: --interval-symex-assert

@@ -6,10 +6,8 @@ int main() {
   unsigned j = 7;
   for (unsigned i = 0; i < N; i++) { j -= 2; a[i] = j; }
   unsigned x = nondet_uint();
-  __ESBMC_assume(x < N);
-  __ESBMC_assert(a[x] == 7 - 2 * x, "");
+  __VERIFIER_assume(x < N);
+  __VERIFIER_assert(a[x] == 7 - 2 * x);
 }
 // Imported from ESBMC regression/esbmc/array_loop_summary_decrement_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

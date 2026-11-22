@@ -2,10 +2,10 @@
 int main()
 {
   int idx;
-  __ESBMC_assume(0 <= idx);
+  __VERIFIER_assume(0 <= idx);
   while (idx < 5)
     ++idx;
-  __ESBMC_assert(idx > 5, "idx should be > 5");
+  __VERIFIER_assert(idx > 5); // idx should be > 5
   return 0;
 }
 // Imported from ESBMC regression/esbmc/interval_symex_guard_fail

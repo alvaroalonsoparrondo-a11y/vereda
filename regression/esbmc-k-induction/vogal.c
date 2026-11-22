@@ -13,7 +13,7 @@ main(void)
 
   for(i=0;i<MAX;i++)
     string_entrada[i] = nondet_char();
-  __ESBMC_assume(string_entrada[MAX-1]=='\0');
+  __VERIFIER_assume(string_entrada[MAX-1]=='\0');
   
   // captura o número de caracteres de da string
   n_caracter = 0;

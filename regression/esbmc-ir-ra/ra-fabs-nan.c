@@ -7,10 +7,10 @@ int main(void)
 {
   __ESBMC_rounding_mode = 0;
   double x = __VERIFIER_nondet_double();
-  __ESBMC_assume(x == -1.0);
+  __VERIFIER_assume(x == -1.0);
   double y = sqrt(x);
   double z = fabs(y);
-  __ESBMC_assert(isnan(z), "isnan(fabs(NaN)) must be true");
+  __VERIFIER_assert(isnan(z)); // isnan(fabs(NaN)) must be true
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-fabs-nan

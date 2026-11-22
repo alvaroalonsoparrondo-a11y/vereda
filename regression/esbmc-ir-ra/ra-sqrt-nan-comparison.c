@@ -21,9 +21,9 @@ extern double __VERIFIER_nondet_double(void);
 int main(void)
 {
   double x = __VERIFIER_nondet_double();
-  __ESBMC_assume(x < -1.0); /* operand definitely negative */
+  __VERIFIER_assume(x < -1.0); /* operand definitely negative */
   double s = sqrt(x);
-  __ESBMC_assert(s < 100.0, "NaN < 100.0 is false; must be falsifiable");
+  __VERIFIER_assert(s < 100.0); // NaN < 100.0 is false; must be falsifiable
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-sqrt-nan-comparison

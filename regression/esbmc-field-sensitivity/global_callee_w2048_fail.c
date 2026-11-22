@@ -38,7 +38,7 @@ void cycle(struct S *d)
 int main(void)
 {
   int x = nondet_int();
-  __ESBMC_assume(x >= 0 && x <= 1000);
+  __VERIFIER_assume(x >= 0 && x <= 1000);
   db.a0 = x;
   for (int c = 0; c < 200; c++)
     cycle(&db);

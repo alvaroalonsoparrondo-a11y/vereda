@@ -10,11 +10,11 @@ int main(void)
   double x = __VERIFIER_nondet_double();
   double y = __VERIFIER_nondet_double();
   /* fmod(+inf, finite): infinite dividend is an invalid operation (NaN) */
-  __ESBMC_assume(x > DBL_MAX);
-  __ESBMC_assume(y > 0.0 && y < DBL_MAX);
+  __VERIFIER_assume(x > DBL_MAX);
+  __VERIFIER_assume(y > 0.0 && y < DBL_MAX);
   double r = fmod(x, y);
 
-  __ESBMC_assert(r > -100.0, "fmod(+inf, finite) > -100.0 should not hold (NaN)");
+  __VERIFIER_assert(r > -100.0); // fmod(+inf, finite) > -100.0 should not hold (NaN)
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-fmod-inf-nan-fail

@@ -10,7 +10,7 @@ typedef struct {
 
 st_t * st_alloc(int x, int y){
   st_t * t = (st_t *) malloc(1 * sizeof(st_t));
-  __ESBMC_assume(t);
+  __VERIFIER_assume(t);
   if ( x >  0 && y >  0){
     t -> x = x;
     t -> y = y;
@@ -20,7 +20,7 @@ st_t * st_alloc(int x, int y){
     t -> x = 0;
     t -> y = 0;
     t -> z = (void *) malloc (100 * sizeof(int));
-    __ESBMC_assume(t->z);
+    __VERIFIER_assume(t->z);
   }
   return t;
 }
@@ -47,8 +47,8 @@ int main(){
   st_t *st1, *st2;
 //  ASSUME(a> 0);
 //  ASSUME(b > 0);
-  __ESBMC_assume(a>0);
-  __ESBMC_assume(b>0);
+  __VERIFIER_assume(a>0);
+  __VERIFIER_assume(b>0);
   
   st1 = st_alloc(a,b);  
   st2 = st_alloc(-b,-a);  

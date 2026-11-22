@@ -9,21 +9,21 @@ int main(void)
 {
   int c = nd();
   if (c == 1)
-    __ESBMC_assert(0, "a");
+    __VERIFIER_assert(0); // a
   if (c == 2)
   {
-    __ESBMC_assert(0, "b");
+    __VERIFIER_assert(0); // b
   }
   if (c == 3)
     ;
   else
-    __ESBMC_assert(0, "c");
+    __VERIFIER_assert(0); // c
   if (c == 4)
-    __ESBMC_assert(0, "d");
+    __VERIFIER_assert(0); // d
   else
-    __ESBMC_assert(0, "e");
+    __VERIFIER_assert(0); // e
   if (c == 5)
-    __ESBMC_assert(0, "f");
+    __VERIFIER_assert(0); // f
   else
     ;
   return 0;

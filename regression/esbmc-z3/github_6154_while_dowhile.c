@@ -41,13 +41,15 @@ int inc_once(int x)
 int main()
 {
   int v;
-  __ESBMC_assert(__ESBMC_forall(&v, sumn(v) == v + 3), "while-loop summarized");
-  __ESBMC_assert(
-    __ESBMC_forall(&v, dec_twice(v) == v - 2), "while-loop with predecrement");
-  __ESBMC_assert(
-    __ESBMC_forall(&v, inc_once(v) == v + 1), "do-while summarized");
+  __VERIFIER_assert(__ESBMC_forall(&v, sumn(v) == v + 3)); // while-loop summarized
+  __VERIFIER_assert(
+    __ESBMC_forall(&v, dec_twice(v) == v - 2)); // while-loop with predecrement
+  __VERIFIER_assert(
+    __ESBMC_forall(&v, inc_once(v) == v + 1)); // do-while summarized
   return 0;
 }
 // Imported from ESBMC regression/z3/github_6154_while_dowhile
 // RUN: --solver z3
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

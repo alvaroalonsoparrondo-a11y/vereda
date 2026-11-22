@@ -12,7 +12,7 @@ atomic_int shared = 0;
 void *assign(void *arg)
 {
   int v = nondet_int();
-  __ESBMC_assume(v >= -10 && v <= 10);
+  __VERIFIER_assume(v >= -10 && v <= 10);
   shared = v; /* CK_NonAtomicToAtomic */
   return NULL;
 }

@@ -8,9 +8,9 @@ int bump(void)
 int main(void)
 {
   unsigned n;
-  __ESBMC_assume(n < 4);
+  __VERIFIER_assume(n < 4);
   (void)((n > 2) && bump());
-  __ESBMC_assert(calls == (n > 2 ? 1 : 0), "bump runs iff n > 2");
+  __VERIFIER_assert(calls == (n > 2 ? 1 : 0)); // bump runs iff n > 2
   return 0;
 }
 // Imported from ESBMC regression/esbmc/discarded_and_sideeffect

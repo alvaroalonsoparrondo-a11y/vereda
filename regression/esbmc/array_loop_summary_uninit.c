@@ -5,7 +5,7 @@ int main()
   int a[4];
   for (int i = 0; i < 4; i++)
     a[i] = 0;
-  __ESBMC_assert(a[2] == 0, "a[2]");
+  __VERIFIER_assert(a[2] == 0); // a[2]
 }
 // Imported from ESBMC regression/esbmc/array_loop_summary_uninit
 // Needs: --summarize-array-loops --uninitialised-vars-check

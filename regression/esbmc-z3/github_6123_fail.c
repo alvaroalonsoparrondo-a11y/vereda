@@ -24,11 +24,9 @@ int main()
 {
   int vec[SIZE] = {0, 1, 2, 2};
 
-  __ESBMC_assert(all_unique(vec, SIZE), "all elements unique");
+  __VERIFIER_assert(all_unique(vec, SIZE)); // all elements unique
 }
 // Imported from ESBMC regression/z3/github_6123_fail
 // RUN: --solver z3 --incremental-bmc
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

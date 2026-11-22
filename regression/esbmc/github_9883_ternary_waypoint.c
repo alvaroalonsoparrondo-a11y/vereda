@@ -11,7 +11,7 @@ int main(void)
   int z = ((x > 7)
     ? f()
     : 0);
-  __ESBMC_assert(y + z == 0, "reached");
+  __VERIFIER_assert(y + z == 0); // reached
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9883_ternary_waypoint

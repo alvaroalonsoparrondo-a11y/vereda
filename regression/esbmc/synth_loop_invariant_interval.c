@@ -14,7 +14,7 @@ int main(void)
   uint8_t n;
   uint8_t a;
 
-  __ESBMC_assume(n >= 1 && n <= 15);
+  __VERIFIER_assume(n >= 1 && n <= 15);
 
   while (i <= n)
   {

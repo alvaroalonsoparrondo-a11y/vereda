@@ -5,7 +5,7 @@
 int main(void)
 {
   void *p = __builtin_alloca(0);
-  __ESBMC_assert(p != 0, "alloca(0) is not NULL");
+  __VERIFIER_assert(p != 0); // alloca(0) is not NULL
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_5398_alloca

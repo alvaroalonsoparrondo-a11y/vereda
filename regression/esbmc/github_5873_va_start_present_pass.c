@@ -84,10 +84,10 @@ int consume(int count, ...)
 
 int main()
 {
-  __ESBMC_assert(sum(2, 3, 4) == 7, "va_start + va_copy chain");
-  __ESBMC_assert(consume(2, 3, 4) == 2, "va_list passed to callee");
-  __ESBMC_assert(sum_indirect(2, 3, 4) == 7, "va_copy behind a pointer");
-  __ESBMC_assert(consume_indirect(2, 3, 4) == 2, "va_arg behind a pointer");
+  __VERIFIER_assert(sum(2, 3, 4) == 7); // va_start + va_copy chain
+  __VERIFIER_assert(consume(2, 3, 4) == 2); // va_list passed to callee
+  __VERIFIER_assert(sum_indirect(2, 3, 4) == 7); // va_copy behind a pointer
+  __VERIFIER_assert(consume_indirect(2, 3, 4) == 2); // va_arg behind a pointer
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_5873_va_start_present_pass

@@ -14,7 +14,7 @@ int main()
 {
   f(nondet_int(), nondet_int());
   f(nondet_int(), nondet_int());
-  __ESBMC_assert(g == 0, "g");
+  __VERIFIER_assert(g == 0); // g
   return 0;
 }
 // Imported from ESBMC regression/witnesses_validate/reachsafety-violationwitness/branching_after_dead_return

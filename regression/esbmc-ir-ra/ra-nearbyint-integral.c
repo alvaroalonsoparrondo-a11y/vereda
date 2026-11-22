@@ -8,9 +8,9 @@ int main(void)
 {
   __ESBMC_rounding_mode = 0; /* ROUND_TO_EVEN */
   double x = __VERIFIER_nondet_double();
-  __ESBMC_assume(x == 3.0);
+  __VERIFIER_assume(x == 3.0);
   double y = nearbyint(x);
-  __ESBMC_assert(y == 3.0, "nearbyint of an integer returns that integer");
+  __VERIFIER_assert(y == 3.0); // nearbyint of an integer returns that integer
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-nearbyint-integral

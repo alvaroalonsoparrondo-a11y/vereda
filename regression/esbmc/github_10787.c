@@ -21,10 +21,10 @@ int main()
   int i = 2;
   int (*row)[3] = &m[i];
   int k = nondet_int();
-  __ESBMC_assume(k >= 0 && k <= 3);
+  __VERIFIER_assume(k >= 0 && k <= 3);
   int *q = &m[1][k];
   int n = nondet_int();
-  __ESBMC_assume(n >= 1 && n <= 4);
+  __VERIFIER_assume(n >= 1 && n <= 4);
   int v[n];
   int *w = &v[n];
   struct hack *h = malloc(sizeof(struct hack) + 4 * sizeof(int));

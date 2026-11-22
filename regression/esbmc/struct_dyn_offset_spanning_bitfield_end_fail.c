@@ -3,9 +3,9 @@ struct S s[2];
 int main(void)
 {
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 2);
+  __VERIFIER_assume(i >= 0 && i < 2);
   *(unsigned short *)((char *)&s[i] + 2) = 0x7FFFu;
-  __ESBMC_assert(s[i].d == 0, "d");
+  __VERIFIER_assert(s[i].d == 0); // d
   return 0;
 }
 // Imported from ESBMC regression/esbmc/struct_dyn_offset_spanning_bitfield_end_fail

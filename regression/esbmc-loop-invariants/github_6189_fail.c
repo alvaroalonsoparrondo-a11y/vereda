@@ -25,7 +25,7 @@ int main()
   __ESBMC_loop_invariant(loop(hi_idx) == hi_idx + 1);
   while (hi_idx < SIZE)
     ++hi_idx;
-  __ESBMC_assert(hi_idx == SIZE, "end: hi_idx");
+  __VERIFIER_assert(hi_idx == SIZE); // end: hi_idx
 }
 // Imported from ESBMC regression/loop-invariants/github_6189_fail
 // Needs: --result-only --loop-invariant-check

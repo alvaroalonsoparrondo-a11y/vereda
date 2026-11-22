@@ -11,7 +11,7 @@ int main(void)
   uintptr_t ua = 1;
   if (nondet_bool())
     ua = (uintptr_t)&a;
-  __ESBMC_assert(p != &a || ua == 0 || ua == 1, "p may point to a");
+  __VERIFIER_assert(p != &a || ua == 0 || ua == 1); // p may point to a
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9273_fail

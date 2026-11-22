@@ -25,7 +25,7 @@ int find_min(int *a, int n)
 int main(void)
 {
   int a[N], n;
-  __ESBMC_assume(n > 0 && n <= N);
+  __VERIFIER_assume(n > 0 && n <= N);
   /* array elements are unconstrained -- forall requires is NOT satisfied */
   int r = find_min(a, n);
   return 0;

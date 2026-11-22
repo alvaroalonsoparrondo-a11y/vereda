@@ -11,7 +11,7 @@ void two_fun__(void)
   __local();
   if (x <= 2)
     __local();
-  __ESBMC_assert(x == 3, "two_fun__ nested calls");
+  __VERIFIER_assert(x == 3); // two_fun__ nested calls
 }
 
 void two_fun____(void)
@@ -25,7 +25,7 @@ void two_fun____(void)
   local();
   if (x <= 2)
     local();
-  __ESBMC_assert(x == 3, "two_fun____ nested calls");
+  __VERIFIER_assert(x == 3); // two_fun____ nested calls
 }
 
 int main(void)

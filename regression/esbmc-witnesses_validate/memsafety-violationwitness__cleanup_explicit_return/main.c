@@ -3,7 +3,7 @@ extern int nondet_int(void);
 int main(void)
 {
   int *p = malloc(sizeof(int));
-  __ESBMC_assume(p != 0);
+  __VERIFIER_assume(p != 0);
   if (nondet_int())
   {
     free(p);

@@ -9,7 +9,7 @@ struct S
 int main()
 {
   struct S *p=malloc(sizeof(struct S)+10);
-  __ESBMC_assume(p);
+  __VERIFIER_assume(p);
   
   p->x=1;
   p->a[0]=3;

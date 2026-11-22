@@ -30,8 +30,8 @@ int main(void)
   alias->next = &container->node;
 
   struct node copy = *(struct node *)storage;
-  __ESBMC_assert(
-    copy.next == &container->node, "the stored member address reads back");
+  __VERIFIER_assert(
+    copy.next == &container->node); // the stored member address reads back
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7855-tie-hides-deref_pass

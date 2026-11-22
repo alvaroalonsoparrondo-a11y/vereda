@@ -14,7 +14,7 @@ int main()
   {
     a[i] = 0;
     ++i;
-    __ESBMC_assert(a[0] == 0, "a0 is zero");
+    __VERIFIER_assert(a[0] == 0); // a0 is zero
   }
 }
 // Imported from ESBMC regression/loop-invariants/github_6114

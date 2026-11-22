@@ -8,9 +8,9 @@ int main(void)
 {
   __ESBMC_rounding_mode = 0; /* ROUND_TO_EVEN */
   double x = __VERIFIER_nondet_double();
-  __ESBMC_assume(x > 0.5 && x < 1.5);
+  __VERIFIER_assume(x > 0.5 && x < 1.5);
   double y = nearbyint(x);
-  __ESBMC_assert(y != 1.0, "should be unreachable");
+  __VERIFIER_assert(y != 1.0); // should be unreachable
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-nearbyint-rte-fail

@@ -27,7 +27,7 @@ int main()
 
   // x started at 1, while brings it to 3, for adds 0+1=1 → x==4
   // wrong assertion: should be x==4 not x==5
-  __ESBMC_assert(x == 5, "wrong: x should be 4");
+  __VERIFIER_assert(x == 5); // wrong: x should be 4
 
   return 0;
 }

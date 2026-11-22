@@ -19,7 +19,7 @@ int main()
 
   for (idx = 0; idx < 3; ++idx)
   {
-    __ESBMC_assert(0 <= idx, "bounds");
+    __VERIFIER_assert(0 <= idx); // bounds
   }
 
   return 0;

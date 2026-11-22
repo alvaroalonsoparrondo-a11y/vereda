@@ -11,7 +11,7 @@ int main()
 
   char s[6] = "abcde";
   unsigned n = nondet_uint();
-  __ESBMC_assume(n <= 5);
+  __VERIFIER_assume(n <= 5);
   s[n] = '\0';
   assert(strnlen(s, 6) == n);
   return 0;

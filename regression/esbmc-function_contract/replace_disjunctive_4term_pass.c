@@ -42,8 +42,8 @@ int main(void)
   s.c = 3;
   s.d = 4;
   f(&s);
-  __ESBMC_assert(
-    s.a == 1 && s.b == 2 && s.c == 3 && s.d == 4, "all four fields unchanged");
+  __VERIFIER_assert(
+    s.a == 1 && s.b == 2 && s.c == 3 && s.d == 4); // all four fields unchanged
   return 0;
 }
 // Imported from ESBMC regression/function_contract/replace_disjunctive_4term_pass

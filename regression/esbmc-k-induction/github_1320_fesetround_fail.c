@@ -11,7 +11,7 @@ int main()
       fesetround(FE_UPWARD);
     i++;
   }
-  __ESBMC_assert(fegetround() == FE_TONEAREST, "rounding mode restored");
+  __VERIFIER_assert(fegetround() == FE_TONEAREST); // rounding mode restored
   return 0;
 }
 // Imported from ESBMC regression/k-induction/github_1320_fesetround_fail

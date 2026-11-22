@@ -10,7 +10,7 @@ v4si vsi2 = (v4si){1.5, 2, 0.5, 3};
 int main() {
     vsi /= vsi2;
    for(int i = 0; i < 4; i++)
-      __ESBMC_assert(vsi[i] == (i/vsi2[i]), "The vector should be initialized correctly");
+      __VERIFIER_assert(vsi[i] == (i/vsi2[i])); // The vector should be initialized correctly
    return 0; 
 }
 // Imported from ESBMC regression/extensions/vector_gcc_literal_operator_float_div_2_true

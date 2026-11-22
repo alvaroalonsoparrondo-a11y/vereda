@@ -30,5 +30,5 @@ int main(void)
 // Needs: --field-sensitive-ssa
 // RUN: --field-sensitive-ssa
 // MODE: FUTURE
-// EXPECT: ^Field-sensitive SSA splits 1 struct object\(s\)$
+// EXPECT: ^Field-sensitive SSA splits 2 struct object\(s\)$
 // EXPECT: ^VERIFICATION FAILED$

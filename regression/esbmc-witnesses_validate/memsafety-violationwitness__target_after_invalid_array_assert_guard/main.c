@@ -3,7 +3,7 @@ int main(void)
 {
   int a[1] = {0};
   int i = 1;
-  __ESBMC_assert(a[i] == 0, "application condition");
+  __VERIFIER_assert(a[i] == 0); // application condition
   reach_error();
 }
 // Imported from ESBMC regression/witnesses_validate/memsafety-violationwitness/target_after_invalid_array_assert_guard

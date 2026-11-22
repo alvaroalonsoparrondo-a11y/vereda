@@ -9,7 +9,7 @@ int main()
   unsigned long a = (unsigned long)&x;
   ((unsigned *)&p)[0] = (unsigned)a;
   ((unsigned *)&p)[1] = (unsigned)(a >> 32);
-  __ESBMC_assert(p == &x, "p is x");
+  __VERIFIER_assert(p == &x); // p is x
   return *p;
 }
 // Imported from ESBMC regression/esbmc/null_offset_stale_value_set

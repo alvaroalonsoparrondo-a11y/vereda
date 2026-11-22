@@ -2,7 +2,7 @@ int main()
 {
   int idx, max, res;
 
-  __ESBMC_assume(0 <= max);
+  __VERIFIER_assume(0 <= max);
   res = 0;
   idx = 0;
 
@@ -11,7 +11,7 @@ int main()
     ++idx;
     ++res;
   }
-  __ESBMC_assert(idx == max, "A.1");
+  __VERIFIER_assert(idx == max); // A.1
 }
 // Imported from ESBMC regression/k-induction/github_6093
 // Needs: --loop-invariant --base-k-step 0

@@ -7,7 +7,7 @@ int main()
     x = 1;
     break;
   }
-  __ESBMC_assert(x == 1, "the loop sets x before it breaks");
+  __VERIFIER_assert(x == 1); // the loop sets x before it breaks
   return 0;
 }
 // Imported from ESBMC regression/esbmc/error_label_loop_head

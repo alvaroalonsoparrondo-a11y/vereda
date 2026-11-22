@@ -9,7 +9,7 @@ extern int64_t nondet_int64(void);
 int main(void)
 {
   int64_t data = nondet_int64();
-  __ESBMC_assume(data < 9223372036854775807LL);
+  __VERIFIER_assume(data < 9223372036854775807LL);
   int64_t result = data + 1; // cannot overflow: data <= INT64_MAX - 1
   return result == 0;
 }

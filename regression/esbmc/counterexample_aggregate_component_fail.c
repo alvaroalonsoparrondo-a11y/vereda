@@ -21,7 +21,7 @@ int main(void)
   v.un.i = 9;
   v.t = 4;
   harr[0] = v;
-  __ESBMC_assert(harr[0].t != 4, "t is 4");
+  __VERIFIER_assert(harr[0].t != 4); // t is 4
   return 0;
 }
 // Imported from ESBMC regression/esbmc/counterexample_aggregate_component_fail

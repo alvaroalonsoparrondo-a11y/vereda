@@ -12,7 +12,7 @@ int main()
     x = 42;
   }
   call_it(set);
-  __ESBMC_assert(x == 42, "nested func called via pointer");
+  __VERIFIER_assert(x == 42); // nested func called via pointer
   return 0;
 }
 // Imported from ESBMC regression/esbmc/gcc_nested_func_04

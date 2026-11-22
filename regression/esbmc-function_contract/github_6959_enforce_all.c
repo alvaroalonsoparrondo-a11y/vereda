@@ -13,7 +13,7 @@ int f(int x)
 int main(void)
 {
   int n;
-  __ESBMC_assume(n > 200);
+  __VERIFIER_assume(n > 200);
   return f(n);
 }
 // Imported from ESBMC regression/function_contract/github_6959_enforce_all

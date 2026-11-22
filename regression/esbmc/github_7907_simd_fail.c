@@ -10,7 +10,7 @@ int main(void)
 {
   v4i a[3];
   int k = nondet_int();
-  __ESBMC_assume(k >= 0 && k < 3);
+  __VERIFIER_assume(k >= 0 && k < 3);
   v4i *q = a + k;
   *q = (v4i){1, 2, 3, 4};
   v4i c = *q;

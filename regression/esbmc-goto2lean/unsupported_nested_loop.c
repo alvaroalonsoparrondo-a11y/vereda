@@ -16,7 +16,7 @@ unsigned find(unsigned n) {
 int main(void) {
   unsigned n = nondet_uint();
   unsigned r = find(n);
-  __ESBMC_assert(r <= n || r == 7, "r");
+  __VERIFIER_assert(r <= n || r == 7); // r
   return 0;
 }
 // Imported from ESBMC regression/goto2lean/unsupported_nested_loop

@@ -3,7 +3,7 @@
 int main()
 {
   int i;
-  __ESBMC_assume(i > 0 && i < 10);
+  __VERIFIER_assume(i > 0 && i < 10);
   if(i > 5)
   {
     assert(0);
@@ -14,7 +14,7 @@ int main()
   }
   else
   {
-    __ESBMC_assert(1, "");
+    __VERIFIER_assert(1);
   }
   return 0;
 }

@@ -19,7 +19,7 @@ int main()
   int x = nondet_int();
   f(x);
   int r = len(x);
-  __ESBMC_assert(!(g == 5), "g==5 reachable");
+  __VERIFIER_assert(!(g == 5)); // g==5 reachable
   return 0;
 }
 // Imported from ESBMC regression/function_contract/github_9000_unreplaced_ensures_fail

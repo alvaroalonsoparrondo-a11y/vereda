@@ -1,7 +1,7 @@
 #include <assert.h>
 
 int nondet_int(void);
-void __ESBMC_assume(_Bool);
+void __VERIFIER_assume(_Bool);
 
 typedef int (*handler_t)(int);
 
@@ -12,7 +12,7 @@ handler_t handlers[2] = { add_one, sub_one };
 
 int main() {
     int idx = nondet_int();
-    __ESBMC_assume(idx >= 0 && idx < 2);
+    __VERIFIER_assume(idx >= 0 && idx < 2);
 
     handler_t h = handlers[idx];
     int result = h(5);

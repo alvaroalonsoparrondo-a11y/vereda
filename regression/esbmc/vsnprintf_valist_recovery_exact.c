@@ -20,7 +20,7 @@ int main(void)
   /* Same target gate as vasprintf_valist_recovery_exact: the exact would-be
    * length is only recoverable on pointer-va_list targets (§4.4 gate 4). */
   if (__builtin_types_compatible_p(va_list, char *))
-    __ESBMC_assert(would_be == 12, "recovered literal %s pins would-be length");
+    __VERIFIER_assert(would_be == 12); // recovered literal %s pins would-be length
   return 0;
 }
 // Imported from ESBMC regression/esbmc/vsnprintf_valist_recovery_exact

@@ -8,9 +8,9 @@ int main(void)
 {
   __ESBMC_rounding_mode = 1; /* ROUND_TO_AWAY */
   double x = __VERIFIER_nondet_double();
-  __ESBMC_assume(x == 0.5);
+  __VERIFIER_assume(x == 0.5);
   double y = nearbyint(x);
-  __ESBMC_assert(y == 1.0, "RTA: tie at 0.5 rounds away from zero to 1");
+  __VERIFIER_assert(y == 1.0); // RTA: tie at 0.5 rounds away from zero to 1
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-nearbyint-rta-tie-pos

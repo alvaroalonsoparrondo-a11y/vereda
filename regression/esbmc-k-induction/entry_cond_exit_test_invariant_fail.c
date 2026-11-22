@@ -7,7 +7,7 @@ int main()
   int *p = &x;
   while (1)
   {
-    __ESBMC_assert(x != 105, "x != 105");
+    __VERIFIER_assert(x != 105); // x != 105
     x -= 100;
     m = nondet_int();
     if (*p >= 100 || m == 12345)

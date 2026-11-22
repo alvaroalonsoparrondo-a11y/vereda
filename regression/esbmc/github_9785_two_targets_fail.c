@@ -7,7 +7,7 @@ _Bool nondet_bool(void); unsigned nondet_uint(void);
 int a[4], b[4];
 int main(void) {
   _Bool c = nondet_bool(); unsigned k = nondet_uint();
-  __ESBMC_assume(k < 4);
+  __VERIFIER_assume(k < 4);
   uintptr_t base = c ? (uintptr_t)a : (uintptr_t)b;
   int *p = (int *)(base + 4 * k);
   *p = 7;

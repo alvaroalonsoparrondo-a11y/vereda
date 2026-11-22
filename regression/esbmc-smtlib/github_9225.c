@@ -7,8 +7,8 @@ char c[10];
 int main(void)
 {
   unsigned i = nondet_uint();
-  __ESBMC_assume(i < 10);
-  __ESBMC_assert(&a[i] - a + (&c[i] - c) == 2 * i, "");
+  __VERIFIER_assume(i < 10);
+  __VERIFIER_assert(&a[i] - a + (&c[i] - c) == 2 * i);
   return 0;
 }
 // Imported from ESBMC regression/smtlib/github_9225

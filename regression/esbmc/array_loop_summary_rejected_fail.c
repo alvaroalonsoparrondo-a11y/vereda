@@ -18,7 +18,7 @@ int main()
   if (n) goto in;
   for (i = 0; i < 10; i++) { in: b[i] = 8; }
   for (long k = 0; k < 10; k++) a[k] = 9;
-  __ESBMC_assert(a[3] == 7, "a[3]");
+  __VERIFIER_assert(a[3] == 7); // a[3]
   return 0;
 }
 // Imported from ESBMC regression/esbmc/array_loop_summary_rejected_fail

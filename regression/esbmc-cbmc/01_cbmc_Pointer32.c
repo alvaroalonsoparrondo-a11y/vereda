@@ -53,7 +53,7 @@ static void dummy_abort(void)
 }
 int main() {
   Struct3 *p = malloc (sizeof (int) + 3 * sizeof(Union));
-__ESBMC_assume(p != ((void *)0));
+__VERIFIER_assume(p != ((void *)0));
 //  memset(p, 0, sizeof(int) + 3*sizeof(Union));
   p->Count = 3; // XXX Previously this assignment would be knackered by the
                 // concat interpretation code, and assign 3000303 instead.

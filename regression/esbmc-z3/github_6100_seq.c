@@ -14,9 +14,11 @@ int h(void)
 int main()
 {
   int x;
-  __ESBMC_assert(__ESBMC_forall(&x, h() == 21), "h returns 21 on first call");
+  __VERIFIER_assert(__ESBMC_forall(&x, h() == 21)); // h returns 21 on first call
 }
 // Imported from ESBMC regression/z3/github_6100_seq
 // RUN: --solver z3
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

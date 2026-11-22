@@ -1,8 +1,8 @@
 #include <assert.h>
 void f(void *restrict a, void *restrict b)
 {
-  __ESBMC_assume(a != 0);
-  __ESBMC_assume(b != 0);
+  __VERIFIER_assume(a != 0);
+  __VERIFIER_assume(b != 0);
   assert(a != b);
 }
 // Imported from ESBMC regression/esbmc/restrict_assume

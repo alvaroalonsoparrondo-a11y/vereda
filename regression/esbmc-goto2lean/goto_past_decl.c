@@ -8,7 +8,7 @@ int main(void) {
 L:
   x = 0;
   if (c) x = 1;
-  __ESBMC_assert(x == 0, "x is zero");
+  __VERIFIER_assert(x == 0); // x is zero
   return 0;
 }
 // Imported from ESBMC regression/goto2lean/goto_past_decl

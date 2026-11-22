@@ -12,7 +12,7 @@ int main(void)
 {
   g = 3;
   pure(1);
-  __ESBMC_assert(g == 3, "replaced call writes nothing");
+  __VERIFIER_assert(g == 3); // replaced call writes nothing
   return 0;
 }
 // Imported from ESBMC regression/function_contract/assigns_empty_replace

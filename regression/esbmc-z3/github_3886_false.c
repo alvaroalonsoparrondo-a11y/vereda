@@ -9,9 +9,9 @@ int main()
 {
   int a1, b1;
 
-  __ESBMC_assert(
-    __ESBMC_forall(&a1, __ESBMC_forall(&b1, (a1 > b1) || (b1 > a1))),
-    "nested forall (a>b)||(b>a) incorrectly asserted true");
+  __VERIFIER_assert(
+    __ESBMC_forall(&a1, __ESBMC_forall(&b1, (a1 > b1) || (b1 > a1)))
+); // nested forall (a>b)||(b>a) incorrectly asserted true
 
   return 0;
 }
@@ -19,5 +19,3 @@ int main()
 // RUN: --solver z3
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

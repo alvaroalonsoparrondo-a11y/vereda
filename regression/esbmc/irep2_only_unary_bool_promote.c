@@ -6,12 +6,12 @@ int a, b;
 
 int main(void)
 {
-  __ESBMC_assert(~(a || b) == -1, "~0 is -1");
-  __ESBMC_assert(-(a || b) == 0, "-0 is 0");
-  __ESBMC_assert(~(1 || b) == -2, "~1 is -2");
-  __ESBMC_assert(-(1 || b) == -1, "-1 is -1");
-  __ESBMC_assert(~(a && b) == -1, "&& promotes too");
-  __ESBMC_assert(~(a < 1) == -2, "a comparison promotes too");
+  __VERIFIER_assert(~(a || b) == -1); // ~0 is -1
+  __VERIFIER_assert(-(a || b) == 0); // -0 is 0
+  __VERIFIER_assert(~(1 || b) == -2); // ~1 is -2
+  __VERIFIER_assert(-(1 || b) == -1); // -1 is -1
+  __VERIFIER_assert(~(a && b) == -1); // && promotes too
+  __VERIFIER_assert(~(a < 1) == -2); // a comparison promotes too
   return 0;
 }
 // Imported from ESBMC regression/esbmc/irep2_only_unary_bool_promote

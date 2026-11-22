@@ -11,7 +11,7 @@ int main()
       r += i;
     return r;
   }
-  __ESBMC_assert(inner() == 8, "for-init shadow preserved");
+  __VERIFIER_assert(inner() == 8); // for-init shadow preserved
   return 0;
 }
 // Imported from ESBMC regression/esbmc/gcc_nested_func_for_init

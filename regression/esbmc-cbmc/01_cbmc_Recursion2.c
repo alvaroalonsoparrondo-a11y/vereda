@@ -6,7 +6,7 @@ void f(unsigned int counter) {
 
 int main() {
   unsigned int x;
-  __ESBMC_assume(x<=10);
+  __VERIFIER_assume(x<=10);
   
   f(x);
 

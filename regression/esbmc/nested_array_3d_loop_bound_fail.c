@@ -8,7 +8,7 @@ int main(void)
   for (int i = 0; i < a[1][1][1]; i++)
     s++;
 
-  __ESBMC_assert(s == 5, "the same bound, asserted wrong");
+  __VERIFIER_assert(s == 5); // the same bound, asserted wrong
   return 0;
 }
 // Imported from ESBMC regression/esbmc/nested_array_3d_loop_bound_fail

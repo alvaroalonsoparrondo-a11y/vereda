@@ -9,14 +9,14 @@ int main(void)
     return 0;
 
   unsigned long i = nondet_ulong();
-  __ESBMC_assume(i < 2);
+  __VERIFIER_assume(i < 2);
 
   const void **slot = &slots[i];
   const void *first = *slot;
   void *fresh = malloc(1);
   const void *second = slots[i];
 
-  __ESBMC_assert(first == second, "two reads of one slot agree");
+  __VERIFIER_assert(first == second); // two reads of one slot agree
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7855-reread

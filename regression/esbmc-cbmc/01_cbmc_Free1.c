@@ -2,7 +2,7 @@
 int main()
 {
   int *p=malloc(sizeof(int));
-  __ESBMC_assume(p);
+  __VERIFIER_assume(p);
   int *q=p;
   int i;
   

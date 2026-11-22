@@ -4,7 +4,7 @@ int main()
   int sum = 0;
   for (int *p = &a[4]; p != &a[0]; p--)
     sum += *(p - 1);
-  __ESBMC_assert(sum == 4, "four elements walked backwards");
+  __VERIFIER_assert(sum == 4); // four elements walked backwards
   return 0;
 }
 // Imported from ESBMC regression/esbmc/descending_pointer_walk_1d

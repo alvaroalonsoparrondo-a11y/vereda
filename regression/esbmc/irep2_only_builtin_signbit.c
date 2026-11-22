@@ -3,10 +3,10 @@ double nondet_double(void);
 int main(void)
 {
   double p = nondet_double(), n = nondet_double();
-  __ESBMC_assume(p == 1.0 && n == -1.0);
+  __VERIFIER_assume(p == 1.0 && n == -1.0);
 
-  __ESBMC_assert(!__builtin_signbit(p), "1.0 is positive");
-  __ESBMC_assert(__builtin_signbit(n), "-1.0 is negative");
+  __VERIFIER_assert(!__builtin_signbit(p)); // 1.0 is positive
+  __VERIFIER_assert(__builtin_signbit(n)); // -1.0 is negative
   return 0;
 }
 // Imported from ESBMC regression/esbmc/irep2_only_builtin_signbit

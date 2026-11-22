@@ -10,7 +10,7 @@ int main(void)
   u.b = 1;
   u.a = 0x12345678;
 
-  __ESBMC_assert(u.b == 1, "the narrow field must not survive the wide write");
+  __VERIFIER_assert(u.b == 1); // the narrow field must not survive the wide write
   return 0;
 }
 // Imported from ESBMC regression/esbmc/union_mixed_field_bytes_fail

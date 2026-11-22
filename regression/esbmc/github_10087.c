@@ -10,7 +10,7 @@ struct S s[2];
 int main(void)
 {
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 2);
+  __VERIFIER_assume(i >= 0 && i < 2);
   *(unsigned int *)&s[i] = 0x31u;
   *((unsigned int *)&s[i] + 1) = 7u;
   assert(s[i].a == 1);

@@ -17,7 +17,7 @@ int main() {
         str2[j] = str1[0];
         j++;
     }
-	//__ESBMC_assume(i<0);
+	//__VERIFIER_assume(i<0);
 	j = MAX-1;
     for (i=0; i<MAX; i++) {
       assert(str1[i] == str2[j]);

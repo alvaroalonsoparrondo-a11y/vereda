@@ -8,7 +8,7 @@ int main()
     if (i == 50000)
       arr[i] = 3;
   for (int i = 0; i < N; i++)
-    __ESBMC_assert(arr[i] == i, "arr[i] == i");
+    __VERIFIER_assert(arr[i] == i); // arr[i] == i
 }
 // Imported from ESBMC regression/esbmc/array_loop_summary_fail
 // Needs: --summarize-array-loops

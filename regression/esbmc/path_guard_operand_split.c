@@ -37,12 +37,12 @@ int main(void)
   unsigned char m_ = (mn >> 4) & 0x0F, n_ = mn & 0x0F;
   if (m_ >= 1 && m_ <= 2 && n_ >= 1 && n_ <= 2)
     return 0;
-  __ESBMC_assert(handler(mn) == -1, "illegal encodings refuse");
+  __VERIFIER_assert(handler(mn) == -1); // illegal encodings refuse
 
   unsigned char off_ = (unsigned char)((mn >> 4) + (mn & 0x0F) - 1);
   if (off_ <= 4)
     return 0;
-  __ESBMC_assert(offset_handler(mn) == -1, "out-of-range offsets refuse");
+  __VERIFIER_assert(offset_handler(mn) == -1); // out-of-range offsets refuse
   return 0;
 }
 // Imported from ESBMC regression/esbmc/path_guard_operand_split

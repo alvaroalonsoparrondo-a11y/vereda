@@ -26,9 +26,9 @@ extern unsigned __VERIFIER_nondet_uint(void);
 int main(void)
 {
   int used = (int)__VERIFIER_nondet_uint();
-  __ESBMC_assume(used >= 1 && used <= 2);
+  __VERIFIER_assume(used >= 1 && used <= 2);
   int applet_len = (int)__VERIFIER_nondet_uint();
-  __ESBMC_assume(applet_len >= 1 && applet_len <= 2);
+  __VERIFIER_assume(applet_len >= 1 && applet_len <= 2);
 
   char *msg = (char *)malloc((unsigned long)(used + 1));
   if (msg == (char *)0)

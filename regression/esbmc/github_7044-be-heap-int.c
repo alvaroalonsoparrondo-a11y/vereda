@@ -7,7 +7,7 @@
 int main(void)
 {
   int *v = (int *)malloc(sizeof(int) * 15);
-  __ESBMC_assume(v);
+  __VERIFIER_assume(v);
   v[0] = 1;
   assert(v[0] == 1);
   v[14] = -7;

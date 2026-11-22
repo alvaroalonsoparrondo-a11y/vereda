@@ -3,10 +3,8 @@
 // model. See #4606.
 int main()
 {
-  __ESBMC_assert(__builtin_clz(1u) == 30, "clz(1) is 31, not 30");
+  __VERIFIER_assert(__builtin_clz(1u) == 30); // clz(1) is 31, not 30
   return 0;
 }
 // Imported from ESBMC regression/esbmc/builtin_clz_value_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

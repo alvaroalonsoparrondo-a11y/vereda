@@ -10,17 +10,17 @@ float nondet_float(void);
 int main()
 {
   float i = nondet_float();
-  __ESBMC_assume(isinf(i));
+  __VERIFIER_assume(isinf(i));
   assert(isnan(i * 0.0f));
   assert(isnan(0.0f * i));
 
   float n = nondet_float();
-  __ESBMC_assume(isnan(n));
+  __VERIFIER_assume(isnan(n));
   assert(isnan(n * 0.0f));
   assert(isnan(0.0f * n));
 
   float a = nondet_float();
-  __ESBMC_assume(a < 0.0f && isfinite(a));
+  __VERIFIER_assume(a < 0.0f && isfinite(a));
   assert(signbit(a * 0.0f));
   assert(signbit(0.0f * a));
 

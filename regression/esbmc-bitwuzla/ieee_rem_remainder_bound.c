@@ -12,7 +12,7 @@ float __VERIFIER_nondet_float(void);
 int main(void)
 {
   float x = __VERIFIER_nondet_float();
-  __ESBMC_assume(isgreaterequal(x, -1e6f) && islessequal(x, 1e6f));
+  __VERIFIER_assume(isgreaterequal(x, -1e6f) && islessequal(x, 1e6f));
   float r = remainderf(x, 3.0f);
   assert(islessequal(fabsf(r), 1.5f));
   return 0;

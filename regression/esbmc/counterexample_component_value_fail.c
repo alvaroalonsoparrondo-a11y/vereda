@@ -17,7 +17,7 @@ int main(void)
     s.total = s.total + s.reading[i];
   }
 
-  __ESBMC_assert(s.total != 18, "total is 18");
+  __VERIFIER_assert(s.total != 18); // total is 18
   return 0;
 }
 // Imported from ESBMC regression/esbmc/counterexample_component_value_fail

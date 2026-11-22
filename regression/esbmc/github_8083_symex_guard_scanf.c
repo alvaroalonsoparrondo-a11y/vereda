@@ -6,7 +6,7 @@ int main()
 {
   int n = 1;
   scanf("%d", &n);
-  __ESBMC_assume(n >= 0 && n <= 2);
+  __VERIFIER_assume(n >= 0 && n <= 2);
   int i = 0;
   while (i < n)
     ++i;

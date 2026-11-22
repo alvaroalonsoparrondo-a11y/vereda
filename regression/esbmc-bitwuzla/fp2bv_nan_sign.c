@@ -8,7 +8,7 @@ extern double __VERIFIER_nondet_double(void);
 int main(void)
 {
   double m = __VERIFIER_nondet_double();
-  __ESBMC_assume(m < 0.0);
+  __VERIFIER_assume(m < 0.0);
   double s = copysign(NAN, m);
   assert(isnan(s) && signbit(s));
   return 0;

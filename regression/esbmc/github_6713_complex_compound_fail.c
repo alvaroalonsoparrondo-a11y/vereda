@@ -5,11 +5,9 @@ int main(void)
 {
   _Complex float a = 3.0f + 4.0fi;
   a *= 2.0f;
-  __ESBMC_assert(__imag__ a == 4.0f, "imag must have doubled too");
+  __VERIFIER_assert(__imag__ a == 4.0f); // imag must have doubled too
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_6713_complex_compound_fail
 // RUN: --incremental-bmc
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

@@ -17,7 +17,7 @@ int main(void)
   u.i = nondet_uintptr();
   int *p = u.p;
   if (u.i == ua)
-    __ESBMC_assert(p == &a, "union read of a's address is &a");
+    __VERIFIER_assert(p == &a); // union read of a's address is &a
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_10798

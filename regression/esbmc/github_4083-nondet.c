@@ -8,7 +8,7 @@ int main()
 {
   void *labels[] = {&&L1, &&L2};
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 2);
+  __VERIFIER_assume(i >= 0 && i < 2);
   int x = 0;
   goto *labels[i];
 L1:
@@ -18,7 +18,7 @@ L2:
   x = 2;
   goto END;
 END:
-  __ESBMC_assert(x == 1 || x == 2, "reaches exactly one of the two labels");
+  __VERIFIER_assert(x == 1 || x == 2); // reaches exactly one of the two labels
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_4083-nondet

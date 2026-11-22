@@ -16,7 +16,7 @@ int main()
   float sq;
   float val;
   val = nondet_float(); 
-  __ESBMC_assume(val>0 && val<20);
+  __VERIFIER_assume(val>0 && val<20);
   sq = sqrt1(val);
   assert(sq < 5);
   return 0;

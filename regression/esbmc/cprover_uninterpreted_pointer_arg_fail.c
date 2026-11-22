@@ -12,11 +12,9 @@ int main()
   int x;
   const void *p = &x;
   unsigned long h = __CPROVER_uninterpreted_hasher(p);
-  __ESBMC_assert(h != 42, "UF result is unconstrained, so h can be 42");
+  __VERIFIER_assert(h != 42); // UF result is unconstrained, so h can be 42
   return 0;
 }
 // Imported from ESBMC regression/esbmc/cprover_uninterpreted_pointer_arg_fail
 // RUN: --incremental-bmc
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

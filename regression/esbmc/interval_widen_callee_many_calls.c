@@ -29,7 +29,7 @@ int main()
   STEP40;
   STEP40;
   STEP40;
-  __ESBMC_assert(count == 160, "count");
+  __VERIFIER_assert(count == 160); // count
 }
 // Imported from ESBMC regression/esbmc/interval_widen_callee_many_calls
 // Needs: --interval-analysis --interval-analysis-arithmetic --interval-analysis-extrapolate

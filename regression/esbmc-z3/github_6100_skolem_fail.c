@@ -8,11 +8,9 @@ int myabs(int a)
 int main()
 {
   int x;
-  __ESBMC_assert(__ESBMC_forall(&x, myabs(x) >= 0), "fails at INT_MIN");
+  __VERIFIER_assert(__ESBMC_forall(&x, myabs(x) >= 0)); // fails at INT_MIN
 }
 // Imported from ESBMC regression/z3/github_6100_skolem_fail
 // RUN: --solver z3
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

@@ -26,7 +26,7 @@ int main(void)
   while (i < 4)
     i++;
 
-  __ESBMC_assert(i == 4, "end");
+  __VERIFIER_assert(i == 4); // end
   return (int)seed;
 }
 // Imported from ESBMC regression/esbmc/synth_loop_invariant_calleeextern

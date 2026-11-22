@@ -15,7 +15,7 @@ int main()
 {
   struct P s;
   struct P *d = nondet_bool() ? &s : 0;
-  __ESBMC_assume(d != 0);
+  __VERIFIER_assume(d != 0);
   g(d);
   return 0;
 }

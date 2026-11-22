@@ -73,8 +73,8 @@ static const struct entry table[1025] = {
 int main(void)
 {
   unsigned i = nondet_uint();
-  __ESBMC_assume(i < 1025);
-  __ESBMC_assert(table[i].in.kind != 6, "some kind is 6");
+  __VERIFIER_assume(i < 1025);
+  __VERIFIER_assert(table[i].in.kind != 6); // some kind is 6
   return 0;
 }
 // Imported from ESBMC regression/esbmc/tuple_const_array_struct_member_fail

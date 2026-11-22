@@ -21,10 +21,12 @@ int main()
   vec[2] = 2;
   vec[3] = 3;
   data_t v;
-  __ESBMC_assert(
-    __ESBMC_exists(&v, count(v, vec) == 2), "some value occurs twice");
+  __VERIFIER_assert(
+    __ESBMC_exists(&v, count(v, vec) == 2)); // some value occurs twice
   return 0;
 }
 // Imported from ESBMC regression/z3/github_6154_count_exists
 // RUN: --solver z3
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

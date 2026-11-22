@@ -45,12 +45,12 @@ static struct jtag ports[2];
 int main(void)
 {
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 2);
+  __VERIFIER_assume(i >= 0 && i < 2);
   unsigned long port = (unsigned long)ports + (unsigned long)i * sizeof(struct jtag);
   *(unsigned long *)(port + __builtin_offsetof(struct uart_port, mapbase)) = 1;
   *(unsigned int *)(port + __builtin_offsetof(struct uart_port, icount.tx)) = 2;
   *(unsigned int *)(port + __builtin_offsetof(struct uart_port, lock)) = 3;
-  __ESBMC_assert(i != 1, "index is not 1");
+  __VERIFIER_assert(i != 1); // index is not 1
   return 0;
 }
 // Imported from ESBMC regression/esbmc/intptr_struct_store_union_nested_fail

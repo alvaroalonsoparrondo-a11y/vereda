@@ -10,7 +10,7 @@ int main(void)
   volatile NvBool *pointer = &flag;
   int first = pointer->value;
   int second = pointer->value;
-  __ESBMC_assert(first == second, "volatile pointer member reads may differ");
+  __VERIFIER_assert(first == second); // volatile pointer member reads may differ
 }
 // Imported from ESBMC regression/esbmc/volatile_qualified_struct_read_fail
 // Needs: --std c11 --volatile-check

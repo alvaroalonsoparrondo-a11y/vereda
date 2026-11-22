@@ -21,7 +21,7 @@ int main(void)
 {
   S s = {{0, 0}, {0, 0}};
   f(&s);
-  __ESBMC_assert(s.b[0] + s.b[1] != 3, "b holds 1 and 2");
+  __VERIFIER_assert(s.b[0] + s.b[1] != 3); // b holds 1 and 2
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_8097_trace_index_through_pointer_fail

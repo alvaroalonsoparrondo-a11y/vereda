@@ -5,7 +5,7 @@ int main()
   for (int i = 0; i < 60; i++)
     if (i < 50)
       a[i] = 1;
-  __ESBMC_assert(a[49] == 1, "last element");
+  __VERIFIER_assert(a[49] == 1); // last element
 }
 // Imported from ESBMC regression/esbmc/array_loop_summary_bounds
 // Needs: --summarize-array-loops

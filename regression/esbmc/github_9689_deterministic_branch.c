@@ -9,7 +9,7 @@ int sum(int n)
 int main(void)
 {
   int r = sum(5);
-  __ESBMC_assert(r != 15, "reached");
+  __VERIFIER_assert(r != 15); // reached
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9689_deterministic_branch

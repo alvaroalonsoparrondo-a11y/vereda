@@ -4,7 +4,7 @@ double nondet_double();
 int main(void)
 {
   double d = nondet_double();
-  __ESBMC_assume(d > -2.0 && d < -1.0);
+  __VERIFIER_assume(d > -2.0 && d < -1.0);
   int z = (int)d;
   return z;
 }

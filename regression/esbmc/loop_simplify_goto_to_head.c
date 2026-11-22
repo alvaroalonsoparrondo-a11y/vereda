@@ -20,11 +20,9 @@ int main()
 L:
   while (i < 10)
     i += 3;
-  __ESBMC_assert(i == 12, "goto bypasses pre-loop init");
+  __VERIFIER_assert(i == 12); // goto bypasses pre-loop init
   return 0;
 }
 // Imported from ESBMC regression/esbmc/loop_simplify_goto_to_head
 // RUN: --unwind 20 --no-unwinding-assertions
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

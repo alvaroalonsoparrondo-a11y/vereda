@@ -4,8 +4,8 @@ int main()
 {
   double f, f2;
   // the following rely on f not being a NaN
-  __ESBMC_assume(!isnan(f2));
-  __ESBMC_assume(isfinite(f2));
+  __VERIFIER_assume(!isnan(f2));
+  __VERIFIER_assume(isfinite(f2));
   f=f2;
   
   // addition

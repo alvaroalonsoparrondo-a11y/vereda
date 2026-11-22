@@ -7,7 +7,7 @@ int main(void)
   int y = 0;
   if (x > 5)
     y = 1;
-  __ESBMC_assert(y == 0, "reached");
+  __VERIFIER_assert(y == 0); // reached
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9689_nondet_branch_fail

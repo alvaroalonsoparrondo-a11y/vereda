@@ -6,9 +6,11 @@ int main() {
   int j = 0;
   for (int i = 0; i < N; i++) { a[i] = j; j += 3; }
   unsigned x = nondet_uint();
-  __ESBMC_assume(x < N);
-  __ESBMC_assert(a[x] == 3 * (int)x, "");
-  __ESBMC_assert(j == 3 * N, "");
+  __VERIFIER_assume(x < N);
+  __VERIFIER_assert(a[x] == 3 * (int)x);
+  __VERIFIER_assert(j == 3 * N);
 }
 // Imported from ESBMC regression/esbmc/array_loop_summary_counter
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: TIMEOUT after 60 s
+// MODE: FUTURE

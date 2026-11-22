@@ -14,13 +14,13 @@ int main(void)
    * its own bit-twiddling and never reaches convert_signbit, so a test
    * written with signbit would silently fail to exercise this path. */
   double x = __VERIFIER_nondet_double();
-  __ESBMC_assume(x > 0.0);
+  __VERIFIER_assume(x > 0.0);
   double z = -0.0;
   double q = x / z;
   (void)q;
-  __ESBMC_assert(
-    __builtin_signbit(z) != 0,
-    "a literal -0.0 constant must report a negative sign bit");
+  __VERIFIER_assert(
+    __builtin_signbit(z) != 0
+); // a literal -0.0 constant must report a negative sign bit
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-neg-zero-literal-signbit

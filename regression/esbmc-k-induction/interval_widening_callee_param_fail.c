@@ -1,6 +1,6 @@
 void check(int c)
 {
-  __ESBMC_assert(c, "i >= 1");
+  __VERIFIER_assert(c); // i >= 1
 }
 void run(int i, int n)
 {

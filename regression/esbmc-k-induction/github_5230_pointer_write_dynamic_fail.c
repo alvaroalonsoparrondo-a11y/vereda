@@ -12,12 +12,12 @@ extern unsigned char nondet_uchar(void);
 int main(void)
 {
   unsigned char (*dest)[8] = malloc(8);
-  __ESBMC_assume(dest != 0);
+  __VERIFIER_assume(dest != 0);
 
   for (int i = 0; i < 8; i++)
     (*dest)[i] = nondet_uchar();
 
-  __ESBMC_assert((*dest)[7] != 0x2A, "(*dest)[7] is nondet, so 0x2A is reachable");
+  __VERIFIER_assert((*dest)[7] != 0x2A); // (*dest)[7] is nondet, so 0x2A is reachable
   return 0;
 }
 // Imported from ESBMC regression/k-induction/github_5230_pointer_write_dynamic_fail

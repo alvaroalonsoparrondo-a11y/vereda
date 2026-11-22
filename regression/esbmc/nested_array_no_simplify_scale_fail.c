@@ -43,8 +43,8 @@ int main(void)
   a[3][6] = 30;
   a[3][7] = 31;
 
-  __ESBMC_assert(
-    a[idx(3)][idx(7)] == 30, "the last store must not be misread");
+  __VERIFIER_assert(
+    a[idx(3)][idx(7)] == 30); // the last store must not be misread
   return 0;
 }
 // Imported from ESBMC regression/esbmc/nested_array_no_simplify_scale_fail

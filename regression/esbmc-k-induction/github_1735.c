@@ -4,7 +4,7 @@ _Bool b = 0;
 int main() {
   goto c;
 d:
-  __ESBMC_assert(b, "");
+  __VERIFIER_assert(b);
 c:
   b = a;
   a = 0;

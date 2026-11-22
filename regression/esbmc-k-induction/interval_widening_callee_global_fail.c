@@ -1,7 +1,7 @@
 int j;
 void check(int c)
 {
-  __ESBMC_assert(c, "j >= 1");
+  __VERIFIER_assert(c); // j >= 1
 }
 int main()
 {

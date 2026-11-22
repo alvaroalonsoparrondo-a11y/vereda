@@ -6,8 +6,8 @@ struct b {
 };
 
 int main() {
-   __ESBMC_assume(a < ((18446744073709551615UL) - 1 - sizeof(struct b)));
-   __ESBMC_assume(a > 0);
+   __VERIFIER_assume(a < ((18446744073709551615UL) - 1 - sizeof(struct b)));
+   __VERIFIER_assume(a > 0);
    struct b *d = malloc(sizeof(struct b) + a + 1);
    d->bytes[a] = '\0';
    assert(d->bytes[a] == 0);

@@ -1,7 +1,7 @@
 #include <assert.h>
 
 // Assertion coverage under --irep2-bodies (esbmc#4715). The two asserts back
-// onto a side_effect_exprt("function_call") for __ESBMC_assert; sideeffect2t
+// onto a side_effect_exprt("function_call") for __VERIFIER_assert; sideeffect2t
 // carries no source location, so the IREP2 body round-trip used to strip the
 // ASSERT instruction's location. --assertion-coverage gates its instrumentation
 // on the source filename, so a location-less assert was silently dropped and

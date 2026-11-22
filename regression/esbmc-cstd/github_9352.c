@@ -12,7 +12,7 @@ struct S
 int main(void)
 {
   int v = __VERIFIER_nondet_int();
-  __ESBMC_assume(v != 0);
+  __VERIFIER_assume(v != 0);
 
   s.b = 0;
   s.b |= 2;

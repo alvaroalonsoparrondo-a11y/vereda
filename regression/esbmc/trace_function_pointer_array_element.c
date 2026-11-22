@@ -13,13 +13,13 @@ void handler(int sig)
 int main(void)
 {
   int installed = nondet_int();
-  __ESBMC_assume(installed >= 0 && installed < 6);
+  __VERIFIER_assume(installed >= 0 && installed < 6);
   handlers[installed] = handler;
 
   int raised = nondet_int();
-  __ESBMC_assume(raised >= 0 && raised < 6);
+  __VERIFIER_assume(raised >= 0 && raised < 6);
   void (*resolved)(int) = handlers[raised];
-  __ESBMC_assert(resolved == 0, "no handler installed for the raised slot");
+  __VERIFIER_assert(resolved == 0); // no handler installed for the raised slot
   return 0;
 }
 // Imported from ESBMC regression/esbmc/trace_function_pointer_array_element

@@ -8,7 +8,7 @@
 int main(void)
 {
   unsigned int n;
-  __ESBMC_assume(n <= 4);
+  __VERIFIER_assume(n <= 4);
 
   unsigned int i = 0;
 

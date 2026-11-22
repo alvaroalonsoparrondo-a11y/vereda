@@ -11,10 +11,10 @@ int main(void)
   unsigned long base = (unsigned long)&o + i * sizeof(struct outer);
   *((unsigned int *)(base + 8)) = 1U;
   *((unsigned int *)(base + 24)) = 2U;
-  __ESBMC_assume(i == 0);
-  __ESBMC_assert(o.in.y == 1U, "store reaches the nested member");
-  __ESBMC_assert(o.arr[2] == 2U, "store reaches the array member");
-  __ESBMC_assert(o.b == 9U && o.a == 0U && o.in.x == 0U, "others untouched");
+  __VERIFIER_assume(i == 0);
+  __VERIFIER_assert(o.in.y == 1U); // store reaches the nested member
+  __VERIFIER_assert(o.arr[2] == 2U); // store reaches the array member
+  __VERIFIER_assert(o.b == 9U && o.a == 0U && o.in.x == 0U); // others untouched
   return 0;
 }
 // Imported from ESBMC regression/esbmc/intptr_struct_store_nested

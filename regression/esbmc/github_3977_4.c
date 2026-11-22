@@ -21,7 +21,7 @@ int main(void) {
 
   // Dynamic (nondet) index — forces dynamic-offset dereference path
   int i;
-  __ESBMC_assume(i >= 0 && i < 3);
+  __VERIFIER_assume(i >= 0 && i < 3);
 
   entry *p = &arr[i];
 

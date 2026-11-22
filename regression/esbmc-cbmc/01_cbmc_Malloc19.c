@@ -2,7 +2,7 @@
 void *my_malloc(unsigned size)
 {
   void *p = malloc(size);
-  __ESBMC_assume(p);
+  __VERIFIER_assume(p);
   return p;
 }
 

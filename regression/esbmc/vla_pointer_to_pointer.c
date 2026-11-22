@@ -3,7 +3,7 @@ int nondet_int(void);
 int main(void)
 {
   int m = nondet_int();
-  __ESBMC_assume(m >= 2 && m <= 4);
+  __VERIFIER_assume(m >= 2 && m <= 4);
   int a[3][m];
   a[1][1] = 7;
   a[2][m - 1] = 9;
@@ -16,5 +16,3 @@ int main(void)
 }
 // Imported from ESBMC regression/esbmc/vla_pointer_to_pointer
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

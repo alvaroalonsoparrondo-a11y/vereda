@@ -3,9 +3,9 @@ unsigned int nondet_uint();
 int main()
 {
   unsigned int n = nondet_uint();
-//  __ESBMC_assume(n>0 && n<10000);
+//  __VERIFIER_assume(n>0 && n<10000);
   unsigned int x=n, y=0;
-//  __ESBMC_assume(x==n);
+//  __VERIFIER_assume(x==n);
   while(x>0)
   {
     x--;

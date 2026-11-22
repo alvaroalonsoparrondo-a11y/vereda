@@ -6,7 +6,7 @@
 int main(void)
 {
   unsigned int t, u;
-  __ESBMC_assume(t <= 2 && u <= 2);
+  __VERIFIER_assume(t <= 2 && u <= 2);
 
   unsigned int i = 0;
   unsigned int s = 0;

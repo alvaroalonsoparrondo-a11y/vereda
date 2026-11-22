@@ -11,10 +11,10 @@ void g(int *p)
 int main()
 {
   unsigned n = nondet_uint();
-  __ESBMC_assume(n >= 4 && n < 8);
+  __VERIFIER_assume(n >= 4 && n < 8);
   int v[n];
   int *p = nondet_bool() ? v : 0;
-  __ESBMC_assume(p != 0);
+  __VERIFIER_assume(p != 0);
   g(p);
   return 0;
 }

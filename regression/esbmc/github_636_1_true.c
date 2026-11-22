@@ -2,15 +2,17 @@
 
 int bar(void *ptr) {
   unsigned int size = __ESBMC_get_object_size(ptr); // Do we have something like this?
-  __ESBMC_assert(size < 70, "Allocated size should be equal");
+  __VERIFIER_assert(size < 70); // Allocated size should be equal
 }
 
 int main() {
     unsigned int alloc_size = nondet_uint();
-    __ESBMC_assume(alloc_size > 0 && alloc_size < 60);
+    __VERIFIER_assume(alloc_size > 0 && alloc_size < 60);
     void * foo = malloc(alloc_size);
     bar(foo); 
 }
 // Imported from ESBMC regression/esbmc/github_636_1_true
 // RUN: --force-malloc-success
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

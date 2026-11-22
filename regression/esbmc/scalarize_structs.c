@@ -52,7 +52,7 @@ int main(void)
   assert(fresh.total == 7);
 
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 2);
+  __VERIFIER_assume(i >= 0 && i < 2);
   struct sample picked;
   picked = table[i];
   assert(picked.total == 5 || picked.total == 9);

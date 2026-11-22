@@ -24,13 +24,13 @@ int main()
   {
     if (qa % 5 == 1)
     {
-      __ESBMC_assert(0, "in loop: false");
+      __VERIFIER_assert(0); // in loop: false
       break;
     }
     qa = (qa + 2) % 256;
   }
-  __ESBMC_assert(qa % 2 == 1, "post loop: qa mod");
-  __ESBMC_assert(0 <= qa, "post loop: qa ge");
+  __VERIFIER_assert(qa % 2 == 1); // post loop: qa mod
+  __VERIFIER_assert(0 <= qa); // post loop: qa ge
 }
 // Imported from ESBMC regression/loop-invariants/github_4052_1
 // Needs: --loop-invariant

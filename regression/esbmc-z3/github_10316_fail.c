@@ -8,7 +8,7 @@ int main()
   // 1 + 2^-24 is a tie: ties-away gives 1 + 2^-23, ties-even gives 1.
   float x = 1.0f + 0x1p-24f;
   if (__ESBMC_rounding_mode == 1)
-    __ESBMC_assert(x == 1.0f, "ties round to even");
+    __VERIFIER_assert(x == 1.0f); // ties round to even
   return 0;
 }
 // Imported from ESBMC regression/z3/github_10316_fail

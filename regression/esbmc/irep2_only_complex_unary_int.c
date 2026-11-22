@@ -12,7 +12,7 @@ int main(void)
   __real__ a = nondet_int();
   __imag__ a = nondet_int();
   int ar = __real__ a, ai = __imag__ a;
-  __ESBMC_assume(ar >= 1 && ar <= 4 && ai >= 1 && ai <= 4);
+  __VERIFIER_assume(ar >= 1 && ar <= 4 && ai >= 1 && ai <= 4);
 
   int _Complex m = -a;
   assert(__real__ m == -ar && __imag__ m == -ai);

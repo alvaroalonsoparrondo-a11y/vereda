@@ -9,7 +9,7 @@ _Float16 nondet_h(void);
 int main(void)
 {
   _Float16 x = nondet_h();
-  __ESBMC_assume((float)x == 1.0f);
+  __VERIFIER_assume((float)x == 1.0f);
   _Float16 y = x + (_Float16)0x1p-10f;
   assert(y != x);
   return 0;

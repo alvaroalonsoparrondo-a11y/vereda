@@ -6,11 +6,11 @@ int main()
   int x = 0;
   if (nondet_int())
   {
-    __ESBMC_assert(0, "v");
+    __VERIFIER_assert(0); // v
     x = 1;
     x = x + 1;
   }
-  __ESBMC_assert(x == 0, "w");
+  __VERIFIER_assert(x == 0); // w
   return 0;
 }
 // Imported from ESBMC regression/esbmc/all_witnesses_code_after_failed_assert

@@ -8,11 +8,11 @@ int main(void)
   __ESBMC_rounding_mode = 0; /* ROUND_TO_EVEN */
   double x = __VERIFIER_nondet_double();
   double y = __VERIFIER_nondet_double();
-  __ESBMC_assume(x == 1.0);
-  __ESBMC_assume(y == 2.0);
+  __VERIFIER_assume(x == 1.0);
+  __VERIFIER_assume(y == 2.0);
   double z = x / y;
 
-  __ESBMC_assert(!isnan(z), "isnan(1.0 / 2.0) is false");
+  __VERIFIER_assert(!isnan(z)); // isnan(1.0 / 2.0) is false
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-isnan-not-nan

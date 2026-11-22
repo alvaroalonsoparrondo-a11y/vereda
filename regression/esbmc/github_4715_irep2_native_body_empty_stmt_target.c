@@ -11,14 +11,14 @@ int main(void)
   switch (c)
   {
   case 1:
-    __ESBMC_assert(0, "in a case");
+    __VERIFIER_assert(0); // in a case
     break;
   }
   if (c == 2)
     goto L;
   return 0;
 L:
-  __ESBMC_assert(0, "under a label");
+  __VERIFIER_assert(0); // under a label
   return 1;
 }
 // Imported from ESBMC regression/esbmc/github_4715_irep2_native_body_empty_stmt_target

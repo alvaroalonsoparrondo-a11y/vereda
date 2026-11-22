@@ -19,7 +19,7 @@ int main(void) {
   P *o = (P *)__ESBMC_alloca(sizeof(P));
   o->coeffs[0] = 5;
   callee(o, o);
-  __ESBMC_assert(o->coeffs[0] == 5, "implied by the second ensures");
+  __VERIFIER_assert(o->coeffs[0] == 5); // implied by the second ensures
   return 0;
 }
 // Imported from ESBMC regression/function_contract/github_6551_requires_ptr_neq_replace_fail

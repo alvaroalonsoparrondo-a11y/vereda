@@ -16,7 +16,7 @@ int main()
 {
   int i;
   
-  __ESBMC_assume(i==3 || i==4);
+  __VERIFIER_assume(i==3 || i==4);
   
   switch(f(i))
   {

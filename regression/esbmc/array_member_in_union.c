@@ -14,7 +14,7 @@ static state_t g;
 int main(void)
 {
   unsigned k = nondet_uint();
-  __ESBMC_assume(k < 8);
+  __VERIFIER_assume(k < 8);
   g.cfg = 1;
   g.tail = 2;
   uint32_t *p = &g.u.a[k];
@@ -25,5 +25,3 @@ int main(void)
 }
 // Imported from ESBMC regression/esbmc/array_member_in_union
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

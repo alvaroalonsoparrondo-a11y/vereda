@@ -4,7 +4,7 @@
 int main(void)
 {
   int s = __VERIFIER_nondet_int();
-  __ESBMC_assume(s == 65536);
+  __VERIFIER_assume(s == 65536);
   if (s * s != 0)
     assert(0);
   return 0;

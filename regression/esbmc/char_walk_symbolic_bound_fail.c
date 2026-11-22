@@ -7,7 +7,7 @@ int main(void)
 {
   struct S s;
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i <= 2);
+  __VERIFIER_assume(i >= 0 && i <= 2);
   int n = 0;
   for (char *p = (char *)&s.a[0]; p != (char *)&s.a[i]; ++p)
     ++n;

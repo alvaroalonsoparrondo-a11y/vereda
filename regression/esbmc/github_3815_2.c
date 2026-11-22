@@ -25,10 +25,10 @@ unsigned int foo_iter(const unsigned int n)
 int main()
 {
   unsigned int n;
-  __ESBMC_assume(n < 3);
+  __VERIFIER_assume(n < 3);
   unsigned int rec = foo_rec(n);
   unsigned int iter = foo_iter(n);
-  __ESBMC_assert(rec == iter, "foo_rec matches foo_iter");
+  __VERIFIER_assert(rec == iter); // foo_rec matches foo_iter
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_3815_2

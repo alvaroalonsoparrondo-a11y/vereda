@@ -13,8 +13,8 @@ void callee(P *a, P *b) {
   __ESBMC_ensures(b->coeffs[0] == __ESBMC_old(b->coeffs[0]));
   a->coeffs[0] = 1;
 }
-int main(void){ P *o=(P*)malloc(sizeof(P)); __ESBMC_assume(o!=0); o->coeffs[0]=5;
-  callee(o,o); __ESBMC_assert(o->coeffs[0]==5,"false"); return 0; }
+int main(void){ P *o=(P*)malloc(sizeof(P)); __VERIFIER_assume(o!=0); o->coeffs[0]=5;
+  callee(o,o); __VERIFIER_assert(o->coeffs[0]==5); return 0; } // false
 // Imported from ESBMC regression/function_contract/github_6542_is_fresh_vs_plain_ptr_fail
 // Needs: --replace-call-with-contract callee
 // RUN: --replace-call-with-contract callee --unwind 8

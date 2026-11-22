@@ -16,11 +16,11 @@ int main()
 {
   int bound2, idx2, sum;
   idx2 = 0;
-  __ESBMC_assume(0 <= sum && sum < 256);
-  __ESBMC_assume(4 <= bound2 && bound2 < 256);
-  __ESBMC_assume(0 <= idx2 && idx2 <= bound2);
-  __ESBMC_assume(256 % bound2 == 0);
-  __ESBMC_assume((sum % bound2) == idx2 % bound2);
+  __VERIFIER_assume(0 <= sum && sum < 256);
+  __VERIFIER_assume(4 <= bound2 && bound2 < 256);
+  __VERIFIER_assume(0 <= idx2 && idx2 <= bound2);
+  __VERIFIER_assume(256 % bound2 == 0);
+  __VERIFIER_assume((sum % bound2) == idx2 % bound2);
 
   /* Range invariants only — relational invariant intentionally omitted */
   __ESBMC_loop_invariant(0 <= sum && sum < 256);
@@ -33,7 +33,7 @@ int main()
     sum = (sum + 1) % 256;
     ++idx2;
   }
-  __ESBMC_assert((sum % bound2) == (idx2 % bound2), "post loop modular equality");
+  __VERIFIER_assert((sum % bound2) == (idx2 % bound2)); // post loop modular equality
   return 0;
 }
 // Imported from ESBMC regression/loop-invariants/multi_property_unknown_diagnosis

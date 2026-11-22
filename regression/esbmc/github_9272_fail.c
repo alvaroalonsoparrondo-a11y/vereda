@@ -11,10 +11,8 @@ int main(void)
   uintptr_t x = nondet_uintptr();
   int *p = (int *)x;
   if (x == ua)
-    __ESBMC_assert(p != &a, "cast of a's address is not &a");
+    __VERIFIER_assert(p != &a); // cast of a's address is not &a
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9272_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

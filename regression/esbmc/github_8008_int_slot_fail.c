@@ -9,7 +9,7 @@ int main()
   int a = x + 1;
   *q = 5;
   int b = x + 1;
-  __ESBMC_assert(a == b, "x unchanged");
+  __VERIFIER_assert(a == b); // x unchanged
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_8008_int_slot_fail

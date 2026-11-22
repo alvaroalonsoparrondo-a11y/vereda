@@ -3,7 +3,7 @@
 int main()
 {
   unsigned n, i, s = 0;
-  __ESBMC_assume(n <= 3);
+  __VERIFIER_assume(n <= 3);
 
   for (i = 0; i < n; i++)
     s += 1;

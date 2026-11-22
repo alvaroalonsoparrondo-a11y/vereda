@@ -8,7 +8,7 @@ int main(void)
 {
   int a[4];
   long k = nondet_long();
-  __ESBMC_assume(k != 3);
+  __VERIFIER_assume(k != 3);
   ptrdiff_t n = k;
   if (nondet_bool())
     n = (a + 3) - a;

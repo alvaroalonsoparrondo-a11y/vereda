@@ -28,7 +28,7 @@ int main(void)
     i = i + 1;
   }
   fp();
-  __ESBMC_assert(s == 4, "s == 4");
+  __VERIFIER_assert(s == 4); // s == 4
   return 0;
 }
 // Imported from ESBMC regression/esbmc/synth_loop_invariant_threadptr

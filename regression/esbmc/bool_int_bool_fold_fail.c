@@ -6,7 +6,7 @@ int nondet_int(void);
 int main(void)
 {
   int i = nondet_int();
-  __ESBMC_assert((int)(_Bool)i == i, "reverse round trip is not the identity");
+  __VERIFIER_assert((int)(_Bool)i == i); // reverse round trip is not the identity
   return 0;
 }
 // Imported from ESBMC regression/esbmc/bool_int_bool_fold_fail

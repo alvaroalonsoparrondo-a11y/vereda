@@ -8,7 +8,7 @@ int main(void)
   int y = (x > 5)
     ? f()
     : 0;
-  __ESBMC_assert(y == 0, "reached");
+  __VERIFIER_assert(y == 0); // reached
   return 0;
 }
 // Imported from ESBMC regression/witnesses_validate/reachsafety-violationwitness/ternary_question_line_9883

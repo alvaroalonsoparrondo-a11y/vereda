@@ -4,7 +4,7 @@ int main(void)
 {
   char b[4];
   strcpy(b, "abc");
-  __ESBMC_assert(b[0] == 'a', "strcpy copied the first byte");
+  __VERIFIER_assert(b[0] == 'a'); // strcpy copied the first byte
   return 0;
 }
 // Imported from ESBMC regression/esbmc/bundled_headers_from_vfs

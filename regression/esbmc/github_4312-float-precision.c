@@ -20,7 +20,7 @@ extern float nondet_float(void);
 int main(void)
 {
   float x = nondet_float();
-  __ESBMC_assume(x < -1.0e+38f && x >= -FLT_MAX);
+  __VERIFIER_assume(x < -1.0e+38f && x >= -FLT_MAX);
   assert(x > 0);
   return 0;
 }

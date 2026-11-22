@@ -44,7 +44,7 @@ int main(void)
 {
   int x = 0;
   struct S s = mk(nondet_int(), &x);
-  __ESBMC_assume(s.a > 0 && s.a < 100);
+  __VERIFIER_assume(s.a > 0 && s.a < 100);
   struct S t;
   t = s;
   t.a = t.a + 1;

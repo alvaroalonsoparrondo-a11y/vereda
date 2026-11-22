@@ -11,7 +11,7 @@ int main(void)
   uintptr_t ua = 1;
   if (nondet_bool())
     ua = (uintptr_t)&a;
-  __ESBMC_assert(p != &a || n == (uintptr_t)&a, "p is a only at a's address");
+  __VERIFIER_assert(p != &a || n == (uintptr_t)&a); // p is a only at a's address
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9273

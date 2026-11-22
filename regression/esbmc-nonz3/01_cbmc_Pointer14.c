@@ -14,9 +14,9 @@ typedef blocknode* bl;
 
 int main () {
   block* bp = (block*)(malloc(sizeof(block)));
-  __ESBMC_assume(bp);
+  __VERIFIER_assume(bp);
   bl l = (bl)(malloc(sizeof(blocknode)));
-  __ESBMC_assume(l);
+  __VERIFIER_assume(l);
   bp->version = 1;
   l->b = bp;
   l->b->version = l->b->version+1;

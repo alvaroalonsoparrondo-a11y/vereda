@@ -9,7 +9,7 @@ _start:
         r = t; goto _start;
     after:
         r = t;
-        __ESBMC_assert(r == 1, "r == 1");
+        __VERIFIER_assert(r == 1); // r == 1
         return 0;
     }
 }

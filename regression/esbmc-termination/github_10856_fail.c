@@ -14,5 +14,5 @@ int main(void)
 // Needs: --termination --k-step 2 --max-inductive-step 3
 // RUN: --termination --k-step 2 --max-k-step 40 --max-inductive-step 3
 // MODE: FUTURE
-// EXPECT: ^Inductive step shows a non-terminating execution
+// EXPECT: ^Recurrent state shows a non-terminating execution.*$
 // EXPECT: ^VERIFICATION FAILED$

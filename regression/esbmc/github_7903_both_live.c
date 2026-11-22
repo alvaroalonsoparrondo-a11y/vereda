@@ -3,7 +3,7 @@ int main(void) {
 _start:
     {
         unsigned t;
-        if (r >= 2) { __ESBMC_assert(r == 2, "r == 2"); return 0; }
+        if (r >= 2) { __VERIFIER_assert(r == 2); return 0; } // r == 2
         t = r + 1;
         if (nondet_int() != 0) { r = t; goto _start; }
         r = t; goto _start;

@@ -22,12 +22,10 @@ int main(void)
 {
   f.stack[0].r = nondet_u2();
   f.sp = 1;
-  __ESBMC_assert(f.stack[0].r == 5, "a nondet slot is not 5");
+  __VERIFIER_assert(f.stack[0].r == 5); // a nondet slot is not 5
   return 0;
 }
 // Imported from ESBMC regression/esbmc/nondet_union_slot_const_prop_fail
 // RUN: --unwind 3
 // EXPECT: ^State 1 file .*nondet_union_slot_const_prop_fail\.c line 25 column 3 function main thread 0$
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^State 1 file .*nondet_union_slot_const_prop_fail\.c line 25 column 3 function main thread 0$
-// MODE: FUTURE

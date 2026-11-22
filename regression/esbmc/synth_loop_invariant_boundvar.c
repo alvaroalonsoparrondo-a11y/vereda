@@ -8,8 +8,8 @@
 int main(void)
 {
   unsigned int n, e;
-  __ESBMC_assume(n >= 1 && n <= 3);
-  __ESBMC_assume(e == 0);
+  __VERIFIER_assume(n >= 1 && n <= 3);
+  __VERIFIER_assume(e == 0);
 
   unsigned int m = 0;
   unsigned int i = 0;

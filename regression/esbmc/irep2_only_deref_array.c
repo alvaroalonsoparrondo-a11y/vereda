@@ -6,7 +6,7 @@ int main(void)
 
   *a = 7;
 
-  __ESBMC_assert(a[0] == 7, "*a assigns the first element");
+  __VERIFIER_assert(a[0] == 7); // *a assigns the first element
   return 0;
 }
 // Imported from ESBMC regression/esbmc/irep2_only_deref_array

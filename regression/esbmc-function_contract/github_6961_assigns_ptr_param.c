@@ -14,7 +14,7 @@ int main(void)
   int b[N];
   b[0] = 1;
   clr(b);
-  __ESBMC_assert(b[0] == 0, "callee zeroed the first element");
+  __VERIFIER_assert(b[0] == 0); // callee zeroed the first element
   return 0;
 }
 // Imported from ESBMC regression/function_contract/github_6961_assigns_ptr_param

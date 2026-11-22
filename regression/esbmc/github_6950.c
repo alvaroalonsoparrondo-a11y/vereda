@@ -40,12 +40,12 @@ int main(void)
   (void)u;
   (void)anon;
 
-  __ESBMC_assert(((uintptr_t)&s % 16) == 0, "_Alignas(16) local is 16-aligned");
-  __ESBMC_assert(((uintptr_t)&g % 16) == 0, "_Alignas(16) global is 16-aligned");
-  __ESBMC_assert(((uintptr_t)&t % 32) == 0, "aligned(32) local is 32-aligned");
-  __ESBMC_assert(((uintptr_t)q % 4) == 0, "member of _Alignas'd packed struct is 4-aligned");
-  __ESBMC_assert(((uintptr_t)&u % 16) == 0, "_Alignas(16) union is 16-aligned");
-  __ESBMC_assert(((uintptr_t)&anon % 16) == 0, "_Alignas(16) anonymous struct is 16-aligned");
+  __VERIFIER_assert(((uintptr_t)&s % 16) == 0); // _Alignas(16) local is 16-aligned
+  __VERIFIER_assert(((uintptr_t)&g % 16) == 0); // _Alignas(16) global is 16-aligned
+  __VERIFIER_assert(((uintptr_t)&t % 32) == 0); // aligned(32) local is 32-aligned
+  __VERIFIER_assert(((uintptr_t)q % 4) == 0); // member of _Alignas'd packed struct is 4-aligned
+  __VERIFIER_assert(((uintptr_t)&u % 16) == 0); // _Alignas(16) union is 16-aligned
+  __VERIFIER_assert(((uintptr_t)&anon % 16) == 0); // _Alignas(16) anonymous struct is 16-aligned
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_6950

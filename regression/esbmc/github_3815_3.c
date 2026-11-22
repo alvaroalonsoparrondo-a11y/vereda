@@ -16,8 +16,8 @@ unsigned int fib_rec(const unsigned int n)
 int main()
 {
   unsigned int n;
-  __ESBMC_assume(n == 2);
-  __ESBMC_assert(fib_rec(n) == 1, "fib(2) == 1");
+  __VERIFIER_assume(n == 2);
+  __VERIFIER_assert(fib_rec(n) == 1); // fib(2) == 1
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_3815_3

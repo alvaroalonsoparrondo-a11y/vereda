@@ -7,14 +7,14 @@ void f()
 {
   if (g == -128)
     return;
-  __ESBMC_assume(g == 7);
+  __VERIFIER_assume(g == 7);
 }
 
 int main()
 {
   g = nondet_int();
   f();
-  __ESBMC_assert(g > -7, "g above -7");
+  __VERIFIER_assert(g > -7); // g above -7
 }
 // Imported from ESBMC regression/esbmc/github_8047_return
 // Needs: --interval-symex-assert

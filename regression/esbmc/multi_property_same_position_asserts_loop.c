@@ -7,9 +7,9 @@ int main()
   for (unsigned k = 0; k < 3; ++k)
   {
     unsigned i = nondet_uint(), j = nondet_uint();
-    __ESBMC_assume(i < 4);
+    __VERIFIER_assume(i < 4);
     if (k == 1)
-      __ESBMC_assume(j < 4);
+      __VERIFIER_assume(j < 4);
     s += a[i] + a[j];
   }
   return s;

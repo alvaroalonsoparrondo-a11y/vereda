@@ -7,7 +7,7 @@ int main(void)
   for (int i = 0; i < a[1][1]; i++)
     s++;
 
-  __ESBMC_assert(s == 4, "a bound stored in a 2-D element decides the loop");
+  __VERIFIER_assert(s == 4); // a bound stored in a 2-D element decides the loop
   return 0;
 }
 // Imported from ESBMC regression/esbmc/nested_array_loop_bound

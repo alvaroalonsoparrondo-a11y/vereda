@@ -18,7 +18,7 @@ int main(void)
   }
 
   /* Nothing writes t->p when v == 0, so this must not be provable. */
-  __ESBMC_assert(t->p == 1, "conditionally written heap object");
+  __VERIFIER_assert(t->p == 1); // conditionally written heap object
   free(t);
   return 0;
 }
@@ -26,5 +26,3 @@ int main(void)
 // RUN: --unwind 4
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: conditionally written heap object
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

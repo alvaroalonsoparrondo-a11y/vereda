@@ -21,7 +21,7 @@ int main(void)
   for (int i = 0; i < x.in.n; i++)
     s++;
 
-  __ESBMC_assert(s == 5, "the loop runs one time too many");
+  __VERIFIER_assert(s == 5); // the loop runs one time too many
   return 0;
 }
 // Imported from ESBMC regression/esbmc/nested_member_loop_bound_fail

@@ -9,7 +9,7 @@ int main(){
    if ( k <= 0 ) return -1;
    
  a = malloc( (k-1) * sizeof(int));
-//   __ESBMC_assume(a != 0);
+//   __VERIFIER_assume(a != 0);
    assert(a != 0);
  //  assert(a == 0);
    for (i =0 ; i < k; i++){

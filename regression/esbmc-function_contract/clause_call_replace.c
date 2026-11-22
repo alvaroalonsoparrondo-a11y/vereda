@@ -10,7 +10,7 @@ int f(int x)
 int main(void)
 {
   int r = f(500);
-  __ESBMC_assert(r > 100, "contract promises this");
+  __VERIFIER_assert(r > 100); // contract promises this
   return 0;
 }
 // Imported from ESBMC regression/function_contract/clause_call_replace

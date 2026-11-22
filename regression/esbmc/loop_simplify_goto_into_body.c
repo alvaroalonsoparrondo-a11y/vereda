@@ -21,7 +21,7 @@ int main()
   }
   /* Goto path: i remains 99, jumps to L, runs i++ → i=100, !(100<10)
    * exits the loop with i=100. The assertion must fail. */
-  __ESBMC_assert(i == 10, "external goto into body");
+  __VERIFIER_assert(i == 10); // external goto into body
   return 0;
 }
 // Imported from ESBMC regression/esbmc/loop_simplify_goto_into_body

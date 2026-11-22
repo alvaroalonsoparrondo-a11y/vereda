@@ -6,10 +6,10 @@ int main()
   int x = 0;
   if (c)
   {
-    __ESBMC_assert(0, "v");
+    __VERIFIER_assert(0); // v
     x = 1;
   }
-  __ESBMC_assert(x == 0, "w");
+  __VERIFIER_assert(x == 0); // w
   return 0;
 }
 // Imported from ESBMC regression/esbmc/multi_property_or_assert_fold_keeps_code_native

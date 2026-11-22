@@ -16,11 +16,9 @@ int some_var;
 int main() {
   obj bug;
   init_loop(&bug, sizeof(bug));
-  __ESBMC_assume(bug.bar == &some_var);
-  __ESBMC_assert(0, "this should be reachable");
+  __VERIFIER_assume(bug.bar == &some_var);
+  __VERIFIER_assert(0); // this should be reachable
 }
 // Imported from ESBMC regression/esbmc/github_2153_5
 // RUN: --no-unwinding-assertions --unwind 24
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

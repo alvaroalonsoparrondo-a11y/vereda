@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <assert.h>
 int main(void) {
-  uint32_t n; uint64_t a; __ESBMC_assume(n >= 1 && n <= 3);
+  uint32_t n; uint64_t a; __VERIFIER_assume(n >= 1 && n <= 3);
   uint64_t i = 1, sn = 0;
   while (i <= n) { sn = sn + a; i++; }
   uint64_t j = 0, t = 1;

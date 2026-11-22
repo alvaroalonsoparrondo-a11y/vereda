@@ -8,7 +8,7 @@
 int main(void)
 {
   mbstate_t st = {0};
-  __ESBMC_assert(mbsinit(&st), "a zeroed state is the initial one");
+  __VERIFIER_assert(mbsinit(&st)); // a zeroed state is the initial one
   return 0;
 }
 // Imported from ESBMC regression/esbmc/wchar_uchar_mbstate
@@ -16,5 +16,3 @@ int main(void)
 // RUN: 
 // MODE: FUTURE
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: FUTURE test passed unexpectedly; promote it to CORE
-// MODE: CORE

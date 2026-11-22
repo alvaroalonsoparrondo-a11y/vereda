@@ -8,8 +8,8 @@ _Float16 nondet_h(void);
 int main(void)
 {
   _Float16 x = nondet_h();
-  __ESBMC_assume(x == (_Float16)1000.0f);
-  __ESBMC_assert(x + x == (_Float16)2001.0f, "2000 != 2001");
+  __VERIFIER_assume(x == (_Float16)1000.0f);
+  __VERIFIER_assert(x + x == (_Float16)2001.0f); // 2000 != 2001
   return 0;
 }
 // Imported from ESBMC regression/floats/github_7896_nondet_fail

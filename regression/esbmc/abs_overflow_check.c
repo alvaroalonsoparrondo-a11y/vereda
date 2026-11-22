@@ -9,7 +9,7 @@ int main()
 {
   int x = nondet_int();
   long y = nondet_long();
-  __ESBMC_assume(x > INT_MIN && y > LONG_MIN);
+  __VERIFIER_assume(x > INT_MIN && y > LONG_MIN);
   assert(abs(x) >= 0);
   assert(labs(y) >= 0);
   assert(__builtin_abs(x) == abs(x));

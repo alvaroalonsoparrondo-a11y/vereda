@@ -7,7 +7,7 @@ int main(void)
 {
   uint32_t buf[2] = {7, 7};
   unsigned i = nondet_uint();
-  __ESBMC_assume(i < 2);
+  __VERIFIER_assume(i < 2);
   const struct S *p = (const struct S *)&buf[i];
   struct S s = *p;
   assert(s.v == 7);
@@ -15,5 +15,3 @@ int main(void)
 }
 // Imported from ESBMC regression/esbmc/github_10891_packed
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

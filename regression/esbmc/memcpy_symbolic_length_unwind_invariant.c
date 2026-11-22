@@ -10,7 +10,7 @@ int main()
   char dst[8] = {0};
 
   unsigned long n = nondet_ulong();
-  __ESBMC_assume(n <= 8);
+  __VERIFIER_assume(n <= 8);
 
   memcpy(dst, src, n);
   assert(n < 1 || dst[0] == 1);

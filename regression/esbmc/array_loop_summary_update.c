@@ -7,11 +7,11 @@ int main()
   for (unsigned i = 0; i < 100; i++)
     a[i] = i;
   unsigned c = nondet_uint();
-  __ESBMC_assume(c < 100);
+  __VERIFIER_assume(c < 100);
   a[c] = -1;
   unsigned y = nondet_uint();
-  __ESBMC_assume(y < 100);
-  __ESBMC_assert(a[y] == y || y == c, "only a[c] changed");
+  __VERIFIER_assume(y < 100);
+  __VERIFIER_assert(a[y] == y || y == c); // only a[c] changed
 }
 // Imported from ESBMC regression/esbmc/array_loop_summary_update
 // EXPECT: ^VERIFICATION SUCCESSFUL$

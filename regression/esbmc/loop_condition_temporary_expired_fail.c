@@ -5,7 +5,7 @@ int main()
 {
   int *q;
   while ((q = f().a)[0])
-    __ESBMC_assert(q[1] == 0, "temporary read in body");
+    __VERIFIER_assert(q[1] == 0); // temporary read in body
   return 0;
 }
 // Imported from ESBMC regression/esbmc/loop_condition_temporary_expired_fail

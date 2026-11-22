@@ -9,7 +9,7 @@ int main()
   // cannot lay the object out, so the path is vacuously infeasible and the
   // reachable assert(0) is missed.
   size_t n = nondet_size();
-  __ESBMC_assume(n >= 0xFFFFFFFFFFFFFFF0UL);
+  __VERIFIER_assume(n >= 0xFFFFFFFFFFFFFFF0UL);
   void *b = malloc(n);
   assert(0);
 }

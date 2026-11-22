@@ -8,7 +8,7 @@ int main()
 {
   int x = 0;
   scanf("%d", &x);
-  __ESBMC_assert(x == 0, "x");
+  __VERIFIER_assert(x == 0); // x
 }
 // Imported from ESBMC regression/esbmc/interval_return_scanf_body_fail
 // Needs: --interval-analysis

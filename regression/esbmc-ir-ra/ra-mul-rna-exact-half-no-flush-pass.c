@@ -8,13 +8,13 @@ int main(void)
   double b = __VERIFIER_nondet_double();
   /* Same exact construction as the RNE test: a*b == 2^-1075 ==
    * min_subnormal/2, precisely. */
-  __ESBMC_assume(a == 0x1p-537 && b == 0x1p-538);
+  __VERIFIER_assume(a == 0x1p-537 && b == 0x1p-538);
   double y = a * b;
   /* IEEE 754 rounds this exact tie away from zero to +min_subnormal.
    * IR-IEEE does not quantize to the exact subnormal grid here; this test
    * checks only that the result is not flushed to zero. */
-  __ESBMC_assert(
-    y != 0.0, "RNA at exactly min_subnormal/2 must not flush to zero");
+  __VERIFIER_assert(
+    y != 0.0); // RNA at exactly min_subnormal/2 must not flush to zero
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-mul-rna-exact-half-no-flush-pass

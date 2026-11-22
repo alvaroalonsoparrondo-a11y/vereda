@@ -8,7 +8,7 @@ int main()
   char dst[4];
 
   unsigned long n = nondet_ulong();
-  __ESBMC_assume(n <= 8);
+  __VERIFIER_assume(n <= 8);
 
   memcpy(dst, src, n); /* n may exceed dst's 4 bytes */
   return 0;

@@ -18,9 +18,9 @@ int main()
 {
   data_t vec[SIZE];
   int i;
-  __ESBMC_assert(
-    __ESBMC_exists(&i, (0 <= i && i < SIZE) && count(vec[i], vec) != 0),
-    "some element occurs in the array");
+  __VERIFIER_assert(
+    __ESBMC_exists(&i, (0 <= i && i < SIZE) && count(vec[i], vec) != 0)
+); // some element occurs in the array
   return 0;
 }
 // Imported from ESBMC regression/z3/github_6154_summary_cap_option

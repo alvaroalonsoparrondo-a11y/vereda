@@ -1,5 +1,5 @@
 unsigned g;
-int main(void) { g = 1; __ESBMC_assert(g == 1, "g"); return 0; }
+int main(void) { g = 1; __VERIFIER_assert(g == 1); return 0; } // g
 // Imported from ESBMC regression/goto2lean/unsupported_global_variable
 // Needs: --goto2lean
 // RUN: --goto2lean

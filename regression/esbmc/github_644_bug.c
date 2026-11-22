@@ -7,7 +7,7 @@ int main()
 
     int table[ARRAY_SIZE];
     for(int i = 0; i < ARRAY_SIZE; i++)
-       __ESBMC_assume(table[i] < 10 && table[i] > 0);
+       __VERIFIER_assume(table[i] < 10 && table[i] > 0);
 
     int ti, tj;
     for(int i = 0; i < ARRAY_SIZE; i++)
@@ -21,11 +21,11 @@ int main()
                 temp = table[j];
                 table[j] = table[i];
                 table[i] = temp;
-                __ESBMC_assert(table[i] <= table[j],"kuku");
+                __VERIFIER_assert(table[i] <= table[j]); // kuku
             }
             ti = table[i];
             tj = table[j];
-            __ESBMC_assert(table[i] <= table[j], "ha-ha");
+            __VERIFIER_assert(table[i] <= table[j]); // ha-ha
         }
     }
    return 0;

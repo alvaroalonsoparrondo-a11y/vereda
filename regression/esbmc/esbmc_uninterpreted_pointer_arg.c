@@ -10,7 +10,7 @@ int main()
   const void *p = &x;
   unsigned long h = __ESBMC_uninterpreted_hasher(p);
   (void)h;
-  __ESBMC_assert(x == 7, "unrelated property holds; native UF must not crash");
+  __VERIFIER_assert(x == 7); // unrelated property holds; native UF must not crash
   return 0;
 }
 // Imported from ESBMC regression/esbmc/esbmc_uninterpreted_pointer_arg

@@ -27,7 +27,7 @@ int main(void)
   fesetround(FE_TONEAREST);
 
   double u = nondet_double();
-  __ESBMC_assume(u < 0.0);
+  __VERIFIER_assume(u < 0.0);
   assert(atan2(-0.0, u) == -M_PI);
   return 0;
 }

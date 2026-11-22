@@ -6,10 +6,10 @@ int main(void)
 {
   int x = nondet_int();
   int y = nondet_int();
-  __ESBMC_assume(x == -2147483647 - 1);
-  __ESBMC_assume(y == -104635056);
+  __VERIFIER_assume(x == -2147483647 - 1);
+  __VERIFIER_assume(y == -104635056);
   int r = x % y;
-  __ESBMC_assert(r == 9, "cex");
+  __VERIFIER_assert(r == 9); // cex
   return 0;
 }
 // Imported from ESBMC regression/smtlib/github_7929_rem

@@ -15,12 +15,14 @@ int pick(int x, int mode)
 int main()
 {
   int v;
-  __ESBMC_assert(
-    __ESBMC_forall(&v, pick(v, 1) == v), "fold-true branch summarized");
-  __ESBMC_assert(
-    __ESBMC_forall(&v, pick(v, 0) == v + 1), "fold-false branch summarized");
+  __VERIFIER_assert(
+    __ESBMC_forall(&v, pick(v, 1) == v)); // fold-true branch summarized
+  __VERIFIER_assert(
+    __ESBMC_forall(&v, pick(v, 0) == v + 1)); // fold-false branch summarized
   return 0;
 }
 // Imported from ESBMC regression/z3/github_6154_ifelse_fold
 // RUN: --solver z3
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

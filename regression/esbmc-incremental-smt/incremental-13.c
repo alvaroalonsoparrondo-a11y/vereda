@@ -5,7 +5,7 @@ int main()
   unsigned int x = 100;
   while(x>0)
   {
-   __ESBMC_assume(x>0);
+   __VERIFIER_assume(x>0);
    x--;
   }
   assert(0);

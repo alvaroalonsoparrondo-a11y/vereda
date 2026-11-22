@@ -43,8 +43,8 @@ int main(void)
   s.a = 5;
   s.b = 7;
   f(&s);
-  __ESBMC_assert(
-    s.a == 5 && s.b == 7, "both fields unchanged when trigger != 1");
+  __VERIFIER_assert(
+    s.a == 5 && s.b == 7); // both fields unchanged when trigger != 1
   return 0;
 }
 // Imported from ESBMC regression/function_contract/replace_disjunctive_multiterm_and_pass

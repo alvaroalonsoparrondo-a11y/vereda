@@ -4,12 +4,12 @@ int main()
   int *p, *q;
   
   q=p=malloc(sizeof(int));
-  __ESBMC_assume(p);
+  __VERIFIER_assume(p);
   
   *p=2;
 
   p=malloc(sizeof(int));
-  __ESBMC_assume(p);
+  __VERIFIER_assume(p);
   
   *p=3;
   

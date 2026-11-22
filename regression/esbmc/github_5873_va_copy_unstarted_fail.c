@@ -16,7 +16,7 @@ int sum(int count, ...)
 int main()
 {
   int r = sum(2, 3, 4);
-  __ESBMC_assert(r == 7, "unreachable under correct varargs semantics");
+  __VERIFIER_assert(r == 7); // unreachable under correct varargs semantics
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_5873_va_copy_unstarted_fail

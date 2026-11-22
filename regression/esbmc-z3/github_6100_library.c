@@ -13,10 +13,10 @@ _Bool P(double x, double y, double z)
 int main()
 {
   double x, y, z;
-  __ESBMC_assert(
+  __VERIFIER_assert(
     __ESBMC_forall(
-      &x, __ESBMC_forall(&y, __ESBMC_exists(&z, P(x, 0.5, z)))),
-    "nested quantifiers over libm calls");
+      &x, __ESBMC_forall(&y, __ESBMC_exists(&z, P(x, 0.5, z))))
+); // nested quantifiers over libm calls
 }
 // Imported from ESBMC regression/z3/github_6100_library
 // RUN: --solver z3

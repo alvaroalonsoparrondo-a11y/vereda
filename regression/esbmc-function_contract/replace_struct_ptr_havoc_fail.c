@@ -20,7 +20,7 @@ int main(void)
     S s;
     s.received = 42;
     f(&s);
-    __ESBMC_assert(s.received == 42, "must fail: havoc makes received nondet");
+    __VERIFIER_assert(s.received == 42); // must fail: havoc makes received nondet
     return 0;
 }
 // Imported from ESBMC regression/function_contract/replace_struct_ptr_havoc_fail

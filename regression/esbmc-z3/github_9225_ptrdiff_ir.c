@@ -12,7 +12,7 @@ struct s
 int main(void)
 {
   unsigned i = nondet_uint();
-  __ESBMC_assume(i < 10);
+  __VERIFIER_assume(i < 10);
   assert(&a[i] - a == i);
   assert(a - &a[i] == -(long)i);
   assert(&st[i] - st == i);

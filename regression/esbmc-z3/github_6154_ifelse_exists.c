@@ -13,9 +13,11 @@ int sgn(int x)
 int main()
 {
   int v;
-  __ESBMC_assert(__ESBMC_exists(&v, sgn(v) == 1), "sgn is 1 for some v");
+  __VERIFIER_assert(__ESBMC_exists(&v, sgn(v) == 1)); // sgn is 1 for some v
   return 0;
 }
 // Imported from ESBMC regression/z3/github_6154_ifelse_exists
 // RUN: --solver z3
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

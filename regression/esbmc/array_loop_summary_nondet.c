@@ -9,7 +9,7 @@ int main()
   for (int i = 0; i < N; i++)
     b[i] = a[i];
   for (int x = 0; x < N; x++)
-    __ESBMC_assert(b[x] == a[x], "copied");
+    __VERIFIER_assert(b[x] == a[x]); // copied
 }
 // Imported from ESBMC regression/esbmc/array_loop_summary_nondet
 // Needs: --summarize-array-loops

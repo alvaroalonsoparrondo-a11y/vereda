@@ -3,7 +3,7 @@ unsigned short nondet_ushort();
 
 int main(void) {
   unsigned short size = 10;
-  __ESBMC_assume(size > 0);
+  __VERIFIER_assume(size > 0);
   unsigned char a[size], k;
   unsigned short i=0, j=size-1, m, n;
   _Bool found = 0;

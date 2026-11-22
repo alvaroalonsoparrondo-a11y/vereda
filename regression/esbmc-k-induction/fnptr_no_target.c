@@ -7,13 +7,13 @@ int main(void)
     f();
 
   int n = nondet_int();
-  __ESBMC_assume(n > 0);
+  __VERIFIER_assume(n > 0);
 
   int x = 0;
   for (int i = 0; i < n; i++)
     x = 0;
 
-  __ESBMC_assert(x == 0, "x stays zero across all iterations");
+  __VERIFIER_assert(x == 0); // x stays zero across all iterations
   return 0;
 }
 // Imported from ESBMC regression/k-induction/fnptr_no_target

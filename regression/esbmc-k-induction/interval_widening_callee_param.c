@@ -2,7 +2,7 @@
 // return.
 void check(int c)
 {
-  __ESBMC_assert(c, "i >= 0");
+  __VERIFIER_assert(c); // i >= 0
 }
 void run(int i, int n)
 {

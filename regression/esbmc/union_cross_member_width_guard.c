@@ -12,7 +12,7 @@ static u_t u;
 int main(void)
 {
   u.c = -1;
-  __ESBMC_assert(u.i == 255, "cross-width read keeps byte semantics");
+  __VERIFIER_assert(u.i == 255); // cross-width read keeps byte semantics
   return 0;
 }
 // Imported from ESBMC regression/esbmc/union_cross_member_width_guard

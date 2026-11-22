@@ -38,7 +38,7 @@ int main(void)
   int n = 0;
   for (unsigned short i = 0; i < (st == 0 ? vm.sp : 30000); i++)
     n++;
-  __ESBMC_assert(n == 2, "the null guard folded; sp bounded the loop");
+  __VERIFIER_assert(n == 2); // the null guard folded; sp bounded the loop
 
   /* The other polarity: a `!= NULL` guard over a provably real address
    * must fold true the same way. */
@@ -46,7 +46,7 @@ int main(void)
   if (table[(vm.pc + 1) & 3] != 0)
     for (unsigned short i = 0; i < vm.sp; i++)
       m++;
-  __ESBMC_assert(m == 2, "the nonnull guard folded too");
+  __VERIFIER_assert(m == 2); // the nonnull guard folded too
 
   /* Constant-offset forms: an object base plus or minus a constant is
    * still a real object's address in the (object, offset) model, even
@@ -56,7 +56,7 @@ int main(void)
   if (q != 0 && q - 3 != 0 && 0 != q + 60)
     for (unsigned short i = 0; i < vm.sp; i++)
       k++;
-  __ESBMC_assert(k == 2, "the offset guards folded too");
+  __VERIFIER_assert(k == 2); // the offset guards folded too
   return 0;
 }
 // Imported from ESBMC regression/esbmc/null_fnptr_guard_const_fold

@@ -30,14 +30,14 @@ int main (void)
   assert(fpclassify(largestSubnormalFloat) == FP_SUBNORMAL);
 
   f = nondet_float();
-  __ESBMC_assume(fpclassify(f) == FP_SUBNORMAL);
+  __VERIFIER_assume(fpclassify(f) == FP_SUBNORMAL);
   assert(f <= largestSubnormalFloat);
 
 
   assert(fpclassify(smallestNormalFloat) == FP_NORMAL);
 
   f = nondet_float();
-  __ESBMC_assume(fpclassify(f) == FP_NORMAL);
+  __VERIFIER_assume(fpclassify(f) == FP_NORMAL);
   assert(smallestNormalFloat <= fabs(f));
 
   assert(largestSubnormalFloat < smallestNormalFloat);
@@ -57,7 +57,7 @@ int main (void)
   assert(((float)v) == smallestNormalFloat);
 
   f = nondet_float();
-  __ESBMC_assume(fpclassify(f) == FP_SUBNORMAL);
+  __VERIFIER_assume(fpclassify(f) == FP_SUBNORMAL);
   assert( ((float)((double)f)) == f );
   
   #endif

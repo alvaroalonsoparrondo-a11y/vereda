@@ -7,7 +7,7 @@ int main(void)
   value = __VERIFIER_nondet_int(
   );
   // clang-format on
-  __ESBMC_assert(value != 1, "target");
+  __VERIFIER_assert(value != 1); // target
 }
 // Imported from ESBMC regression/witnesses_validate/reachsafety-violationwitness/github_9881_function_return_rparen_line
 // Needs: --validate-violation-witness --witness witness.yml

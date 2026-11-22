@@ -9,8 +9,8 @@ int main(void)
   float f;
   float g;
 
-  __ESBMC_assume(!isnan(f));
-  __ESBMC_assume(!isnan(g));
+  __VERIFIER_assume(!isnan(f));
+  __VERIFIER_assume(!isnan(g));
 
   if (f > g)
     fesetround(FE_UPWARD);

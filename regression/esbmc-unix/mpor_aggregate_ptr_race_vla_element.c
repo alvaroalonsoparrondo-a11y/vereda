@@ -23,7 +23,7 @@ int main(void)
 {
   pthread_t t;
   int n = nondet_int();
-  __ESBMC_assume(n >= 1 && n <= 2);
+  __VERIFIER_assume(n >= 1 && n <= 2);
   int *arr[2][n];
   arr[0][0] = &g;
   arr[1][0] = &g;

@@ -12,7 +12,7 @@ int main(void)
     if (i == 10)
       scanf("%d", &x);
     if (i == 20)
-      __ESBMC_assert(x == 0, "scanf may read a non-zero x");
+      __VERIFIER_assert(x == 0); // scanf may read a non-zero x
     i++;
   }
   return 0;

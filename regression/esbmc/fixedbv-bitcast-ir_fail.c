@@ -7,7 +7,7 @@ int main()
 {
   float x = nondet_float();
   int n = (int)x;
-  __ESBMC_assert(n >= 0, "truncated value need not be non-negative");
+  __VERIFIER_assert(n >= 0); // truncated value need not be non-negative
   return 0;
 }
 // Imported from ESBMC regression/esbmc/fixedbv-bitcast-ir_fail

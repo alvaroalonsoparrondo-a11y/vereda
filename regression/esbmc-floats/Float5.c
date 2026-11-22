@@ -2,11 +2,11 @@ int main()
 {
   float a, b;
   
-  __ESBMC_assume(a==1 || a==0.5 || a==2 || a==3 || a==0.1);
+  __VERIFIER_assume(a==1 || a==0.5 || a==2 || a==3 || a==0.1);
   b=a;
   a/=2;
   a*=2;
-  __ESBMC_assert(a==b, "float div works");
+  __VERIFIER_assert(a==b); // float div works
 }
 // Imported from ESBMC regression/floats/Float5
 // EXPECT: ^VERIFICATION SUCCESSFUL$

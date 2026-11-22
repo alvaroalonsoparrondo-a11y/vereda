@@ -12,7 +12,7 @@ int main() {
     sum += arr[i];
   }
 
-  __ESBMC_assert(sum == 45, "Sum should be 45");
+  __VERIFIER_assert(sum == 45); // Sum should be 45
   return 0;
 }
 // Imported from ESBMC regression/esbmc/pragma_unroll_unlimited_true

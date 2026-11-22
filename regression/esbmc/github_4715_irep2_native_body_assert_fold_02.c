@@ -7,13 +7,13 @@ int main(void)
 {
   int c = nd();
   if (c == 1)
-    __ESBMC_assert(0, "x");
+    __VERIFIER_assert(0); // x
   else
     return 7;
   if (c == 2)
     return 8;
   else
-    __ESBMC_assert(0, "y");
+    __VERIFIER_assert(0); // y
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_4715_irep2_native_body_assert_fold_02

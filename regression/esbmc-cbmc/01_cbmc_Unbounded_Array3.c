@@ -3,7 +3,7 @@ int main()
   unsigned n;
   int a[n];
 
-  __ESBMC_assume(n<100000 && n>10);
+  __VERIFIER_assume(n<100000 && n>10);
 
   a[0]=0;
   a[1]=1;

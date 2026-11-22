@@ -7,7 +7,7 @@
 int main(void)
 {
   unsigned int n;
-  __ESBMC_assume(n <= 3);
+  __VERIFIER_assume(n <= 3);
 
   unsigned int i = 0;
   unsigned int s = 0;

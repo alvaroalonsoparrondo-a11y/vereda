@@ -19,7 +19,7 @@ int main()
   default:
     y = 3;
   }
-  __ESBMC_assert(y != 7, "case 7 taken");
+  __VERIFIER_assert(y != 7); // case 7 taken
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9882_switch_no_waypoint

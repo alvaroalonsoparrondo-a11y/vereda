@@ -15,7 +15,7 @@ static void fill(uint32_t *dst, uint32_t n, uint32_t v)
 int main(void)
 {
   unsigned int k = nondet_uint();
-  __ESBMC_assume(k < 4);
+  __VERIFIER_assume(k < 4);
   g.cfg = 1;
   g.tail = 2;
   fill(&g.shadow[k], 4, 10);
@@ -26,5 +26,3 @@ int main(void)
 }
 // Imported from ESBMC regression/esbmc/array_member_store_symbolic
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

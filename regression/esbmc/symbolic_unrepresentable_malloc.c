@@ -9,7 +9,7 @@ int main()
   // allocation and the default configuration goes vacuous unless the
   // unrepresentable request is failed rather than laid out.
   size_t n = nondet_size();
-  __ESBMC_assume(n >= 0xFFFFFFFFFFFFFFF0UL);
+  __VERIFIER_assume(n >= 0xFFFFFFFFFFFFFFF0UL);
   char *b = malloc(n);
   if (b)
     b[0] = 1;

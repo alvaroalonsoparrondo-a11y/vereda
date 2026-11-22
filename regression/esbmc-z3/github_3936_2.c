@@ -16,7 +16,7 @@ int main()
   for (idx = 1; idx < 3; ++idx)
   {
     sum += idx;
-    __ESBMC_assert(0 <= idx, "bounds");
+    __VERIFIER_assert(0 <= idx); // bounds
   }
 
   return 0;

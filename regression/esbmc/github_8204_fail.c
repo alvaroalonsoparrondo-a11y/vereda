@@ -7,8 +7,8 @@ int main()
 {
   int v = __VERIFIER_nondet_int();
   unsigned long x = v;
-  __ESBMC_assume(x < (unsigned long)(-2147483647));
-  __ESBMC_assume(x < 10);
+  __VERIFIER_assume(x < (unsigned long)(-2147483647));
+  __VERIFIER_assume(x < 10);
   assert(0);
   return 0;
 }

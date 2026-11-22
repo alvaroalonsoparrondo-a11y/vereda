@@ -8,7 +8,7 @@ int main()
   int s = 0;
   for (int i = 0; i < 3; i++)
     s += i;
-  __ESBMC_assert(s == 3, "0+1+2 == 3");
+  __VERIFIER_assert(s == 3); // 0+1+2 == 3
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_5298

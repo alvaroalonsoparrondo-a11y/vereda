@@ -18,7 +18,7 @@ int main()
   assert(p[4] == 'a');
   return 0;
 #else
-  __ESBMC_assert(0, "This test requires __builtin_malloc support");
+  __VERIFIER_assert(0); // This test requires __builtin_malloc support
 #endif
 }
 // Imported from ESBMC regression/esbmc/builtin_malloc-fail

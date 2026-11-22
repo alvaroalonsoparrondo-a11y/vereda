@@ -26,12 +26,12 @@ int main(void)
   p->buf[3] = 1;
   int i = 2;
   void *q = &i;
-  __ESBMC_assert(
-    __ESBMC_forall(q, !(0 <= i && i < 4) || p->buf[i] == 0), "all zero");
+  __VERIFIER_assert(
+    __ESBMC_forall(q, !(0 <= i && i < 4) || p->buf[i] == 0)); // all zero
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7311_forall_indirect
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^\s*FAILED\s+\[main\.assertion\.\d+\]\s+line \d+\s+all zero$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^\s*FAILED\s+\[main\.assertion\.\d+\]\s+line \d+\s+all zero$
 // MODE: FUTURE

@@ -183,9 +183,9 @@ static const struct entry table[2048] = {
 int main(void)
 {
   unsigned i = nondet_uint();
-  __ESBMC_assume(i < 2048);
-  __ESBMC_assert(table[i].kind != 6, "some kind is 6");
-  __ESBMC_assert(table[i].len != 6141, "the last len is 6141");
+  __VERIFIER_assume(i < 2048);
+  __VERIFIER_assert(table[i].kind != 6); // some kind is 6
+  __VERIFIER_assert(table[i].len != 6141); // the last len is 6141
   return 0;
 }
 // Imported from ESBMC regression/esbmc/tuple_const_array_member_reads_fail

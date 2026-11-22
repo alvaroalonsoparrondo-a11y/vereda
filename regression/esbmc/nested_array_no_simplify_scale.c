@@ -43,8 +43,8 @@ int main(void)
   a[3][6] = 30;
   a[3][7] = 31;
 
-  __ESBMC_assert(
-    a[idx(3)][idx(7)] == 31, "the last store is visible through the chain");
+  __VERIFIER_assert(
+    a[idx(3)][idx(7)] == 31); // the last store is visible through the chain
   return 0;
 }
 // Imported from ESBMC regression/esbmc/nested_array_no_simplify_scale

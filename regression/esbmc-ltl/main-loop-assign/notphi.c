@@ -146,7 +146,7 @@ void __ESBMC_really_atomic_begin();
 void __ESBMC_really_atomic_end();
 void __ESBMC_atomic_begin();
 void __ESBMC_atomic_end();
-void __ESBMC_assume(_Bool prop);
+void __VERIFIER_assume(_Bool prop);
 void __ESBMC_kill_monitor();
 unsigned int nondet_uint();
 
@@ -187,25 +187,25 @@ ltl2ba_fsm(bool state_stats, unsigned int num_iters)
 		case _ltl2ba_state_0:
 			state_is_viable = (((1)) || ((!_ltl2ba_cexpr_1_status() && !_ltl2ba_cexpr_2_status() && _ltl2ba_cexpr_0_status())) || ((false)));
 			if (choice == 0) {
-				__ESBMC_assume(((1)));
+				__VERIFIER_assume(((1)));
 				_ltl2ba_statevar = _ltl2ba_state_0;
 			} else if (choice == 1) {
-				__ESBMC_assume(((!_ltl2ba_cexpr_1_status() && !_ltl2ba_cexpr_2_status() && _ltl2ba_cexpr_0_status())));
+				__VERIFIER_assume(((!_ltl2ba_cexpr_1_status() && !_ltl2ba_cexpr_2_status() && _ltl2ba_cexpr_0_status())));
 				_ltl2ba_statevar = _ltl2ba_state_1;
 			} else {
-				__ESBMC_assume(0);
+				__VERIFIER_assume(0);
 			}
 			break;
 		case _ltl2ba_state_1:
 			state_is_viable = (((1) || (1)) || ((1)) || ((false)));
 			if (choice == 0) {
-				__ESBMC_assume(((1) || (1)));
+				__VERIFIER_assume(((1) || (1)));
 				_ltl2ba_statevar = _ltl2ba_state_1;
 			} else if (choice == 1) {
-				__ESBMC_assume(((1)));
+				__VERIFIER_assume(((1)));
 				_ltl2ba_statevar = _ltl2ba_state_1;
 			} else {
-				__ESBMC_assume(0);
+				__VERIFIER_assume(0);
 			}
 			break;
 		}
@@ -217,7 +217,7 @@ ltl2ba_fsm(bool state_stats, unsigned int num_iters)
 		__ESBMC_switch_from_monitor();
 	}
 
-	__ESBMC_assert(num_iters == iters, "Unwind bound on ltl2ba_fsm insufficient");
+	__VERIFIER_assert(num_iters == iters); // Unwind bound on ltl2ba_fsm insufficient
 
 	return;
 }
@@ -299,11 +299,11 @@ ltl2ba_finish_monitor(pthread_t t)
 
 	__ESBMC_kill_monitor();
 
-	__ESBMC_assert(!_ltl2ba_bad_prefix_states[_ltl2ba_statevar],"LTL_BAD");
+	__VERIFIER_assert(!_ltl2ba_bad_prefix_states[_ltl2ba_statevar]); // LTL_BAD
 
-	__ESBMC_assert(!_ltl2ba_stutter_accept_table[_ltl2ba_sym_to_idx()][_ltl2ba_statevar],"LTL_FAILING");
+	__VERIFIER_assert(!_ltl2ba_stutter_accept_table[_ltl2ba_sym_to_idx()][_ltl2ba_statevar]); // LTL_FAILING
 
-	__ESBMC_assert(!_ltl2ba_good_prefix_excluded_states[_ltl2ba_statevar],"LTL_SUCCEEDING");
+	__VERIFIER_assert(!_ltl2ba_good_prefix_excluded_states[_ltl2ba_statevar]); // LTL_SUCCEEDING
 
 	return;
 }

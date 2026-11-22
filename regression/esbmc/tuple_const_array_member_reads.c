@@ -183,9 +183,9 @@ static const struct entry table[2048] = {
 int main(void)
 {
   unsigned i = nondet_uint();
-  __ESBMC_assume(i < 2048);
-  __ESBMC_assert(table[i].kind == (1 + 5 * i) % 7, "entry i has kind (1 + 5i) mod 7");
-  __ESBMC_assert(table[i].len == 3 * i, "entry i has len 3 * i");
+  __VERIFIER_assume(i < 2048);
+  __VERIFIER_assert(table[i].kind == (1 + 5 * i) % 7); // entry i has kind (1 + 5i) mod 7
+  __VERIFIER_assert(table[i].len == 3 * i); // entry i has len 3 * i
   return 0;
 }
 // Imported from ESBMC regression/esbmc/tuple_const_array_member_reads

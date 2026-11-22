@@ -7,7 +7,7 @@ int main()
 {
   unsigned n = nondet_uint();
   unsigned i = 0;
-  __ESBMC_assume(n != 7);
+  __VERIFIER_assume(n != 7);
   __ESBMC_loop_invariant(i <= 10);
   while (i < 10)
   {

@@ -18,7 +18,7 @@ unsigned long long foo(unsigned addr) {
 int main() {
   unsigned nondet = __VERIFIER_nondet_uint();
    union_t x = (union_t) foo(nondet);
-   __ESBMC_assert(x.raw64 == (nondet+100), "unsigned value should initialize union_t properly");
+   __VERIFIER_assert(x.raw64 == (nondet+100)); // unsigned value should initialize union_t properly
    return 0;
 }
 // Imported from ESBMC regression/esbmc/to_union_github_314

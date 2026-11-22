@@ -2,7 +2,7 @@
 
 int main() {
   int x = nondet_int();
-  __ESBMC_assume(x > 0);
+  __VERIFIER_assume(x > 0);
 
 start:
   x--;

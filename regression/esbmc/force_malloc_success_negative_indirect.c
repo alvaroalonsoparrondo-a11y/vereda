@@ -11,7 +11,7 @@
 int main(void)
 {
   int a = nondet_int();
-  __ESBMC_assume(a < 0);
+  __VERIFIER_assume(a < 0);
 
   size_t n = a;
   void *b = malloc(n);

@@ -7,7 +7,7 @@ int main()
   char *p;
 
   int nondet;
-  __ESBMC_assume(nondet == 1);
+  __VERIFIER_assume(nondet == 1);
   if (nondet == 1) {
     p = a;
   }
@@ -20,5 +20,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/r_ok19
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

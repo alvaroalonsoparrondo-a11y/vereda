@@ -6,12 +6,10 @@ int __VERIFIER_nondet_int(void);
 int main()
 {
   int n = __VERIFIER_nondet_int();
-  __ESBMC_assume(n > 1 && n < 8);
+  __VERIFIER_assume(n > 1 && n < 8);
   int a[n];
   assert((uintptr_t)&a[n - 1] > (uintptr_t)a);
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_8048
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

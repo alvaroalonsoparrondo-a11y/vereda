@@ -13,10 +13,10 @@ int g(int y)
 int main()
 {
   int x, c;
-  __ESBMC_assume(x >= 0 && x <= 10);
+  __VERIFIER_assume(x >= 0 && x <= 10);
   int (*fp)(int) = c ? f : g;
   fp(x);
-  __ESBMC_assert(x <= 10, "x at most 10");
+  __VERIFIER_assert(x <= 10); // x at most 10
 }
 // Imported from ESBMC regression/esbmc/github_8047_fnptr_prune
 // Needs: --interval-symex-assert

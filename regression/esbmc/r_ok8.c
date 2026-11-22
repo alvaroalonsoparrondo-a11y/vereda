@@ -4,9 +4,11 @@
 int main() {
   int N, M;  
   char *arr = malloc(nondet_int() ? N : N-1);
-  __ESBMC_assume(N > 0 && M < N); 
+  __VERIFIER_assume(N > 0 && M < N); 
   assert(__ESBMC_r_ok(arr, M));
 }
 // Imported from ESBMC regression/esbmc/r_ok8
 // RUN: --force-malloc-success
 // EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// MODE: FUTURE

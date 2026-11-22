@@ -30,9 +30,9 @@ int main(void)
   double x = __VERIFIER_nondet_double();
   double y = __VERIFIER_nondet_double();
   double z = __VERIFIER_nondet_double();
-  __ESBMC_assume(x >= 1.0 && x <= 2.0);
-  __ESBMC_assume(y >= 3.0 && y <= 4.0);
-  __ESBMC_assume(z >= 5.0 && z <= 6.0);
+  __VERIFIER_assume(x >= 1.0 && x <= 2.0);
+  __VERIFIER_assume(y >= 3.0 && y <= 4.0);
+  __VERIFIER_assume(z >= 5.0 && z <= 6.0);
 
   double r = fma(x, y, z);
 

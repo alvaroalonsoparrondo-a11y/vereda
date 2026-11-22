@@ -5,7 +5,7 @@
 int main(void)
 {
   unsigned long n = nondet_ulong();
-  __ESBMC_assume(n >= 9 && n <= 10);
+  __VERIFIER_assume(n >= 9 && n <= 10);
   const void **slots = malloc(n * sizeof(void *));
   if (!slots)
     return 0;
@@ -22,15 +22,15 @@ int main(void)
 
   const void *key;
   unsigned long i = nondet_ulong();
-  __ESBMC_assume(i >= 8 && i < n);
+  __VERIFIER_assume(i >= 8 && i < n);
   slots[i] = key;
 
-  __ESBMC_assert(slots[0] == key, "another slot holds the key");
+  __VERIFIER_assert(slots[0] == key); // another slot holds the key
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7855-bytewise-store_fail
 // RUN: -m64 --incremental-bmc
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^  FAILED +\[main\.assertion\.\d+\] +line +\d+ +another slot holds the key$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  FAILED +\[main\.assertion\.\d+\] +line +\d+ +another slot holds the key$
 // MODE: FUTURE

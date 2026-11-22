@@ -13,7 +13,7 @@ void main() {
 	
 	property_check: {
 		// Does not find the violation
-		__ESBMC_assert(property, "assertion error");
+		__VERIFIER_assert(property); // assertion error
 		goto loop_start;	
 	}
 		
@@ -22,14 +22,14 @@ void main() {
 		property = (isFirstCycle ? (true) : (false)) ;
 		isFirstCycle = false;
 		// Violation found if uncommented
-		//__ESBMC_assert(property, "assertion error");
+		//__VERIFIER_assert(property, "assertion error");
 		goto property_check;	
 	}
 	
 	/* If we put the property_check under the monitor_evaluation the violation is also found
 	property_check: {
 		// Violation found
-		__ESBMC_assert(property, "assertion error");
+		__VERIFIER_assert(property, "assertion error");
 		goto loop_start;	
 	}
 	*/

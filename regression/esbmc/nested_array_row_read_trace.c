@@ -9,13 +9,13 @@ int main(void)
 {
   int a[2][2];
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 2);
+  __VERIFIER_assume(i >= 0 && i < 2);
 
   a[1][0] = 5;
   a[1][1] = 4;
 
   int v = a[1][i];
-  __ESBMC_assert(v == 5 || v == 4, "the row read yields one of the row's stores");
+  __VERIFIER_assert(v == 5 || v == 4); // the row read yields one of the row's stores
   return 0;
 }
 // Imported from ESBMC regression/esbmc/nested_array_row_read_trace

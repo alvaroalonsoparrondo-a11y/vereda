@@ -55,9 +55,9 @@ int f (int j, int k) {
 
 int main () {
   int x, y;
-  __ESBMC_assume (x > y);
-  __ESBMC_assume (x >= 0);
-  __ESBMC_assume ((y > 15) && (y < 18));
+  __VERIFIER_assume (x > y);
+  __VERIFIER_assume (x >= 0);
+  __VERIFIER_assume ((y > 15) && (y < 18));
   f(x,y);
 }
 // Imported from ESBMC regression/cbmc/01_cbmc_Array_Pointer3

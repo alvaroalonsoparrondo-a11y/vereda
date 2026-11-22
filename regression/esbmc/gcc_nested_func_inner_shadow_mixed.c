@@ -15,7 +15,7 @@ int main()
     }
     return r;
   }
-  __ESBMC_assert(inner() == 11, "outer captured, inner shadow intact");
+  __VERIFIER_assert(inner() == 11); // outer captured, inner shadow intact
   return 0;
 }
 // Imported from ESBMC regression/esbmc/gcc_nested_func_inner_shadow_mixed

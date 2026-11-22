@@ -20,7 +20,7 @@ void *writer(void *arg)
 
 void *reader(void *arg)
 {
-  __ESBMC_assert(g <= 3, "g <= 3");
+  __VERIFIER_assert(g <= 3); // g <= 3
   return 0;
 }
 

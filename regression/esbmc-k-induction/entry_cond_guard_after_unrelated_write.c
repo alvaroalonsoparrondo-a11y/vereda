@@ -12,7 +12,7 @@ int main()
       break;
     c++;
   }
-  __ESBMC_assert(c <= k, "c <= k");
+  __VERIFIER_assert(c <= k); // c <= k
 }
 // Imported from ESBMC regression/k-induction/entry_cond_guard_after_unrelated_write
 // Needs: --k-induction

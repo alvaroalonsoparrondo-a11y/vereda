@@ -15,7 +15,7 @@ void callee(P *p) {
 
 int main(void) {
   P *o = (P *)malloc(sizeof(P));
-  __ESBMC_assume(o != 0);
+  __VERIFIER_assume(o != 0);
   callee(o);
   return 0;
 }

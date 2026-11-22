@@ -18,7 +18,7 @@ int main(void)
     x += 10;
   else
     ++x;
-  __ESBMC_assert(x == 7, "control bodies");
+  __VERIFIER_assert(x == 7); // control bodies
   return 0;
 }
 // Imported from ESBMC regression/witnesses_validate/reachsafety-correctnesswitness/injected_control_bodies_fail

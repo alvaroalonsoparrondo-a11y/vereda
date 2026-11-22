@@ -6,8 +6,8 @@ int main()
   int arr[2];
   u.p = arr + 100;
   u.s.b = 0;
-  __ESBMC_assert(u.p == arr + 100, "p kept");
-  __ESBMC_assert(u.s.b == 0, "b written");
+  __VERIFIER_assert(u.p == arr + 100); // p kept
+  __VERIFIER_assert(u.s.b == 0); // b written
 }
 // Imported from ESBMC regression/esbmc/github_9937_nested
 // RUN: -m64

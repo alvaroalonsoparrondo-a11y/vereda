@@ -20,7 +20,7 @@ int main()
   assert(dest[8] == '\0');
   return 0;
 #else
-  __ESBMC_assert(0, "This test requires __builtin_strcpy support");
+  __VERIFIER_assert(0); // This test requires __builtin_strcpy support
 #endif
 }
 // Imported from ESBMC regression/esbmc/builtin_strcpy-fail

@@ -5124,7 +5124,7 @@ char const * getKeyName(DFBInputEvent event)
 static void getRCInput( IDirectFB *dfb )
 {
      DFBResult ret;
-     __ESBMC_assume(dfb!=((void *)0));
+     __VERIFIER_assume(dfb!=((void *)0));
      IDirectFBEventBuffer *eventBuffer;
 
   if (dfb != ((void *)0))
@@ -5174,10 +5174,10 @@ int main( int argc, char *argv[] )
     DFBResult ret;
 
 
-__ESBMC_assume(argc>=0 && argc<(sizeof(argv)/sizeof(char)));
+__VERIFIER_assume(argc>=0 && argc<(sizeof(argv)/sizeof(char)));
 int counter;
 for(counter=0; counter<argc; counter++)
-  __ESBMC_assume(argv[counter]!=((void *)0));
+  __VERIFIER_assume(argv[counter]!=((void *)0));
 # 543 "exStbKey.c"
     ret = DirectFBInit( &argc, &argv );
     if (ret) {
@@ -5202,5 +5202,3 @@ for(counter=0; counter<argc; counter++)
 // Imported from ESBMC regression/esbmc-unix2/26_exStbKey
 // RUN: --unwind 1 --no-unwinding-assertions
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

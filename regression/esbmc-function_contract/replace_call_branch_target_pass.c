@@ -37,7 +37,7 @@ int main(void)
 {
   T t1, t2;
   int c;
-  __ESBMC_assume(c == 0 || c == 1);
+  __VERIFIER_assume(c == 0 || c == 1);
   if (c == 0)
   {
     fb(&t2, 2);
@@ -49,7 +49,7 @@ int main(void)
     fa(&t1, 1);
   }
   if (a_done)
-    __ESBMC_assert(b_done, "b_done must hold whenever a_done does");
+    __VERIFIER_assert(b_done); // b_done must hold whenever a_done does
   return 0;
 }
 // Imported from ESBMC regression/function_contract/replace_call_branch_target_pass

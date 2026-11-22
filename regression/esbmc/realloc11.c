@@ -7,11 +7,11 @@ int main() {
   int *q = realloc(p, 1000 * sizeof(int));
   if (q == NULL) {
     // allocation failed, p is still valid and unchanged
-    __ESBMC_assert(*p == 7, "Old pointer must remain valid after realloc fail");
+    __VERIFIER_assert(*p == 7); // Old pointer must remain valid after realloc fail
     free(p);
   } else {
     // success
-    __ESBMC_assert(q[0] == 7, "Reallocated pointer must preserve old data");
+    __VERIFIER_assert(q[0] == 7); // Reallocated pointer must preserve old data
     free(q);
   }
   return 0;

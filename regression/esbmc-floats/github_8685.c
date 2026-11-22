@@ -37,7 +37,7 @@ int main(void)
   fesetround(FE_TONEAREST);
 
   int n = nondet_int();
-  __ESBMC_assume(n >= -1074 && n <= 1023);
+  __VERIFIER_assume(n >= -1074 && n <= 1023);
   assert(ldexp(ldexp(1.0, n), -n) == 1.0);
   return 0;
 }

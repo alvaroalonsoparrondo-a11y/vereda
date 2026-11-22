@@ -4,7 +4,7 @@ int nondet_int(void);
 int main(void)
 {
   int x = nondet_int(), y = 0;
-  __ESBMC_assume(x > 0);
+  __VERIFIER_assume(x > 0);
   while (nondet_int())
   {
     assert(x > 0);

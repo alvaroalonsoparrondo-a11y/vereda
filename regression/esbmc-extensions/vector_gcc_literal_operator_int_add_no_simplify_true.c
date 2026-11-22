@@ -11,7 +11,7 @@ int main() {
    //int arr[4] = {1,2,3,4};
     //vsi = vsi + 1;
    for(int i = 0; i < 4; i++)
-      __ESBMC_assert(vsi[i] == i, "The vector should be initialized correctly");
+      __VERIFIER_assert(vsi[i] == i); // The vector should be initialized correctly
    return 0; 
 }
 // Imported from ESBMC regression/extensions/vector_gcc_literal_operator_int_add_no_simplify_true

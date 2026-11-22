@@ -9,7 +9,7 @@ int main(void)
    * merge is needed to reach them, so this stays isolated to the
    * constant-conversion path). */
   double x = __VERIFIER_nondet_double();
-  __ESBMC_assume(x > 0.0);
+  __VERIFIER_assume(x > 0.0);
 
   double neg = x / (-0.0);
   double pos = x / 0.0;
@@ -18,10 +18,10 @@ int main(void)
    * Checking both in the same program confirms that recording
    * negative-zero metadata for the -0.0 literal does not also mark the
    * ordinary +0.0 literal as negative. */
-  __ESBMC_assert(
-    neg < 0.0, "dividing a positive value by literal -0.0 must give -infinity");
-  __ESBMC_assert(
-    pos > 0.0, "dividing a positive value by literal +0.0 must give +infinity");
+  __VERIFIER_assert(
+    neg < 0.0); // dividing a positive value by literal -0.0 must give -infinity
+  __VERIFIER_assert(
+    pos > 0.0); // dividing a positive value by literal +0.0 must give +infinity
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-neg-zero-literal-div-sign

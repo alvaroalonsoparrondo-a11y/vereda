@@ -5,7 +5,7 @@ extern int __VERIFIER_nondet_int(void);
 int main()
 {
   int n = __VERIFIER_nondet_int();
-  __ESBMC_assume(n > 0 && n < 100);
+  __VERIFIER_assume(n > 0 && n < 100);
   long packet[n];
   return 0;
 }

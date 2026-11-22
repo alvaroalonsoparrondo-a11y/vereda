@@ -27,7 +27,7 @@ int main(void)
   for (int i = 0; i < x.u.a.n; i++)
     s++;
 
-  __ESBMC_assert(s == 9, "the loops run one time too many");
+  __VERIFIER_assert(s == 9); // the loops run one time too many
   return 0;
 }
 // Imported from ESBMC regression/esbmc/union_struct_member_bound_fail

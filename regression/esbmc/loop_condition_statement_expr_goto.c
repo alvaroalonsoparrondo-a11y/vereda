@@ -9,7 +9,7 @@ int main()
   }))
     ++i;
 out:
-  __ESBMC_assert(i <= 4, "the statement expression leaves at 4");
+  __VERIFIER_assert(i <= 4); // the statement expression leaves at 4
   return i;
 }
 // Imported from ESBMC regression/esbmc/loop_condition_statement_expr_goto

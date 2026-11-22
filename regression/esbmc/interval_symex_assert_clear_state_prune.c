@@ -7,8 +7,8 @@ int main()
   int *p = &y;
   z = 1;
   *p = nondet_int();
-  __ESBMC_assume(y >= 0 && y <= 5);
-  __ESBMC_assert(y <= 10, "y at most 10");
+  __VERIFIER_assume(y >= 0 && y <= 5);
+  __VERIFIER_assert(y <= 10); // y at most 10
 }
 // Imported from ESBMC regression/esbmc/interval_symex_assert_clear_state_prune
 // Needs: --interval-symex-assert

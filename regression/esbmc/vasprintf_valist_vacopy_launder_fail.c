@@ -35,7 +35,7 @@ static int wrap(const char *fmt, ...)
 int main(void)
 {
   int used = wrap("x=%s", "aaaa"); /* true length 6 */
-  __ESBMC_assert(used != 6, "unbounded return must keep 6 feasible");
+  __VERIFIER_assert(used != 6); // unbounded return must keep 6 feasible
   return 0;
 }
 // Imported from ESBMC regression/esbmc/vasprintf_valist_vacopy_launder_fail

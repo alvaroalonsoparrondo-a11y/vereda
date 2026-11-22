@@ -3,13 +3,13 @@ int nondet_int();
 int main()
 {
   int a = nondet_int();
-  __ESBMC_assume(a % 2 == 0);
+  __VERIFIER_assume(a % 2 == 0);
   if (a % 2)
   {
     ++a;
-    __ESBMC_assert(0, "unreachable odd branch");
+    __VERIFIER_assert(0); // unreachable odd branch
   }
-  __ESBMC_assert(a % 2 == 0, "a is even here");
+  __VERIFIER_assert(a % 2 == 0); // a is even here
   return 0;
 }
 // Imported from ESBMC regression/goto-coverage/github_5747_2

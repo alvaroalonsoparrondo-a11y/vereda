@@ -12,7 +12,7 @@ int main(void)
   int a[2][128];
   int b[128];
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 128);
+  __VERIFIER_assume(i >= 0 && i < 128);
 
   a[0][0] = 9; a[1][0] = 1; b[0] = 5;
   a[0][1] = 9; a[1][1] = 1; b[1] = 5;
@@ -145,7 +145,7 @@ int main(void)
 
   memcpy((char *)a + sizeof a[0], b, sizeof a[0]);
 
-  __ESBMC_assert(a[1][i] == 5 && a[0][i] == 9, "the grafted row reads back and the other is untouched");
+  __VERIFIER_assert(a[1][i] == 5 && a[0][i] == 9); // the grafted row reads back and the other is untouched
   return 0;
 }
 // Imported from ESBMC regression/esbmc/nested_array_row_memcpy_at_cap

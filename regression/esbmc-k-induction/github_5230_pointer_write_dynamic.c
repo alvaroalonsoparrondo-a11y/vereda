@@ -12,7 +12,7 @@ extern unsigned char nondet_uchar(void);
 int main(void)
 {
   unsigned char (*dest)[8] = malloc(8); // dest points to a heap object
-  __ESBMC_assume(dest != 0);
+  __VERIFIER_assume(dest != 0);
 
   for (int i = 0; i < 8; i++)
     (*dest)[i] = nondet_uchar(); // index through a pointer to a dynamic object

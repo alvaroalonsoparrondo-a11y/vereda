@@ -12,11 +12,9 @@ int main(void)
   struct S e;
   e.a = 5;
   __builtin_memset(&e, 0, sizeof(e));
-  __ESBMC_assert(e.a == 5, "must not hold");
+  __VERIFIER_assert(e.a == 5); // must not hold
   return 0;
 }
 // Imported from ESBMC regression/esbmc/builtin_mem_rewrites_fail
 // RUN: --unwind 12
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

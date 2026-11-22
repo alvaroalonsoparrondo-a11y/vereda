@@ -6053,10 +6053,10 @@ int main(int argc, char *argv[])
 
   int x;
 
-   __ESBMC_assume(argc>=0 && argc<(sizeof(argv)/sizeof(char))-1);
+   __VERIFIER_assume(argc>=0 && argc<(sizeof(argv)/sizeof(char))-1);
    int counter;
    for(counter=0; counter<argc; counter++)
-     __ESBMC_assume(argv[counter]!=NULL);
+     __VERIFIER_assume(argv[counter]!=NULL);
 
   /* Parse arguments */
   for( x = 1; x < argc; ++x )

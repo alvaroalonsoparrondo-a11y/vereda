@@ -14,7 +14,7 @@ int main() {
     }
   }
 while_break:;
-  __ESBMC_assert(x <= 10, "x <= 10");
+  __VERIFIER_assert(x <= 10); // x <= 10
   return 0;
 }
 // Imported from ESBMC regression/k-induction/entry_cond_after_write_fail

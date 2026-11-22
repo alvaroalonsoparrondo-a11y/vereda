@@ -17,7 +17,7 @@ void f(buf_t *b)
   __ESBMC_assigns(g);
   __ESBMC_ensures(1);
   g = 1;
-  __ESBMC_assert(0, "must be reported");
+  __VERIFIER_assert(0); // must be reported
 }
 
 int main()

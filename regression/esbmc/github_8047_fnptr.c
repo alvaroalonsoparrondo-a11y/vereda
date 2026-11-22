@@ -10,7 +10,7 @@ int f(int y)
 
 int h(int y)
 {
-  __ESBMC_assume(g == 7);
+  __VERIFIER_assume(g == 7);
   return y;
 }
 
@@ -20,7 +20,7 @@ int main()
   g = nondet_int();
   int (*fp)(int) = c ? f : h;
   fp(0);
-  __ESBMC_assert(g > -7, "g above -7");
+  __VERIFIER_assert(g > -7); // g above -7
 }
 // Imported from ESBMC regression/esbmc/github_8047_fnptr
 // Needs: --interval-symex-assert

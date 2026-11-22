@@ -4,7 +4,7 @@ int a[4];
 int main()
 {
   unsigned i = nondet_uint(), j = nondet_uint();
-  __ESBMC_assume(i < 4);
+  __VERIFIER_assume(i < 4);
   int s = a[i] + a[j];
   return s;
 }

@@ -13,7 +13,7 @@ int main(void)
 
   /* widening: float (32-bit fixedbv) -> long (64) */
   unsigned n = nondet_uint();
-  __ESBMC_assume(n < 100);
+  __VERIFIER_assume(n < 100);
   float f = n;
   assert((long)f == (long)n);
 

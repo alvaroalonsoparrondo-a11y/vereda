@@ -12,7 +12,7 @@ int main()
   default:
     y = 3;
   }
-  __ESBMC_assert(y != 3, "default taken");
+  __VERIFIER_assert(y != 3); // default taken
   return 0;
 }
 // Imported from ESBMC regression/witnesses_validate/reachsafety-violationwitness/github_9882_switch_default

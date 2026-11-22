@@ -5,7 +5,7 @@ int main(void)
   for (i = 0; i < 2; ++i)
     for (j = 0; j < 2; ++j)
       ++x;
-  __ESBMC_assert(x == 4, "iteration count");
+  __VERIFIER_assert(x == 4); // iteration count
   return 0;
 }
 // Imported from ESBMC regression/witnesses_validate/reachsafety-correctnesswitness/injected_unbraced_loops

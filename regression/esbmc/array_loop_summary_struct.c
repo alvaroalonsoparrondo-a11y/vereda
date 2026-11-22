@@ -9,11 +9,11 @@ int main()
   for (int i = 0; i < 3; i++)
     old[i] = pts[i];
   int x = nondet_int();
-  __ESBMC_assume(x >= 0 && x < 3);
+  __VERIFIER_assume(x >= 0 && x < 3);
   old[x].k++;
   int y = nondet_int();
-  __ESBMC_assume(y >= 0 && y < 3);
-  __ESBMC_assert(old[y].k <= 1, "");
+  __VERIFIER_assume(y >= 0 && y < 3);
+  __VERIFIER_assert(old[y].k <= 1);
   return 0;
 }
 // Imported from ESBMC regression/esbmc/array_loop_summary_struct

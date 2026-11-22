@@ -8,7 +8,7 @@ int main(void)
   v4f b = {0.5f, 0.5f, 0.5f, 0.5f};
 
   v4f m = a * b;
-  __ESBMC_assert(m[1] == 2.5f, "m[1] is 1.25, not 2.5");
+  __VERIFIER_assert(m[1] == 2.5f); // m[1] is 1.25, not 2.5
   return 0;
 }
 // Imported from ESBMC regression/esbmc/irep2_only_vector_float_arith_fail

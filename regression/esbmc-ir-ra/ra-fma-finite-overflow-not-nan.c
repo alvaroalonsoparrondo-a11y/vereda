@@ -12,10 +12,10 @@ int main(void)
    * product is an exact finite real in the FMA model even though it would
    * overflow to +inf in a standalone ieee_mul.  Adding -inf to a finite
    * exact product is not an invalid operation; the result is -inf, not NaN. */
-  __ESBMC_assume(z < -DBL_MAX);
+  __VERIFIER_assume(z < -DBL_MAX);
   double r = fma(DBL_MAX, 2.0, z);
 
-  __ESBMC_assert(r == r, "fma(DBL_MAX, 2.0, -inf) should not be NaN");
+  __VERIFIER_assert(r == r); // fma(DBL_MAX, 2.0, -inf) should not be NaN
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-fma-finite-overflow-not-nan

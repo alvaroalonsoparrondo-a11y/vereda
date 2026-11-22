@@ -32,7 +32,7 @@ int main(void)
 {
   vm.sp = 1;
   int st = step(&vm, nondet_u4());
-  __ESBMC_assert(st == 0, "a null entry must keep its miss path");
+  __VERIFIER_assert(st == 0); // a null entry must keep its miss path
   return 0;
 }
 // Imported from ESBMC regression/esbmc/null_fnptr_guard_const_fold_fail

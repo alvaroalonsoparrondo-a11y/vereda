@@ -55,7 +55,7 @@ int main(void)
   assert(__builtin_ctzs((unsigned short)0x8000) == 15);
 
   unsigned u = ndu();
-  __ESBMC_assume(u != 0);
+  __VERIFIER_assume(u != 0);
   assert(__builtin_clz(u) + __builtin_ctz(u) <= 31);
   return 0;
 }

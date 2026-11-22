@@ -4,7 +4,7 @@
 int main()
 {
   int addr1 = nondet_int();
-  __ESBMC_assume(addr1 == 4);
+  __VERIFIER_assume(addr1 == 4);
   int addr2 = nondet_int();
 
   void *a = (void *)malloc(addr1);

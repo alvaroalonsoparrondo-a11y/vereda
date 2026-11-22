@@ -3,7 +3,7 @@ int main()
 {
   unsigned char c = 255;
   c = c + 1;
-  __ESBMC_assert((int)c == 256, "no wrap under --ir");
+  __VERIFIER_assert((int)c == 256); // no wrap under --ir
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/github_10537_char_wrap

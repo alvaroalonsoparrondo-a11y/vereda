@@ -21,7 +21,7 @@ int main(void)
   }
   f();
   int *x = &g;
-  __ESBMC_assert(*x == 2, "f wrote 1, not 2, to g");
+  __VERIFIER_assert(*x == 2); // f wrote 1, not 2, to g
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9060_fail

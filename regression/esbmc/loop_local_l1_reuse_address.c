@@ -7,7 +7,7 @@ int main()
     int *p = &x;
     r += *p;
   }
-  __ESBMC_assert(r == 1, "each pointer reads its own iteration's x");
+  __VERIFIER_assert(r == 1); // each pointer reads its own iteration's x
   return r;
 }
 // Imported from ESBMC regression/esbmc/loop_local_l1_reuse_address

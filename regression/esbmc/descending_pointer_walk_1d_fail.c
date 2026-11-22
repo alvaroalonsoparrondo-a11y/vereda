@@ -4,12 +4,10 @@ int main()
   int sum = 0;
   for (int *p = &a[4]; p != &a[0]; p--)
     sum += *(p - 1);
-  __ESBMC_assert(sum == 3, "the walk does not cover three elements");
+  __VERIFIER_assert(sum == 3); // the walk does not cover three elements
   return 0;
 }
 // Imported from ESBMC regression/esbmc/descending_pointer_walk_1d_fail
 // RUN: --unwind 8
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: the walk does not cover three elements
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

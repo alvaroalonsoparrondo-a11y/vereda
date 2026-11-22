@@ -27,7 +27,7 @@ __ESBMC_HIDE:;
 int main()
 {
   int n = __VERIFIER_nondet_int();
-  __ESBMC_assume(n >= 1 && n <= 10);
+  __VERIFIER_assume(n >= 1 && n <= 10);
   demo(n);
   return 0;
 }

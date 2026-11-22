@@ -4064,10 +4064,10 @@ int32_t main(int32_t argc, char *argv[])
     DFBRectangle actualRect;
 
 
-__ESBMC_assume(argc>=0 && argc<(sizeof(argv)/sizeof(char)));
+__VERIFIER_assume(argc>=0 && argc<(sizeof(argv)/sizeof(char)));
 int counter;
 for(counter=0; counter<argc; counter++)
-  __ESBMC_assume(argv[counter]!=((void *)0));
+  __VERIFIER_assume(argv[counter]!=((void *)0));
 
 
 

@@ -6,14 +6,12 @@ extern int nd(void);
 int main(void)
 {
   int c = nd();
-  __ESBMC_assume(c == 1);
+  __VERIFIER_assume(c == 1);
   if (c == 1)
-    __ESBMC_assert(0, "reachable");
+    __VERIFIER_assert(0); // reachable
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_4715_irep2_native_body_assert_fold_01_fail
 // RUN: --unwind 1
 // EXPECT: reachable
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

@@ -3,9 +3,9 @@ extern int __VERIFIER_nondet_int(void);
 int main(void)
 {
   int x = __VERIFIER_nondet_int();
-  __ESBMC_assume(x >= 0 && x < INT_MAX);
+  __VERIFIER_assume(x >= 0 && x < INT_MAX);
   x += 1;
-  __ESBMC_assert(0, "ignored user assertion");
+  __VERIFIER_assert(0); // ignored user assertion
   return 0;
 }
 // Imported from ESBMC regression/witnesses_validate/reachsafety-correctnesswitness/injected_location_no_assertions

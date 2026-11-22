@@ -22,7 +22,7 @@ int main(void)
     S s;
     s.received = 0;
     f(&s, 7);
-    __ESBMC_assert(s.received == 7, "ensures pins received to v");
+    __VERIFIER_assert(s.received == 7); // ensures pins received to v
     return 0;
 }
 // Imported from ESBMC regression/function_contract/replace_struct_ptr_havoc_pass

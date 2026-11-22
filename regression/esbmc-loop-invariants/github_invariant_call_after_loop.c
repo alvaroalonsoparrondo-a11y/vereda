@@ -17,7 +17,7 @@ int main(void)
   for (i = 0; i < 2; i++)
     total += i;
 
-  __ESBMC_assert(total >= 0, "reached a verdict rather than aborting");
+  __VERIFIER_assert(total >= 0); // reached a verdict rather than aborting
   return 0;
 }
 // Imported from ESBMC regression/loop-invariants/github_invariant_call_after_loop

@@ -12,11 +12,9 @@
 int main(void)
 {
   int x = nondet_int();
-  __ESBMC_assert(DEEP, "a deep conjunction does not hold for x == 0");
+  __VERIFIER_assert(DEEP); // a deep conjunction does not hold for x == 0
   return 0;
 }
 // Imported from ESBMC regression/esbmc/deep_binary_chain_fail
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

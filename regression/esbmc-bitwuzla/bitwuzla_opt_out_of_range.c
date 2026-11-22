@@ -5,7 +5,7 @@ int nondet_int(void);
 int main()
 {
   int x = nondet_int();
-  __ESBMC_assert(x != 1234, "x can be anything");
+  __VERIFIER_assert(x != 1234); // x can be anything
   return 0;
 }
 // Imported from ESBMC regression/bitwuzla/bitwuzla_opt_out_of_range

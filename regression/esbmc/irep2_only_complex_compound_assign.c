@@ -7,20 +7,20 @@ int main(void)
   _Complex float a = 3.0f + 4.0fi;
 
   a += 1.0f + 2.0fi;
-  __ESBMC_assert(__real__ a == 4.0f, "+= real");
-  __ESBMC_assert(__imag__ a == 6.0f, "+= imag");
+  __VERIFIER_assert(__real__ a == 4.0f); // += real
+  __VERIFIER_assert(__imag__ a == 6.0f); // += imag
 
   a -= 1.0f + 2.0fi;
-  __ESBMC_assert(__real__ a == 3.0f, "-= real");
-  __ESBMC_assert(__imag__ a == 4.0f, "-= imag");
+  __VERIFIER_assert(__real__ a == 3.0f); // -= real
+  __VERIFIER_assert(__imag__ a == 4.0f); // -= imag
 
   a *= 2.0f;
-  __ESBMC_assert(__real__ a == 6.0f, "*= real");
-  __ESBMC_assert(__imag__ a == 8.0f, "*= imag");
+  __VERIFIER_assert(__real__ a == 6.0f); // *= real
+  __VERIFIER_assert(__imag__ a == 8.0f); // *= imag
 
   a /= 2.0f;
-  __ESBMC_assert(__real__ a == 3.0f, "/= real");
-  __ESBMC_assert(__imag__ a == 4.0f, "/= imag");
+  __VERIFIER_assert(__real__ a == 3.0f); // /= real
+  __VERIFIER_assert(__imag__ a == 4.0f); // /= imag
 
   return 0;
 }

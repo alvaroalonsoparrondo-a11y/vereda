@@ -11,7 +11,7 @@ static int first(int n, ...)
 
 int main()
 {
-  __ESBMC_assert(first(1, 7) == 7, "va_arg reads the first argument");
+  __VERIFIER_assert(first(1, 7) == 7); // va_arg reads the first argument
   return 0;
 }
 // Imported from ESBMC regression/esbmc/irep2_only_va_binds_by_reference_c23

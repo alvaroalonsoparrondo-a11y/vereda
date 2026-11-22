@@ -10,7 +10,7 @@ int main(void)
   char *q = malloc(32);
   if (!q)
     return 0;
-  __ESBMC_assume((uintptr_t)q != 0);
+  __VERIFIER_assume((uintptr_t)q != 0);
   unsigned long u = nondet_ulong();
   char *p = (char *)(u * 8 - (uintptr_t)&a[0]);
   if ((uintptr_t)p == (uintptr_t)q + 8)

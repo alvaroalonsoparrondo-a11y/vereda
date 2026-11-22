@@ -8,7 +8,7 @@ int main()
 {
   float x = 2.5f;
   int n = (int)x;
-  __ESBMC_assert(n == 2, "C casts truncate toward zero");
+  __VERIFIER_assert(n == 2); // C casts truncate toward zero
   return 0;
 }
 // Imported from ESBMC regression/esbmc/fixedbv-bitcast-ir

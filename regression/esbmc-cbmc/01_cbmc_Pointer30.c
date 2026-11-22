@@ -18,9 +18,9 @@ int main ()
 {
   n = BLOCK_SIZE;
   a = malloc (n * sizeof(*a));
-__ESBMC_assume(a != NULL);
+__VERIFIER_assume(a != NULL);
   b = malloc (n * sizeof(*b));
-__ESBMC_assume(b != NULL);
+__VERIFIER_assume(b != NULL);
   *b++ = 0;
   if (b[-2]) /* invalid deref */
   { free(a); free(b-1); }

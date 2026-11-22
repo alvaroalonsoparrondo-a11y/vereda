@@ -10,7 +10,7 @@ int main(void)
     return 0;
 
   unsigned long i = nondet_ulong();
-  __ESBMC_assume(i < 2);
+  __VERIFIER_assume(i < 2);
 
   const void **slot = &slots[i];
   const void *first = *slot;
@@ -18,12 +18,12 @@ int main(void)
   const void *second = slots[i];
 
   if (fresh && first == second && (uintptr_t)first == (uintptr_t)fresh)
-    __ESBMC_assert(0, "a stale read names the later object");
+    __VERIFIER_assert(0); // a stale read names the later object
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7855-reread-later-object
 // RUN: -m64 --incremental-bmc
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^  FAILED +\[main\.assertion\.\d+\] +line +\d+ +a stale read names the later object$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  FAILED +\[main\.assertion\.\d+\] +line +\d+ +a stale read names the later object$
 // MODE: FUTURE

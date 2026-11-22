@@ -11,11 +11,11 @@ int main()
   char d[8] = {0};
 
   unsigned long i = nondet_ulong();
-  __ESBMC_assume(i < 2);
+  __VERIFIER_assume(i < 2);
   char *s = i ? a : b;
 
   unsigned long n = nondet_ulong();
-  __ESBMC_assume(n == 4);
+  __VERIFIER_assume(n == 4);
 
   memcpy(d, s, n);
   assert(d[0] == 1 || d[0] == 2);
@@ -25,5 +25,3 @@ int main()
 // Imported from ESBMC regression/esbmc/memcpy_symbolic_length_multiobject
 // RUN: --unwind 100
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

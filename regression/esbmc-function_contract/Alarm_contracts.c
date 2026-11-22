@@ -122,7 +122,7 @@ int main() {
         current_time = c->turnOff_schedule_time;
         
         // Verify time is within bound
-        __ESBMC_assume(current_time <= start_time + TIME_BOUND);
+        __VERIFIER_assume(current_time <= start_time + TIME_BOUND);
         
         // Execute reaction_1
         reaction_1_executed = reaction_1(c, current_time);

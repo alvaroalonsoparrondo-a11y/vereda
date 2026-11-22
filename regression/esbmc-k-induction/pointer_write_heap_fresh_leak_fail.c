@@ -16,7 +16,7 @@ int main()
   while (__VERIFIER_nondet_int())
   {
     struct node *n = malloc(sizeof *n);
-    __ESBMC_assume(n);
+    __VERIFIER_assume(n);
     n->next = head;
     head = n;
   }

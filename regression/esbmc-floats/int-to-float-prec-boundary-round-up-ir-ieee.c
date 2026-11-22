@@ -15,7 +15,7 @@ int nondet_int(void);
 int main(void)
 {
   int i = nondet_int();
-  __ESBMC_assume(i >= 16777218 && i <= 16777220);
+  __VERIFIER_assume(i >= 16777218 && i <= 16777220);
   float f = (float)i;
   int j = (int)f;
   assert(j != 16777219);

@@ -14,9 +14,9 @@ int main(void)
 {
   int *p = 0;
   p = pick(0);
-  __ESBMC_assert(p == &a, "pointer equality holds");
+  __VERIFIER_assert(p == &a); // pointer equality holds
   *p = 5;
-  __ESBMC_assert(a == 6, "the write through p reaches a");
+  __VERIFIER_assert(a == 6); // the write through p reaches a
   return 0;
 }
 // Imported from ESBMC regression/function_contract/github_7009_pointer_result_fail

@@ -7,7 +7,7 @@ unsigned long long nondet_ulonglong(void);
 int main(void)
 {
   unsigned zb = nondet_uint();
-  __ESBMC_assume(zb == 0);
+  __VERIFIER_assume(zb == 0);
   float z;
   memcpy(&z, &zb, sizeof z);
   float f = z / z;
@@ -16,7 +16,7 @@ int main(void)
   assert(fbits == 0x7fc00000u);
 
   unsigned long long zdb = nondet_ulonglong();
-  __ESBMC_assume(zdb == 0);
+  __VERIFIER_assume(zdb == 0);
   double zd;
   memcpy(&zd, &zdb, sizeof zd);
   double d = zd / zd;

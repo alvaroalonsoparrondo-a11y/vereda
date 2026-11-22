@@ -7,7 +7,7 @@ int main(void)
 
   /* malloc(0) is NULL under this flag, so asserting otherwise must be
    * reported -- if p were unconstrained again this would silently pass. */
-  __ESBMC_assert(p != 0, "malloc(0) is not NULL");
+  __VERIFIER_assert(p != 0); // malloc(0) is not NULL
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_6593_fail

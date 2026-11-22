@@ -11,7 +11,7 @@ int main()
       status = 2;
   }
   while (1)
-    __ESBMC_assert(status != 2, "two");
+    __VERIFIER_assert(status != 2); // two
 }
 // Imported from ESBMC regression/k-induction/interval_widening_delay_fail
 // Needs: --k-induction --interval-analysis --interval-analysis-arithmetic --interval-analysis-extrapolate --interval-analysis-extrapolate-under-approximate

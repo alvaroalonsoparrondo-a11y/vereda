@@ -9,7 +9,7 @@ int main()
   int i;
   for (i = 0; i < 17; i++)
     ;
-  __ESBMC_assert(i == 17, "step recognition pins exact post-value");
+  __VERIFIER_assert(i == 17); // step recognition pins exact post-value
   return 0;
 }
 // Imported from ESBMC regression/esbmc/loop_simplify_step_for

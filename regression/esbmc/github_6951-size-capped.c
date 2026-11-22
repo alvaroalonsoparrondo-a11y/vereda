@@ -16,9 +16,9 @@ char g_char;
 
 int main(void)
 {
-  __ESBMC_assert(((uintptr_t)&g_char % 16) == 0, "one-byte object is 16-aligned");
-  __ESBMC_assert(
-    ((uintptr_t)g_packed_array % 16) == 0, "array of packed is 16-aligned");
+  __VERIFIER_assert(((uintptr_t)&g_char % 16) == 0); // one-byte object is 16-aligned
+  __VERIFIER_assert(
+    ((uintptr_t)g_packed_array % 16) == 0); // array of packed is 16-aligned
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_6951-size-capped
@@ -26,5 +26,5 @@ int main(void)
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^.*one-byte object is 16-aligned.*$
 // EXPECT: ^.*array of packed is 16-aligned.*$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^.*array of packed is 16-aligned.*$
 // MODE: FUTURE

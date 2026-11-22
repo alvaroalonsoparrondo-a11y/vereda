@@ -6,17 +6,17 @@ double nondet_double(void);
 int main(void)
 {
   double d = nondet_double(), z = nondet_double();
-  __ESBMC_assume(d == 1.0 && z == 0.0);
+  __VERIFIER_assume(d == 1.0 && z == 0.0);
   const double i = __builtin_inf();
 
-  __ESBMC_assert(!__builtin_isnan(d), "1.0 is not NaN");
-  __ESBMC_assert(!__builtin_isnan(i), "an infinity is not NaN");
-  __ESBMC_assert(__builtin_isinf(i), "an infinity is infinite");
-  __ESBMC_assert(!__builtin_isinf(d), "1.0 is not infinite");
-  __ESBMC_assert(__builtin_isfinite(d), "1.0 is finite");
-  __ESBMC_assert(!__builtin_isfinite(i), "an infinity is not finite");
-  __ESBMC_assert(__builtin_isnormal(d), "1.0 is normal");
-  __ESBMC_assert(!__builtin_isnormal(z), "0.0 is finite but not normal");
+  __VERIFIER_assert(!__builtin_isnan(d)); // 1.0 is not NaN
+  __VERIFIER_assert(!__builtin_isnan(i)); // an infinity is not NaN
+  __VERIFIER_assert(__builtin_isinf(i)); // an infinity is infinite
+  __VERIFIER_assert(!__builtin_isinf(d)); // 1.0 is not infinite
+  __VERIFIER_assert(__builtin_isfinite(d)); // 1.0 is finite
+  __VERIFIER_assert(!__builtin_isfinite(i)); // an infinity is not finite
+  __VERIFIER_assert(__builtin_isnormal(d)); // 1.0 is normal
+  __VERIFIER_assert(!__builtin_isnormal(z)); // 0.0 is finite but not normal
   return 0;
 }
 // Imported from ESBMC regression/esbmc/irep2_only_builtin_float_class

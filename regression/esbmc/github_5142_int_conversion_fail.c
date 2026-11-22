@@ -6,7 +6,7 @@ int main(void)
 {
   void *p = 0xdeadUL; // implicit int -> pointer
   unsigned long v = (unsigned long)p;
-  __ESBMC_assert(v == 0, "v is 0xdead, not 0 -- must fail");
+  __VERIFIER_assert(v == 0); // v is 0xdead, not 0 -- must fail
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_5142_int_conversion_fail

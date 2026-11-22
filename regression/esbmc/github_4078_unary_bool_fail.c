@@ -5,11 +5,9 @@ int a, b;
 
 int main(void)
 {
-  __ESBMC_assert(~(a || b) == 0, "must not hold");
+  __VERIFIER_assert(~(a || b) == 0); // must not hold
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_4078_unary_bool_fail
 // RUN: --unwind 2
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

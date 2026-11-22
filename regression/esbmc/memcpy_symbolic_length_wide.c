@@ -12,7 +12,7 @@ int main()
     src[i] = 5;
 
   unsigned long n = nondet_ulong();
-  __ESBMC_assume(n == 2);
+  __VERIFIER_assume(n == 2);
 
   memcpy(dst, src, n);
   assert(dst[0] == 5);
@@ -22,5 +22,3 @@ int main()
 // Imported from ESBMC regression/esbmc/memcpy_symbolic_length_wide
 // RUN: --unwind 100
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

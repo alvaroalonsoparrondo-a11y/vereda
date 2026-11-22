@@ -31,9 +31,9 @@ int main(void)
 {
   int arr[N] = {1, 2, 3, 4, 5};
   bump(arr, 2);
-  __ESBMC_assert(
-    arr[0] == 999,
-    "must fail -- the ensures guarantees arr[0] == 3, not 999");
+  __VERIFIER_assert(
+    arr[0] == 999
+); // must fail -- the ensures guarantees arr[0] == 3, not 999
   return 0;
 }
 // Imported from ESBMC regression/function_contract/github_4219_old_in_forall_array_param_replace_mode_loopinv_fail

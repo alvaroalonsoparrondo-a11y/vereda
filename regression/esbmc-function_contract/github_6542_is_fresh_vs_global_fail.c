@@ -15,7 +15,7 @@ void callee(P *p) {
   p->x = 1;
 }
 int main(void){ g.x = 5; callee(&g);
-  __ESBMC_assert(g.x == 5, "false: p aliases g"); return 0; }
+  __VERIFIER_assert(g.x == 5); return 0; } // false: p aliases g
 // Imported from ESBMC regression/function_contract/github_6542_is_fresh_vs_global_fail
 // Needs: --replace-call-with-contract callee
 // RUN: --replace-call-with-contract callee --unwind 6

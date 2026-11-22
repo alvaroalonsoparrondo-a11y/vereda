@@ -23,7 +23,7 @@ int main(void)
   int *q = b;
   b[0] = 1;
   clr(q);
-  __ESBMC_assert(0, "the path must stay alive to reach this");
+  __VERIFIER_assert(0); // the path must stay alive to reach this
   return 0;
 }
 // Imported from ESBMC regression/function_contract/github_6961_assigns_ptr_var_valuesets_fail

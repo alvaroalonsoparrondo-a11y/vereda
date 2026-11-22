@@ -4,10 +4,10 @@ int main()
   int c = nondet_int();
   if (!c)
   {
-    __ESBMC_assert(0, "v");
-    __ESBMC_assume(0);
+    __VERIFIER_assert(0); // v
+    __VERIFIER_assume(0);
   }
-  __ESBMC_assert(c != 0, "w");
+  __VERIFIER_assert(c != 0); // w
   return 0;
 }
 // Imported from ESBMC regression/esbmc/multi_property_or_assert_fold_assume_kept

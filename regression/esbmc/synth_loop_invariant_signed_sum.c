@@ -10,7 +10,7 @@ int main()
   int i, n = nondet_int(), sn = 0;
   for (i = 1; i <= n; i++)
     sn = sn + a;
-  __ESBMC_assert(sn == n * a || sn == 0, "sum01");
+  __VERIFIER_assert(sn == n * a || sn == 0); // sum01
   return 0;
 }
 // Imported from ESBMC regression/esbmc/synth_loop_invariant_signed_sum

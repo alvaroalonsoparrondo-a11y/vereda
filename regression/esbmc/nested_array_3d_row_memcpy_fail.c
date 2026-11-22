@@ -7,8 +7,8 @@ int main(void)
   int b[2];
   int i = nondet_int();
   int j = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 2);
-  __ESBMC_assume(j >= 0 && j < 2);
+  __VERIFIER_assume(i >= 0 && i < 2);
+  __VERIFIER_assume(j >= 0 && j < 2);
 
   a[0][0][0] = 1;
   a[0][0][1] = 1;
@@ -23,9 +23,9 @@ int main(void)
 
   memcpy(a[1][1], b, sizeof b);
 
-  __ESBMC_assert(
-    a[i][1][j] == (i == 1 ? (j == 0 ? 6 : 5) : 1),
-    "the innermost grafted row must not read back with its elements swapped");
+  __VERIFIER_assert(
+    a[i][1][j] == (i == 1 ? (j == 0 ? 6 : 5) : 1)
+); // the innermost grafted row must not read back with its elements swapped
   return 0;
 }
 // Imported from ESBMC regression/esbmc/nested_array_3d_row_memcpy_fail

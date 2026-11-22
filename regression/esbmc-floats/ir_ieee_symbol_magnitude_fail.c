@@ -7,8 +7,8 @@
 int main(void)
 {
   double f;
-  __ESBMC_assume(f == f);
-  __ESBMC_assume(f != INF && f != -INF);
+  __VERIFIER_assume(f == f);
+  __VERIFIER_assume(f != INF && f != -INF);
 
   assert(0 * f == 1);
   return 0;

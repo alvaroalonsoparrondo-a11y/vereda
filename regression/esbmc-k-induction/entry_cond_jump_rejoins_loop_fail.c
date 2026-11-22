@@ -7,7 +7,7 @@ int main()
   int c = nondet_int();
   while (1)
   {
-    __ESBMC_assert(!(c && y == 15), "y != 15");
+    __VERIFIER_assert(!(c && y == 15)); // y != 15
     y++;
     if (c)
     {

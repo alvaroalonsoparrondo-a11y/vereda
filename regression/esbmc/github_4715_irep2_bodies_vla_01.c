@@ -21,7 +21,7 @@ int main()
 {
   int a = 5;
   char *b[++a]; // VLA dimension is a preincrement side-effect
-  __ESBMC_assert(a == 6, "++a increments a to 6");
+  __VERIFIER_assert(a == 6); // ++a increments a to 6
   foo(b); // b has 6 elements; q[5] is in bounds
   return 0;
 }

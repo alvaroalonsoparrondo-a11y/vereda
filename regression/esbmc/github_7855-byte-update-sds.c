@@ -4,7 +4,7 @@ int main(void)
 {
   int *p = &g[0];
   unsigned char k = nondet_uchar();
-  __ESBMC_assume(k < 2);
+  __VERIFIER_assume(k < 2);
   ((unsigned char *)&p)[k] = ((unsigned char *)&p)[k];
   assert(p == &g[0]);
   return 0;

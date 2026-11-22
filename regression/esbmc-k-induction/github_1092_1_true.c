@@ -17,7 +17,7 @@ int main()
   // Kind algorithm struggles with this
   do
   {
-    __ESBMC_assert(status != 3, "");
+    __VERIFIER_assert(status != 3);
   } while(0);
 
   return 0;

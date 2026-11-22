@@ -5,7 +5,7 @@ int main() {
   while (nondet_int())
     x++;
   for (;;)
-    __ESBMC_assert(x >= 0, "x stays non-negative");
+    __VERIFIER_assert(x >= 0); // x stays non-negative
 }
 // Imported from ESBMC regression/esbmc/ts_check_reject_two_loops
 // Needs: --ts-check

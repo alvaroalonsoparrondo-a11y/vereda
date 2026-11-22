@@ -14,7 +14,7 @@ int main(void)
   while (1)
   {
     s.my_pthread_lib_count++;
-    __ESBMC_assert(s.my_pthread_lib_count < 3, "count stays small");
+    __VERIFIER_assert(s.my_pthread_lib_count < 3); // count stays small
   }
 }
 // Imported from ESBMC regression/esbmc/scalarize_structs_kinduction_fail

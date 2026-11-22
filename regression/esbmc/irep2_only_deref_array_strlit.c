@@ -5,7 +5,7 @@ int main(void)
 {
   char c = *"abc";
 
-  __ESBMC_assert(c == 'a', "*\"abc\" is the first character");
+  __VERIFIER_assert(c == 'a'); // *\"abc\" is the first character
   return 0;
 }
 // Imported from ESBMC regression/esbmc/irep2_only_deref_array_strlit

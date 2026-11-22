@@ -15,7 +15,7 @@ extern void __VERIFIER_nondet_memory(void *, __SIZE_TYPE__);
 int main(void)
 {
   unsigned char *a = malloc(8);
-  __ESBMC_assume(a != 0);
+  __VERIFIER_assume(a != 0);
   __VERIFIER_nondet_memory(a, 8); // havoc heap memory: disables the inductive step
 
   unsigned char s = 0;

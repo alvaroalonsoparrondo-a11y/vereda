@@ -33,7 +33,7 @@ int main(void)
   s.a = 5;
   s.b = 7;
   f(&s);
-  __ESBMC_assert(s.a == 5 && s.b == 7, "else branch: both fields unchanged");
+  __VERIFIER_assert(s.a == 5 && s.b == 7); // else branch: both fields unchanged
   return 0;
 }
 // Imported from ESBMC regression/function_contract/replace_ternary_ensures_knownbug

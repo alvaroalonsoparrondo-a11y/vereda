@@ -6,7 +6,7 @@ int main() {
 
   assert(v[9] == 5);
   __ESBMC_init_object(v);
-  __ESBMC_assume(v[9] == 5);
+  __VERIFIER_assume(v[9] == 5);
   assert(v[9] == 5);
 }
 // Imported from ESBMC regression/esbmc/builtin_init_var_1_true

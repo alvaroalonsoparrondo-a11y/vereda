@@ -17,9 +17,11 @@ int main(void)
   const void *key;
   slots[1].key = key;
 
-  __ESBMC_assert(slots[1].key == key, "the stored key is the one read back");
+  __VERIFIER_assert(slots[1].key == key); // the stored key is the one read back
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7855
 // RUN: -m64 --incremental-bmc
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

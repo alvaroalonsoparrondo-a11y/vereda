@@ -13,7 +13,7 @@ int main()
 {
   int a = nondet_int();
   struct foo *npe = 0;
-  __ESBMC_assume(a != 1);
+  __VERIFIER_assume(a != 1);
   if (a == 1)
   {
     if (npe->x)

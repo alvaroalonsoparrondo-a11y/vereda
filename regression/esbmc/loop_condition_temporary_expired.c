@@ -6,7 +6,7 @@ int main()
   int *q;
   int b;
   while ((q = f().a)[0] && (b = q[1], 1))
-    __ESBMC_assert(b == 0, "temporary read in its full expression");
+    __VERIFIER_assert(b == 0); // temporary read in its full expression
   return 0;
 }
 // Imported from ESBMC regression/esbmc/loop_condition_temporary_expired

@@ -6,7 +6,7 @@ int main()
   int arr[2];
   u.p = arr + 100;
   u.s.c[1] = 4;
-  __ESBMC_assert(u.p != arr + 100, "pointer kept");
+  __VERIFIER_assert(u.p != arr + 100); // pointer kept
 }
 // Imported from ESBMC regression/esbmc/github_9937_byte_keep_fail
 // Needs: --result-only

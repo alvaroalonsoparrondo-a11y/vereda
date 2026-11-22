@@ -2,8 +2,8 @@ int main()
 {
   int a[12];
   int i;
-  __ESBMC_assert(
-    __ESBMC_forall(&i, !(0 <= i && i < 12) || a[i] != a[0]), "false forall");
+  __VERIFIER_assert(
+    __ESBMC_forall(&i, !(0 <= i && i < 12) || a[i] != a[0])); // false forall
   return 0;
 }
 // Imported from ESBMC regression/z3/github_6191

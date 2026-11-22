@@ -16,9 +16,9 @@ unsigned int fib_rec(const unsigned int n)
 int main()
 {
   unsigned int n;
-  __ESBMC_assume(n < 3);
+  __VERIFIER_assume(n < 3);
   /* fib(2) == 1, fib(1) == 1, fib(0) == 0 — none are > 100 */
-  __ESBMC_assert(fib_rec(n) > 100, "fib(n) > 100 is always false for n < 3");
+  __VERIFIER_assert(fib_rec(n) > 100); // fib(n) > 100 is always false for n < 3
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_3815_fail

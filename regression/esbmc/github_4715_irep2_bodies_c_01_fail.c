@@ -6,7 +6,7 @@
 int main()
 {
   int x = 10; // initialized decl; round-trip must preserve init value
-  __ESBMC_assert(x != 10, "x != 10"); // deliberately false
+  __VERIFIER_assert(x != 10) /* x != 10 */; // deliberately false
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_4715_irep2_bodies_c_01_fail

@@ -16,13 +16,13 @@ int main(void)
     return 0;
   if (a == -9223372036854775807LL - 1 && b == -1)
     return 0;
-  __ESBMC_assert(a % b == a - (a / b) * b, "C99 6.5.5 identity");
+  __VERIFIER_assert(a % b == a - (a / b) * b); // C99 6.5.5 identity
   /* Concrete pins for C's TRUNCATING division: the identity above
    * holds for any consistent div/rem pair, flooring included, so these
    * anchor the sign convention itself. */
-  __ESBMC_assert(-7 % 3 == -1, "truncated remainder, negative dividend");
-  __ESBMC_assert(7 % -3 == 1, "truncated remainder, negative divisor");
-  __ESBMC_assert(-7 / 3 == -2, "truncated quotient");
+  __VERIFIER_assert(-7 % 3 == -1); // truncated remainder, negative dividend
+  __VERIFIER_assert(7 % -3 == 1); // truncated remainder, negative divisor
+  __VERIFIER_assert(-7 / 3 == -2); // truncated quotient
   return 0;
 }
 // Imported from ESBMC regression/esbmc/rem_div_identity_equiv

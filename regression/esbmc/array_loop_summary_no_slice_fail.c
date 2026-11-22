@@ -7,7 +7,7 @@ int main()
   for (int i = 0; i < N; i++)
     a[i] = i;
   for (int x = 0; x < N; x++)
-    __ESBMC_assert(a[x] != 77, "a[x] != 77");
+    __VERIFIER_assert(a[x] != 77); // a[x] != 77
 }
 // Imported from ESBMC regression/esbmc/array_loop_summary_no_slice_fail
 // Needs: --summarize-array-loops

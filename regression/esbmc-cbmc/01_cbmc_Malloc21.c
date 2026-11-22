@@ -13,7 +13,7 @@ int main()
   int *q;
   
   p=malloc(sizeof(struct X));
-  __ESBMC_assume(p);
+  __VERIFIER_assume(p);
   q=&(p->i);
   
   *q=1;

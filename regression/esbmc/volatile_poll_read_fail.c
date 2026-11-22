@@ -9,7 +9,7 @@ int main(void)
 {
   volatile NvBool *pointer = &flag;
   if (pointer->value != 0)
-    __ESBMC_assert(0, "a volatile poll can observe a change");
+    __VERIFIER_assert(0); // a volatile poll can observe a change
 }
 // Imported from ESBMC regression/esbmc/volatile_poll_read_fail
 // Needs: --std c11 --volatile-check

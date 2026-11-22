@@ -6,7 +6,7 @@ int main()
   for (int i = 0; i < N; i++)
     a[i] = __VERIFIER_nondet_int();
   for (int x = 0; x < N - 1; x++)
-    __ESBMC_assert(a[x] == a[x + 1], "distinct values can differ");
+    __VERIFIER_assert(a[x] == a[x + 1]); // distinct values can differ
 }
 // Imported from ESBMC regression/esbmc/array_loop_summary_nondet_fail
 // Needs: --summarize-array-loops

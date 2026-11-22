@@ -12,7 +12,7 @@ int main()
 {
   g = 0;
   f();
-  __ESBMC_assert(g == 0, "g");
+  __VERIFIER_assert(g == 0); // g
 }
 // Imported from ESBMC regression/esbmc/interval_return_global_nested_write_fail
 // Needs: --interval-analysis

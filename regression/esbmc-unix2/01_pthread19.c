@@ -16,8 +16,8 @@ void *t2(void *arg)
 int main()
 {
   pthread_t id1, id2;
-  __ESBMC_assume(i>=0 && i<N);
-  __ESBMC_assume(j>=0 && j<N);
+  __VERIFIER_assume(i>=0 && i<N);
+  __VERIFIER_assume(j>=0 && j<N);
   pthread_create(&id1, NULL, t1, NULL);
   pthread_create(&id2, NULL, t2, NULL);  
 

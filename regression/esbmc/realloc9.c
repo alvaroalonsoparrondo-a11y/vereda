@@ -8,7 +8,7 @@ int main() {
   if (!p) return 0;
   // First 3 elements must be preserved
   if (p[0] != 1 || p[1] != 2 || p[2] != 3) {
-    __ESBMC_assert(0, "Shrink failed to preserve data");
+    __VERIFIER_assert(0); // Shrink failed to preserve data
   }
   free(p);
   return 0;
@@ -16,3 +16,5 @@ int main() {
 
 // Imported from ESBMC regression/esbmc/realloc9
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

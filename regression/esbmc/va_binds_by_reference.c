@@ -13,7 +13,7 @@ static int through_copy(int n, ...)
 
 int main()
 {
-  __ESBMC_assert(through_copy(1, 7) == 7, "va_arg reads through the copy");
+  __VERIFIER_assert(through_copy(1, 7) == 7); // va_arg reads through the copy
   return 0;
 }
 // Imported from ESBMC regression/esbmc/va_binds_by_reference

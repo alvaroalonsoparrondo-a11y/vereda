@@ -5,7 +5,7 @@ int main(void)
   int (*p)[2] = a;
   int i = nondet_int();
   int c = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 2);
+  __VERIFIER_assume(i >= 0 && i < 2);
 
   a[1][0] = 1;
   a[1][1] = 1;
@@ -14,8 +14,8 @@ int main(void)
   else
     a[1][1] = 7;
 
-  __ESBMC_assert(p[1][i] == 1 || p[1][i] == 5,
-                 "the else arm's store survives the merge");
+  __VERIFIER_assert(p[1][i] == 1 || p[1][i] == 5
+); // the else arm's store survives the merge
   return 0;
 }
 // Imported from ESBMC regression/esbmc/nested_array_row_phi_merge_fail

@@ -4,7 +4,7 @@
 int main(void)
 {
   unsigned u = 0;
-  __ESBMC_assert(__builtin_clzg(u, 32) == 32, "clzg names its result at zero");
+  __VERIFIER_assert(__builtin_clzg(u, 32) == 32); // clzg names its result at zero
   return __builtin_ctz(u);
 }
 // Imported from ESBMC regression/esbmc/builtin_ctz_zero_fail

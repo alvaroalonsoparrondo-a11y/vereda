@@ -8,9 +8,9 @@ unsigned find(unsigned n, unsigned key) {
 }
 int main(void) {
   unsigned n = nondet_uint(), key = nondet_uint();
-  __ESBMC_assume(n <= 8);
+  __VERIFIER_assume(n <= 8);
   unsigned r = find(n, key);
-  __ESBMC_assert(r <= n, "result in range");
+  __VERIFIER_assert(r <= n); // result in range
   return 0;
 }
 // Imported from ESBMC regression/goto2lean/return_in_loop

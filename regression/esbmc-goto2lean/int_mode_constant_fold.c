@@ -1,7 +1,7 @@
 int main(void)
 {
   unsigned char c = 256;
-  __ESBMC_assert(c == 256, "no wraparound under --ir");
+  __VERIFIER_assert(c == 256); // no wraparound under --ir
   return 0;
 }
 // Imported from ESBMC regression/goto2lean/int_mode_constant_fold

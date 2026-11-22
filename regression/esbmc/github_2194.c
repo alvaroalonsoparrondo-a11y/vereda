@@ -18,7 +18,7 @@ int sum(int count, ...)
 int main()
 {
   int result = sum(4, 1, 2, 3, 4);
-  __ESBMC_assert(result == 10, "");
+  __VERIFIER_assert(result == 10);
 
   return 0;
 }

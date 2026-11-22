@@ -23,7 +23,7 @@ int main(void)
   unsigned char (*dest)[8] = &a;
 
   int n = nondet_int();
-  __ESBMC_assume(n > 0);
+  __VERIFIER_assume(n > 0);
 
   int y = 0;
   for (int j = 0; j < n; j++)
@@ -36,7 +36,7 @@ int main(void)
     x = 0;                           // scalar inductive invariant
   }
 
-  __ESBMC_assert(x == 0 && y == 0, "scalars stay zero across all iterations");
+  __VERIFIER_assert(x == 0 && y == 0); // scalars stay zero across all iterations
   return 0;
 }
 // Imported from ESBMC regression/k-induction/github_5230_pointer_write_resolved

@@ -13,7 +13,7 @@ int main()
     i++;
   }
   // After the loop: i == 10 and sum == 10.
-  __ESBMC_assert(sum == 10, "sum equals iteration count");
+  __VERIFIER_assert(sum == 10); // sum equals iteration count
   return 0;
 }
 // Imported from ESBMC regression/k-induction/interval_loop_bounds

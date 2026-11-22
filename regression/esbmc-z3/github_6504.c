@@ -13,10 +13,10 @@ int main()
 {
   unsigned long n;
   int *p = (int *)malloc(n);
-  __ESBMC_assume(p != 0);
+  __VERIFIER_assume(p != 0);
   int snap = *p;
   *p = *p + 5;
-  __ESBMC_assert(*p == snap + 5, "post");
+  __VERIFIER_assert(*p == snap + 5); // post
   return 0;
 }
 // Imported from ESBMC regression/z3/github_6504

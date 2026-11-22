@@ -6,7 +6,7 @@ int nondet_int(void);
 int main()
 {
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i <= 100);
+  __VERIFIER_assume(i >= 0 && i <= 100);
   int d = i;
   d /= 2.5;
   assert(d == i * 2 / 5);

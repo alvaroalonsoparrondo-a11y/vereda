@@ -10,7 +10,7 @@ int main(void)
   int c = nd();
   if (c == 2)
   {
-    __ESBMC_assert(0, "j");
+    __VERIFIER_assert(0); // j
     g = 1;
   }
   else

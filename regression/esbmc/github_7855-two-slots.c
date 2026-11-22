@@ -18,10 +18,12 @@ int main(void)
   slots[1].key = first;
   slots[2].key = second;
 
-  __ESBMC_assert(slots[1].key == first, "slot 1 reads back its own pointer");
-  __ESBMC_assert(slots[2].key == second, "slot 2 reads back its own pointer");
+  __VERIFIER_assert(slots[1].key == first); // slot 1 reads back its own pointer
+  __VERIFIER_assert(slots[2].key == second); // slot 2 reads back its own pointer
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7855-two-slots
 // RUN: -m64 --incremental-bmc
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

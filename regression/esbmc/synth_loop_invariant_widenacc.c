@@ -8,7 +8,7 @@ int nondet_int(void);
 int main(void)
 {
   int n = nondet_int();
-  __ESBMC_assume(n >= 1 && n <= 8);
+  __VERIFIER_assume(n >= 1 && n <= 8);
 
   int i = 1;
   long sn = 0;
@@ -16,7 +16,7 @@ int main(void)
   for (i = 1; i <= n; i++)
     sn = sn + 2;
 
-  __ESBMC_assert(sn == 2L * n || sn == 0, "sum01-long");
+  __VERIFIER_assert(sn == 2L * n || sn == 0); // sum01-long
   return 0;
 }
 // Imported from ESBMC regression/esbmc/synth_loop_invariant_widenacc

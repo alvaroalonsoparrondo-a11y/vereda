@@ -18,10 +18,8 @@ int main(void)
   if (x >= 0)
     return 0;
   x = nondet_int();
-  __ESBMC_assert(check(x) == 1, "x may be nonnegative after rebinding");
+  __VERIFIER_assert(check(x) == 1); // x may be nonnegative after rebinding
   return 0;
 }
 // Imported from ESBMC regression/esbmc/path_guard_subsumption_rebind_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

@@ -3,12 +3,12 @@
 int main()
 {
   int x;
-  __ESBMC_assume(x >= 0 && x <= 10);
+  __VERIFIER_assume(x >= 0 && x <= 10);
   if (x == 5)
     ;
   else
-    __ESBMC_assume(x == 20);
-  __ESBMC_assert(x <= 10, "x at most 10");
+    __VERIFIER_assume(x == 20);
+  __VERIFIER_assert(x <= 10); // x at most 10
 }
 // Imported from ESBMC regression/esbmc/github_8047_bottom_prune
 // Needs: --interval-symex-assert

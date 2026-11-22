@@ -30,5 +30,5 @@ int main(void)
 // Needs: --field-sensitive-ssa --program-only
 // RUN: --field-sensitive-ssa --program-only
 // MODE: FUTURE
-// EXPECT: ^Field-sensitive SSA splits 1 struct object\(s\)$
+// EXPECT: ^Field-sensitive SSA splits 2 struct object\(s\)$
 // EXPECT: ^/\* \d+ \*/ r\?1!0&0#\d+ == \{ \.a=1, \.b=r::1\?1!0&0#\d+ \}$

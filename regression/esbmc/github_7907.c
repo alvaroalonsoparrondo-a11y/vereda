@@ -16,7 +16,7 @@ int main(void)
   assert(s[3] == 8);
 
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 4);
+  __VERIFIER_assume(i >= 0 && i < 4);
   int x = (*p)[i];
   assert(x == i + 5);
   return 0;

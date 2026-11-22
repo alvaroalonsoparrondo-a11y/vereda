@@ -10,7 +10,7 @@ int main()
   char dst[8] = {7, 7, 7, 7, 7, 7, 7, 7};
 
   unsigned long n = nondet_ulong();
-  __ESBMC_assume(n == 3);
+  __VERIFIER_assume(n == 3);
 
   void *r = memcpy(dst, src, n);
 
@@ -25,5 +25,3 @@ int main()
 // Imported from ESBMC regression/esbmc/memcpy_symbolic_length
 // RUN: --unwind 20
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

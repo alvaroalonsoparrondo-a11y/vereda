@@ -14,7 +14,7 @@ int main()
   const void *p = &x;
   unsigned long h = __CPROVER_uninterpreted_hasher(p);
   (void)h;
-  __ESBMC_assert(x == 3, "unrelated property holds; UF call must not crash");
+  __VERIFIER_assert(x == 3); // unrelated property holds; UF call must not crash
   return 0;
 }
 // Imported from ESBMC regression/esbmc/cprover_uninterpreted_pointer_arg

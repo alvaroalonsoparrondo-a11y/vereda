@@ -8,7 +8,7 @@ void *
 thread1(void *dummy)
 {
 	unsigned int s = nondet_uint();
-	__ESBMC_assume(s < 4);
+	__VERIFIER_assume(s < 4);
 	switch (s) {
 		case 0:
 			return &a;
@@ -26,7 +26,7 @@ thread2(void *dummy)
 {
 
 	unsigned int s = nondet_uint();
-	__ESBMC_assume(s < 4);
+	__VERIFIER_assume(s < 4);
 	switch (s) {
 		case 0:
 			pthread_exit(&a);

@@ -4,7 +4,7 @@
 int main(void)
 {
   unsigned int x = __VERIFIER_nondet_uint();
-  __ESBMC_assume(x == 0);
+  __VERIFIER_assume(x == 0);
   if (x - 1U == 4294967295U)
     assert(0);
   return 0;

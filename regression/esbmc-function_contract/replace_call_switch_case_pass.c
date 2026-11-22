@@ -18,7 +18,7 @@ void setg(int v)
 int main(void)
 {
   int c;
-  __ESBMC_assume(c == 0 || c == 1);
+  __VERIFIER_assume(c == 0 || c == 1);
   switch (c)
   {
   case 0:
@@ -28,7 +28,7 @@ int main(void)
     setg(5);
     break;
   }
-  __ESBMC_assert(g == 5, "g is set by the contract in every reached case");
+  __VERIFIER_assert(g == 5); // g is set by the contract in every reached case
   return 0;
 }
 // Imported from ESBMC regression/function_contract/replace_call_switch_case_pass

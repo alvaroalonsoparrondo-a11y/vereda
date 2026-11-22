@@ -4,7 +4,7 @@ int nondet_int(void);
 
 static void checked(const char *why, int ok)
 {
-  __ESBMC_assert(ok, why);
+  __VERIFIER_assert(ok); // why
 }
 
 int main(void)

@@ -1935,7 +1935,7 @@ int main (int argc,char *argv[]){
   int32_t last_sync_pmt;
 
   f= (FILE*)malloc(sizeof(FILE));
-  __ESBMC_assume(f);
+  __VERIFIER_assume(f);
 
 
   for(count = 0;count < (2*(188));count++)

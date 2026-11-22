@@ -8,9 +8,9 @@ int nondet_int(void);
 int main(void)
 {
   int x = nondet_int();
-  __ESBMC_assume(x > 0 && x < 100);
+  __VERIFIER_assume(x > 0 && x < 100);
   int y = x * 2;
-  __ESBMC_assert(y == x + x, "doubling is repeated addition");
+  __VERIFIER_assert(y == x + x); // doubling is repeated addition
   return 0;
 }
 // Imported from ESBMC regression/esbmc/simplifier_unsound_fold_probe

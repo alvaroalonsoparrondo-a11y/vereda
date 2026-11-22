@@ -9,7 +9,7 @@ int main(void)
   wchar_t src[4] = {'a', 'b', 'c', 0};
   wchar_t dst[4] = {'z', 'z', 'z', 'z'};
   wcscpy(dst, src);
-  __ESBMC_assert(dst[0] == 'z', "must not hold");
+  __VERIFIER_assert(dst[0] == 'z'); // must not hold
   return 0;
 }
 // Imported from ESBMC regression/esbmc/wchar_model_fail

@@ -37,7 +37,7 @@ int main(void)
   s.a = 5;
   s.b = 7;
   f(&s);
-  __ESBMC_assert(s.b == 7, "b must be 99 when trigger == 1");
+  __VERIFIER_assert(s.b == 7); // b must be 99 when trigger == 1
   return 0;
 }
 // Imported from ESBMC regression/function_contract/replace_disjunctive_multiterm_and_fail

@@ -14,7 +14,7 @@ int main()
   int arr[2];
   u.p = arr + 100;
   u.s.c = 4;
-  __ESBMC_assert(u.s.a == arr + 100 && u.s.c == 4, "kept");
+  __VERIFIER_assert(u.s.a == arr + 100 && u.s.c == 4); // kept
 
   union
   {
@@ -23,7 +23,7 @@ int main()
   } v;
   v.p = arr + 100;
   v.b = 1;
-  __ESBMC_assert(v.p != arr + 100, "byte changed");
+  __VERIFIER_assert(v.p != arr + 100); // byte changed
 }
 // Imported from ESBMC regression/esbmc/github_9937
 // EXPECT: ^VERIFICATION SUCCESSFUL$

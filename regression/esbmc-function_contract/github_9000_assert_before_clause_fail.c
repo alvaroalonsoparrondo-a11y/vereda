@@ -9,7 +9,7 @@ void f(int x)
 }
 int half(int c)
 {
-  __ESBMC_assert(c > 0, "half needs a positive argument");
+  __VERIFIER_assert(c > 0); // half needs a positive argument
   __ESBMC_ensures(__ESBMC_return_value == c / 2);
   return c / 2;
 }

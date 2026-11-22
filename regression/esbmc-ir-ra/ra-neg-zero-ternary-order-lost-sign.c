@@ -17,7 +17,7 @@ int main(void)
    * order is a soundly-handled merge. */
   __ESBMC_rounding_mode = 0; /* ROUND_TO_EVEN, concrete */
   double x = __VERIFIER_nondet_double();
-  __ESBMC_assume(x > 0.0);
+  __VERIFIER_assume(x > 0.0);
   int c = __VERIFIER_nondet_int();
   double z = c ? 0.0 : -0.0;
   double r = x / z;
@@ -26,8 +26,8 @@ int main(void)
    * FAILED. It currently is not: the lost merge metadata makes z's
    * divisor sign look unconditionally positive, so r is (wrongly)
    * always +infinity. */
-  __ESBMC_assert(
-    r > 0.0, "ternary-merged -0.0 must still yield -infinity when divided into");
+  __VERIFIER_assert(
+    r > 0.0); // ternary-merged -0.0 must still yield -infinity when divided into
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-neg-zero-ternary-order-lost-sign

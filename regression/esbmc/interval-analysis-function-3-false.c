@@ -10,7 +10,7 @@ int main()
 {
   int A = 5;
   int B = sum(A);
-  __ESBMC_assert(B <= 10, "Should be able to verify!");  
+  __VERIFIER_assert(B <= 10);   // Should be able to verify!
 }
 // Imported from ESBMC regression/esbmc/interval-analysis-function-3-false
 // Needs: --interval-analysis

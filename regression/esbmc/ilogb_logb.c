@@ -18,7 +18,7 @@ int main()
   assert(logb(-INFINITY) == INFINITY);
 
   double x = nondet_double();
-  __ESBMC_assume(x >= 1.0 && x < 2.0);
+  __VERIFIER_assume(x >= 1.0 && x < 2.0);
   assert(ilogb(x) == 0);
   assert(logb(-x) == 0.0);
   return 0;

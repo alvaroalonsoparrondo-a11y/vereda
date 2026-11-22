@@ -15,8 +15,8 @@ int main(void)
   (void)x;
   (void)y;
 
-  __ESBMC_assert(((uintptr_t)p % 2) == 0, "automatic char buffer is 2-aligned");
-  __ESBMC_assert(((uintptr_t)q % 4) == 0, "static char buffer is 4-aligned");
+  __VERIFIER_assert(((uintptr_t)p % 2) == 0); // automatic char buffer is 2-aligned
+  __VERIFIER_assert(((uintptr_t)q % 4) == 0); // static char buffer is 4-aligned
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_6951

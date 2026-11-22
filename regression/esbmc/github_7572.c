@@ -11,7 +11,7 @@ int main(void)
     return 1;
 
   double e = nondet_double();
-  __ESBMC_assume(e >= -100.0 && e <= 100.0);
+  __VERIFIER_assume(e >= -100.0 && e <= 100.0);
   int y = (int)e;
   (void)y;
 

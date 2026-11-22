@@ -9,7 +9,7 @@ int main(void)
   int x = __VERIFIER_nondet_int();
   if (flag)
     return 1;
-  __ESBMC_assume(x > 10);
+  __VERIFIER_assume(x > 10);
   if (x > 5)
     return 0;
   return 2;

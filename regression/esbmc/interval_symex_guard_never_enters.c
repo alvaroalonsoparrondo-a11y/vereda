@@ -4,10 +4,10 @@
 int main()
 {
   int x;
-  __ESBMC_assume(x >= 10);
+  __VERIFIER_assume(x >= 10);
   while (x < 5)
     ++x;
-  __ESBMC_assert(x >= 10, "x must stay >= 10");
+  __VERIFIER_assert(x >= 10); // x must stay >= 10
   return 0;
 }
 // Imported from ESBMC regression/esbmc/interval_symex_guard_never_enters

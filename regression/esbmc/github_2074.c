@@ -2,7 +2,7 @@
  * analysis dereferenced them. */
 int f(unsigned char x)
 {
-  __ESBMC_assert(x <= 255, "x fits in a byte");
+  __VERIFIER_assert(x <= 255); // x fits in a byte
   return x;
 }
 // Imported from ESBMC regression/esbmc/github_2074

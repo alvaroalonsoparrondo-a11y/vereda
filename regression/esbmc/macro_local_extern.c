@@ -26,8 +26,8 @@ int main()
   slot a = {0}, b = {0};
   init(&a, &b);
   *a.value = 1;
-  __ESBMC_assert(i0 == 1, "p0 bound");
-  __ESBMC_assert(i1 == 0, "p1 untouched");
+  __VERIFIER_assert(i0 == 1); // p0 bound
+  __VERIFIER_assert(i1 == 0); // p1 untouched
   return 0;
 }
 // Imported from ESBMC regression/esbmc/macro_local_extern

@@ -10,7 +10,7 @@ int main(void)
   }
   inc();
   inc();
-  __ESBMC_assert(x == 2, "__label__ not captured");
+  __VERIFIER_assert(x == 2); // __label__ not captured
   goto done;
   x = 99;
 done:

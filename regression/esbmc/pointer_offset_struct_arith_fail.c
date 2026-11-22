@@ -28,7 +28,7 @@ int main(void)
 {
   const node *a = child(t, "alpha");
   const node *d = child(a, "delta");
-  __ESBMC_assert(d != 0 && d->val == 5, "wrong leaf value must be refuted");
+  __VERIFIER_assert(d != 0 && d->val == 5); // wrong leaf value must be refuted
   return 0;
 }
 // Imported from ESBMC regression/esbmc/pointer_offset_struct_arith_fail

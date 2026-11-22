@@ -3,7 +3,7 @@
   {                                                                            \
     if(!(cond))                                                                \
     {                                                                          \
-      __ESBMC_assert(0, "");                                                   \
+      __VERIFIER_assert(0);                                                   \
       abort();                                                                 \
     }                                                                          \
   } while(0)

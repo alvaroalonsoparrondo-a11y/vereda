@@ -8,8 +8,8 @@ int main() {
   short a = __VERIFIER_nondet_short();
   short b = __VERIFIER_nondet_short();
 
-  __ESBMC_assume(a >= -1000 && a <= 1000);
-  __ESBMC_assume(b >= -1000 && b <= 1000);
+  __VERIFIER_assume(a >= -1000 && a <= 1000);
+  __VERIFIER_assume(b >= -1000 && b <= 1000);
 
   __ESBMC_overflow_result foo;
 

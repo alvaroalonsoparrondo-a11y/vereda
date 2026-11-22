@@ -7,10 +7,10 @@ int main(void)
   v4f d = a - b;
   v4f m = a * b;
   v4f q = a / b;
-  __ESBMC_assert(s[0] == 2.0f && s[3] == 5.0f, "vector add");
-  __ESBMC_assert(d[0] == 1.0f, "vector sub");
-  __ESBMC_assert(m[1] == 1.25f, "vector mul");
-  __ESBMC_assert(q[0] == 3.0f, "vector div");
+  __VERIFIER_assert(s[0] == 2.0f && s[3] == 5.0f); // vector add
+  __VERIFIER_assert(d[0] == 1.0f); // vector sub
+  __VERIFIER_assert(m[1] == 1.25f); // vector mul
+  __VERIFIER_assert(q[0] == 3.0f); // vector div
   return 0;
 }
 // Imported from ESBMC regression/esbmc/gcc_vector_float_arith

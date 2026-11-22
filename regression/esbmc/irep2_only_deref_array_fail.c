@@ -5,7 +5,7 @@ int main(void)
 
   *a = 7;
 
-  __ESBMC_assert(a[1] == 7, "*a assigns the second element");
+  __VERIFIER_assert(a[1] == 7); // *a assigns the second element
   return 0;
 }
 // Imported from ESBMC regression/esbmc/irep2_only_deref_array_fail

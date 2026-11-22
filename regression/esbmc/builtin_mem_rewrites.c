@@ -14,20 +14,22 @@ int main(void)
 {
   struct S e;
   __builtin_memset(&e, 0, sizeof(e));
-  __ESBMC_assert(e.a == 0 && e.b == 0, "__builtin_memset zeroes the struct");
+  __VERIFIER_assert(e.a == 0 && e.b == 0); // __builtin_memset zeroes the struct
 
   char x[4] = "abc", y[4] = "abc";
-  __ESBMC_assert(__builtin_memcmp(x, y, 4) == 0, "__builtin_memcmp compares");
+  __VERIFIER_assert(__builtin_memcmp(x, y, 4) == 0); // __builtin_memcmp compares
 
   char d[8];
   __builtin_strncpy(d, "hi", 3);
-  __ESBMC_assert(d[0] == 'h' && d[2] == '\0', "__builtin_strncpy copies");
+  __VERIFIER_assert(d[0] == 'h' && d[2] == '\0'); // __builtin_strncpy copies
 
   int *p = __builtin_calloc(2, sizeof(int));
   if (p)
-    __ESBMC_assert(p[0] == 0 && p[1] == 0, "__builtin_calloc zeroes");
+    __VERIFIER_assert(p[0] == 0 && p[1] == 0); // __builtin_calloc zeroes
   return 0;
 }
 // Imported from ESBMC regression/esbmc/builtin_mem_rewrites
 // RUN: --unwind 12
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

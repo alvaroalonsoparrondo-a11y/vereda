@@ -6,10 +6,10 @@ int main(void)
   if (!p) return 0;
   p->a = 0; p->z = 0;
   unsigned k = nondet_uint();
-  __ESBMC_assume(k < 4);
+  __VERIFIER_assume(k < 4);
   unsigned *q = &p->arr[k];
   *q = 9;
-  __ESBMC_assert(p->arr[k] == 9 && p->a == 0 && p->z == 0, "heap value");
+  __VERIFIER_assert(p->arr[k] == 9 && p->a == 0 && p->z == 0); // heap value
   return 0;
 }
 // Imported from ESBMC regression/esbmc/array_member_heap_value

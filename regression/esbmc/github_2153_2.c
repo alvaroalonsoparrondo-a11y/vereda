@@ -14,10 +14,8 @@ int main()
   char *ptr = (char *)&bug.bar;
   ptr[1] = nondet_char();
 
-  __ESBMC_assert(bug.bar != &some_var, "");
+  __VERIFIER_assert(bug.bar != &some_var);
 }
 // Imported from ESBMC regression/esbmc/github_2153_2
 // RUN: --no-unwinding-assertions --unwind 1
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

@@ -16,7 +16,7 @@ int main(void)
   struct s t;
   t.a = 7;
   char *c = (char *)&t;
-  __ESBMC_assert(c[0] == 7 || c[0] != 7, "reachable");
+  __VERIFIER_assert(c[0] == 7 || c[0] != 7); // reachable
   return 0;
 }
 // Imported from ESBMC regression/esbmc/empty_union_member_deref

@@ -8,12 +8,10 @@ int main(void)
 {
   union MU buf[2] = {{7}, {7}};
   unsigned i = nondet_uint();
-  __ESBMC_assume(i < 2);
+  __VERIFIER_assume(i < 2);
   struct Unaligned r = *(struct Unaligned *)&buf[i];
   assert(r.v == 7);
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_10891_union
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

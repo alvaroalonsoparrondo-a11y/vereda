@@ -16,12 +16,10 @@ int main(void)
     return 0;
   unsigned long base = (unsigned long)ports + i * sizeof(struct port);
   *((void **)(base + 64)) = (void *)&g;
-  __ESBMC_assume(i == 0);
+  __VERIFIER_assume(i == 0);
   *(int *)ports[0].d1 = 3;
-  __ESBMC_assert(g == 0, "g was written: must fail");
+  __VERIFIER_assert(g == 0); // g was written: must fail
   return 0;
 }
 // Imported from ESBMC regression/esbmc/intptr_struct_store_pointer_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

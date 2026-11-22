@@ -10,7 +10,7 @@ int main(void)
   uintptr_t x = nondet_uintptr();
   int *p = (int *)x;
   if (x == ua)
-    __ESBMC_assert(p == &a, "cast of a's address is &a");
+    __VERIFIER_assert(p == &a); // cast of a's address is &a
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9272

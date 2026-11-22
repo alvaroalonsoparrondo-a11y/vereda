@@ -6,11 +6,11 @@ int main()
   int arr[2];
   u.p = arr + 100;
   u.q = u.q;
-  __ESBMC_assert(u.p != arr + 100, "round trip");
+  __VERIFIER_assert(u.p != arr + 100); // round trip
 }
 // Imported from ESBMC regression/esbmc/github_9937_round_trip_fail
 // RUN: -m64
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^  FAILED +\[main\.assertion\.1\] +line 9 +round trip$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  FAILED +\[main\.assertion\.1\] +line 9 +round trip$
 // MODE: FUTURE

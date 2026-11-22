@@ -13,11 +13,11 @@ main()
   
   for(i=0; i<MAX; i++)
     string_A[i]=nondet_char();    
-  __ESBMC_assume(string_A[MAX-1]=='\0');
+  __VERIFIER_assume(string_A[MAX-1]=='\0');
 
   for(i=0; i<MAX; i++)
     string_B[i]=nondet_char();    
-  __ESBMC_assume(string_B[MAX-1]=='\0');
+  __VERIFIER_assume(string_B[MAX-1]=='\0');
 
   // captura o número de caracteres de da string A
   nc_A = 0;
@@ -28,7 +28,7 @@ main()
   while(string_B[nc_B]!='\0')
     nc_B++;
 
-  __ESBMC_assume(nc_B >= nc_A);
+  __VERIFIER_assume(nc_B >= nc_A);
   
   
   i=j=0;

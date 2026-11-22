@@ -5,9 +5,9 @@ int nondet_int(void);
 int main(void)
 {
   int a = nondet_int();
-  __ESBMC_assume(a == -4);
+  __VERIFIER_assume(a == -4);
   int f = (a < 0);
-  __ESBMC_assert(f == 9, "cex");
+  __VERIFIER_assert(f == 9); // cex
   return 0;
 }
 // Imported from ESBMC regression/smtlib/github_7929

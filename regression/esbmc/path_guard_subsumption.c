@@ -18,7 +18,7 @@ int main(void)
   int x = nondet_int();
   if (x >= 0)
     return 0;
-  __ESBMC_assert(check(x) == 1, "negative path decided by subsumption");
+  __VERIFIER_assert(check(x) == 1); // negative path decided by subsumption
   return 0;
 }
 // Imported from ESBMC regression/esbmc/path_guard_subsumption

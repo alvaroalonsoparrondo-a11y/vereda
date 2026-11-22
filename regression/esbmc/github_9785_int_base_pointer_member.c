@@ -21,7 +21,7 @@ int main(void)
   *((unsigned long *)(base + 24)) = 4UL;
   *((unsigned char **)(base + 32)) = io;
   unsigned char *m = *((unsigned char **)(base + 32));
-  __ESBMC_assert(m == io, "the stored pointer is read back");
+  __VERIFIER_assert(m == io); // the stored pointer is read back
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9785_int_base_pointer_member

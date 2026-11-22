@@ -3,10 +3,10 @@ struct S s[2];
 int main(void)
 {
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 2);
+  __VERIFIER_assume(i >= 0 && i < 2);
   s[i].a = 1; s[i].b = 3;
   unsigned int v = *(unsigned int *)&s[i];
-  __ESBMC_assert(v == 0x31u, "read");
+  __VERIFIER_assert(v == 0x31u); // read
   return 0;
 }
 // Imported from ESBMC regression/esbmc/struct_dyn_offset_spanning_bitfield_read

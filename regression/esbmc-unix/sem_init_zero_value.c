@@ -14,7 +14,7 @@ void *producer(void *arg)
 void *consumer(void *arg)
 {
   sem_wait(&sem);
-  __ESBMC_assert(data == 99, "assert data equal");
+  __VERIFIER_assert(data == 99); // assert data equal
 }
 
 int main()

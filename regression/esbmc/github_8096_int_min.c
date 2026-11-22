@@ -4,7 +4,7 @@
 int main(void)
 {
   int s = __VERIFIER_nondet_int();
-  __ESBMC_assume(s == -2147483647 - 1);
+  __VERIFIER_assume(s == -2147483647 - 1);
   int r = -s;
   if (r != s)
     assert(0);

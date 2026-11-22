@@ -9,7 +9,7 @@ int main()
   b1 ^= 1;
   assert(b1 == 0);
   b1 = 1;
-  __ESBMC_assume(b1 < 4);
+  __VERIFIER_assume(b1 < 4);
   b1 ^= main_b2;
 }
 // Imported from ESBMC regression/esbmc/github_7992

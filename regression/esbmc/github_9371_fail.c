@@ -12,7 +12,7 @@ int main(void)
   __imag__ a = INFINITY;
   __real__ b = nondet_double();
   __imag__ b = 0.0;
-  __ESBMC_assume(isfinite(__real__ b) && __real__ b != 0);
+  __VERIFIER_assume(isfinite(__real__ b) && __real__ b != 0);
   double _Complex r = a * b;
   assert(!(isinf(__real__ r) || isinf(__imag__ r)));
   return 0;

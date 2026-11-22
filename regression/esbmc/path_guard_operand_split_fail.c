@@ -19,12 +19,10 @@ static int handler(unsigned char mn)
 int main(void)
 {
   unsigned char mn = nondet_u1();
-  __ESBMC_assert(handler(mn) == -1, "legal encodings must stay reachable");
+  __VERIFIER_assert(handler(mn) == -1); // legal encodings must stay reachable
   return 0;
 }
 // Imported from ESBMC regression/esbmc/path_guard_operand_split_fail
 // RUN: --unwind 136 --no-unwinding-assertions
 // EXPECT: ^.*legal encodings must stay reachable.*$
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

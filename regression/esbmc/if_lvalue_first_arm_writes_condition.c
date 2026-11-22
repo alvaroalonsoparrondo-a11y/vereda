@@ -7,7 +7,7 @@ int main(void)
   c = nondet_int();
   if (c == 1 || c == 2 || c == 3) return 0;
   *(c != 1 && c != 2 && c != 3 ? &c : (c == 1 ? &s.a : (c == 2 ? &s.b : &s.c))) = 1;
-  __ESBMC_assert(c == 1 && s.a == 0 && s.b == 0 && s.c == 0, "the store went to c");
+  __VERIFIER_assert(c == 1 && s.a == 0 && s.b == 0 && s.c == 0); // the store went to c
   return 0;
 }
 // Imported from ESBMC regression/esbmc/if_lvalue_first_arm_writes_condition

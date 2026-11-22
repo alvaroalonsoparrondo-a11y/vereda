@@ -4,7 +4,7 @@ int nondet_int();
 int main(void)
 {
   int x = nondet_int();
-  __ESBMC_assume(x == -1);
+  __VERIFIER_assume(x == -1);
   long y = (long)x;
   return (int)y;
 }

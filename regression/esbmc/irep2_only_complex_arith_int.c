@@ -13,7 +13,7 @@ int main(void)
   __real__ b = nondet_int();
   __imag__ b = nondet_int();
   int br = __real__ b, bi = __imag__ b;
-  __ESBMC_assume(br >= 1 && br <= 4 && bi >= 1 && bi <= 4);
+  __VERIFIER_assume(br >= 1 && br <= 4 && bi >= 1 && bi <= 4);
 
   int _Complex s = a + b;
   assert(__real__ s == 4 + br && __imag__ s == 2 + bi);

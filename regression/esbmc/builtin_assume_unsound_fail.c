@@ -5,7 +5,7 @@ int main()
 {
   int x;
   __builtin_assume(x > 5);
-  __ESBMC_assert(x > 10, "x > 5 does not imply x > 10");
+  __VERIFIER_assert(x > 10); // x > 5 does not imply x > 10
   return 0;
 }
 // Imported from ESBMC regression/esbmc/builtin_assume_unsound_fail

@@ -6,7 +6,7 @@ int main()
 {
   double x = 0.0;
   double y = x + 1.0;
-  __ESBMC_assert(y > 0.0, "y must be positive");
+  __VERIFIER_assert(y > 0.0); // y must be positive
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_1037

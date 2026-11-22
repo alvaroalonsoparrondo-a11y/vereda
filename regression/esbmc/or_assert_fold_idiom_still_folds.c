@@ -2,7 +2,7 @@
 int main()
 {
   int c = nondet_int();
-  (void)((c) || (__ESBMC_assert(0, "v"), 0));
+  (void)((c) || (__VERIFIER_assert(0), 0)); // v
   return 0;
 }
 // Imported from ESBMC regression/esbmc/or_assert_fold_idiom_still_folds

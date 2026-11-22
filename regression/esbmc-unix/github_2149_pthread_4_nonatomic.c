@@ -10,7 +10,7 @@ unsigned int counter = 0; /* plain, not _Atomic */
 void *assign(void *arg)
 {
   unsigned int v = nondet_uint();
-  __ESBMC_assume(v >= 1 && v <= 100);
+  __VERIFIER_assume(v >= 1 && v <= 100);
   counter = v;
   return NULL;
 }

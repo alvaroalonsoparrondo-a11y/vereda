@@ -5,7 +5,7 @@ int main(void)
   _Complex float a = 3.0f + 4.0fi;
 
   a *= 2.0f;
-  __ESBMC_assert(__imag__ a == 4.0f, "*= imag is 8, not 4");
+  __VERIFIER_assert(__imag__ a == 4.0f); // *= imag is 8, not 4
 
   return 0;
 }

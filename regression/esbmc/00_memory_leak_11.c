@@ -6,9 +6,9 @@ void really ( void );
 int main ( void )
 { 
   char *memoryArea = malloc(10);
-  __ESBMC_assume(memoryArea);
+  __VERIFIER_assume(memoryArea);
   char *newArea = malloc(10);
-  __ESBMC_assume(newArea);
+  __VERIFIER_assume(newArea);
 
   memoryArea[3]= newArea;
 

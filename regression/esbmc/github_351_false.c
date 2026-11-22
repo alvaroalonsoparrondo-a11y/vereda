@@ -26,7 +26,7 @@ enum ADDRSPACE {
 
 void foo(__linseg_supovr uint32_t* param1_p, uint32_t param2) {
   param1_p = (__linseg_supovr unsigned int *) malloc(sizeof(__linseg_supovr uint32_t));
-  __ESBMC_assert(param2 >= 0, "Error");
+  __VERIFIER_assert(param2 >= 0); // Error
   *param1_p = param2;
 }
 // Imported from ESBMC regression/esbmc/github_351_false

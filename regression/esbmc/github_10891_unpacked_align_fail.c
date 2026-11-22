@@ -6,7 +6,7 @@ int main(void)
 {
   uint32_t buf[2] = {1, 2};
   unsigned o = nondet_uint();
-  __ESBMC_assume(o <= 4);
+  __VERIFIER_assume(o <= 4);
   struct N r = *(struct N *)((unsigned char *)buf + o);
   return r.v;
 }

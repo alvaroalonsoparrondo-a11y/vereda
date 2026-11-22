@@ -5,7 +5,7 @@ int main()
   int x, y;
   
   unsigned i;
-  __ESBMC_assume(i<10);
+  __VERIFIER_assume(i<10);
 
   a[i]=&x;
   a[5]=&y;

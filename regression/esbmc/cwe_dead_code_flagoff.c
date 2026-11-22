@@ -7,7 +7,7 @@ extern int __VERIFIER_nondet_int(void);
 int main(void)
 {
   int x = __VERIFIER_nondet_int();
-  __ESBMC_assume(x > 10);
+  __VERIFIER_assume(x > 10);
   int *p = 0;
   if (x > 5)
     return *p; // reachable NULL dereference (x > 10 implies x > 5)

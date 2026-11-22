@@ -9,7 +9,7 @@ void *nondet_voidp(void);
 int main(void)
 {
   void *q = nondet_voidp();
-  __ESBMC_assume(q != 0);
+  __VERIFIER_assume(q != 0);
 
   void **s = malloc(sizeof(void *));
   if (s == 0)
@@ -17,7 +17,7 @@ int main(void)
 
   *s = q;
 
-  __ESBMC_assert(*s != 0, "a typed allocation keeps the pointer");
+  __VERIFIER_assert(*s != 0); // a typed allocation keeps the pointer
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_5393_nondet_ptr_typed_alloc

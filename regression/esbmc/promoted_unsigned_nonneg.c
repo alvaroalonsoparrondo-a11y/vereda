@@ -18,7 +18,7 @@ int main(void)
   int n = 0;
   for (unsigned short i = 0; i < (refused ? 3 : 30000); i++)
     n++;
-  __ESBMC_assert(n == 3, "constant-right: the refusal folded");
+  __VERIFIER_assert(n == 3); // constant-right: the refusal folded
 
   unsigned short ref2 = nondet_u2();
   int refused2 = 0;
@@ -27,7 +27,7 @@ int main(void)
   int m = 0;
   for (unsigned short i = 0; i < (refused2 ? 3 : 30000); i++)
     m++;
-  __ESBMC_assert(m == 3, "constant-left <=: the refusal folded");
+  __VERIFIER_assert(m == 3); // constant-left <=: the refusal folded
 
   unsigned short ref3 = nondet_u2();
   int refused3 = 0;
@@ -36,7 +36,7 @@ int main(void)
   int k = 0;
   for (unsigned short i = 0; i < (refused3 ? 3 : 30000); i++)
     k++;
-  __ESBMC_assert(k == 3, "constant-left >: the refusal folded");
+  __VERIFIER_assert(k == 3); // constant-left >: the refusal folded
 
   unsigned short ref4 = nondet_u2();
   int refused4 = 0;
@@ -45,7 +45,7 @@ int main(void)
   int j = 0;
   for (unsigned short i = 0; i < (refused4 ? 3 : 30000); i++)
     j++;
-  __ESBMC_assert(j == 3, "constant-right <: the refusal folded");
+  __VERIFIER_assert(j == 3); // constant-right <: the refusal folded
   return 0;
 }
 // Imported from ESBMC regression/esbmc/promoted_unsigned_nonneg

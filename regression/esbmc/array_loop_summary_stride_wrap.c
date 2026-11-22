@@ -6,7 +6,7 @@ int main() {
   unsigned i;
   for (i = 0; i < n; i += 2)
     ;
-  __ESBMC_assert(i >= n, "");
+  __VERIFIER_assert(i >= n);
 }
 // Imported from ESBMC regression/esbmc/array_loop_summary_stride_wrap
 // RUN: --unwind 2 --no-unwinding-assertions

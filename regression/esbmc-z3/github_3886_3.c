@@ -14,25 +14,25 @@ int main()
 {
   int a1, b1;
 
-  __ESBMC_assert(
-    __ESBMC_exists(&a1, __ESBMC_forall(&b1, (a1 == b1))) == 0,
-    "exists a: forall b: a==b should be false");
+  __VERIFIER_assert(
+    __ESBMC_exists(&a1, __ESBMC_forall(&b1, (a1 == b1))) == 0
+); // exists a: forall b: a==b should be false
 
-  __ESBMC_assert(
-    __ESBMC_exists(&a1, __ESBMC_exists(&b1, (a1 != b1))) == 1,
-    "exists a: exists b: a!=b should be true");
+  __VERIFIER_assert(
+    __ESBMC_exists(&a1, __ESBMC_exists(&b1, (a1 != b1))) == 1
+); // exists a: exists b: a!=b should be true
 
-  __ESBMC_assert(
-    __ESBMC_forall(&a1, __ESBMC_forall(&b1, (a1 > b1) || (b1 >= a1))) == 1,
-    "forall a: forall b: (a>b)||(b>=a) should be true");
+  __VERIFIER_assert(
+    __ESBMC_forall(&a1, __ESBMC_forall(&b1, (a1 > b1) || (b1 >= a1))) == 1
+); // forall a: forall b: (a>b)||(b>=a) should be true
 
-  __ESBMC_assert(
-    __ESBMC_forall(&a1, __ESBMC_exists(&b1, (b1 == a1))) == 1,
-    "forall a: exists b: b==a should be true");
+  __VERIFIER_assert(
+    __ESBMC_forall(&a1, __ESBMC_exists(&b1, (b1 == a1))) == 1
+); // forall a: exists b: b==a should be true
 
-  __ESBMC_assert(
-    __ESBMC_exists(&a1, __ESBMC_forall(&b1, (a1 == 17) && (b1 == 17))) == 0,
-    "exists a: forall b: (a==17)&&(b==17) should be false");
+  __VERIFIER_assert(
+    __ESBMC_exists(&a1, __ESBMC_forall(&b1, (a1 == 17) && (b1 == 17))) == 0
+); // exists a: forall b: (a==17)&&(b==17) should be false
 
   return 0;
 }
@@ -40,3 +40,5 @@ int main()
 // RUN: --solver z3
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

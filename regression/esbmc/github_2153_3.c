@@ -15,10 +15,8 @@ int main()
   char *ptr = (char *)&bug; /* points to the struct, not to bug.bar directly */
   ptr[0] = nondet_char();
 
-  __ESBMC_assert(bug.bar != &some_var, "");
+  __VERIFIER_assert(bug.bar != &some_var);
 }
 // Imported from ESBMC regression/esbmc/github_2153_3
 // RUN: --no-unwinding-assertions --unwind 1
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

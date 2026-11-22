@@ -7,8 +7,8 @@ int main(void)
   int b[2][2];
   int i = nondet_int();
   int j = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 2);
-  __ESBMC_assume(j >= 0 && j < 2);
+  __VERIFIER_assume(i >= 0 && i < 2);
+  __VERIFIER_assume(j >= 0 && j < 2);
 
   a[1][0][0] = 1;
   a[1][0][1] = 1;
@@ -21,8 +21,8 @@ int main(void)
 
   memcpy((char *)a + sizeof a[0], b, sizeof a[0]);
 
-  __ESBMC_assert(
-    a[1][i][j] >= 5 && a[1][i][j] <= 8, "the grafted plane reads back");
+  __VERIFIER_assert(
+    a[1][i][j] >= 5 && a[1][i][j] <= 8); // the grafted plane reads back
   return 0;
 }
 // Imported from ESBMC regression/esbmc/nested_array_plane_memcpy

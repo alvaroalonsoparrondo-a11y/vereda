@@ -16,7 +16,7 @@ int main()
       if (!(m > 3 && j < 10))
         break;
     }
-    __ESBMC_assert(!(m <= 3 && n == 20), "n != 20");
+    __VERIFIER_assert(!(m <= 3 && n == 20)); // n != 20
   }
 }
 // Imported from ESBMC regression/k-induction/entry_cond_guard_after_unrelated_write_fail

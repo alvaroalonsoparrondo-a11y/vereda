@@ -10,7 +10,7 @@ struct node
 int main()
 {
   struct node *p = __ESBMC_alloca(sizeof(struct node));
-  __ESBMC_assert(p != NULL, "an allocation is not NULL");
+  __VERIFIER_assert(p != NULL); // an allocation is not NULL
   return 0;
 }
 // Imported from ESBMC regression/esbmc/null_cast_fold

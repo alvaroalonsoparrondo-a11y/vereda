@@ -11,7 +11,7 @@ int main()
   pthread_t th;
   pthread_create(&th, 0, t, 0);
   pthread_join(th, 0);
-  __ESBMC_assert(a[0] == 1 && a[1] == 1, "written");
+  __VERIFIER_assert(a[0] == 1 && a[1] == 1); // written
   return 0;
 }
 // Imported from ESBMC regression/esbmc/array_loop_summary_threads

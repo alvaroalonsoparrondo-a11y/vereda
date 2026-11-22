@@ -10,7 +10,7 @@ int g;
 int main(void)
 {
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 2);
+  __VERIFIER_assume(i >= 0 && i < 2);
   s[i].q = &g;
   unsigned int *pc = &s[i].c;
   *pc = 7;

@@ -11,7 +11,7 @@ int main(void)
   struct pair p = {1, 2};
   struct pair *q = &p;
   q->y = 7;
-  __ESBMC_assert(p.y != 7, "y written through q");
+  __VERIFIER_assert(p.y != 7); // y written through q
   return 0;
 }
 // Imported from ESBMC regression/esbmc/scalarize_structs_alias_fail

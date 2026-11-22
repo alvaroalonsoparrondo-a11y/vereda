@@ -14,7 +14,7 @@ int main(void)
   void **s = (void **)raw;
   *s = q;
 
-  __ESBMC_assert(*s == q, "a concrete pointer round-trips through bytes");
+  __VERIFIER_assert(*s == q); // a concrete pointer round-trips through bytes
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_5393_concrete_ptr_byte_alloc

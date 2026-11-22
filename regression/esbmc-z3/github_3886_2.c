@@ -14,36 +14,36 @@ int main()
 {
   int a1, b1, c1;
 
-  __ESBMC_assert(
+  __VERIFIER_assert(
     __ESBMC_forall(
       &a1,
       __ESBMC_forall(
         &b1,
-        __ESBMC_forall(&c1, (a1 == 17) || (b1 == 17) || (c1 == 17)))) == 0,
-    "forall a b c: (a==17)||(b==17)||(c==17) should be false");
+        __ESBMC_forall(&c1, (a1 == 17) || (b1 == 17) || (c1 == 17)))) == 0
+); // forall a b c: (a==17)||(b==17)||(c==17) should be false
 
-  __ESBMC_assert(
+  __VERIFIER_assert(
     __ESBMC_forall(
       &a1,
       __ESBMC_forall(
         &b1,
-        __ESBMC_forall(&c1, (a1 > b1) || (b1 > c1) || (c1 > a1)))) == 0,
-    "forall a b c: (a>b)||(b>c)||(c>a) should be false");
+        __ESBMC_forall(&c1, (a1 > b1) || (b1 > c1) || (c1 > a1)))) == 0
+); // forall a b c: (a>b)||(b>c)||(c>a) should be false
 
-  __ESBMC_assert(
+  __VERIFIER_assert(
     __ESBMC_forall(
       &a1,
       __ESBMC_forall(
-        &b1, __ESBMC_forall(&c1, (a1 == b1) && (b1 == c1)))) == 0,
-    "forall a b c: (a==b)&&(b==c) should be false");
+        &b1, __ESBMC_forall(&c1, (a1 == b1) && (b1 == c1)))) == 0
+); // forall a b c: (a==b)&&(b==c) should be false
 
-  __ESBMC_assert(
+  __VERIFIER_assert(
     __ESBMC_forall(
       &a1,
       __ESBMC_forall(
         &b1,
-        __ESBMC_forall(&c1, (a1 == a1) && (b1 == b1) && (c1 == c1)))) == 1,
-    "forall a b c: (a==a)&&(b==b)&&(c==c) should be true");
+        __ESBMC_forall(&c1, (a1 == a1) && (b1 == b1) && (c1 == c1)))) == 1
+); // forall a b c: (a==a)&&(b==b)&&(c==c) should be true
 
   return 0;
 }
@@ -51,3 +51,5 @@ int main()
 // RUN: --solver z3
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

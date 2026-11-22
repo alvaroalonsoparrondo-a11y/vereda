@@ -13,9 +13,9 @@ int f(int n)
 int main(void)
 {
   int n = nondet_int();
-  __ESBMC_assume(n == 2 || n == 3);
+  __VERIFIER_assume(n == 2 || n == 3);
   int r = f(n);
-  __ESBMC_assert(r == 999, "r is 1, never 999");
+  __VERIFIER_assert(r == 999); // r is 1, never 999
   return r;
 }
 // Imported from ESBMC regression/esbmc/github_5387

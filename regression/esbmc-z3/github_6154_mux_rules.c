@@ -141,20 +141,20 @@ int main()
   // 200 and -56 share the low 8 bits: unifying on width alone confuses them.
   int r10 = signs(a, K, 200, -56);
 
-  __ESBMC_assert(
-    __ESBMC_exists(&i, i == K && sub_left(a, i) == r1), "sub_left");
-  __ESBMC_assert(
-    __ESBMC_exists(&i, i == K && sub_right(a, i) == r2), "sub_right");
-  __ESBMC_assert(__ESBMC_exists(&i, i == K && incdec(a, i) == r3), "incdec");
-  __ESBMC_assert(__ESBMC_exists(&i, i == K && addk(a, i) == r4), "addk");
-  __ESBMC_assert(__ESBMC_exists(&i, i == K && mul(a, i) == r5), "mul");
-  __ESBMC_assert(__ESBMC_exists(&i, i == K && xr(a, i) == r6), "xor");
-  __ESBMC_assert(__ESBMC_exists(&i, i == K && wrap(a, i) == r7), "wrap");
-  __ESBMC_assert(__ESBMC_exists(&i, i == K && early(a, i) == r8), "early");
-  __ESBMC_assert(
-    __ESBMC_exists(&i, i == K && widths(a, i, 1, 300) == r9), "widths");
-  __ESBMC_assert(
-    __ESBMC_exists(&i, i == K && signs(a, i, 200, -56) == r10), "signs");
+  __VERIFIER_assert(
+    __ESBMC_exists(&i, i == K && sub_left(a, i) == r1)); // sub_left
+  __VERIFIER_assert(
+    __ESBMC_exists(&i, i == K && sub_right(a, i) == r2)); // sub_right
+  __VERIFIER_assert(__ESBMC_exists(&i, i == K && incdec(a, i) == r3)); // incdec
+  __VERIFIER_assert(__ESBMC_exists(&i, i == K && addk(a, i) == r4)); // addk
+  __VERIFIER_assert(__ESBMC_exists(&i, i == K && mul(a, i) == r5)); // mul
+  __VERIFIER_assert(__ESBMC_exists(&i, i == K && xr(a, i) == r6)); // xor
+  __VERIFIER_assert(__ESBMC_exists(&i, i == K && wrap(a, i) == r7)); // wrap
+  __VERIFIER_assert(__ESBMC_exists(&i, i == K && early(a, i) == r8)); // early
+  __VERIFIER_assert(
+    __ESBMC_exists(&i, i == K && widths(a, i, 1, 300) == r9)); // widths
+  __VERIFIER_assert(
+    __ESBMC_exists(&i, i == K && signs(a, i, 200, -56) == r10)); // signs
   return 0;
 }
 // Imported from ESBMC regression/z3/github_6154_mux_rules

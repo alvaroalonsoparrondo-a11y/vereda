@@ -10,7 +10,7 @@ int main(void)
 {
   int first = flags.changing;
   int second = flags.changing;
-  __ESBMC_assert(first == second, "volatile field reads may differ");
+  __VERIFIER_assert(first == second); // volatile field reads may differ
 }
 // Imported from ESBMC regression/esbmc/volatile_member_read_fail
 // Needs: --std c11 --volatile-check

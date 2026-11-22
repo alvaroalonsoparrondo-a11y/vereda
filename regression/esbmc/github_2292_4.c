@@ -15,7 +15,7 @@ void main()
 {
   int i = nondet_int();
   f[0] = (c){b};
-  __ESBMC_assume(i >= 0 && i < 1);
+  __VERIFIER_assume(i >= 0 && i < 1);
   if (g[i].a())
     e = d;
   assert(e);

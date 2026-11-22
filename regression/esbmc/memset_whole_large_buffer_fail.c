@@ -11,7 +11,7 @@ int main()
     return 0;
   memset(p, 1, SIZE);
   unsigned i = __VERIFIER_nondet_uint();
-  __ESBMC_assume(i < SIZE / sizeof(unsigned));
+  __VERIFIER_assume(i < SIZE / sizeof(unsigned));
   assert(p[i] == 0x01010100u);
   free(p);
   return 0;

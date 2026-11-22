@@ -12,7 +12,7 @@ int main(void)
     if (i == 10)
       sscanf(buf, "%d", &x);
     if (i == 20)
-      __ESBMC_assert(x == 0, "sscanf parses a non-zero x");
+      __VERIFIER_assert(x == 0); // sscanf parses a non-zero x
     i++;
   }
   return 0;

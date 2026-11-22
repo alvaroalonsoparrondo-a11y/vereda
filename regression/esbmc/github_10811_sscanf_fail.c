@@ -9,7 +9,7 @@ int b[2];
 int main()
 {
   int *p = nondet_bool() ? a : b;
-  __ESBMC_assume(p == a);
+  __VERIFIER_assume(p == a);
   sscanf("5", "%d", p);
   assert(a[0] == 1);
   return 0;

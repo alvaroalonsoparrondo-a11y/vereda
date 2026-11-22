@@ -9,9 +9,9 @@ int main()
     a[i] = i;
   a[3] = 7;
   unsigned j = __VERIFIER_nondet_uint() % N;
-  __ESBMC_assert(j == 4 || a[j] == (int)j, "init");
+  __VERIFIER_assert(j == 4 || a[j] == (int)j); // init
 }
 // Imported from ESBMC regression/esbmc/array_loop_summary_store_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: TIMEOUT after 60 s
 // MODE: FUTURE

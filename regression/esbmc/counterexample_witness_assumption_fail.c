@@ -18,7 +18,7 @@ int main(void)
 {
   p.in = 7;
   scale(&p);
-  __ESBMC_assert(p.out != 21, "out is 21");
+  __VERIFIER_assert(p.out != 21); // out is 21
   return 0;
 }
 // Imported from ESBMC regression/esbmc/counterexample_witness_assumption_fail

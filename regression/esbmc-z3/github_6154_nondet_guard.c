@@ -18,7 +18,7 @@ int main()
 {
   v4si v = {1, 2, 3, 4};
   int y;
-  __ESBMC_assert(__ESBMC_forall(&y, f(y, v) == y), "reduce-discard guard");
+  __VERIFIER_assert(__ESBMC_forall(&y, f(y, v) == y)); // reduce-discard guard
   return 0;
 }
 // Imported from ESBMC regression/z3/github_6154_nondet_guard

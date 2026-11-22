@@ -10,7 +10,7 @@ int main() {
   O[2].a = 4;
   assert(O[2].a == 4);
   __ESBMC_init_object(O);
-  __ESBMC_assume(O[2].a == 4);
+  __VERIFIER_assume(O[2].a == 4);
   assert(O[2].a == 4);
 }
 // Imported from ESBMC regression/esbmc/builtin_init_var_3_true

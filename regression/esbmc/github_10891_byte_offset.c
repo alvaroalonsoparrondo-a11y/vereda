@@ -7,7 +7,7 @@ int main(void)
 {
   uint32_t buf[2];
   unsigned o = nondet_uint();
-  __ESBMC_assume(o <= sizeof(buf) - sizeof(uint32_t));
+  __VERIFIER_assume(o <= sizeof(buf) - sizeof(uint32_t));
   struct Unaligned *p = (struct Unaligned *)((unsigned char *)buf + o);
   struct Unaligned val = {7};
   *p = val;

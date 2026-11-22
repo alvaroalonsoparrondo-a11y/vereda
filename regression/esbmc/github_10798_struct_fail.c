@@ -20,11 +20,13 @@ int main(void)
   uintptr_t i = nondet_uintptr();
   struct S s;
   memcpy(&s, &i, sizeof s);
-  __ESBMC_assert(
-    __ESBMC_POINTER_OBJECT(s.p) <= 1 || __ESBMC_same_object(s.p, &b),
-    "s.p names null, invalid or b");
+  __VERIFIER_assert(
+    __ESBMC_POINTER_OBJECT(s.p) <= 1 || __ESBMC_same_object(s.p, &b)
+); // s.p names null, invalid or b
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_10798_struct_fail
 // MODE: KNOWNBUG
 // EXPECT: ^VERIFICATION FAILED$
+// Vereda: KNOWNBUG test passed unexpectedly; promote it to CORE
+// MODE: CORE

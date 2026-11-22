@@ -5,8 +5,8 @@
 #include <assert.h>
 int main(void) {
   uint32_t n; uint64_t a;
-  __ESBMC_assume(n >= 1 && n <= 3);
-  __ESBMC_assume(a <= 3);
+  __VERIFIER_assume(n >= 1 && n <= 3);
+  __VERIFIER_assume(a <= 3);
   uint64_t s = 0;
   uint64_t *p = &s;
   *p = 5;

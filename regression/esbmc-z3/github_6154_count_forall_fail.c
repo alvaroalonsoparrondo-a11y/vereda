@@ -18,12 +18,10 @@ int main()
   for (int i = 0; i < SIZE; i++)
     vec[i] = 7;
   data_t v;
-  __ESBMC_assert(
-    __ESBMC_forall(&v, count(v, vec) <= SIZE - 1), "should fail at v==7");
+  __VERIFIER_assert(
+    __ESBMC_forall(&v, count(v, vec) <= SIZE - 1)); // should fail at v==7
   return 0;
 }
 // Imported from ESBMC regression/z3/github_6154_count_forall_fail
 // RUN: --solver z3
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

@@ -9,7 +9,7 @@ int main(void)
 {
   int first = flags.values[1];
   int second = flags.values[1];
-  __ESBMC_assert(first == second, "volatile array member reads may differ");
+  __VERIFIER_assert(first == second); // volatile array member reads may differ
 }
 // Imported from ESBMC regression/esbmc/volatile_array_member_read_fail
 // Needs: --std c11 --volatile-check

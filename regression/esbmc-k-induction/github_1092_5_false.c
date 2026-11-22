@@ -19,7 +19,7 @@ int bar()
 {
   do
   {
-    __ESBMC_assert(status != 2, "");
+    __VERIFIER_assert(status != 2);
   } while(0);
 }
 int main()

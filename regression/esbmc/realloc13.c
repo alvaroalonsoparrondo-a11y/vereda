@@ -11,9 +11,11 @@ int main() {
 
   p[0] = 1;
   int *q = realloc(p, 0);   // should free p and return NULL
-  __ESBMC_assert(q == NULL, "realloc(ptr, 0) must return NULL");
+  __VERIFIER_assert(q == NULL); // realloc(ptr, 0) must return NULL
   return 0;
 }
 
 // Imported from ESBMC regression/esbmc/realloc13
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

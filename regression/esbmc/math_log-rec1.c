@@ -23,7 +23,7 @@ int main()
 
   // step case
   unsigned char n = nondet_uchar();
-  __ESBMC_assume(n>=2);
+  __VERIFIER_assume(n>=2);
   unsigned char result3 = T(n);
   unsigned char result4 = log2(n);
   assert(result3 <= c*result4);

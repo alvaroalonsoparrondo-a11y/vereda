@@ -9,7 +9,7 @@ int impure(int a)
 int main()
 {
   int var;
-  __ESBMC_assert(__ESBMC_exists(&var, impure(var) == 0), "e");
+  __VERIFIER_assert(__ESBMC_exists(&var, impure(var) == 0)); // e
 }
 // Imported from ESBMC regression/z3/github_6100_noninline
 // RUN: --solver z3

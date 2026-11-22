@@ -16,9 +16,9 @@ int main(void)
   unsigned long base = (unsigned long)ports + i * sizeof(struct port);
   *((unsigned int *)(base + 8)) = 5U;
   *((void **)(base + 40)) = (void *)&g;
-  __ESBMC_assert(ports[0].a2 == 5U, "store lands on a2");
-  __ESBMC_assert(ports[0].c2 == (unsigned long)&g, "pointer store lands on c2");
-  __ESBMC_assert(ports[0].a1 == 0U && ports[0].d0 == 0, "others untouched");
+  __VERIFIER_assert(ports[0].a2 == 5U); // store lands on a2
+  __VERIFIER_assert(ports[0].c2 == (unsigned long)&g); // pointer store lands on c2
+  __VERIFIER_assert(ports[0].a1 == 0U && ports[0].d0 == 0); // others untouched
   return 0;
 }
 // Imported from ESBMC regression/esbmc/intptr_struct_store_merged

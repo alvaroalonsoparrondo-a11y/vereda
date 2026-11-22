@@ -4,7 +4,7 @@
 int main()
 {
   double x = 3.0;
-  __ESBMC_assert(x < 0.0, "should fail: x is positive");
+  __VERIFIER_assert(x < 0.0); // should fail: x is positive
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_1037_fail

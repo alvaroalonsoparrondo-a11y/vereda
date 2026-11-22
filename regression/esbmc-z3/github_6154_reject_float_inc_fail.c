@@ -12,7 +12,7 @@ int f(int n)
 int main()
 {
   int k;
-  __ESBMC_assert(__ESBMC_forall(&k, f(k) == k + 99), "should fail");
+  __VERIFIER_assert(__ESBMC_forall(&k, f(k) == k + 99)); // should fail
   return 0;
 }
 // Imported from ESBMC regression/z3/github_6154_reject_float_inc_fail

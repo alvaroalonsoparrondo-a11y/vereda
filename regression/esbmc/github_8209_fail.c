@@ -6,12 +6,12 @@ int __VERIFIER_nondet_int(void);
 int main()
 {
   unsigned y = __VERIFIER_nondet_uint();
-  __ESBMC_assume(y <= 0xFFFFFFFDu);
+  __VERIFIER_assume(y <= 0xFFFFFFFDu);
   unsigned x;
   if (__VERIFIER_nondet_int())
   {
     x = __VERIFIER_nondet_uint();
-    __ESBMC_assume(2 <= x && x <= 3);
+    __VERIFIER_assume(2 <= x && x <= 3);
   }
   else
     x = y + 3u;

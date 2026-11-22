@@ -8,9 +8,9 @@ int main(void)
 {
   __ESBMC_rounding_mode = 0; /* ROUND_TO_EVEN */
   double x = __VERIFIER_nondet_double();
-  __ESBMC_assume(x == -1.5);
+  __VERIFIER_assume(x == -1.5);
   double y = nearbyint(x);
-  __ESBMC_assert(y == -2.0, "RTE tie at -1.5 rounds to -2");
+  __VERIFIER_assert(y == -2.0); // RTE tie at -1.5 rounds to -2
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-nearbyint-rte-tie-neg15

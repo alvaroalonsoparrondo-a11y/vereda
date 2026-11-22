@@ -4,8 +4,8 @@
 void func1(int y);
 void func1(int y)
 {
-  __ESBMC_assume(y >= 0);
-  __ESBMC_assume(y < 1);
+  __VERIFIER_assume(y >= 0);
+  __VERIFIER_assume(y < 1);
   func2(y);
 }
 // Imported from ESBMC regression/esbmc/github_885-valid

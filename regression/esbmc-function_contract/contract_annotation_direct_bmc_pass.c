@@ -15,7 +15,7 @@ int add(int x, int y)
 int main()
 {
   int r = add(3, 4);
-  __ESBMC_assert(r == 7, "3+4=7");
+  __VERIFIER_assert(r == 7); // 3+4=7
   return 0;
 }
 // Imported from ESBMC regression/function_contract/contract_annotation_direct_bmc_pass

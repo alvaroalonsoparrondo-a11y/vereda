@@ -16,7 +16,7 @@ int main()
   L:
     if (i == 0)
       goto out;
-    __ESBMC_assert(0, "v");
+    __VERIFIER_assert(0); // v
   }
 out:
   return x;

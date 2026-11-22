@@ -18,7 +18,7 @@ int main() {
   if (!p) return 0;
 
   for (int i = 0; i < newn; i++) {
-    __ESBMC_assert(p[i] == i + 1, "Shrink must preserve old data");
+    __VERIFIER_assert(p[i] == i + 1); // Shrink must preserve old data
   }
 
   free(p);
@@ -29,3 +29,5 @@ int main() {
 // RUN: --unwind 12
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

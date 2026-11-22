@@ -8,11 +8,11 @@ int main()
 {
   int M_x, M_y, M_z;
   M_z = Foo(M_x, M_y);
-  __ESBMC_assert(M_z == M_x + M_y + 1, "result");
+  __VERIFIER_assert(M_z == M_x + M_y + 1); // result
 }
 // Imported from ESBMC regression/esbmc/function_return_location
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: State [0-9]+ file \S+function_return_location\.c line 10 column 9 function main thread 0\n-+\n  M_z =
 // EXPECT: (?s)\A(?!.*line 4 column 3 function Foo.*\n.*\n.*M_z =)
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: State [0-9]+ file \S+function_return_location\.c line 10 column 9 function main thread 0\n-+\n  M_z =
 // MODE: FUTURE

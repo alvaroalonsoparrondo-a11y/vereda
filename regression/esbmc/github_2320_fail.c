@@ -4,10 +4,8 @@
 int main()
 {
   int x = 1;
-  __ESBMC_assert(x == 2, "x is two");
+  __VERIFIER_assert(x == 2); // x is two
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_2320_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

@@ -27,15 +27,15 @@ char *argv[3];
    token tok;
    token_stream tp;
 #if 1
-__ESBMC_assume(argc>=0 && argc<(sizeof(argv)/sizeof(char)));
+__VERIFIER_assume(argc>=0 && argc<(sizeof(argv)/sizeof(char)));
 int counter;
 for(counter=0; counter<argc; counter++)
-  __ESBMC_assume(argv[counter]!=NULL);
+  __VERIFIER_assume(argv[counter]!=NULL);
 #endif
      if(argc==1)                  /* if not given filename,take as '""' */
        {
         fname= (char *) malloc(sizeof(char));
-        __ESBMC_assume(fname);
+        __VERIFIER_assume(fname);
         *fname = '\0';
        }
      else if(argc==2)
@@ -46,7 +46,7 @@ for(counter=0; counter<argc; counter++)
        }
     tp=open_token_stream(fname);  /* open token stream */
     tok=get_token(tp);
-	__ESBMC_assume(tok!=NULL);
+	__VERIFIER_assume(tok!=NULL);
     while (is_eof_token(tok) ==FALSE) /* take one token each time until eof */
     {
        print_token(tok);

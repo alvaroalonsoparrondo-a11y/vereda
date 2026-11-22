@@ -6,8 +6,8 @@ int main()
   if (x == -128)
     ;
   else
-    __ESBMC_assume(x && x == 7);
-  __ESBMC_assert(x > -7, "x above -7");
+    __VERIFIER_assume(x && x == 7);
+  __VERIFIER_assert(x > -7); // x above -7
 }
 // Imported from ESBMC regression/esbmc/github_8047
 // Needs: --interval-symex-assert

@@ -13,7 +13,7 @@ int main()
     else
       x -= 2;
   } while (x > 0);
-  __ESBMC_assert(x != 0, "the loop can leave with x == 0");
+  __VERIFIER_assert(x != 0); // the loop can leave with x == 0
   return 0;
 }
 // Imported from ESBMC regression/k-induction/github_1320_do_while_fail

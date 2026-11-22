@@ -5,7 +5,7 @@ int nondet_int();
 int main()
 {
   int n = nondet_int();
-  __ESBMC_assume(n <= 51);
+  __VERIFIER_assume(n <= 51);
   for (int i = 0; i < n; i++)
     a[i] = 1;
 }

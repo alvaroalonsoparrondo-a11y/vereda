@@ -69,7 +69,7 @@ void range_fun()
   {
     RangeArr.Raw[i] = nondet_RANGE();
     nondet_RANGE_fields(RangeArr.Raw[i]);
-    __ESBMC_assume(RangeArr.Raw[i].base >= _4GB - _16MB);
+    __VERIFIER_assume(RangeArr.Raw[i].base >= _4GB - _16MB);
 
     current_base = RangeArr.Raw[i].base;
     current_len = RangeArr.Raw[i].len;
@@ -80,7 +80,7 @@ void range_fun()
 
   }
 
-  __ESBMC_assert(RangeArr.Raw[0].base == _2GB, "RangeArr base value 1");
+  __VERIFIER_assert(RangeArr.Raw[0].base == _2GB); // RangeArr base value 1
 }
 
 int main()

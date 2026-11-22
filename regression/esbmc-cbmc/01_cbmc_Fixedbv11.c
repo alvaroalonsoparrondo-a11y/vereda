@@ -151,7 +151,7 @@ int checkOverflow(void)
 	{
 		y[i] = 0;
 		x[i] = nondet_float();
-		__ESBMC_assume(x[i]>=min && x[i]<=max);
+		__VERIFIER_assume(x[i]>=min && x[i]<=max);
 	}
 
 	float yaux[Na];
@@ -229,7 +229,7 @@ int checkLimitCycle(void)
 	for (i = 0; i<Na; ++i)
 	{
 		yaux[i] = nondet_float();
-		__ESBMC_assume(yaux[i]>-1.0 && yaux[i]<1.0);
+		__VERIFIER_assume(yaux[i]>-1.0 && yaux[i]<1.0);
 	}
 	for (i = 0; i<Nb; ++i)
 	{

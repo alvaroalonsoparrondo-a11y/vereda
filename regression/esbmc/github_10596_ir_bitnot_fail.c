@@ -4,7 +4,7 @@ long long nondet_longlong(void);
 int main(void)
 {
   long long x = nondet_longlong();
-  __ESBMC_assert(~x == -x, "~x == -x");
+  __VERIFIER_assert(~x == -x); // ~x == -x
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_10596_ir_bitnot_fail

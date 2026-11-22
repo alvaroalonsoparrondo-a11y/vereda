@@ -23,8 +23,8 @@ int main(void)
 {
   int arr[N] = {1, 2, 3, 4, 5};
   bump(arr, 2);
-  __ESBMC_assert(arr[0] == 3 && arr[4] == 7, "ensures reached the caller");
-  __ESBMC_assert(arr[0] == 4, "arr[0] is not 3");
+  __VERIFIER_assert(arr[0] == 3 && arr[4] == 7); // ensures reached the caller
+  __VERIFIER_assert(arr[0] == 4); // arr[0] is not 3
   return 0;
 }
 // Imported from ESBMC regression/function_contract/github_7627_conditional_is_fresh_fail

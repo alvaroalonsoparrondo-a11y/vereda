@@ -17,7 +17,7 @@ int main(void)
   int *p = (int *)x;
   uintptr_t ug = (uintptr_t)&s.g[1];
   if (x == ug)
-    __ESBMC_assert(p == &s.g[1], "cast of s.g[1]'s address is &s.g[1]");
+    __VERIFIER_assert(p == &s.g[1]); // cast of s.g[1]'s address is &s.g[1]
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9272_member

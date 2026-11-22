@@ -4,7 +4,7 @@ int main(void)
 {
   /* The operational model defines remainder(±inf, y) as NaN. */
   double r = remainder(INFINITY, 1.0);
-  __ESBMC_assert(r != r, "remainder(INFINITY, 1.0) must be NaN");
+  __VERIFIER_assert(r != r); // remainder(INFINITY, 1.0) must be NaN
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-remainder-nan

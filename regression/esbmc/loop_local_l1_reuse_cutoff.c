@@ -13,7 +13,7 @@ int g(int d)
       b = r;
   }
   if (d == 2)
-    __ESBMC_assert(a == b, "two calls may return different values");
+    __VERIFIER_assert(a == b); // two calls may return different values
   return a;
 }
 int main()

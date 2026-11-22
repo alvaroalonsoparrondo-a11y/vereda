@@ -7,7 +7,7 @@ int main()
     x++;
   }
   inc();
-  __ESBMC_assert(x == 99, "should fail: x is 1 not 99");
+  __VERIFIER_assert(x == 99); // should fail: x is 1 not 99
   return 0;
 }
 // Imported from ESBMC regression/esbmc/gcc_nested_func_06

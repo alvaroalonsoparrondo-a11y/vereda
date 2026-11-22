@@ -20,7 +20,7 @@ int main()
   while (x < 5)
     x++;
 
-  __ESBMC_assert(y == 10, "y unchanged by loop");
+  __VERIFIER_assert(y == 10); // y unchanged by loop
   return 0;
 }
 // Imported from ESBMC regression/loop-invariants/loop_old_snapshot_pass

@@ -22,8 +22,8 @@ lbl2:
 
 int main(void)
 {
-  __ESBMC_assert(dispatch(0) == 1, "jump table selects the first label");
-  __ESBMC_assert(dispatch(1) == 2, "jump table selects the second label");
+  __VERIFIER_assert(dispatch(0) == 1); // jump table selects the first label
+  __VERIFIER_assert(dispatch(1) == 2); // jump table selects the second label
 
   int x = 1;
 
@@ -35,7 +35,7 @@ int main(void)
       goto mylabel;
   });
 
-  __ESBMC_assert(x == 3, "the local-label loop runs to completion");
+  __VERIFIER_assert(x == 3); // the local-label loop runs to completion
 
   // A local label also has an address, and jumping through it must agree.
   int hops = 0;
@@ -47,7 +47,7 @@ int main(void)
     if (hops < 2)
       goto *target;
   }
-  __ESBMC_assert(hops == 2, "computed goto to a local label");
+  __VERIFIER_assert(hops == 2); // computed goto to a local label
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_4076_gnu_local_label

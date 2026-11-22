@@ -16,7 +16,7 @@ int main()
     }
   }
   x = 50;
-  __ESBMC_assert(inner() == 99, "inner block decl not rewritten as capture");
+  __VERIFIER_assert(inner() == 99); // inner block decl not rewritten as capture
   (void)x;
   return 0;
 }

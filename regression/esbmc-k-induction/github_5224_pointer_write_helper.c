@@ -22,7 +22,7 @@ int main(void)
   {
     unsigned i = nondet_uint() % 8;
     setelem(&a, i);
-    __ESBMC_assert(a[i] <= 1, "the element just set is 0 or 1");
+    __VERIFIER_assert(a[i] <= 1); // the element just set is 0 or 1
   }
   return 0;
 }

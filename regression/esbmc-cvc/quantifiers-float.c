@@ -10,14 +10,14 @@ int main() {
     double x, y, z;
     // -------------------------
     // Nested forall/exists (conceptually heavy)
-    __ESBMC_assert(
+    __VERIFIER_assert(
         __ESBMC_forall(&x,
             __ESBMC_forall(&y,
                 __ESBMC_exists(&z, P(x, 0.5, z))
             )
-        ),
-        "Nested forall/exists with floating-point"
-    );
+        )
+
+); // Nested forall/exists with floating-point
 }
 // Imported from ESBMC regression/cvc/quantifiers-float
 // RUN: --solver cvc5

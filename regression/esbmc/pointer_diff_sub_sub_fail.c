@@ -9,7 +9,7 @@ int main(void)
   int a[8];
   int *p = &a[4];
   int j = nondet_int();
-  __ESBMC_assume(j >= -3 && j <= 4);
+  __VERIFIER_assume(j >= -3 && j <= 4);
   long k = nondet_long();
   ptrdiff_t n = k;
   if (nondet_bool())

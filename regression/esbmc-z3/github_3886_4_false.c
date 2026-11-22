@@ -6,9 +6,9 @@ int main()
 {
   int a1, b1;
 
-  __ESBMC_assert(
-    __ESBMC_forall(&b1, (b1 > 0) || __ESBMC_forall(&a1, a1 > 0)) == 1,
-    "forall b: (b>0)||forall(a,a>0) should be false — assertion must fail");
+  __VERIFIER_assert(
+    __ESBMC_forall(&b1, (b1 > 0) || __ESBMC_forall(&a1, a1 > 0)) == 1
+); // forall b: (b>0)||forall(a,a>0) should be false — assertion must fail
 
   return 0;
 }
@@ -16,5 +16,3 @@ int main()
 // RUN: --solver z3
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

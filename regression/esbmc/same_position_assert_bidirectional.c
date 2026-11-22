@@ -6,9 +6,9 @@ int main()
   while (x < 10)
   {
     x += 2;
-    __ESBMC_assert(x != 11, "inloop");
+    __VERIFIER_assert(x != 11); // inloop
   }
-  __ESBMC_assert(x == 10, "after");
+  __VERIFIER_assert(x == 10); // after
   return 0;
 }
 // Imported from ESBMC regression/esbmc/same_position_assert_bidirectional

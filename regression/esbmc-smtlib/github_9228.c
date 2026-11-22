@@ -8,7 +8,7 @@ _Alignas(32) char buf[3];
 int main(void)
 {
   int *p = malloc(sizeof(int));
-  __ESBMC_assert((uintptr_t)buf != (uintptr_t)p, "distinct objects");
+  __VERIFIER_assert((uintptr_t)buf != (uintptr_t)p); // distinct objects
   return 0;
 }
 // Imported from ESBMC regression/smtlib/github_9228

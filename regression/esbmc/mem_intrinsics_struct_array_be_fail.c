@@ -18,7 +18,7 @@ struct B wrapped[4] = {{1}, {2}, {3}, {4}};
 int main()
 {
   unsigned n = nondet_uint();
-  __ESBMC_assume(n <= 4);
+  __VERIFIER_assume(n <= 4);
   unsigned char d[4] = {0, 0, 0, 0};
   memcpy(d, &pairs[1], n);
   assert(n < 4 || (d[0] == 6 && d[1] == 5 && d[2] == 8 && d[3] == 7));

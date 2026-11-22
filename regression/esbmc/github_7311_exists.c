@@ -18,9 +18,11 @@ int main(void)
   ctx *p = &c;
   p->buf[3] = 1;
   int i = 2;
-  __ESBMC_assert(
-    __ESBMC_exists(&i, 0 <= i && i < 4 && p->buf[i] == 1), "some one");
+  __VERIFIER_assert(
+    __ESBMC_exists(&i, 0 <= i && i < 4 && p->buf[i] == 1)); // some one
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7311_exists
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

@@ -10,7 +10,7 @@ int main(void) {
   }
   x = 3;
 out:
-  __ESBMC_assert(x != 0, "x");
+  __VERIFIER_assert(x != 0); // x
   return 0;
 }
 // Imported from ESBMC regression/goto2lean/unsupported_jump_out_of_branch

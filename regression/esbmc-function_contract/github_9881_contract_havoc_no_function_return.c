@@ -15,7 +15,7 @@ int main(void)
 {
   int n = __VERIFIER_nondet_int();
   set_g();
-  __ESBMC_assert(n + g != 47, "n is 5");
+  __VERIFIER_assert(n + g != 47); // n is 5
 }
 // Imported from ESBMC regression/function_contract/github_9881_contract_havoc_no_function_return
 // Needs: --replace-call-with-contract * --witness-output-yaml -

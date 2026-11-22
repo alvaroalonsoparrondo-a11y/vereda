@@ -69,28 +69,28 @@ int main(void)
   for (unsigned i = 0; i < SEQ_LEN; i++)
   {
     unsigned key = nondet_uint();
-    __ESBMC_assume(key < MAP_CAP);
+    __VERIFIER_assume(key < MAP_CAP);
 
     unsigned before = current_names[key].count;
-    __ESBMC_assume(before < UINT_MAX);
+    __VERIFIER_assume(before < UINT_MAX);
 
     keys[i] = key;
     published[i] = make_assignment(key);
 
-    __ESBMC_assert(
-      published[i] == before + 1, "I1: L2 index advances by exactly one");
-    __ESBMC_assert(
-      current_names[key].count == published[i],
-      "I1: the map holds the index just published");
+    __VERIFIER_assert(
+      published[i] == before + 1); // I1: L2 index advances by exactly one
+    __VERIFIER_assert(
+      current_names[key].count == published[i]
+); // I1: the map holds the index just published
 
     for (unsigned j = 0; j < i; j++)
-      __ESBMC_assert(
-        keys[j] != key || published[j] != published[i],
-        "I1: a published (key, L2 index) pair is never republished");
+      __VERIFIER_assert(
+        keys[j] != key || published[j] != published[i]
+); // I1: a published (key, L2 index) pair is never republished
   }
 
 #ifdef SYMEX_HARNESS_PROBE
-  __ESBMC_assert(0, "reachability probe");
+  __VERIFIER_assert(0); // reachability probe
 #endif
 
   return 0;

@@ -7,10 +7,8 @@ int main(void)
 {
   char *p = (char *)((uintptr_t)(buf + 1) & ~(uintptr_t)7);
   *p = 42;
-  __ESBMC_assert(buf[(uintptr_t)p - (uintptr_t)buf] != 42, "the write landed");
+  __VERIFIER_assert(buf[(uintptr_t)p - (uintptr_t)buf] != 42); // the write landed
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_677_mask_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

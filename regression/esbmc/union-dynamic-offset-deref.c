@@ -22,7 +22,7 @@ uint8_t nondet_u1(void);
 
 int main(void) {
     uint8_t sp = nondet_u1();
-    __ESBMC_assume(sp >= 1 && sp < 8);
+    __VERIFIER_assume(sp >= 1 && sp < 8);
 
     int16_t val = nondet_s2();
     stack[sp - 1].s = val;

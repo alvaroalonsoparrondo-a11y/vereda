@@ -6,7 +6,7 @@
  * synth_loop_invariant_thread_falseproof pins. This test is the mirror: the
  * verdict a threaded program keeps, and the mechanism line that says why.
  *
- * __ESBMC_assert, not assert: MSVC spells assert(e) as
+ * __VERIFIER_assert, not assert: MSVC spells assert(e) as
  * `(!!(e)) || (_wassert(...), 0)`, whose lowering leaves an `ASSERT 0` guarded
  * by `!e` where glibc and Darwin fold an unguarded `ASSERT e`. */
 #include <pthread.h>
@@ -27,7 +27,7 @@ void *writer(void *arg)
 
 void *reader(void *arg)
 {
-  __ESBMC_assert(g == 0 || g == 3, "g == 0 || g == 3");
+  __VERIFIER_assert(g == 0 || g == 3); // g == 0 || g == 3
   return 0;
 }
 

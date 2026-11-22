@@ -14,7 +14,7 @@ int main()
   u.p = &x;
   u.s.c[1] = 4;
   int *r = u.s.a[0];
-  __ESBMC_assert(r == &x, "r aliases u.p");
+  __VERIFIER_assert(r == &x); // r aliases u.p
 }
 // Imported from ESBMC regression/esbmc/github_8097_trace_int_to_ptr
 // RUN: -m64

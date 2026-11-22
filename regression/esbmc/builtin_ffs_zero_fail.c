@@ -9,7 +9,7 @@ int nondet_int(void);
 int main(void)
 {
   int x = nondet_int();
-  __ESBMC_assume(x == 0);
+  __VERIFIER_assume(x == 0);
   assert(__builtin_ffs(x) == 1);
   return 0;
 }

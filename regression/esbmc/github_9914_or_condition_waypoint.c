@@ -9,7 +9,7 @@ int main()
     return 0;
   if (b > 3)
     b = 0;
-  __ESBMC_assert(b != 0, "reached");
+  __VERIFIER_assert(b != 0); // reached
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9914_or_condition_waypoint

@@ -15,7 +15,7 @@ int main()
   } // status = 1 U 2
   do
   {
-    __ESBMC_assert(status != 3, "");
+    __VERIFIER_assert(status != 3);
   } while(0);
   return 0;
 }

@@ -5,7 +5,7 @@ int main()
   int arr[2];
   u.p = arr + 100;
   u.s.c[1] = 4;
-  __ESBMC_assert(0, "show");
+  __VERIFIER_assert(0); // show
 }
 // Imported from ESBMC regression/esbmc/github_9937_byte_fail
 // Needs: --result-only

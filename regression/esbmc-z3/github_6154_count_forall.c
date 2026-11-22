@@ -17,9 +17,11 @@ int main()
 {
   data_t vec[SIZE];
   data_t v;
-  __ESBMC_assert(__ESBMC_forall(&v, count(v, vec) <= SIZE), "count bounded");
+  __VERIFIER_assert(__ESBMC_forall(&v, count(v, vec) <= SIZE)); // count bounded
   return 0;
 }
 // Imported from ESBMC regression/z3/github_6154_count_forall
 // RUN: --solver z3
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

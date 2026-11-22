@@ -20,12 +20,12 @@ int main(void)
   slots[1].key = first;
   slots[2].key = second;
 
-  __ESBMC_assert(slots[1].key == slots[2].key, "two slots read back equal");
+  __VERIFIER_assert(slots[1].key == slots[2].key); // two slots read back equal
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7855-two-slots_fail
 // RUN: -m64 --incremental-bmc
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^  FAILED +\[main\.assertion\.\d+\] +line +\d+ +two slots read back equal$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  FAILED +\[main\.assertion\.\d+\] +line +\d+ +two slots read back equal$
 // MODE: FUTURE

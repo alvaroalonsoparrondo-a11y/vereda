@@ -13,8 +13,8 @@ int main()
   }
   void a(void) { b(); }
   a();
-  __ESBMC_assert(x == 42, "sibling call forwards capture x");
-  __ESBMC_assert(y == 43, "sibling call forwards capture y");
+  __VERIFIER_assert(x == 42); // sibling call forwards capture x
+  __VERIFIER_assert(y == 43); // sibling call forwards capture y
   return 0;
 }
 // Imported from ESBMC regression/esbmc/gcc_nested_func_sibling_calls

@@ -10,12 +10,10 @@ int main(void)
   (void)q;
   uintptr_t x = nondet_uintptr();
   int *p = (int *)x;
-  __ESBMC_assert(
-    __ESBMC_POINTER_OBJECT(p) <= 1 || __ESBMC_same_object(p, &b),
-    "p names null, an invalid object or b");
+  __VERIFIER_assert(
+    __ESBMC_POINTER_OBJECT(p) <= 1 || __ESBMC_same_object(p, &b)
+); // p names null, an invalid object or b
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9272_object_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

@@ -10,7 +10,7 @@ int main(void)
   for (int i = 0; i < 40; i++)
     c = c + c;
   if ((c & 1u) == 0u)
-    __ESBMC_assert((c & 1u) == 0u, "doubled value is even");
+    __VERIFIER_assert((c & 1u) == 0u); // doubled value is even
   return 0;
 }
 // Imported from ESBMC regression/esbmc/path_guard_copy_chain_bound

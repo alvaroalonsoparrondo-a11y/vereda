@@ -8,13 +8,13 @@
 int main(){
 float norm = (float)1/(float)100;
 int x0 = nondet_int();
-__ESBMC_assume((x0 >= 441)&&(x0 <=539));
+__VERIFIER_assume((x0 >= 441)&&(x0 <=539));
 int x1 = nondet_int();
-__ESBMC_assume((x1 >= 270)&&(x1 <=330));
+__VERIFIER_assume((x1 >= 270)&&(x1 <=330));
 int x2 = nondet_int();
-__ESBMC_assume((x2 >= 126)&&(x2 <=154));
+__VERIFIER_assume((x2 >= 126)&&(x2 <=154));
 int x3 = nondet_int();
-__ESBMC_assume((x3 >= 18)&&(x3 <=22));
+__VERIFIER_assume((x3 >= 18)&&(x3 <=22));
 //unsigned int x0 = Frama_C_interval(235, 255);
 //unsigned int x1 = Frama_C_interval(235, 255);
 //unsigned int x2 = Frama_C_interval(130, 150);
@@ -51,7 +51,7 @@ if (layer2[1] > layer2[r]) r = 1;
 layer2[2]= (-0.182530f)*layer1[0] + (0.064892f)*layer1[1] + (0.407630f)*layer1[2] + (-0.205405f)*layer1[3] + (-0.140221f)*layer1[4] + (0.204790f)*layer1[5] + (-0.901339f)*layer1[6] + (0.131860f);
 layer2[2] = tanhFunctionLUT(layer2[2]);
 if (layer2[2] > layer2[r]) r = 2;
-__ESBMC_assert(r == 0, "Classification is not a 0 anymore.");
+__VERIFIER_assert(r == 0); // Classification is not a 0 anymore.
 //@assert(r == 0);
 }
 

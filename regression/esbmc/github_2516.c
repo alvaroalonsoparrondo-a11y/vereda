@@ -6,7 +6,7 @@ typedef item_t *item_p;
 int main(void) {
     /* malloc(2 * sizeof(void *)) */
     item_p item = malloc(sizeof *item);
-    __ESBMC_assume(item);
+    __VERIFIER_assume(item);
 
     // access within bounds
     (*item)[0] = (void *)0x1234;

@@ -26,10 +26,10 @@ enum ADDRSPACE {
 
 void foo(__linseg_supovr uint32_t* param1_p, uint32_t param2) {
   param1_p = (__linseg_supovr unsigned int *) malloc(sizeof(__linseg_supovr uint32_t));
-  __ESBMC_assert(param2 >= 0, "Error");
-  __ESBMC_assume(param1_p != NULL);
+  __VERIFIER_assert(param2 >= 0); // Error
+  __VERIFIER_assume(param1_p != NULL);
   *param1_p = param2;
-  __ESBMC_assert(*param1_p == param2, "Value should be set correctly");
+  __VERIFIER_assert(*param1_p == param2); // Value should be set correctly
 }
 // Imported from ESBMC regression/esbmc/github_351_true
 // RUN: --entry foo

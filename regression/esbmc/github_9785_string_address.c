@@ -5,7 +5,7 @@
 int main(void)
 {
   uintptr_t a = (uintptr_t)"abc";
-  __ESBMC_assert(a != 0, "a string literal's address");
+  __VERIFIER_assert(a != 0); // a string literal's address
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9785_string_address

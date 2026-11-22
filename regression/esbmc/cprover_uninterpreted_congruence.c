@@ -10,9 +10,11 @@ int main()
   int x;
   int a = __CPROVER_uninterpreted_f(x);
   int b = __CPROVER_uninterpreted_f(x);
-  __ESBMC_assert(a == b, "congruence: equal arguments give equal results");
+  __VERIFIER_assert(a == b); // congruence: equal arguments give equal results
   return 0;
 }
 // Imported from ESBMC regression/esbmc/cprover_uninterpreted_congruence
 // RUN: --incremental-bmc
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

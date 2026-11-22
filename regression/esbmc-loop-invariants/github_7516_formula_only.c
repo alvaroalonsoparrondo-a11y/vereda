@@ -9,7 +9,7 @@ int main()
     s++;
     i++;
   }
-  __ESBMC_assert(s == 3, "sum");
+  __VERIFIER_assert(s == 3); // sum
   return 0;
 }
 // Imported from ESBMC regression/loop-invariants/github_7516_formula_only

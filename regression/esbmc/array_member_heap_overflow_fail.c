@@ -6,7 +6,7 @@ int main(void)
   if (!p)
     return 0;
   unsigned k = nondet_uint();
-  __ESBMC_assume(k <= 4);
+  __VERIFIER_assume(k <= 4);
   unsigned *q = &p->arr[k];
   *q = 1;               /* k == 4 writes past arr into z */
   return 0;

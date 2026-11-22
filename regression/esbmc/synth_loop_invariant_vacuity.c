@@ -6,9 +6,9 @@
 int main(void)
 {
   unsigned int n;
-  __ESBMC_assume(n <= 4);
-  __ESBMC_assume(n > 10);
-  __ESBMC_assert(n == 0, "vacuous");
+  __VERIFIER_assume(n <= 4);
+  __VERIFIER_assume(n > 10);
+  __VERIFIER_assert(n == 0); // vacuous
   return 0;
 }
 // Imported from ESBMC regression/esbmc/synth_loop_invariant_vacuity

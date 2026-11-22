@@ -177,11 +177,9 @@ void func7(struct str4_s* var1_p){
 int main(void) {
     struct str4_s var;
     var.bool_var = 1;
-    __ESBMC_assert(var.bool_var != 1, "Bool_var should be 1");
+    __VERIFIER_assert(var.bool_var != 1); // Bool_var should be 1
     func3(&var);
     return 0;
 }
 // Imported from ESBMC regression/esbmc/github_345_false
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

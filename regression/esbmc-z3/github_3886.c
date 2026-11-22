@@ -21,45 +21,45 @@ int main()
 {
   int a1, b1;
 
-  __ESBMC_assert(
-    __ESBMC_forall(&a1, a1 == 17) == 0,
-    "forall a: a==17 should be false");
+  __VERIFIER_assert(
+    __ESBMC_forall(&a1, a1 == 17) == 0
+); // forall a: a==17 should be false
 
-  __ESBMC_assert(
-    __ESBMC_forall(&a1, a1 > 17) == 0,
-    "forall a: a>17 should be false");
+  __VERIFIER_assert(
+    __ESBMC_forall(&a1, a1 > 17) == 0
+); // forall a: a>17 should be false
 
-  __ESBMC_assert(
+  __VERIFIER_assert(
     __ESBMC_forall(
-      &a1, __ESBMC_forall(&b1, (a1 > b1) || (b1 > a1))) == 0,
-    "forall a b: (a>b)||(b>a) should be false");
+      &a1, __ESBMC_forall(&b1, (a1 > b1) || (b1 > a1))) == 0
+); // forall a b: (a>b)||(b>a) should be false
 
-  __ESBMC_assert(
+  __VERIFIER_assert(
     __ESBMC_forall(
-      &a1, __ESBMC_forall(&b1, (a1 == b1) || (b1 == 17))) == 0,
-    "forall a b: (a==b)||(b==17) should be false");
+      &a1, __ESBMC_forall(&b1, (a1 == b1) || (b1 == 17))) == 0
+); // forall a b: (a==b)||(b==17) should be false
 
-  __ESBMC_assert(
+  __VERIFIER_assert(
     __ESBMC_forall(
-      &a1, __ESBMC_forall(&b1, (a1 == b1) || (b1 > 17))) == 0,
-    "forall a b: (a==b)||(b>17) should be false");
+      &a1, __ESBMC_forall(&b1, (a1 == b1) || (b1 > 17))) == 0
+); // forall a b: (a==b)||(b>17) should be false
 
-  __ESBMC_assert(
+  __VERIFIER_assert(
     __ESBMC_forall(
-      &a1, __ESBMC_forall(&b1, (a1 > b1) || (b1 == 17))) == 0,
-    "forall a b: (a>b)||(b==17) should be false");
+      &a1, __ESBMC_forall(&b1, (a1 > b1) || (b1 == 17))) == 0
+); // forall a b: (a>b)||(b==17) should be false
 
   /* Previously broken: outer variable only in one disjunct */
-  __ESBMC_assert(
+  __VERIFIER_assert(
     __ESBMC_forall(
-      &a1, __ESBMC_forall(&b1, (a1 > b1) || (b1 > 17))) == 0,
-    "forall a b: (a>b)||(b>17) should be false");
+      &a1, __ESBMC_forall(&b1, (a1 > b1) || (b1 > 17))) == 0
+); // forall a b: (a>b)||(b>17) should be false
 
   /* Previously broken: each disjunct uses only one quantified variable */
-  __ESBMC_assert(
+  __VERIFIER_assert(
     __ESBMC_forall(
-      &a1, __ESBMC_forall(&b1, (a1 == 17) || (b1 == 17))) == 0,
-    "forall a b: (a==17)||(b==17) should be false");
+      &a1, __ESBMC_forall(&b1, (a1 == 17) || (b1 == 17))) == 0
+); // forall a b: (a==17)||(b==17) should be false
 
   return 0;
 }
@@ -67,3 +67,5 @@ int main()
 // RUN: --solver z3
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

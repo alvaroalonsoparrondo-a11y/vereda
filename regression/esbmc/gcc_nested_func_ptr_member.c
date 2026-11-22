@@ -18,8 +18,8 @@ int main()
   }
 
   bump();
-  __ESBMC_assert(p->x == 11, "bump via -> updated x");
-  __ESBMC_assert(p->y == 13, "bump via -> updated y");
+  __VERIFIER_assert(p->x == 11); // bump via -> updated x
+  __VERIFIER_assert(p->y == 13); // bump via -> updated y
   return 0;
 }
 // Imported from ESBMC regression/esbmc/gcc_nested_func_ptr_member

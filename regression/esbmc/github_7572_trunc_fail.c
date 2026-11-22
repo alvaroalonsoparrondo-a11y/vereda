@@ -8,7 +8,7 @@ extern float nondet_float(void);
 int main(void)
 {
   float a = nondet_float();
-  __ESBMC_assume(a == -1.0f);
+  __VERIFIER_assume(a == -1.0f);
   unsigned int u = (unsigned int)a;
   (void)u;
   return 0;

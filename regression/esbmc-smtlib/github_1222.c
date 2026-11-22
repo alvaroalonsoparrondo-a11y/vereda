@@ -183,14 +183,14 @@ int main()
   }
 
   UINT32 aux_index;
-  __ESBMC_assume(aux_index < 4);
+  __VERIFIER_assume(aux_index < 4);
   UINT64 read_data1 = RegRead(pInst->RegCntxtPortList1[aux_index], 6);
   UINT64 read_data2 = RegRead(pInst->RegCntxtPortList1[aux_index], 7);
   UINT64 read_data3 = RegRead(pInst->RegCntxtPortList1[aux_index], 9);
-  __ESBMC_assert(
+  __VERIFIER_assert(
     pInst->PortIsDisabled[aux_index] ||
-      (read_data1 == 0 && read_data2 == 0 && read_data3 == 0),
-    "Error: one of the registers is not set to 0");
+      (read_data1 == 0 && read_data2 == 0 && read_data3 == 0)
+); // Error: one of the registers is not set to 0
 
   return 0;
 }

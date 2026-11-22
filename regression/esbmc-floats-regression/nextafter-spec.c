@@ -17,18 +17,18 @@ int main()
   /* any NaN argument <-> NaN result */
   assert((isnan(x) || isnan(y)) == (isnan(z) != 0));
 
-  __ESBMC_assume(!isnan(z));
+  __VERIFIER_assume(!isnan(z));
   double a = nondet_double();
 
   if(isless(x, y))
   { /* there is no double 'a' between x and z */
     assert(isnan(a) || islessequal(a, x) || islessequal(z, a));
-    __ESBMC_assume(islessequal(z, a)); /* assume z <= a */
+    __VERIFIER_assume(islessequal(z, a)); /* assume z <= a */
   }
   if(isgreater(x, y))
   { /* there is no double 'a' between x and z */
     assert(isnan(a) || islessequal(a, z) || islessequal(x, a));
-    __ESBMC_assume(islessequal(a, z)); /* assume z >= a */
+    __VERIFIER_assume(islessequal(a, z)); /* assume z >= a */
   }
   if(x == y)
     assert(x == z);

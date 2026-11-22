@@ -14,7 +14,7 @@ int main(void)
   int *q = 0;
   if (nondet_bool())
     q = get();
-  __ESBMC_assert(p != q || q == 0, "p may point to s");
+  __VERIFIER_assert(p != q || q == 0); // p may point to s
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9273_static_local_fail

@@ -23,9 +23,9 @@ unsigned nondet_uint(void);
 int main(void)
 {
   unsigned len = nondet_uint();
-  __ESBMC_assume(len <= 65535u);
+  __VERIFIER_assume(len <= 65535u);
   descend(len);
-  __ESBMC_assert(__ESBMC_stack_used <= 1000000u, "stack budget");
+  __VERIFIER_assert(__ESBMC_stack_used <= 1000000u); // stack budget
   return 0;
 }
 // Imported from ESBMC regression/function_contract/stack_used_unbounded_fail

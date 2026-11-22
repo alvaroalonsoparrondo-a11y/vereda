@@ -9,7 +9,7 @@ int main() {
     x++;
     if (x == 5 && nondet_int()) { x = 7; goto top; }
   } while (x < 10);
-  __ESBMC_assert(x <= 10, "x <= 10");
+  __VERIFIER_assert(x <= 10); // x <= 10
   return 0;
 }
 // Imported from ESBMC regression/loop-invariants/do_while_goto_head

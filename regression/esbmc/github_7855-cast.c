@@ -9,12 +9,10 @@ int main(void)
   uintptr_t address = (uintptr_t)key;
   const void *back = (const void *)address;
 
-  __ESBMC_assert(back == key, "C17 7.20.1.4p1: the round trip compares equal");
+  __VERIFIER_assert(back == key); // C17 7.20.1.4p1: the round trip compares equal
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7855-cast
 // RUN: -m64 --incremental-bmc
 // MODE: KNOWNBUG
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: KNOWNBUG test passed unexpectedly; promote it to CORE
-// MODE: CORE

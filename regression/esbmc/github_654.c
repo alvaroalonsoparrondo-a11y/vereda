@@ -4,7 +4,7 @@
 int main()
 {
     int temp;
-    __ESBMC_assert(0, "foo");
+    __VERIFIER_assert(0); // foo
    return 0;
 }
 // Imported from ESBMC regression/esbmc/github_654

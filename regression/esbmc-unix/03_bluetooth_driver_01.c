@@ -60,7 +60,7 @@ void* BCSP_PnpStop(void* arg)
 
   e->stoppingFlag = TRUE;
   BCSP_IoDecrement(e);
-  __ESBMC_assume(e->stoppingEvent);
+  __VERIFIER_assume(e->stoppingEvent);
   //release allocated resource
   stopped = TRUE;
 }

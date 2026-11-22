@@ -4,7 +4,7 @@ int main() {
   int a = nondet_int();
   int b = nondet_int();
 
-  __ESBMC_assume(a > 0 && b > 0 && a > b);
+  __VERIFIER_assume(a > 0 && b > 0 && a > b);
 
   assert((a / b) > 0);
 }

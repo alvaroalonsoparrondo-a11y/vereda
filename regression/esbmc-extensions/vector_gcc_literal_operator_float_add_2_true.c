@@ -11,7 +11,7 @@ v4si vsi2 = (v4si){4.5, 3.5, 2.5, 1.5};
 int main() {
     vsi += vsi2;
    for(int i = 0; i < 4; i++)
-      __ESBMC_assert(vsi[i] == 6, "The vector should be initialized correctly");
+      __VERIFIER_assert(vsi[i] == 6); // The vector should be initialized correctly
    return 0; 
 }
 // Imported from ESBMC regression/extensions/vector_gcc_literal_operator_float_add_2_true

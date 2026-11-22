@@ -34,7 +34,7 @@ int main()
   }
 
   size_t n = nondet_uint();
-  __ESBMC_assume(n <= 4);
+  __VERIFIER_assume(n <= 4);
   char *u = strndup("abc", n);
   if (u)
   {

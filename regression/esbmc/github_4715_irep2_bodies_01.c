@@ -43,10 +43,10 @@ int main()
     break;
   }
 
-  __ESBMC_assert(x == 1, "x should be 1 after if-then-else");
-  __ESBMC_assert(w == 2, "while loop with break should stop at w==2");
-  __ESBMC_assert(s == 4, "for loop with continue: 0+1+3==4");
-  __ESBMC_assert(z == 10, "switch on x==1 should set z=10");
+  __VERIFIER_assert(x == 1); // x should be 1 after if-then-else
+  __VERIFIER_assert(w == 2); // while loop with break should stop at w==2
+  __VERIFIER_assert(s == 4); // for loop with continue: 0+1+3==4
+  __VERIFIER_assert(z == 10); // switch on x==1 should set z=10
 
   return 0;
 }

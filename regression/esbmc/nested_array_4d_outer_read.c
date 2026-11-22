@@ -4,7 +4,7 @@ int main(void)
 {
   int a[2][2][2][2];
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 2);
+  __VERIFIER_assume(i >= 0 && i < 2);
 
   for (int x = 0; x < 2; x++)
     for (int y = 0; y < 2; y++)
@@ -14,7 +14,7 @@ int main(void)
 
   a[1][1][1][1] = 4;
 
-  __ESBMC_assert(a[i][1][1][1] >= 1, "four dimensions read back");
+  __VERIFIER_assert(a[i][1][1][1] >= 1); // four dimensions read back
   return 0;
 }
 // Imported from ESBMC regression/esbmc/nested_array_4d_outer_read

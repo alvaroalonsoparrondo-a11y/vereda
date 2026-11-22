@@ -10,7 +10,7 @@
 int main(void)
 {
   double r = fma(2.0, 3.0, 4.0);
-  __ESBMC_assert(r == 10.0, "fma(2,3,4) must equal 10");
+  __VERIFIER_assert(r == 10.0); // fma(2,3,4) must equal 10
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-fma-basic

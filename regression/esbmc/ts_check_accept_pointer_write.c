@@ -5,7 +5,7 @@ int main() {
   int *p = &y;
   unsigned char x = 0;
   for (;;) {
-    __ESBMC_assert(y < 4, "y bounded");
+    __VERIFIER_assert(y < 4); // y bounded
     *p = x;
     x = (x + 1) & 3;
   }

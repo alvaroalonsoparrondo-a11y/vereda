@@ -25,7 +25,7 @@ int main()
 	float y = nondet_float();
 	int ye;
 	float ym = frexpf(y, &ye);
-	__ESBMC_assume(ym == 0.0 || (ym >= 0.5 && ym < 1));
+	__VERIFIER_assume(ym == 0.0 || (ym >= 0.5 && ym < 1));
 	assert(isfinite(y));
 
 	int ze;

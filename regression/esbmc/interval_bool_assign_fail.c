@@ -6,7 +6,7 @@ int main()
   if (!flag)
   {
     flag = 1;
-    __ESBMC_assert(!flag, "stale interval fact must not survive the write");
+    __VERIFIER_assert(!flag); // stale interval fact must not survive the write
   }
   return 0;
 }

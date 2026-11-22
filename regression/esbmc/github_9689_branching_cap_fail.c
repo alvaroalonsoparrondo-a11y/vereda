@@ -8,7 +8,7 @@ int main(void)
   for (int i = 0; i < 1500; i++)
     if ((i ^ n) % 2)
       s++;
-  __ESBMC_assert(s != 750, "reached");
+  __VERIFIER_assert(s != 750); // reached
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9689_branching_cap_fail

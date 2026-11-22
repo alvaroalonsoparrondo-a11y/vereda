@@ -20,7 +20,7 @@ int main(void)
       setelem(&a, 3);
     n++;
   }
-  __ESBMC_assert(a[3] == 0, "a[3] is written in iteration 20");
+  __VERIFIER_assert(a[3] == 0); // a[3] is written in iteration 20
   return 0;
 }
 // Imported from ESBMC regression/k-induction/github_5224_pointer_write_helper_fail

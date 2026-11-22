@@ -10,11 +10,11 @@ int main(void)
   double x = __VERIFIER_nondet_double();
   double y = __VERIFIER_nondet_double();
   /* x is symbolic +inf, y is symbolic -inf */
-  __ESBMC_assume(x > DBL_MAX);
-  __ESBMC_assume(y < -DBL_MAX);
+  __VERIFIER_assume(x > DBL_MAX);
+  __VERIFIER_assume(y < -DBL_MAX);
   double z = x + y;
 
-  __ESBMC_assert(z > -100.0, "+inf + (-inf) > -100.0 should not hold (NaN)");
+  __VERIFIER_assert(z > -100.0); // +inf + (-inf) > -100.0 should not hold (NaN)
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-add-inf-neginf-nan-fail

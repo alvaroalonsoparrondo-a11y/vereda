@@ -8,8 +8,8 @@ static int callee(int x)
 
 int main(void)
 {
-  __ESBMC_assert(callee(1) == 2, "a direct call stays direct");
-  __ESBMC_assert((&callee)(1) == 2, "and so does one through a written &f");
+  __VERIFIER_assert(callee(1) == 2); // a direct call stays direct
+  __VERIFIER_assert((&callee)(1) == 2); // and so does one through a written &f
   return 0;
 }
 // Imported from ESBMC regression/esbmc/irep2_only_fn_designator_call

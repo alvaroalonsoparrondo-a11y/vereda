@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <math.h>
 double nondet_double(void);
-static double V(double c){ double x=nondet_double(); __ESBMC_assume(x==c); return x; }
+static double V(double c){ double x=nondet_double(); __VERIFIER_assume(x==c); return x; }
 int main(void)
 {
   assert(V(1.0) + V(2.0) == 3.0);

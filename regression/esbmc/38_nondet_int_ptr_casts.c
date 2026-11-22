@@ -8,7 +8,7 @@ main()
   unsigned int bar = (unsigned int*)&fleas;
 
   bool baz = nondet_bool();
-  __ESBMC_assume(baz == true);
+  __VERIFIER_assume(baz == true);
   unsigned int qux = (baz) ? foo : bar;
   int *fin = (int *)qux;
   assert (fin == &bees);

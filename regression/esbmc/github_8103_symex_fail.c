@@ -5,7 +5,7 @@
 int main(void)
 {
   float f = __VERIFIER_nondet_float();
-  __ESBMC_assume(f > 2.5f && f < 3.5f);
+  __VERIFIER_assume(f > 2.5f && f < 3.5f);
   int i = (int)f;
   if (f > 1.0f)
     assert(i == 2);

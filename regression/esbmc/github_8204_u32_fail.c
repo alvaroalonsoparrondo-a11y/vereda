@@ -7,8 +7,8 @@ int main()
 {
   short v = __VERIFIER_nondet_short();
   unsigned int x = v;
-  __ESBMC_assume(x < 0xFFFF8001u);
-  __ESBMC_assume(x < 10);
+  __VERIFIER_assume(x < 0xFFFF8001u);
+  __VERIFIER_assume(x < 10);
   assert(0);
   return 0;
 }

@@ -29,10 +29,10 @@ int main()
 {
   // Initialized declarations must survive round-trip without premature DEAD.
   int arr[4] = {1, 2, 3, 4};
-  __ESBMC_assert(arr_sum(arr, 4) == 10, "arr_sum(1..4)==10");
-  __ESBMC_assert(factorial(4) == 24, "4! == 24");
+  __VERIFIER_assert(arr_sum(arr, 4) == 10); // arr_sum(1..4)==10
+  __VERIFIER_assert(factorial(4) == 24); // 4! == 24
   int m = MAX(7, 3);
-  __ESBMC_assert(m == 7, "MAX(7,3)==7");
+  __VERIFIER_assert(m == 7); // MAX(7,3)==7
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_4715_irep2_bodies_c_01

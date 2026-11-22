@@ -7,7 +7,7 @@ int main()
     return base + y;
   }
   int r = add(5);
-  __ESBMC_assert(r == 15, "nested func with params and capture");
+  __VERIFIER_assert(r == 15); // nested func with params and capture
   return 0;
 }
 // Imported from ESBMC regression/esbmc/gcc_nested_func_03

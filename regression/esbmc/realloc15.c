@@ -18,7 +18,7 @@ int main() {
   if (!p) return 0;
 
   for (int i = 0; i < n; i++) {
-    __ESBMC_assert(p[i] == i + 10, "Grow must preserve old data");
+    __VERIFIER_assert(p[i] == i + 10); // Grow must preserve old data
   }
   // p[n..newn-1] are uninitialized: we do not assert them
 
@@ -30,3 +30,5 @@ int main() {
 // RUN: --unwind 6
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

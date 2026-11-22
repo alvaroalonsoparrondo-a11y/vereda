@@ -7,8 +7,8 @@ int main(void)
 {
   char *p = (char *)((uintptr_t)(buf + 1) & ~(uintptr_t)7);
   *p = 42;
-  __ESBMC_assert(
-    buf[(uintptr_t)p - (uintptr_t)buf] == 42, "read back the write");
+  __VERIFIER_assert(
+    buf[(uintptr_t)p - (uintptr_t)buf] == 42); // read back the write
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_677_mask_safe

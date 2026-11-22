@@ -6,7 +6,7 @@ int main()
   int arr[2];
   u.s[0].a = arr + 100;
   u.s[0] = u.s[0];
-  __ESBMC_assert(u.p != arr + 100, "p kept");
+  __VERIFIER_assert(u.p != arr + 100); // p kept
 }
 // Imported from ESBMC regression/esbmc/github_9937_struct_array_fail
 // Needs: --result-only

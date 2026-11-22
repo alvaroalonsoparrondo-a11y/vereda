@@ -9,7 +9,7 @@ int main(void)
 {
   char buf[16];
   uint16_t *base = (uint16_t *)(buf + 0);
-  __ESBMC_assert(((uintptr_t)base % 2) == 0, "buffer base is 2-aligned");
+  __VERIFIER_assert(((uintptr_t)base % 2) == 0); // buffer base is 2-aligned
 
   uint16_t *odd = (uint16_t *)(buf + 1);
   uint16_t x = *odd;

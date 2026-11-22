@@ -8,7 +8,7 @@ fun_t *f;
 int main(int argc, char **argv)
 {
   unsigned x = nondet_uint();
-  __ESBMC_assume(x>20);
+  __VERIFIER_assume(x>20);
   if(x<10)
     f=0;
   else

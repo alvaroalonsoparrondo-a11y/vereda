@@ -12,7 +12,7 @@ int main()
   int *p = a;
   for (int i = 0; i < 3; i++)
     p[i] = g(i);
-  __ESBMC_assert(a[2] == 2, "unrolled");
+  __VERIFIER_assert(a[2] == 2); // unrolled
   return 0;
 }
 // Imported from ESBMC regression/esbmc/goto_unwind_local_counter_true

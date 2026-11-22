@@ -9,10 +9,10 @@ int main(){
    if ( k <= 0 ) return -1;
    
    a= malloc( k * sizeof(int));
-   __ESBMC_assume(a);
+   __VERIFIER_assume(a);
 
-//   __ESBMC_assume(a);
-//   __ESBMC_assume(k >= 100);
+//   __VERIFIER_assume(a);
+//   __VERIFIER_assume(k >= 100);
    
    for (i =0 ; i != k; i++)
       if (a[i] <= 1) break;

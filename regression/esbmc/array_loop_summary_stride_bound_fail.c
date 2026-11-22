@@ -4,8 +4,8 @@ int main() {
   unsigned short N = nondet_ushort();
   unsigned x = 0;
   while (x < N) x += 2;
-  __ESBMC_assert(x % 2 == 0, "");
-  __ESBMC_assert(x == N, "");
+  __VERIFIER_assert(x % 2 == 0);
+  __VERIFIER_assert(x == N);
 }
 // Imported from ESBMC regression/esbmc/array_loop_summary_stride_bound_fail
 // Needs: --summarize-array-loops

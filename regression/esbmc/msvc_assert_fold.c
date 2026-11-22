@@ -6,7 +6,7 @@ void _wassert(const char *_Message, const char *_File, unsigned _Line);
 int main(void)
 {
   unsigned n;
-  __ESBMC_assume(n < 4);
+  __VERIFIER_assume(n < 4);
   ASSERT_MSVC(n <= 3);
   return 0;
 }

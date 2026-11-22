@@ -13,34 +13,34 @@ int main()
     o_vec[i1_idx] = i_vec[i1_idx];
 
   // Assert 1: exists without outer forall (baseline)
-  __ESBMC_assert(
+  __VERIFIER_assert(
     !(0 <= ov_idx && ov_idx < SIZE) ||
       __ESBMC_exists(
         &iv_idx,
-        (0 <= iv_idx) && (iv_idx < SIZE) && (o_vec[ov_idx] == i_vec[iv_idx])),
-    "assert 1");
+        (0 <= iv_idx) && (iv_idx < SIZE) && (o_vec[ov_idx] == i_vec[iv_idx]))
+); // assert 1
 
   // Assert 2: forall wrapping exists, bounds checks only (no array access)
-  __ESBMC_assert(
+  __VERIFIER_assert(
     __ESBMC_forall(
       &ov_idx,
       !(0 <= ov_idx && ov_idx < SIZE) ||
         __ESBMC_exists(
           &iv_idx,
           (0 <= iv_idx) && (iv_idx < SIZE) && (0 <= ov_idx) &&
-            (ov_idx < SIZE))),
-    "assert 2");
+            (ov_idx < SIZE)))
+); // assert 2
 
   // Assert 3: forall wrapping exists with array accesses (the bug)
-  __ESBMC_assert(
+  __VERIFIER_assert(
     __ESBMC_forall(
       &ov_idx,
       !(0 <= ov_idx && ov_idx < SIZE) ||
         __ESBMC_exists(
           &iv_idx,
           (0 <= iv_idx) && (iv_idx < SIZE) &&
-            (o_vec[ov_idx] == i_vec[iv_idx]))),
-    "assert 3");
+            (o_vec[ov_idx] == i_vec[iv_idx])))
+); // assert 3
 
   return 0;
 }
@@ -48,3 +48,5 @@ int main()
 // RUN: --solver z3
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

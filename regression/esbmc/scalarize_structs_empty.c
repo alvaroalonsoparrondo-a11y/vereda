@@ -15,7 +15,7 @@ int main(void)
   struct empty a, b;
   a = b;
   struct pair p = {1, 2};
-  __ESBMC_assert(p.x + p.y == 3, "sum");
+  __VERIFIER_assert(p.x + p.y == 3); // sum
   return 0;
 }
 // Imported from ESBMC regression/esbmc/scalarize_structs_empty

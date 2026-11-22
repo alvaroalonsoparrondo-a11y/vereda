@@ -23,7 +23,7 @@ int main(void)
 {
   struct S s;
   int x = nondet_int();
-  __ESBMC_assume(x >= 0 && x <= 1000);
+  __VERIFIER_assume(x >= 0 && x <= 1000);
   s.a0 = x;
   for (int c = 0; c < 200; c++)
   {

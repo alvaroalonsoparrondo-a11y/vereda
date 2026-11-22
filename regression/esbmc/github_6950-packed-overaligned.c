@@ -17,7 +17,7 @@ int main(void)
 {
   _Alignas(8) struct P p;
   (void)p;
-  __ESBMC_assert(((uintptr_t)&p % 8) == 0, "_Alignas(8) packed object is 8-aligned");
+  __VERIFIER_assert(((uintptr_t)&p % 8) == 0); // _Alignas(8) packed object is 8-aligned
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_6950-packed-overaligned

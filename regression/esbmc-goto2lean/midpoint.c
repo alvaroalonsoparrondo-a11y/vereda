@@ -6,7 +6,7 @@ unsigned mid(unsigned lo, unsigned hi) {
 }
 int main(void) {
   unsigned lo = nondet_uint(), hi = nondet_uint();
-  __ESBMC_assume(lo <= hi);
+  __VERIFIER_assume(lo <= hi);
   unsigned m = mid(lo, hi);
   assert(lo <= m && m <= hi);
   return 0;

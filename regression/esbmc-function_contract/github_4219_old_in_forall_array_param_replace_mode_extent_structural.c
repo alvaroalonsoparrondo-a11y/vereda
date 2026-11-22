@@ -33,9 +33,9 @@ int main(void)
 {
   int arr[N] = {1, 2, 3, 4, 5};
   bump(arr, 2);
-  __ESBMC_assert(
-    arr[0] == 3 && arr[1] == 4 && arr[2] == 5 && arr[3] == 6 && arr[4] == 7,
-    "ensures propagated the correct incremented values to the caller");
+  __VERIFIER_assert(
+    arr[0] == 3 && arr[1] == 4 && arr[2] == 5 && arr[3] == 6 && arr[4] == 7
+); // ensures propagated the correct incremented values to the caller
   return 0;
 }
 // Imported from ESBMC regression/function_contract/github_4219_old_in_forall_array_param_replace_mode_extent_structural

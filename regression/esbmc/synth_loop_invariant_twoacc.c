@@ -9,7 +9,7 @@ int main(void)
 {
   uint32_t n;
   uint64_t a, b;
-  __ESBMC_assume(n >= 1 && n <= 3);
+  __VERIFIER_assume(n >= 1 && n <= 3);
 
   uint64_t i = 1;
   uint64_t s = 0;

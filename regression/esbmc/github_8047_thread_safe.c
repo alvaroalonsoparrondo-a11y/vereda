@@ -18,8 +18,8 @@ int main()
   if (c)
     ;
   else
-    __ESBMC_assume(g == 7);
-  __ESBMC_assert(g == 0 || g == 7 || g == -100, "g in range");
+    __VERIFIER_assume(g == 7);
+  __VERIFIER_assert(g == 0 || g == 7 || g == -100); // g in range
 }
 // Imported from ESBMC regression/esbmc/github_8047_thread_safe
 // Needs: --interval-symex-assert

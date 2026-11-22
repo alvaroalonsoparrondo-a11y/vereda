@@ -8,10 +8,8 @@ int main(void)
 {
   uintptr_t ua = (uintptr_t)&a;
   int *p = (int *)nondet_uintptr();
-  __ESBMC_assert(p != &a || ua == 0, "p may point to a");
+  __VERIFIER_assert(p != &a || ua == 0); // p may point to a
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_1539_3_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

@@ -4,7 +4,7 @@
 int main()
 {
   int x = 1;
-  __ESBMC_assert(x == 1, "x is one");
+  __VERIFIER_assert(x == 1); // x is one
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_2320

@@ -10,13 +10,15 @@ unless it already starts with "esbmc". The test.desc goes into a comment
 header at the end of the C file, so that line numbers in the expected
 output still hold. A rerun replaces earlier copies.
 
-ESBMC flags with a Vereda equivalent are translated. Flags that only turn
-off a check Vereda does not have are dropped. A test that needs any other
-flag keeps its ESBMC flags and becomes FUTURE, with the missing flags named
-in a "// Needs:" line; Vereda then rejects the flags, so the test passes
-until Vereda learns them and the script runs again. ESBMC's REQUIRES,
-CHECK_JSON, CHECK_FILE and SEED_FILE lines make a test FUTURE the same way,
-as run.py has none of them.
+__ESBMC_assert and __ESBMC_assume become __VERIFIER_assert and
+__VERIFIER_assume in the copied sources. ESBMC flags with a Vereda
+equivalent are translated. Flags that only turn off a check Vereda does
+not have are dropped. A test that needs any other flag keeps its ESBMC
+flags and becomes FUTURE, with the missing flags named in a "// Needs:"
+line; Vereda then rejects the flags, so the test passes until Vereda
+learns them and the script runs again. ESBMC's REQUIRES, CHECK_JSON,
+CHECK_FILE and SEED_FILE lines make a test FUTURE the same way, as
+run.py has none of them.
 
 Tests that read files outside their own directory are skipped, and so is
 ESBMC's "disabled" suite unless named.
@@ -145,6 +147,120 @@ def copy_files(src, dest, source, tracked):
     return os.path.join(dest, "main.c")
 
 
+# ESBMC builtins with an SV-COMP equivalent that Vereda models. The others
+# (contracts, quantifiers, atomics, ...) have none and keep their names.
+BUILTINS = re.compile(r"\b__ESBMC_(assert|assume)\b")
+ASSERT = re.compile(r"\b__ESBMC_assert\s*\(")
+LITERAL = re.compile(r'"((?:[^"\\\n]|\\.)*)"')
+
+
+def skip_literal(text, i):
+    """The index past the string, character literal or comment starting at
+    text[i], or None when none starts there."""
+    if text.startswith("//", i):
+        end = text.find("\n", i)
+        return len(text) if end < 0 else end
+    if text.startswith("/*", i):
+        end = text.find("*/", i + 2)
+        return len(text) if end < 0 else end + 2
+    if text[i] in "\"'":
+        j = i + 1
+        while j < len(text) and text[j] not in (text[i], "\n"):
+            j += 2 if text[j] == "\\" else 1
+        return j + 1
+    return None
+
+
+def call_arguments(text, start):
+    """Splits the call whose '(' is at text[start] into its arguments.
+    Returns (spans of the arguments, index of the closing ')'), or None when
+    the call does not close."""
+    spans, arg, depth, i = [], start + 1, 0, start + 1
+    while i < len(text):
+        past = skip_literal(text, i)
+        if past is not None:
+            i = past
+            continue
+        c = text[i]
+        if c in "([{":
+            depth += 1
+        elif c in ")]}" and depth:
+            depth -= 1
+        elif c == ")" or (c == "," and not depth):
+            spans.append((arg, i))
+            if c == ")":
+                return spans, i
+            arg = i + 1
+        i += 1
+    return None
+
+
+def message_comment(message):
+    """The comment text for __ESBMC_assert's message argument: the contents
+    of its string literals, or its source text when it is something else."""
+    parts = LITERAL.findall(message)
+    text = "".join(parts) if parts and not LITERAL.sub("", message).strip() else message
+    # No '*/' to end a block comment, no trailing '\' to splice the next line.
+    return " ".join(text.split()).replace("*/", "* /").rstrip("\\ ")
+
+
+def rewrite_asserts(text):
+    """Turns __ESBMC_assert(cond, message) into __VERIFIER_assert(cond) with
+    the message as a comment: '// message' at the end of the line the call
+    ends on, or '/* message */' right after the call when the rest of that
+    line continues a macro or holds a comment or literal. Line numbers stay
+    as they were. In comments and strings the name changes and nothing else."""
+    out, pending, i = [], [], 0
+    while i < len(text):
+        past = skip_literal(text, i)
+        if past is not None:
+            out.append(text[i:past])
+            i = past
+            continue
+        m = ASSERT.match(text, i) if text[i] == "_" else None
+        parsed = m and call_arguments(text, m.end() - 1)
+        if not parsed or len(parsed[0]) != 2:
+            if text[i] == "\n" and pending:
+                out.insert(len(out) - (out[-1] == "\r"), " // " + "; ".join(pending))
+                pending = []
+            out.append(text[i])
+            i += 1
+            continue
+        (_, cond_end), (msg_start, msg_end) = parsed[0]
+        close = parsed[1]
+        message = message_comment(text[msg_start:msg_end])
+        out.append(text[i:cond_end])
+        # The message's newlines stay, so the lines after it keep their numbers.
+        out.append("\n" * text.count("\n", cond_end, close) + ")")
+        i = close + 1
+        if message:
+            eol = text.find("\n", i)
+            rest = text[i:len(text) if eol < 0 else eol]
+            if rest.rstrip().endswith("\\") or any(c in rest for c in ("//", "/*", '"', "'")):
+                out.append(f" /* {message} */")
+            else:
+                pending.append(message)
+    if pending:
+        out.append(" // " + "; ".join(pending))
+    return BUILTINS.sub(r"__VERIFIER_\1", "".join(out))
+
+
+def rename_builtins(path):
+    """Renames __ESBMC_assert and __ESBMC_assume to their __VERIFIER_
+    equivalents in the C files at path, a file or a directory; see
+    rewrite_asserts for __ESBMC_assert's message."""
+    files = [path] if os.path.isfile(path) else [
+        os.path.join(root, n) for root, _, names in os.walk(path) for n in names
+        if n.endswith((".c", ".h", ".i"))]
+    for name in files:
+        with open(name, encoding="latin-1") as f:  # any bytes round-trip
+            text = f.read()
+        renamed = rewrite_asserts(text)
+        if renamed != text:
+            with open(name, "w", encoding="latin-1", newline="") as f:
+                f.write(renamed)
+
+
 def import_test(src, dest, origin, tracked):
     """Copies one test from src to dest, or to dest.c when it has one file.
     Returns the C file written, or why there is none. When tracked is a set
@@ -165,6 +281,8 @@ def import_test(src, dest, origin, tracked):
     entry = copy_files(src, dest, source, tracked)
     if not entry:
         return "a main.c besides the source"
+    rename_builtins(entry if entry == dest + ".c" else dest)
+    args = BUILTINS.sub(r"__VERIFIER_\1", args)  # e.g. -Dldv_assume=__ESBMC_assume
     name = os.path.basename(entry)
     if source != name:
         # The output names the source file, so the expectations follow it.

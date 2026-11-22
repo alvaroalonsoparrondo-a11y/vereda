@@ -162,7 +162,7 @@ int main() {
     source.reaction_2_fire_time = nondet_int();
 
     int time = nondet_int();
-    __ESBMC_assume(time >= 0 && time <= MAX_TIME);
+    __VERIFIER_assume(time >= 0 && time <= MAX_TIME);
 
     process_messages_at_time(time);
 

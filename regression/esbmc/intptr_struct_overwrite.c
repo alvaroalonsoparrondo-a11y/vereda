@@ -16,8 +16,8 @@ int main(void)
     return 0;
   unsigned long base = (unsigned long)ports + i * sizeof(struct port);
   *((unsigned int *)(base + 8)) = 5U;
-  __ESBMC_assume(i == 0);
-  __ESBMC_assert(ports[0].a2 == 5U, "overwrite replaces all four bytes");
+  __VERIFIER_assume(i == 0);
+  __VERIFIER_assert(ports[0].a2 == 5U); // overwrite replaces all four bytes
   return 0;
 }
 // Imported from ESBMC regression/esbmc/intptr_struct_overwrite

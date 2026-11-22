@@ -8,7 +8,7 @@ int main(void) {
   void *first = slots[1];
   void *fresh = malloc(1);
   void *second = slots[1];
-  __ESBMC_assert(first == second, "agree");
+  __VERIFIER_assert(first == second); // agree
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9785_array_flattener

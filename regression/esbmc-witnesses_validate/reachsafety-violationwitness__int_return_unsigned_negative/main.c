@@ -6,7 +6,7 @@ int value(void)
 int main(void)
 {
   int x = value();
-  __ESBMC_assert(x != 1, "target");
+  __VERIFIER_assert(x != 1); // target
 }
 // Imported from ESBMC regression/witnesses_validate/reachsafety-violationwitness/int_return_unsigned_negative
 // Needs: --std c11 --validate-violation-witness --witness witness.yml

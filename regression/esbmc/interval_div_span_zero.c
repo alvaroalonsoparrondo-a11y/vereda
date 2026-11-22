@@ -5,7 +5,7 @@
 int main(void)
 {
   int x = __VERIFIER_nondet_int();
-  __ESBMC_assume(x >= -2 && x <= 2 && x != 0);
+  __VERIFIER_assume(x >= -2 && x <= 2 && x != 0);
   int y = 100 / x;
   int big = 0;
   if (y > 50)

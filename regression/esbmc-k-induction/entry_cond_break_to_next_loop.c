@@ -14,7 +14,7 @@ int main()
   }
   while (j < 10)
     j++;
-  __ESBMC_assert(c <= k, "c <= k");
+  __VERIFIER_assert(c <= k); // c <= k
 }
 // Imported from ESBMC regression/k-induction/entry_cond_break_to_next_loop
 // Needs: --k-induction

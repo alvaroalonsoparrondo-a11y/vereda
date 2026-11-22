@@ -17,7 +17,7 @@ int main(void)
   assert(sizeof(bool) == sizeof(_Bool));
 
   unsigned char raw;
-  __ESBMC_assume(raw != 0);
+  __VERIFIER_assume(raw != 0);
   bool nz = raw;
   assert(nz == true);
 
@@ -34,5 +34,3 @@ int main(void)
 }
 // Imported from ESBMC regression/esbmc/stdbool_bool_normalisation
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

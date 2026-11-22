@@ -7,8 +7,8 @@ static slot_t g;
 int main(void)
 {
   g.r = 0x8001;
-  __ESBMC_assert(g.s == -32767, "sign carried through the reinterpretation");
-  __ESBMC_assert(g.s == 7, "any other value must be refuted");
+  __VERIFIER_assert(g.s == -32767); // sign carried through the reinterpretation
+  __VERIFIER_assert(g.s == 7); // any other value must be refuted
   return 0;
 }
 // Imported from ESBMC regression/esbmc/union_cross_member_fold_fail

@@ -6,7 +6,7 @@ int main()
   int *p = &x;
   while (1)
   {
-    __ESBMC_assert(x != 50, "x != 50");
+    __VERIFIER_assert(x != 50); // x != 50
     n++;
     x += 100;
     if (*p < 100 || n > 1000)

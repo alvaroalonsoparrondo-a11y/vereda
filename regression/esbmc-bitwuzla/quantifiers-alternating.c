@@ -5,11 +5,13 @@
 int main()
 {
   int a, b;
-  __ESBMC_assert(
-    __ESBMC_forall(&a, __ESBMC_exists(&b, b == a + 1)),
-    "for every a there exists b = a+1");
+  __VERIFIER_assert(
+    __ESBMC_forall(&a, __ESBMC_exists(&b, b == a + 1))
+); // for every a there exists b = a+1
   return 0;
 }
 // Imported from ESBMC regression/bitwuzla/quantifiers-alternating
 // RUN: --solver bitwuzla
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

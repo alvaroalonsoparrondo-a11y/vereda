@@ -46,8 +46,8 @@ void generateFractal(char **fractal, int n, int x, int y)
 int main()
 {
     int n = getUserInput();
-    __ESBMC_assume(n >= 0);
-    __ESBMC_assume(n < 64 - 3); /* 3 = log2(sizeof(char *)) */
+    __VERIFIER_assume(n >= 0);
+    __VERIFIER_assume(n < 64 - 3); /* 3 = log2(sizeof(char *)) */
     char **fractal = (char **)malloc(pow(2,n) * sizeof(char *));
     int i, j;
     for(i=0; i<pow(2,n); i++)

@@ -7,7 +7,7 @@ int main()
   char *q = buf;
   int i = nondet_int();
   char *r = q + 2147483647 + i + 2147483647;
-  __ESBMC_assert(r - q == (long)i + 4294967294L, "offsets are not wrapped");
+  __VERIFIER_assert(r - q == (long)i + 4294967294L); // offsets are not wrapped
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/github_10537_pointer_chain

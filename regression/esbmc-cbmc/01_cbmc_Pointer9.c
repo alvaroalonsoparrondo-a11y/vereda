@@ -19,7 +19,7 @@ int main()
   int x = 0;
   st1.x = 0;
 
-  __ESBMC_assume( flag == 1 );
+  __VERIFIER_assume( flag == 1 );
 
   if( flag )
     ref = &st1.x;

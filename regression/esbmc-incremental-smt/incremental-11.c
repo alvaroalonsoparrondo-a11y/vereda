@@ -5,7 +5,7 @@ int main()
   int x=nondet_int();
   while(x>0)
   {
-   __ESBMC_assume(x>100);
+   __VERIFIER_assume(x>100);
    x--;
   }
   assert(0);

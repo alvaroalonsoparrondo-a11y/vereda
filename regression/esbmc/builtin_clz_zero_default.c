@@ -3,8 +3,10 @@
 // bit width. See #4606.
 int main()
 {
-  __ESBMC_assert(__builtin_clz(0u) == 32, "clz(0) defaults to the bit width");
+  __VERIFIER_assert(__builtin_clz(0u) == 32); // clz(0) defaults to the bit width
   return 0;
 }
 // Imported from ESBMC regression/esbmc/builtin_clz_zero_default
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

@@ -17,7 +17,7 @@ void wait_event(_Bool e)
 {
 __ESBMC_atomic_begin();
   if (!e)
-    __ESBMC_assume(0);
+    __VERIFIER_assume(0);
 __ESBMC_atomic_end();
 }
 
@@ -36,7 +36,7 @@ void wait_time(int t)
   __ESBMC_yield();
   __ESBMC_atomic_begin();
   if (!(global_time==local_time))
-    __ESBMC_assume(0);  
+    __VERIFIER_assume(0);  
   __ESBMC_atomic_end();
 }
 

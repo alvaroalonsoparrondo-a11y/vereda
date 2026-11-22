@@ -16,7 +16,7 @@ int main()
 {
   f(0);
   int r = ratio(g);
-  __ESBMC_assert(r == 0 && g == 0, "ratio(0) is 0");
+  __VERIFIER_assert(r == 0 && g == 0); // ratio(0) is 0
   return 0;
 }
 // Imported from ESBMC regression/function_contract/github_9000_unreplaced_clause_unevaluated

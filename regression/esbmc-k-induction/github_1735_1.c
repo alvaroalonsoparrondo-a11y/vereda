@@ -8,7 +8,7 @@ d:
 c:
   b = a;
   a = 0;
-  __ESBMC_assert(b, "");
+  __VERIFIER_assert(b);
   goto d;
 }
 // Imported from ESBMC regression/k-induction/github_1735_1

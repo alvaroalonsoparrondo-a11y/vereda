@@ -22,7 +22,7 @@ int count_to(int n)
 int main()
 {
   int n = __VERIFIER_nondet_int();
-  __ESBMC_assume(n >= 0 && n <= 10);
+  __VERIFIER_assume(n >= 0 && n <= 10);
   count_to(n);
   return 0;
 }

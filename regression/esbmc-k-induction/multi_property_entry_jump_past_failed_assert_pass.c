@@ -11,11 +11,11 @@ int main()
   }
   while (i < 10)
   {
-    __ESBMC_assert(i < 10, "bound");
+    __VERIFIER_assert(i < 10); // bound
     i = i + 1;
     continue;
   L:
-    __ESBMC_assert(0, "v");
+    __VERIFIER_assert(0); // v
     i = i + 1;
   }
   return y;

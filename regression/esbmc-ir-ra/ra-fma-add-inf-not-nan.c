@@ -11,12 +11,12 @@ int main(void)
   double y = __VERIFIER_nondet_double();
   double z = __VERIFIER_nondet_double();
   /* fma(+inf, +inf, +inf) = +inf: same-sign infinite addend, not NaN */
-  __ESBMC_assume(x > DBL_MAX);
-  __ESBMC_assume(y > DBL_MAX);
-  __ESBMC_assume(z > DBL_MAX);
+  __VERIFIER_assume(x > DBL_MAX);
+  __VERIFIER_assume(y > DBL_MAX);
+  __VERIFIER_assume(z > DBL_MAX);
   double r = fma(x, y, z);
 
-  __ESBMC_assert(r > DBL_MAX, "fma(+inf, +inf, +inf) should be +inf");
+  __VERIFIER_assert(r > DBL_MAX); // fma(+inf, +inf, +inf) should be +inf
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-fma-add-inf-not-nan

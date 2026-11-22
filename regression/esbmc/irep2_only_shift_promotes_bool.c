@@ -7,7 +7,7 @@ int main(void)
 
   int found = (j > nc_B - 1) << i;
 
-  __ESBMC_assert(found == 2, "a _Bool operand promotes to int before the shift");
+  __VERIFIER_assert(found == 2); // a _Bool operand promotes to int before the shift
   return 0;
 }
 // Imported from ESBMC regression/esbmc/irep2_only_shift_promotes_bool

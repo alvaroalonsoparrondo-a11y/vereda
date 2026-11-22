@@ -5,7 +5,7 @@ int main(void)
   if (depth++ == 0)
   {
     void *p = malloc(4);
-    __ESBMC_assume(p != 0);
+    __VERIFIER_assume(p != 0);
     main();
     return 0;
   }

@@ -11,15 +11,15 @@ int main()
       max = vec[ idx ];
   }
   //------------------------------------------------------------
-  __ESBMC_assert(
+  __VERIFIER_assert(
     __ESBMC_forall(
       &idx_v0,
       !( 0 <= idx_v0 ) ||
       !( idx_v0 < SIZE ) ||
       ( vec[ idx_v0 ] <= max )
-    ),
-    "end of loop assertion"
-  );
+    )
+
+); // end of loop assertion
   //------------------------------------------------------------
   return 0;
   //------------------------------------------------------------

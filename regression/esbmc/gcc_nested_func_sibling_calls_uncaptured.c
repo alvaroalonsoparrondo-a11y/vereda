@@ -8,7 +8,7 @@ int main()
   int c(void) { return 1; }
   void a(void) { seen = c(); }
   a();
-  __ESBMC_assert(seen == 1, "uncaptured sibling: no stray args");
+  __VERIFIER_assert(seen == 1); // uncaptured sibling: no stray args
   return 0;
 }
 // Imported from ESBMC regression/esbmc/gcc_nested_func_sibling_calls_uncaptured

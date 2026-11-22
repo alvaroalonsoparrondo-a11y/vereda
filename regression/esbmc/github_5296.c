@@ -19,7 +19,7 @@ uint64_t uhash(const void *a) // 1-argument
 
 _Bool eqnn(const void *a, const void *b) // 2-argument
 {
-  __ESBMC_assert(b != NULL, "b must not be a dropped (nondet) argument");
+  __VERIFIER_assert(b != NULL); // b must not be a dropped (nondet) argument
   return a == b;
 }
 
@@ -63,7 +63,7 @@ int main(void)
   if (!k)
     abort();
   uint64_t h = do_hash(&t, k);
-  __ESBMC_assert(h != 0, "uhash never returns 0");
+  __VERIFIER_assert(h != 0); // uhash never returns 0
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_5296

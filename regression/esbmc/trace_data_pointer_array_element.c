@@ -11,13 +11,13 @@ int main(void)
   ptrs[1] = &b;
   ptrs[2] = &c;
   int idx = nondet_int();
-  __ESBMC_assume(idx >= 0 && idx < 3);
+  __VERIFIER_assume(idx >= 0 && idx < 3);
   int *p = ptrs[idx];
-  __ESBMC_assert(*p != 3, "pointer read at a symbolic index");
+  __VERIFIER_assert(*p != 3); // pointer read at a symbolic index
   return 0;
 }
 // Imported from ESBMC regression/esbmc/trace_data_pointer_array_element
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^  p = &c$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  p = &c$
 // MODE: FUTURE

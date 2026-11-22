@@ -11,7 +11,7 @@ int main()
   // cannot lay out is excluded instead of failed, and this assert is unreachable.
   // See docs/roadmap/goto-symex-verification-plan.md, R25 and R38.
   size_t n = nondet_size();
-  __ESBMC_assume(n >= 0xFFFFFFFFFFFFFFF0UL);
+  __VERIFIER_assume(n >= 0xFFFFFFFFFFFFFFF0UL);
   char *b = malloc(n);
   if (b)
     b[0] = 1;

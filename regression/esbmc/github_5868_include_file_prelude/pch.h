@@ -4,6 +4,6 @@
 
 static int helper(void)
 {
-  __ESBMC_assume(1);
+  __VERIFIER_assume(1);
   return 3;
 }

@@ -3,9 +3,9 @@
 unsigned nondet_uint(void);
 char a[16][K][K][K][K];
 int main(void){
-  unsigned i = nondet_uint(); __ESBMC_assume(i < 16);
+  unsigned i = nondet_uint(); __VERIFIER_assume(i < 16);
   a[0][0][0][0][0] = 1;
-  __ESBMC_assert(a[i][0][0][0][0] == (i == 0), "distinct rows");
+  __VERIFIER_assert(a[i][0][0][0][0] == (i == 0)); // distinct rows
   return 0;
 }
 // Imported from ESBMC regression/esbmc/multidim_padded_overflow

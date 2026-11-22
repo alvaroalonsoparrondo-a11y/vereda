@@ -35,7 +35,7 @@ void normalise(poly *p)
   for (i = 0; i < N; i++)
   {
     int16_t c = p->e[i];
-    __ESBMC_assume(c > -Q && c < Q);
+    __VERIFIER_assume(c > -Q && c < Q);
     p->e[i] = reduce(c);
   }
 }

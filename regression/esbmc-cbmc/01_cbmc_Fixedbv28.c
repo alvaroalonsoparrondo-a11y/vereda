@@ -149,7 +149,7 @@ int main(void)
 	{
 		y[i] = 0;
 		//x[i] = nondet_int()*delta; //nondet_float();
-		//__ESBMC_assume(x[i]>=min && x[i]<=max);
+		//__VERIFIER_assume(x[i]>=min && x[i]<=max);
 	}
 
 

@@ -10,11 +10,11 @@ int main(void)
   double x = __VERIFIER_nondet_double();
   double y = __VERIFIER_nondet_double();
   /* x is 0, y is symbolic +inf */
-  __ESBMC_assume(x == 0.0);
-  __ESBMC_assume(y > DBL_MAX);
+  __VERIFIER_assume(x == 0.0);
+  __VERIFIER_assume(y > DBL_MAX);
   double z = x * y;
 
-  __ESBMC_assert(!(z > -100.0), "0 * +inf > -100.0 is false (NaN)");
+  __VERIFIER_assert(!(z > -100.0)); // 0 * +inf > -100.0 is false (NaN)
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-mul-zero-inf-nan

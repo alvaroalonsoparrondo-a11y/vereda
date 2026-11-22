@@ -9,8 +9,8 @@ int main()
 {
   int *p = &x;
   void *q = *(void **)&p;
-  __ESBMC_assert(q != NULL, "q is not NULL");
-  __ESBMC_assert(__ESBMC_same_object(q, &x), "q points at x");
+  __VERIFIER_assert(q != NULL); // q is not NULL
+  __VERIFIER_assert(__ESBMC_same_object(q, &x)); // q points at x
   return 0;
 }
 // Imported from ESBMC regression/esbmc/bitcast_pointer_to_pointer_fold

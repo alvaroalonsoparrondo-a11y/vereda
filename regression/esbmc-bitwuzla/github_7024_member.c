@@ -12,12 +12,10 @@ int main()
   i = 2;
   p = &m[3].f;
 
-  __ESBMC_assert(
-    __ESBMC_forall(&i, !(0 <= i && i < 4) || &m[i].f != p),
-    "no member aliases p");
+  __VERIFIER_assert(
+    __ESBMC_forall(&i, !(0 <= i && i < 4) || &m[i].f != p)
+); // no member aliases p
 }
 // Imported from ESBMC regression/bitwuzla/github_7024_member
 // RUN: --solver bitwuzla
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

@@ -25,7 +25,7 @@ static int wrap(const char *fmt, ...)
 int main(void)
 {
   int used = wrap("unused", 7, "abc"); /* %s consumes "abc": true length 3 */
-  __ESBMC_assert(used != 3, "unbounded return must keep 3 feasible");
+  __VERIFIER_assert(used != 3); // unbounded return must keep 3 feasible
   return 0;
 }
 // Imported from ESBMC regression/esbmc/vasprintf_valist_consumed_no_recovery_fail

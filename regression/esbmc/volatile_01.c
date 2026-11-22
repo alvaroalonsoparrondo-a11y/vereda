@@ -4,7 +4,7 @@ int main()
 
   while (flag != 0)
   {
-    __ESBMC_assert(0, "");
+    __VERIFIER_assert(0);
   }
 }
 // Imported from ESBMC regression/esbmc/volatile_01

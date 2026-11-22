@@ -17,7 +17,7 @@ int main()
     i++;
   }
 
-  __ESBMC_assert(global[5] == 9, "an element the clause does not name is held");
+  __VERIFIER_assert(global[5] == 9); // an element the clause does not name is held
   return 0;
 }
 // Imported from ESBMC regression/loop-invariants/loop_assigns_array_elem_pass

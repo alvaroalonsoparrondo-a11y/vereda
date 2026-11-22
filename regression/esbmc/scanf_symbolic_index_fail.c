@@ -5,7 +5,7 @@ int main()
 {
   int arr[3] = {1, 2, 3};
   unsigned i;
-  __ESBMC_assume(i < 3);
+  __VERIFIER_assume(i < 3);
   int r = sscanf("5", "%d", &arr[i]);
   if (r == 1)
     assert(arr[i] == 5);
@@ -13,3 +13,5 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/scanf_symbolic_index_fail
 // EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// MODE: FUTURE

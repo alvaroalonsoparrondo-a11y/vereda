@@ -11,7 +11,7 @@ int main(void)
     return 0;
   if (a == -9223372036854775807LL - 1 && b == -1)
     return 0;
-  __ESBMC_assert(a % b == a - (a / b) * b + 1, "off-by-one identity");
+  __VERIFIER_assert(a % b == a - (a / b) * b + 1); // off-by-one identity
   return 0;
 }
 // Imported from ESBMC regression/esbmc/rem_div_identity_equiv_fail

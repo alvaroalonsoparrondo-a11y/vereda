@@ -17,7 +17,7 @@ int loop_init() {
 	int a = foo();
 	while (a > 1)
 		a = a / 2;
-	__ESBMC_assert(a == 2, "Failed as expected");
+	__VERIFIER_assert(a == 2); // Failed as expected
 
 	return 0;
 }

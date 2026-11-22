@@ -7,8 +7,8 @@
 int main(void)
 {
   unsigned int n, z;
-  __ESBMC_assume(n <= 3);
-  __ESBMC_assume(z == 0);
+  __VERIFIER_assume(n <= 3);
+  __VERIFIER_assume(z == 0);
 
   unsigned int i = 0;
   unsigned int s = 0;

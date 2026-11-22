@@ -12,7 +12,7 @@ L:
       goto L;
     }
   }
-  __ESBMC_assert(x <= 10, "x <= 10");
+  __VERIFIER_assert(x <= 10); // x <= 10
   return 0;
 }
 // Imported from ESBMC regression/loop-invariants/goto_loop_head_fail

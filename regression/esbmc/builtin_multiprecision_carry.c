@@ -9,7 +9,7 @@ unsigned nondet_uint(void);
 int main(void)
 {
   unsigned a = nondet_uint(), b = nondet_uint(), cin = nondet_uint();
-  __ESBMC_assume(cin <= 1);
+  __VERIFIER_assume(cin <= 1);
 
   unsigned cout;
   unsigned s = __builtin_addc(a, b, cin, &cout);
@@ -41,5 +41,3 @@ int main(void)
 }
 // Imported from ESBMC regression/esbmc/builtin_multiprecision_carry
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

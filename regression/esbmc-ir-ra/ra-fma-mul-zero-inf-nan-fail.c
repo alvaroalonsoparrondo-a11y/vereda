@@ -10,10 +10,10 @@ int main(void)
   double y = __VERIFIER_nondet_double();
   double z = __VERIFIER_nondet_double();
   /* fma(0, +inf, z): 0 * +inf is an invalid operation producing NaN */
-  __ESBMC_assume(y > DBL_MAX);
+  __VERIFIER_assume(y > DBL_MAX);
   double r = fma(0.0, y, z);
 
-  __ESBMC_assert(r > -100.0, "fma(0, +inf, z) > -100.0 should not hold (NaN)");
+  __VERIFIER_assert(r > -100.0); // fma(0, +inf, z) > -100.0 should not hold (NaN)
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-fma-mul-zero-inf-nan-fail

@@ -37,7 +37,7 @@ int main(void)
   assert(b[0] == 'a' && b[1] == 'b' && b[2] == '\0' && b[3] == 'y');
 
   int x = nondet_int();
-  __ESBMC_assume(x >= 0 && x < 10);
+  __VERIFIER_assume(x >= 0 && x < 10);
   int r = fmt("%x", x);
   assert(r == 1 && b[1] == '\0');
   return 0;

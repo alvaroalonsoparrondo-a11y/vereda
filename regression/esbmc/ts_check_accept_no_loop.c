@@ -2,7 +2,7 @@ int nondet_int();
 
 int main() {
   int x = nondet_int();
-  __ESBMC_assert(x != 5, "x is never five");
+  __VERIFIER_assert(x != 5); // x is never five
   return 0;
 }
 // Imported from ESBMC regression/esbmc/ts_check_accept_no_loop

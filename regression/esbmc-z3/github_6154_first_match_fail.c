@@ -23,12 +23,10 @@ int main()
   vec[2] = 6;
   vec[3] = 7;
   data_t v;
-  __ESBMC_assert(
-    __ESBMC_exists(&v, find(v, vec) == 1), "no value first-matches at index 1");
+  __VERIFIER_assert(
+    __ESBMC_exists(&v, find(v, vec) == 1)); // no value first-matches at index 1
   return 0;
 }
 // Imported from ESBMC regression/z3/github_6154_first_match_fail
 // RUN: --solver z3
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

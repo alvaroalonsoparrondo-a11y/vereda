@@ -10,7 +10,7 @@ int main(void)
   v4i s = {1, 2, 3, 4};
   v4i *p = &s;
   int k = nondet_int();
-  __ESBMC_assume(k >= 0 && k < 4);
+  __VERIFIER_assume(k >= 0 && k < 4);
   (*p)[k] = 9;
   assert(s[1] == 2);
   return 0;

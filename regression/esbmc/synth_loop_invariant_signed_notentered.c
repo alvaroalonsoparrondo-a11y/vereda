@@ -14,7 +14,7 @@ int main(void)
     s = s + 1;
     i++;
   }
-  __ESBMC_assert(s >= 0, "a count is never negative");
+  __VERIFIER_assert(s >= 0); // a count is never negative
   return 0;
 }
 // Imported from ESBMC regression/esbmc/synth_loop_invariant_signed_notentered

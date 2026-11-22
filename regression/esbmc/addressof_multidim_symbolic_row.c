@@ -7,7 +7,7 @@ int main(void)
 {
   int a[2][3] = {{1, 2, 3}, {4, 5, 6}};
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i <= 1);
+  __VERIFIER_assume(i >= 0 && i <= 1);
 
   int *p = &a[0][1];
 

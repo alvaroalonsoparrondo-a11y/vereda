@@ -5,7 +5,7 @@
 int main(void)
 {
   unsigned int n;
-  __ESBMC_assume(n >= 1 && n <= 4);
+  __VERIFIER_assume(n >= 1 && n <= 4);
 
   int a[4];
   int j = 4;

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-extern void __ESBMC_assume(_Bool);
+extern void __VERIFIER_assume(_Bool);
 extern _Bool __ESBMC_forall(void *, _Bool);
 extern _Bool __ESBMC_exists(void *, _Bool);
 
@@ -18,10 +18,10 @@ int main()
   unsigned i;
 
   // Check if a person named 'Alice' exists
-  __ESBMC_assume(n > 0);
-  __ESBMC_assert(
-    __ESBMC_exists(&i, (i < n && strcmp(people[i].name, "Alice") == 0)),
-    "Alice is missing!");
+  __VERIFIER_assume(n > 0);
+  __VERIFIER_assert(
+    __ESBMC_exists(&i, (i < n && strcmp(people[i].name, "Alice") == 0))
+); // Alice is missing!
 
   return 0;
 }
@@ -29,5 +29,3 @@ int main()
 // RUN: --solver z3 --incremental-bmc
 // MODE: KNOWNBUG
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: KNOWNBUG test passed unexpectedly; promote it to CORE
-// MODE: CORE

@@ -7,7 +7,7 @@ int nondet_int();
 int main(void)
 {
   int n = nondet_int();
-  __ESBMC_assume(n >= 1 && n <= 10);
+  __VERIFIER_assume(n >= 1 && n <= 10);
   int i = 1, sn = 0;
   while (i <= n) { sn = sn + 2; i++; }
   assert(sn == 2 * n || sn == 0);

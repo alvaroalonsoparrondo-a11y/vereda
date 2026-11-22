@@ -23,7 +23,7 @@ int main(void)
 {
   f.stack[0].r = 1;
   f.sp = 1;
-  __ESBMC_assert(walk(&f) == 3, "the slot value resolved and bounded the loop");
+  __VERIFIER_assert(walk(&f) == 3); // the slot value resolved and bounded the loop
   return 0;
 }
 // Imported from ESBMC regression/esbmc/union_cross_member_fold

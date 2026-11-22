@@ -6,8 +6,8 @@ int main (void) {
   float f;
   float g;
 
-  __ESBMC_assume(!isnan(f));
-  __ESBMC_assume(!isnan(g));
+  __VERIFIER_assume(!isnan(f));
+  __VERIFIER_assume(!isnan(g));
 
   if (f > g) {
     fesetround(FE_UPWARD);
@@ -27,5 +27,3 @@ int main (void) {
 // Imported from ESBMC regression/floats/Float-data-dependent-rounding
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

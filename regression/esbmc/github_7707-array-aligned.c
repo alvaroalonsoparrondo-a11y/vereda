@@ -15,7 +15,7 @@ struct S arr[4];
 int main(void)
 {
   uint64_t *p = (uint64_t *)&arr[1].b;
-  __ESBMC_assume(((uintptr_t)p & 7u) == 0);
+  __VERIFIER_assume(((uintptr_t)p & 7u) == 0);
   uint64_t z = *p;
   (void)z;
   return 0;

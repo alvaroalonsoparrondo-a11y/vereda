@@ -9,8 +9,8 @@ unsigned int nondet_uint();
 int main(void)
 {
   unsigned int n = nondet_uint(), a = nondet_uint();
-  __ESBMC_assume(n <= 8);
-  __ESBMC_assume(a <= 3);
+  __VERIFIER_assume(n <= 8);
+  __VERIFIER_assume(a <= 3);
   unsigned int i = 5, s = 0;
   while (i < n)
   {

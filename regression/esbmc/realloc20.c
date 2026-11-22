@@ -6,7 +6,7 @@ unsigned nondet_uint();
 void test_vector_growth()
 {
   unsigned n = nondet_uint();
-  __ESBMC_assume(n > 0 && n <= 20); // symbolic but bounded
+  __VERIFIER_assume(n > 0 && n <= 20); // symbolic but bounded
 
   int *vec = malloc(sizeof(int));
   unsigned size = 1;

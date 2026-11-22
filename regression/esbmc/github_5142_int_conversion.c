@@ -7,7 +7,7 @@ int main(void)
 {
   void *p = 0xdeadUL; // implicit int -> pointer
   unsigned long v = (unsigned long)p;
-  __ESBMC_assert(v == 0xdeadUL, "int->ptr->int round-trip preserved");
+  __VERIFIER_assert(v == 0xdeadUL); // int->ptr->int round-trip preserved
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_5142_int_conversion

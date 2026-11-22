@@ -73,10 +73,8 @@ int main(void)
   g.f30 = 30;
   g.f31 = 31;
 
-  __ESBMC_assert(g.f31 == 32, "last member (wrong)");
+  __VERIFIER_assert(g.f31 == 32); // last member (wrong)
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7571_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

@@ -8,7 +8,7 @@ void compute_sum() {
   int sum = 0;
   int limit;
 
-  __ESBMC_assume(limit == 10);
+  __VERIFIER_assume(limit == 10);
 
   for (i = 0; i < limit; i++) {
     sum += i;

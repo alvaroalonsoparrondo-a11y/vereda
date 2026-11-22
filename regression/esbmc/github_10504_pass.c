@@ -7,7 +7,7 @@ void check(void) { assert(g != 3); }
 int main(void)
 {
   int v = nondet_int();
-  __ESBMC_assume(v != 3);
+  __VERIFIER_assume(v != 3);
   setup(v);
   check();
   return 0;

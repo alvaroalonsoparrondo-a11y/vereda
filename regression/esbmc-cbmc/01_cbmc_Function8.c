@@ -4,7 +4,7 @@
 inline void baz(unsigned short ignore)
 {
   // should fail
-  __ESBMC_assert(0, "KABOOM");
+  __VERIFIER_assert(0); // KABOOM
 }
 
 static void foo()

@@ -33,10 +33,10 @@ int main(){
 
   // constraints on environment limits and obstacles
   for(i = 0; i < n; i++){
-    __ESBMC_assume(x[i][0] >= lim[0][0]);
-    __ESBMC_assume(x[i][0] <= lim[0][1]);
-    __ESBMC_assume(x[i][1] >= lim[1][0]);
-    __ESBMC_assume(x[i][1] <= lim[1][1]);
+    __VERIFIER_assume(x[i][0] >= lim[0][0]);
+    __VERIFIER_assume(x[i][0] <= lim[0][1]);
+    __VERIFIER_assume(x[i][1] >= lim[1][0]);
+    __VERIFIER_assume(x[i][1] <= lim[1][1]);
   } // end for
   // rest_points function must be executed for each obstacle
   for(j = 0; j < no; j++)
@@ -67,7 +67,7 @@ int main(){
     aux2[j] = B[j]/p;
   J = J + distance(aux1, aux2);
 
-  __ESBMC_assume(J < J_c);
+  __VERIFIER_assume(J < J_c);
 
   // test the literal J_optimal
   assert(J > J_c);
@@ -76,7 +76,7 @@ int main(){
 
 void rest_points(int P1[DIM], int i, float xo, float yo, float r){
   float sigma = 0.5; // safety margin
-  __ESBMC_assume((x[i][0] - xo)*(x[i][0] - xo) + (x[i][1] - yo)*(x[i][1] - yo) > (r + sigma)*(r + sigma));
+  __VERIFIER_assume((x[i][0] - xo)*(x[i][0] - xo) + (x[i][1] - yo)*(x[i][1] - yo) > (r + sigma)*(r + sigma));
 
   // get the equation of the segemnt line between i-1 and i points
   float a, b, c;
@@ -95,7 +95,7 @@ void rest_points(int P1[DIM], int i, float xo, float yo, float r){
   if((((Py - x[i][1])/(P1[1] - x[i][1])) >= 0) && (((Py - x[i][1])/(P1[1] - x[i][1])) <= 1))
   {
     float d = (float)fabsf(a*xo + b*yo + c)/sqrt(a*a + b*b);
-    __ESBMC_assume(d >= r + sigma);
+    __VERIFIER_assume(d >= r + sigma);
   }
 }
 

@@ -8,11 +8,9 @@ int main()
 {
   int x;
   int r = __CPROVER_uninterpreted_eq(x, x);
-  __ESBMC_assert(r != 0, "uninterpreted function may return zero");
+  __VERIFIER_assert(r != 0); // uninterpreted function may return zero
   return 0;
 }
 // Imported from ESBMC regression/esbmc/cprover_uninterpreted_nonzero_fail
 // RUN: --incremental-bmc
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

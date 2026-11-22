@@ -8,7 +8,7 @@ int main() {
 	int n = nondet_uint() % 1024; /* model arbitrary user input */
 	char a[n+1];
 	a[n] = 17; /* succeeds */
-	__ESBMC_assume(cheri_getlength(a) == n);
+	__VERIFIER_assume(cheri_getlength(a) == n);
 	a[n] = 23; /* succeeds - vacuous truth */
 }
 // Imported from ESBMC regression/cheri-128/02_assume-vacuous-purecap

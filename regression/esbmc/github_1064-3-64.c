@@ -6,8 +6,8 @@ int main(int argc, char* argv[]) {
   if (argv[0]) {}
   if (argv[argc]) {}
   int i;
-  __ESBMC_assume(0 <= i);
-  __ESBMC_assume(i <= argc);
+  __VERIFIER_assume(0 <= i);
+  __VERIFIER_assume(i <= argc);
   if (argv[i]) {}
 
   return 0;

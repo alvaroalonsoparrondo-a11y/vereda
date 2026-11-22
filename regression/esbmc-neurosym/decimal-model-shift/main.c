@@ -14,9 +14,9 @@ int main()
   unsigned int y = nondet_uint();
   struct wrap w;
 
-  __ESBMC_assume(y > 0x80000000u);
+  __VERIFIER_assume(y > 0x80000000u);
   w.f = x << y;
-  __ESBMC_assert(w.f != 0u, "shift by at least the width is non-zero");
+  __VERIFIER_assert(w.f != 0u); // shift by at least the width is non-zero
   return 0;
 }
 // Imported from ESBMC regression/neurosym/decimal-model-shift

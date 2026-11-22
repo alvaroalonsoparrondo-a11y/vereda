@@ -7,7 +7,7 @@ int main()
   u.p = arr + 100;
   u.a[1] = 7;
   u.p = u.p;
-  __ESBMC_assert(0, "reachable");
+  __VERIFIER_assert(0); // reachable
 }
 // Imported from ESBMC regression/esbmc/github_9937_int_array_fail
 // Needs: --result-only

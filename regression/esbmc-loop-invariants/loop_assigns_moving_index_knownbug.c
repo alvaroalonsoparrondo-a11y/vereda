@@ -21,7 +21,7 @@ int main()
     i++;
   }
 
-  __ESBMC_assert(global[7] == 42, "element outside the loop's writes is held");
+  __VERIFIER_assert(global[7] == 42); // element outside the loop's writes is held
   return 0;
 }
 // Imported from ESBMC regression/loop-invariants/loop_assigns_moving_index_knownbug

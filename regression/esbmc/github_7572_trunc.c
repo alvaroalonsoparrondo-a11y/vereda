@@ -10,14 +10,14 @@ extern double nondet_double(void);
 int main(void)
 {
   float a = nondet_float();
-  __ESBMC_assume(a > -1.0f && a <= 0.0f);
+  __VERIFIER_assume(a > -1.0f && a <= 0.0f);
   unsigned int u = (unsigned int)a;
-  __ESBMC_assert(u == 0u, "a magnitude below one truncates to zero");
+  __VERIFIER_assert(u == 0u); // a magnitude below one truncates to zero
 
   double d = nondet_double();
-  __ESBMC_assume(d == -2147483648.5);
+  __VERIFIER_assume(d == -2147483648.5);
   int i = (int)d;
-  __ESBMC_assert(i == -2147483647 - 1, "INT_MIN - 0.5 truncates to INT_MIN");
+  __VERIFIER_assert(i == -2147483647 - 1); // INT_MIN - 0.5 truncates to INT_MIN
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7572_trunc

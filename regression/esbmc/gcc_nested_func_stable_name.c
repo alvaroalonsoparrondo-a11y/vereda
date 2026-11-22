@@ -7,7 +7,7 @@ int main(void)
   {
     return base + v;
   }
-  __ESBMC_assert(add(2) == 42, "the lifted nested function is called");
+  __VERIFIER_assert(add(2) == 42); // the lifted nested function is called
   return 0;
 }
 // Imported from ESBMC regression/esbmc/gcc_nested_func_stable_name

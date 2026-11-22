@@ -18,7 +18,7 @@ int main()
     cur_idx = nxt_idx;
     ++loop_idx_vfy;
   }
-  __ESBMC_assert(cur_idx == prv_idx, "end: idxs equal");
+  __VERIFIER_assert(cur_idx == prv_idx); // end: idxs equal
 }
 // Imported from ESBMC regression/esbmc/github_interval_guard_phi_fail
 // Needs: --compact-trace

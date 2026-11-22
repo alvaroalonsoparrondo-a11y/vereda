@@ -13,7 +13,7 @@ int g(void)
 int main(void)
 {
   /* Repeated, so the arm has to fire more than once. */
-  __ESBMC_assert(***f == &g, "*f is f, not g");
+  __VERIFIER_assert(***f == &g); // *f is f, not g
   return 0;
 }
 // Imported from ESBMC regression/esbmc/irep2_only_func_deref_fail

@@ -11,20 +11,20 @@ int main()
   int le = (p1 <= p2);
   int ge = (p2 <= p1);
   /* antisymmetry: for distinct objects at most one direction holds */
-  __ESBMC_assert(!(le && ge), "antisymmetry");
+  __VERIFIER_assert(!(le && ge)); // antisymmetry
   /* totality: at least one direction must hold */
-  __ESBMC_assert(le || ge, "totality");
+  __VERIFIER_assert(le || ge); // totality
   /* strict order consistency */
   int lt = (p1 < p2), gt = (p1 > p2);
-  __ESBMC_assert(!(lt && gt), "lt/gt exclusive");
-  __ESBMC_assert(lt || gt, "trichotomy for distinct objects");
+  __VERIFIER_assert(!(lt && gt)); // lt/gt exclusive
+  __VERIFIER_assert(lt || gt); // trichotomy for distinct objects
   /* >= and <= describe the same total order in mirror directions */
-  __ESBMC_assert((p1 >= p2) == (p2 <= p1), ">= mirrors <=");
+  __VERIFIER_assert((p1 >= p2) == (p2 <= p1)); // >= mirrors <=
   /* same-object comparisons keep the C-defined offset order */
   char arr[4];
-  __ESBMC_assert(&arr[1] < &arr[3], "in-object order");
-  __ESBMC_assert(&arr[3] >= &arr[1], "in-object order (>=)");
-  __ESBMC_assert(!(&arr[3] <= &arr[1]), "in-object strictness");
+  __VERIFIER_assert(&arr[1] < &arr[3]); // in-object order
+  __VERIFIER_assert(&arr[3] >= &arr[1]); // in-object order (>=)
+  __VERIFIER_assert(!(&arr[3] <= &arr[1])); // in-object strictness
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_5872_ptr_order_pass

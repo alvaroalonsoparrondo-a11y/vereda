@@ -15,7 +15,7 @@ int main()
   } // status = 1 U 2
 
   while(nondet_int())
-    __ESBMC_assert(status != 2, "");
+    __VERIFIER_assert(status != 2);
 
   return 0;
 }

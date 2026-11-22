@@ -7,8 +7,8 @@ int main()
   u.p[0] = arr + 100;
   u.p[1] = brr + 50;
   u.s.x = 7;
-  __ESBMC_assert(u.p[0] == arr + 100, "p[0] kept");
-  __ESBMC_assert(u.p[1] == brr + 50, "p[1] kept");
+  __VERIFIER_assert(u.p[0] == arr + 100); // p[0] kept
+  __VERIFIER_assert(u.p[1] == brr + 50); // p[1] kept
 }
 // Imported from ESBMC regression/esbmc/github_9937_array
 // RUN: -m64

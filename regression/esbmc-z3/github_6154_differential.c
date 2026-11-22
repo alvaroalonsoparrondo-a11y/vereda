@@ -21,9 +21,9 @@ int main()
   data_t c;
   int direct = count(c, vec);
   data_t v;
-  __ESBMC_assert(
-    __ESBMC_forall(&v, v != c || count(v, vec) == direct),
-    "summary agrees with real execution");
+  __VERIFIER_assert(
+    __ESBMC_forall(&v, v != c || count(v, vec) == direct)
+); // summary agrees with real execution
   return 0;
 }
 // Imported from ESBMC regression/z3/github_6154_differential

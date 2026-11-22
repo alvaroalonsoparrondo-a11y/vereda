@@ -6,7 +6,7 @@ double nondet_double(void);
 int main(void)
 {
   double d = nondet_double();
-  __ESBMC_assume(d > 0);
+  __VERIFIER_assume(d > 0);
   assert(signbit(-d) == 0);
   return 0;
 }

@@ -5,7 +5,7 @@ unsigned nondet_uint();
 int main()
 {
     unsigned n = nondet_uint();  // n is nondeterministically assigned
-    __ESBMC_assume(n > 0);  // Ensure that n is greater than 0, so the array size is valid
+    __VERIFIER_assume(n > 0);  // Ensure that n is greater than 0, so the array size is valid
 
     char a[n];  // Variable-length array with size n
     unsigned k = sizeof(a);  // Total size of the array in bytes

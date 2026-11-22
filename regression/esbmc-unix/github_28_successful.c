@@ -8,7 +8,7 @@ struct aws_string
 
 void *bounded_malloc(unsigned long size)
 {
-  __ESBMC_assume(size <= ((18446744073709551615UL) >> (8 + 1)));
+  __VERIFIER_assume(size <= ((18446744073709551615UL) >> (8 + 1)));
   return malloc(size);
 }
 
@@ -21,18 +21,18 @@ aws_string_bytes(const struct aws_string *str)
 int main()
 {
   unsigned long len;
-  __ESBMC_assume(
+  __VERIFIER_assume(
     len < ((18446744073709551615UL) - 1 - sizeof(struct aws_string)));
 
   struct aws_string *str = bounded_malloc(sizeof(struct aws_string) + len + 1);
   *(unsigned long *)(&str->len) = len;
   *(unsigned char *)&str->bytes[len] = '\0';
 
-  __ESBMC_assert(aws_string_bytes(str) == str->bytes, "This should never fail");
+  __VERIFIER_assert(aws_string_bytes(str) == str->bytes); // This should never fail
 
-  __ESBMC_assert(
-    ((((str->len + 1)) == 0) || ((&str->bytes[0]))), "This should never fail");
-  __ESBMC_assert(str->bytes[str->len] == 0, "This should never fail");
+  __VERIFIER_assert(
+    ((((str->len + 1)) == 0) || ((&str->bytes[0])))); // This should never fail
+  __VERIFIER_assert(str->bytes[str->len] == 0); // This should never fail
 }
 // Imported from ESBMC regression/esbmc-unix/github_28_successful
 // Needs: --state-hashing --k-step 2 --unlimited-k-steps --context-bound 2 --k-induction --max-inductive-step 3

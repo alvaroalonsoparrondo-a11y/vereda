@@ -18,7 +18,7 @@ int main(void)
   for (int i = 0; i < 8; i++)
     (*dest)[i] = nondet_uchar(); // array element written through a pointer
 
-  __ESBMC_assert(a[7] != 0x2A, "a[7] is nondet, so 0x2A is reachable");
+  __VERIFIER_assert(a[7] != 0x2A); // a[7] is nondet, so 0x2A is reachable
   return 0;
 }
 // Imported from ESBMC regression/k-induction/github_5224_pointer_write

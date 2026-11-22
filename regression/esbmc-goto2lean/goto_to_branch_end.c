@@ -6,7 +6,7 @@ int main(void) {
     c = 1;
   }
 L:
-  __ESBMC_assert(c != 2, "c");
+  __VERIFIER_assert(c != 2); // c
   return 0;
 }
 // Imported from ESBMC regression/goto2lean/goto_to_branch_end

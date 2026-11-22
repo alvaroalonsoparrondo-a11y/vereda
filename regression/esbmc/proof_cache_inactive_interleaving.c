@@ -12,7 +12,7 @@ void *inc(void *arg)
 int main(void)
 {
   x = nondet_int();
-  __ESBMC_assume(x > 0 && x < 10);
+  __VERIFIER_assume(x > 0 && x < 10);
 
   pthread_t t;
   pthread_create(&t, 0, inc, 0);

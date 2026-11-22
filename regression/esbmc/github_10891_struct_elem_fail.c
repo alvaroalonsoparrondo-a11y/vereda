@@ -8,7 +8,7 @@ int main(void)
 {
   struct MU buf[2] = {{7}, {8}};
   unsigned i = nondet_uint();
-  __ESBMC_assume(i < 2);
+  __VERIFIER_assume(i < 2);
   struct Unaligned r = *(struct Unaligned *)&buf[i];
   assert(r.v == 7);
   return 0;

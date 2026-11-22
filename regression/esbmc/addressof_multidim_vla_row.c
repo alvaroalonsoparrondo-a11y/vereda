@@ -8,7 +8,7 @@
 int main(void)
 {
   int m = nondet_int();
-  __ESBMC_assume(m >= 3 && m <= 5);
+  __VERIFIER_assume(m >= 3 && m <= 5);
 
   int a[2][m][3];
   int *p = &a[1][2][2];

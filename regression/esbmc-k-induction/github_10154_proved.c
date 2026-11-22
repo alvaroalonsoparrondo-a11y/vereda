@@ -7,7 +7,7 @@ int main()
   int i = nondet_int();
   int n = 4;
   for (; i < n; ++i)
-    __ESBMC_assert(i < 5, "");
+    __VERIFIER_assert(i < 5);
   return 0;
 }
 // Imported from ESBMC regression/k-induction/github_10154_proved

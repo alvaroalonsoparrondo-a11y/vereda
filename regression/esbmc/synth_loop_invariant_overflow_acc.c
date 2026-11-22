@@ -9,7 +9,7 @@ unsigned int nondet_uint();
 int main(void)
 {
   unsigned int n = nondet_uint();
-  __ESBMC_assume(n <= 8);
+  __VERIFIER_assume(n <= 8);
   unsigned int i = 0;
   int sn = 0;
   while (i < n)

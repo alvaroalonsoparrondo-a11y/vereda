@@ -12,7 +12,7 @@ int main(void)
   assert(r != 6);
 
   int w = __VERIFIER_nondet_int();
-  __ESBMC_assume(w >= 0 && w <= 8);
+  __VERIFIER_assume(w >= 0 && w <= 8);
   r = snprintf(b, sizeof b, "%*d", w, 42);
   assert(r == 2);
 

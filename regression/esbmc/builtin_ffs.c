@@ -39,7 +39,7 @@ int main(void)
 
   // ffs is ctz + 1 wherever ctz is defined.
   unsigned u = nondet_uint();
-  __ESBMC_assume(u != 0);
+  __VERIFIER_assume(u != 0);
   assert(__builtin_ffs((int)u) == __builtin_ctz(u) + 1);
 
   return 0;

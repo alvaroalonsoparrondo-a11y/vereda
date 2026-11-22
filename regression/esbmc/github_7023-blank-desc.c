@@ -2,8 +2,8 @@ int main()
 {
   int a, b;
 
-  __ESBMC_assert(a + b == b + a, "\t");
-  __ESBMC_assert(a == 1, "P2");
+  __VERIFIER_assert(a + b == b + a); // \t
+  __VERIFIER_assert(a == 1); // P2
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7023-blank-desc

@@ -24,7 +24,7 @@ int main(void)
 {
   int arr[N] = {1, 2, 3, 4, 5};
   bump(arr, 2);
-  __ESBMC_assert(arr[0] == 3 && arr[4] == 7, "ensures reached the caller");
+  __VERIFIER_assert(arr[0] == 3 && arr[4] == 7); // ensures reached the caller
 
   return 0;
 }

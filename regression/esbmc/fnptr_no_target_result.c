@@ -6,7 +6,7 @@ int main(void)
 {
   int r = 0;
   r = ext_cb(1);
-  __ESBMC_assert(r == 0, "result unchanged");
+  __VERIFIER_assert(r == 0); // result unchanged
   return 0;
 }
 // Imported from ESBMC regression/esbmc/fnptr_no_target_result

@@ -14,7 +14,7 @@ struct s
 int main(void)
 {
   unsigned i = nondet_uint();
-  __ESBMC_assume(i < 2);
+  __VERIFIER_assume(i < 2);
   long *buf = calloc(4, sizeof(long));
   if (!buf)
     return 0;
@@ -30,5 +30,3 @@ int main(void)
 // Imported from ESBMC regression/esbmc/zero_length_array_member_dyn_offset
 // RUN: -m64
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

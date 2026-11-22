@@ -7,16 +7,16 @@ int main(void)
   _Complex float a = 3.0f + 4.0fi;
 
   a *= 2.0f;
-  __ESBMC_assert(__real__ a == 6.0f, "*= scalar real");
-  __ESBMC_assert(__imag__ a == 8.0f, "*= scalar imag");
+  __VERIFIER_assert(__real__ a == 6.0f); // *= scalar real
+  __VERIFIER_assert(__imag__ a == 8.0f); // *= scalar imag
 
   a /= 2.0f;
-  __ESBMC_assert(__real__ a == 3.0f, "/= scalar real");
-  __ESBMC_assert(__imag__ a == 4.0f, "/= scalar imag");
+  __VERIFIER_assert(__real__ a == 3.0f); // /= scalar real
+  __VERIFIER_assert(__imag__ a == 4.0f); // /= scalar imag
 
   a += 1.0f;
-  __ESBMC_assert(__real__ a == 4.0f, "+= scalar real");
-  __ESBMC_assert(__imag__ a == 4.0f, "+= scalar leaves imag");
+  __VERIFIER_assert(__real__ a == 4.0f); // += scalar real
+  __VERIFIER_assert(__imag__ a == 4.0f); // += scalar leaves imag
 
   return 0;
 }

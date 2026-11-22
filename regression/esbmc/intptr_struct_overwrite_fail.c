@@ -16,11 +16,9 @@ int main(void)
     return 0;
   unsigned long base = (unsigned long)ports + i * sizeof(struct port);
   *((unsigned int *)(base + 8)) = 5U;
-  __ESBMC_assume(i == 0);
-  __ESBMC_assert(ports[0].a2 != 5U, "a2 is 5 after the store: must fail");
+  __VERIFIER_assume(i == 0);
+  __VERIFIER_assert(ports[0].a2 != 5U); // a2 is 5 after the store: must fail
   return 0;
 }
 // Imported from ESBMC regression/esbmc/intptr_struct_overwrite_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

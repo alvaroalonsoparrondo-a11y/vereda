@@ -6,7 +6,7 @@ int main()
   do
   {
     x++;
-    __ESBMC_assert(x != 5, "five");
+    __VERIFIER_assert(x != 5); // five
   } while (x < 5);
 }
 // Imported from ESBMC regression/esbmc/github_10128_fail

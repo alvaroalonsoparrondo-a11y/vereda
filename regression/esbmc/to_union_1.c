@@ -6,7 +6,7 @@ int main() {
     __VERIFIER_assume(x > 10);
 
     FOO = (union foo) x;
-    __ESBMC_assert(FOO.d > 10, "double value should initialize union foo properly");
+    __VERIFIER_assert(FOO.d > 10); // double value should initialize union foo properly
     return 0;
 }
 // Imported from ESBMC regression/esbmc/to_union_1

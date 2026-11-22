@@ -7,7 +7,7 @@ int main(void)
   int selector = nondet_int();
   int first = *(selector ? &left : &right);
   int second = *(selector ? &left : &right);
-  __ESBMC_assert(first == second, "volatile conditional reads may differ");
+  __VERIFIER_assert(first == second); // volatile conditional reads may differ
 }
 // Imported from ESBMC regression/esbmc/volatile_conditional_read_fail
 // Needs: --std c11 --volatile-check

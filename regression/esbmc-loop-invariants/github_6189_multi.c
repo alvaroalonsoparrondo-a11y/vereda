@@ -34,7 +34,7 @@ int main()
   for (x = 0; x < SIZE; ++x)
   {
   }
-  __ESBMC_assert(x == SIZE, "end");
+  __VERIFIER_assert(x == SIZE); // end
 }
 // Imported from ESBMC regression/loop-invariants/github_6189_multi
 // Needs: --result-only --loop-invariant-check

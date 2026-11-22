@@ -9,7 +9,7 @@ int main() {
     i++;
   }
 
-  __ESBMC_assume(i<100);
+  __VERIFIER_assume(i<100);
 
   // this is guaranteed not to be a buffer underflow
   if(i>=0 && a[i])

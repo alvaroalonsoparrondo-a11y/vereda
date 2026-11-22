@@ -13,7 +13,7 @@ void wait_event(_Bool e1, _Bool *e2)
 __ESBMC_atomic_begin();
   _Bool unlocked = (e1==0);
   if (unlocked)
-    __ESBMC_assume(0);
+    __VERIFIER_assume(0);
   else
     e2=0;
 __ESBMC_atomic_end();

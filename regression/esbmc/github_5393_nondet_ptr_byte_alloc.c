@@ -13,7 +13,7 @@ void *nondet_voidp(void);
 int main(void)
 {
   void *q = nondet_voidp();
-  __ESBMC_assume(q != 0);
+  __VERIFIER_assume(q != 0);
 
   char *raw = malloc(64);
   if (raw == 0)
@@ -22,7 +22,7 @@ int main(void)
   void **s = (void **)raw;
   *s = q;
 
-  __ESBMC_assert(*s != 0, "a stored non-null pointer reads back non-null");
+  __VERIFIER_assert(*s != 0); // a stored non-null pointer reads back non-null
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_5393_nondet_ptr_byte_alloc

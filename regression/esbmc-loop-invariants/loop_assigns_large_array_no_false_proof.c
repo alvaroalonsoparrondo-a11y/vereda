@@ -21,7 +21,7 @@ int main()
     i++;
   }
 
-  __ESBMC_assert(global[3] == 0, "FALSE: the loop wrote global[3] = 1");
+  __VERIFIER_assert(global[3] == 0); // FALSE: the loop wrote global[3] = 1
   return 0;
 }
 // Imported from ESBMC regression/loop-invariants/loop_assigns_large_array_no_false_proof

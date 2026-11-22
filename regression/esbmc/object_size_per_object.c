@@ -25,7 +25,7 @@ int main(void)
   }
 
   unsigned n = nondet_uint();
-  __ESBMC_assume(n > 0 && n < 50);
+  __VERIFIER_assume(n > 0 && n < 50);
   char *heap = malloc(n);
   char *q = nondet_bool() ? heap : big;
   if (heap && q == heap)

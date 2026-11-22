@@ -6,7 +6,7 @@ int main()
   
   q=p;
   
-  __ESBMC_assume(!__ESBMC_same_object(p, 0));
+  __VERIFIER_assume(!__ESBMC_same_object(p, 0));
   
   p++;
   

@@ -6,11 +6,11 @@ int main(void)
 {
   s.f3 = 7u;
   uint32_t k = __VERIFIER_nondet_uint();
-  __ESBMC_assume(k < 16u);
+  __VERIFIER_assume(k < 16u);
   uint32_t *p = &s.shadow[k];
   *p = 5u;
-  __ESBMC_assert(s.shadow[k] == 5u, "store lands at shadow[k]");
-  __ESBMC_assert(s.f3 == 7u, "f3 untouched");
+  __VERIFIER_assert(s.shadow[k] == 5u); // store lands at shadow[k]
+  __VERIFIER_assert(s.f3 == 7u); // f3 untouched
   return 0;
 }
 // Imported from ESBMC regression/esbmc/struct_array_member_store

@@ -79,8 +79,8 @@ int main(void)
   u2 held = nondet_u2();
   vm.frame.stack[1].r = held;
   vm.frame.sp = 2;
-  __ESBMC_assert(dispatch(&vm) == 0, "caught");
-  __ESBMC_assert(vm.frame.pc == 7, "at the handler");
+  __VERIFIER_assert(dispatch(&vm) == 0); // caught
+  __VERIFIER_assert(vm.frame.pc == 7); // at the handler
   return 0;
 }
 // Imported from ESBMC regression/esbmc/nondet_union_slot_const_prop

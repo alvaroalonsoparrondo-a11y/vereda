@@ -5,7 +5,7 @@ int main(void)
   /* Single-precision nondet float also gets a NaN predicate. */
   float x = __VERIFIER_nondet_float();
 
-  __ESBMC_assert(x == x, "unconstrained nondet float may be NaN");
+  __VERIFIER_assert(x == x); // unconstrained nondet float may be NaN
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-nondet-float-nan

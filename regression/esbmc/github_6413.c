@@ -18,25 +18,25 @@ void* prod_task( void* arg )
     data = vec_vfy[idx];
     sem_post( &prod_done );
     sem_wait( &cons_done );
-    __ESBMC_assert( 0, "prod: false" );
+    __VERIFIER_assert( 0); // prod: false
   }
-  __ESBMC_assert( TRUE, "prod_task: done" );
+  __VERIFIER_assert( TRUE); // prod_task: done
   return NULL;
 }
 
 void* cons_task( void* arg )
 {
-  __ESBMC_assert( TRUE, "cons_task: 1" );
+  __VERIFIER_assert( TRUE); // cons_task: 1
   int idx;
   for ( idx = 0; idx < SIZE; ++idx )
   {
     sem_wait( &prod_done );
     int data1_vfy = vec_vfy[idx];
     int data2_vfy = data;
-    __ESBMC_assert( data == vec_vfy[idx], "assert data equal" );
+    __VERIFIER_assert( data == vec_vfy[idx]); // assert data equal
     sem_post( &cons_done );
   }
-  __ESBMC_assert( TRUE, "cons_task: done" );
+  __VERIFIER_assert( TRUE); // cons_task: done
   return NULL;
 }
 

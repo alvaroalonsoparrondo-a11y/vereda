@@ -1,4 +1,4 @@
-void __VERIFIER_assert(int cond) { __ESBMC_assert(cond, "cond"); }
+void __VERIFIER_assert(int cond) { __VERIFIER_assert(cond); } // cond
 #define N 100000
 int a[N], b[N];
 int main()

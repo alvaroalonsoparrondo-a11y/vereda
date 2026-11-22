@@ -9,7 +9,7 @@ int nondet_int(void);
 int main(void)
 {
   int i = nondet_int();
-  __ESBMC_assume(i >= 0 && i < 4);
+  __VERIFIER_assume(i >= 0 && i < 4);
   size_t o = offsetof(struct S, arr[i]);
   assert(o != 12);
   return 0;

@@ -2,7 +2,7 @@ int main()
 {
   float f = nondet_float();
   double d = f;
-  __ESBMC_assert(d == f, "widening keeps the value");
+  __VERIFIER_assert(d == f); // widening keeps the value
   return 0;
 }
 // Imported from ESBMC regression/cvc/ir_nondet_float_real_div

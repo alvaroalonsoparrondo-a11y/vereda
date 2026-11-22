@@ -15,12 +15,12 @@ int main(void)
 {
   _Alignas(16) struct N s;
   (void)s;
-  __ESBMC_assert(((uintptr_t)&s % 16) == 0, "_Alignas(16) object is 16-aligned");
-  __ESBMC_assert(((uintptr_t)&s % 32) == 0, "over-claimed 32-byte alignment");
+  __VERIFIER_assert(((uintptr_t)&s % 16) == 0); // _Alignas(16) object is 16-aligned
+  __VERIFIER_assert(((uintptr_t)&s % 32) == 0); // over-claimed 32-byte alignment
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_6950_fail
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^.*over-claimed 32-byte alignment.*$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^.*over-claimed 32-byte alignment.*$
 // MODE: FUTURE

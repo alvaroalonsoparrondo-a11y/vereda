@@ -15,7 +15,7 @@ int main(void)
 {
   int x = 7;
   wipe(&x);
-  __ESBMC_assert(x == 7, "wipe zeroed x, so this must be reported");
+  __VERIFIER_assert(x == 7); // wipe zeroed x, so this must be reported
   return 0;
 }
 // Imported from ESBMC regression/function_contract/github_6961_assigns_void_ptr_knownbug

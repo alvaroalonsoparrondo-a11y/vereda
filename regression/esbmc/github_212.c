@@ -99,6 +99,6 @@ Do something with data.
 }
 // Imported from ESBMC regression/esbmc/github_212
 // Needs: --memory-leak-check
-// RUN: --no-div-by-zero-check --force-malloc-success -Dldv_assume=__ESBMC_assume --z3 --memory-leak-check -D__VERIFIER_error=ESBMC_error --no-unwinding-assertions --unwind 4
+// RUN: --no-div-by-zero-check --force-malloc-success -Dldv_assume=__VERIFIER_assume --z3 --memory-leak-check -D__VERIFIER_error=ESBMC_error --no-unwinding-assertions --unwind 4
 // MODE: FUTURE
 // EXPECT: ^VERIFICATION SUCCESSFUL$

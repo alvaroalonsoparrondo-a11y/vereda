@@ -25,9 +25,9 @@ int find_min(int *a, int n)
 int main(void)
 {
   int a[N], n, i;
-  __ESBMC_assume(n > 0 && n <= N);
+  __VERIFIER_assume(n > 0 && n <= N);
   /* satisfy the forall requires */
-  __ESBMC_assume(
+  __VERIFIER_assume(
     __ESBMC_forall(&i, !(i >= 0 && i < N) || (a[i] >= -100 && a[i] <= 100)));
   int r = find_min(a, n);
   assert(r >= -100 && r <= 100);

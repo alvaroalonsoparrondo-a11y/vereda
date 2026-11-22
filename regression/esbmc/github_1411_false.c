@@ -9,7 +9,7 @@ int main() {
 
         for(int i = 0; i < 5; i++);
 
-        __ESBMC_assert(0, "");
+        __VERIFIER_assert(0);
 }
 // Imported from ESBMC regression/esbmc/github_1411_false
 // Needs: --k-induction

@@ -7,8 +7,8 @@ volatile struct Flags flag;
 
 int main(void)
 {
-  __ESBMC_assume(flag.value != 0);
-  __ESBMC_assert(0, "a volatile assumption can keep this path reachable");
+  __VERIFIER_assume(flag.value != 0);
+  __VERIFIER_assert(0); // a volatile assumption can keep this path reachable
 }
 // Imported from ESBMC regression/esbmc/volatile_assume_read_fail
 // Needs: --std c11 --volatile-check

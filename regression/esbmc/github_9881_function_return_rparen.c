@@ -9,7 +9,7 @@ int main(void)
   int x = 1 + 2 * __VERIFIER_nondet_uchar();
   int y;
   y = __VERIFIER_nondet_int();
-  __ESBMC_assert(x != 7 || y != 5, "x is 7 and y is 5");
+  __VERIFIER_assert(x != 7 || y != 5); // x is 7 and y is 5
 }
 // Imported from ESBMC regression/esbmc/github_9881_function_return_rparen
 // Needs: --witness-output-yaml -

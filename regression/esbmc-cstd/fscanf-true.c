@@ -10,7 +10,7 @@ source:
 sink:
     if(data < 0)
     {
-	__ESBMC_assert(data < 0, "assertion should hold");
+	__VERIFIER_assert(data < 0); // assertion should hold
     }
 
 }

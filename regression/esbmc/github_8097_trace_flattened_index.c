@@ -10,7 +10,7 @@ int main()
   } u;
   u.m[0][2] = nondet_int();
   u.m[1][2] = nondet_int();
-  __ESBMC_assert(u.m[0][2] != 3 || u.m[1][2] != 5, "show");
+  __VERIFIER_assert(u.m[0][2] != 3 || u.m[1][2] != 5); // show
 }
 // Imported from ESBMC regression/esbmc/github_8097_trace_flattened_index
 // EXPECT: ^  u\.m\[0\]\[2\] = 3

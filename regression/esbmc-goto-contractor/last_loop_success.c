@@ -9,7 +9,7 @@ int main()
     y++;
   }
 
-  __ESBMC_assume(x>0);
+  __VERIFIER_assume(x>0);
   while(x < 2147483640)
   {
     x = x + 1;

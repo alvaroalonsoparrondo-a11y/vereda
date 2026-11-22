@@ -20,7 +20,7 @@ int main()
   assert(memchr(&words[1], 3, 4) == (unsigned char *)&words[1] + 2);
 
   unsigned n = nondet_uint();
-  __ESBMC_assume(n <= 4);
+  __VERIFIER_assume(n <= 4);
   unsigned char d[4] = {0, 0, 0, 0};
   memcpy(d, &pairs[1], n);
   assert(n < 3 || d[2] == 7);

@@ -16,7 +16,7 @@ void global_fun()
 {
   nondet_init_arr(global_arr);
   unsigned int len = strlen(global_arr);
-  __ESBMC_assert(len == 0, "Error: array must be empty");
+  __VERIFIER_assert(len == 0); // Error: array must be empty
 }
 
 int main()
@@ -27,5 +27,3 @@ int main()
 // Imported from ESBMC regression/esbmc/github_371_2
 // RUN: --no-unwinding-assertions --unwind 12
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

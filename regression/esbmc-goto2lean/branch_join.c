@@ -18,10 +18,10 @@ int sign(int x) {
 }
 int main(void) {
   int x = nondet_int(), lo = nondet_int(), hi = nondet_int();
-  __ESBMC_assume(lo <= hi);
+  __VERIFIER_assume(lo <= hi);
   int c = clamp(x, lo, hi);
-  __ESBMC_assert(lo <= c && c <= hi, "clamp in range");
-  __ESBMC_assert(sign(c - c) == 0, "sign of zero");
+  __VERIFIER_assert(lo <= c && c <= hi); // clamp in range
+  __VERIFIER_assert(sign(c - c) == 0); // sign of zero
   return 0;
 }
 // Imported from ESBMC regression/goto2lean/branch_join

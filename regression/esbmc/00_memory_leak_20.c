@@ -25,11 +25,11 @@ int main(){
    if (n <= 0 || n >= 10){
       n=5;
       a = (int *) malloc(n * sizeof(int));
-      __ESBMC_assume(a);
+      __VERIFIER_assume(a);
    } else {      
       assert(n>0 && n<10);
       a = (int *) malloc( n * sizeof(int));
-      __ESBMC_assume(a);
+      __VERIFIER_assume(a);
    }
 
    test();

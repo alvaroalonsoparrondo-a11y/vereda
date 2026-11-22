@@ -4,7 +4,7 @@ int main() {
   unsigned int n;
 
   p=malloc(sizeof(int)*10);
-  __ESBMC_assume(p);
+  __VERIFIER_assume(p);
 
   free(p);
 

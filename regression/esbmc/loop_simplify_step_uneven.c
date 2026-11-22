@@ -8,7 +8,7 @@ int main()
   int i;
   for (i = 0; i < 17; i += 3)
     ;
-  __ESBMC_assert(i == 18, "ceiling division gives 18, not 17");
+  __VERIFIER_assert(i == 18); // ceiling division gives 18, not 17
   return 0;
 }
 // Imported from ESBMC regression/esbmc/loop_simplify_step_uneven

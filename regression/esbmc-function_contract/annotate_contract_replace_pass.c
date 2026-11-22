@@ -20,7 +20,7 @@ int main(void)
 {
     int a = 5;
     int b = increment(a);  // This call will be replaced with contract
-    __ESBMC_assert(b == 6, "b should be 6");
+    __VERIFIER_assert(b == 6); // b should be 6
     return 0;
 }
 // Imported from ESBMC regression/function_contract/annotate_contract_replace_pass

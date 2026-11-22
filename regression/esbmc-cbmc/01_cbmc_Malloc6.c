@@ -1,9 +1,9 @@
 int analyze_this()
 {
   char *p_char=malloc(sizeof(char));
-  __ESBMC_assume(p_char);
+  __VERIFIER_assume(p_char);
   int *p_int=malloc(sizeof(int));
-  __ESBMC_assume(p_int);
+  __VERIFIER_assume(p_int);
   void *p;
   
   p=nondet_bool()?p_char:p_int;

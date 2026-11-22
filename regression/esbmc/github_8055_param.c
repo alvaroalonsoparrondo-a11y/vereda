@@ -10,7 +10,7 @@ void f(int n)
     if (i > 3)
       break;
   }
-  __ESBMC_assert(i == 0, "loop not entered");
+  __VERIFIER_assert(i == 0); // loop not entered
   n = 0;
 }
 
@@ -21,5 +21,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/github_8055_param
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

@@ -27,7 +27,7 @@ void *reader(void *arg)
   unsigned int a = g;
   unsigned int b = g;
   unsigned int c = g;
-  __ESBMC_assert(!(a == 1 && b == 2 && c == 3), "three distinct observations");
+  __VERIFIER_assert(!(a == 1 && b == 2 && c == 3)); // three distinct observations
   return 0;
 }
 

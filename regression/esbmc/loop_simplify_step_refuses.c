@@ -22,7 +22,7 @@ int main()
   unsigned len = 0;
   while (src[len] != 0)
     len++;
-  __ESBMC_assert(len < 4, "strlen-style loop unwound, len within bounds");
+  __VERIFIER_assert(len < 4); // strlen-style loop unwound, len within bounds
   return 0;
 }
 // Imported from ESBMC regression/esbmc/loop_simplify_step_refuses

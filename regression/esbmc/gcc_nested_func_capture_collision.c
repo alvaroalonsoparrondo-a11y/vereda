@@ -9,8 +9,8 @@ int main(void)
     return x;
   }
   int r = result();
-  __ESBMC_assert(r == 52, "capture collision");
-  __ESBMC_assert(x == 52, "captured x updated");
+  __VERIFIER_assert(r == 52); // capture collision
+  __VERIFIER_assert(x == 52); // captured x updated
   return 0;
 }
 // Imported from ESBMC regression/esbmc/gcc_nested_func_capture_collision

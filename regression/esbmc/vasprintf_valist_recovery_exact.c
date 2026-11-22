@@ -26,8 +26,8 @@ int main(void)
    * and the return stays unbounded, so the exact pin is only asserted where
    * the gate can fire. The guard mirrors symex's is_pointer_type check. */
   if (__builtin_types_compatible_p(va_list, char *))
-    __ESBMC_assert(
-      used < 0 || used == 12, "recovered literal %s pins the exact length");
+    __VERIFIER_assert(
+      used < 0 || used == 12); // recovered literal %s pins the exact length
   return 0;
 }
 // Imported from ESBMC regression/esbmc/vasprintf_valist_recovery_exact

@@ -5,7 +5,7 @@
 // called; memset(res, 0, 0) was a no-op; data[i] read nondet from the
 // 0-size allocation, causing the zeroed-memory assertion to fire at k=1.
 //
-// The fix adds __ESBMC_assume(nmemb <= SIZE_MAX/size) in calloc, pruning
+// The fix adds __VERIFIER_assume(nmemb <= SIZE_MAX/size) in calloc, pruning
 // all overflow paths (consistent with real calloc returning NULL on
 // overflow -> NULL deref -> UB/SIGSEGV, which prevents reach_error).
 //

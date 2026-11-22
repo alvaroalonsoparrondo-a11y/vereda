@@ -13,13 +13,13 @@ int main()
     p = a;
 
   unsigned n = nondet_uint();
-  __ESBMC_assume(n > 0 && n <= 4);
+  __VERIFIER_assume(n > 0 && n <= 4);
 
   if (p == a)
   {
-    __ESBMC_assert(memcmp(p, b, 4) == 0, "equal");
+    __VERIFIER_assert(memcmp(p, b, 4) == 0); // equal
     memset(p, 0, 4);
-    __ESBMC_assert(memchr(p, 3, 4) == 0, "cleared");
+    __VERIFIER_assert(memchr(p, 3, 4) == 0); // cleared
     memcpy(b, p, 4);
     memcpy(p, b, n);
   }
@@ -29,7 +29,7 @@ int main()
   char *c = memchr(p, 3, 0);
   memcpy(b, p, 0);
   memcpy(p, b, n - n);
-  __ESBMC_assert(r == 0 && c == 0, "nothing read");
+  __VERIFIER_assert(r == 0 && c == 0); // nothing read
   return 0;
 }
 // Imported from ESBMC regression/esbmc/mem_intrinsics_invalid_pointer

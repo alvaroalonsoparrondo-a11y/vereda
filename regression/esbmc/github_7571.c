@@ -72,9 +72,9 @@ int main(void)
   g.f30 = 30;
   g.f31 = 31;
 
-  __ESBMC_assert(g.f0 == 0, "first member");
-  __ESBMC_assert(g.f16 == 16, "middle member");
-  __ESBMC_assert(g.f31 == 31, "last member");
+  __VERIFIER_assert(g.f0 == 0); // first member
+  __VERIFIER_assert(g.f16 == 16); // middle member
+  __VERIFIER_assert(g.f31 == 31); // last member
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_7571

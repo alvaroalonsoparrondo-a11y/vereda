@@ -8,15 +8,15 @@
 int main(void)
 {
   void *Heap = __ESBMC_alloca(_32KB);
-  __ESBMC_assume((uint64_t)Heap < 0xFF);
+  __VERIFIER_assume((uint64_t)Heap < 0xFF);
 
   uint64_t *TabPhy = (uint64_t *)(((uint64_t)Heap + _4KB) & _4KB_MASK);
   uint64_t *TabPhy_Entry = (uint64_t *)(((uint64_t)TabPhy + _4KB) & _4KB_MASK);
 
   TabPhy[0] = (uint64_t)TabPhy_Entry;
-  __ESBMC_assert(TabPhy == &TabPhy[0], "i-st of TabPhy is TabPhy[0]");
+  __VERIFIER_assert(TabPhy == &TabPhy[0]); // i-st of TabPhy is TabPhy[0]
   int i = 0;
-  __ESBMC_assert(*TabPhy == TabPhy[i], "value of TabPhy is TabPhy[i] value");
+  __VERIFIER_assert(*TabPhy == TabPhy[i]); // value of TabPhy is TabPhy[i] value
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_677

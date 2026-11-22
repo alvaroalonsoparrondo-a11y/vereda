@@ -21,34 +21,34 @@ union u
 int main(void)
 {
   unsigned i = nondet_uint(), j = nondet_uint(), k = nondet_uint();
-  __ESBMC_assume(i < 3 && j < 5 && k < 3);
-  __ESBMC_assert(c[i][j][k] == 15 * i + 3 * j + k + 1, "initializer");
+  __VERIFIER_assume(i < 3 && j < 5 && k < 3);
+  __VERIFIER_assert(c[i][j][k] == 15 * i + 3 * j + k + 1); // initializer
 
   int a[3][5];
   for (unsigned r = 0; r < 3; r++)
     for (unsigned s = 0; s < 5; s++)
       a[r][s] = 10 * r + s;
   a[i][j] = -1;
-  __ESBMC_assert(a[i][j] == -1, "store");
+  __VERIFIER_assert(a[i][j] == -1); // store
   unsigned r = nondet_uint(), s = nondet_uint();
-  __ESBMC_assume(r < 3 && s < 5 && (r != i || s != j));
-  __ESBMC_assert(a[r][s] == 10 * r + s, "other cells");
-  __ESBMC_assert(c[i][j][k] != 23, "reachable cell");
+  __VERIFIER_assume(r < 3 && s < 5 && (r != i || s != j));
+  __VERIFIER_assert(a[r][s] == 10 * r + s); // other cells
+  __VERIFIER_assert(c[i][j][k] != 23); // reachable cell
 
   struct row rows[2][3] = {0};
   struct row x = {{7, 8, 9}};
   rows[1][2] = x;
-  __ESBMC_assert(rows[1][2].v[k] == 7 + k, "row");
+  __VERIFIER_assert(rows[1][2].v[k] == 7 + k); // row
 
   union u w = {.m = {{1, 2, 3}, {4, 5, 6}}};
   unsigned p = nondet_uint();
-  __ESBMC_assume(p < 2);
-  __ESBMC_assert(w.m[p][k] == 3 * p + k + 1, "union");
+  __VERIFIER_assume(p < 2);
+  __VERIFIER_assert(w.m[p][k] == 3 * p + k + 1); // union
   return 0;
 }
 // Imported from ESBMC regression/esbmc/multidim_padded_stride_fail
 // RUN: --unwind 6
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: reachable cell
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: reachable cell
 // MODE: FUTURE

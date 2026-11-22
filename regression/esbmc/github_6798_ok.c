@@ -20,7 +20,7 @@ int main(void)
   }
 
   /* The join must keep both versions reachable, not just the branch's. */
-  __ESBMC_assert(t->p == 1 || t->p == 2, "both join arms survive");
+  __VERIFIER_assert(t->p == 1 || t->p == 2); // both join arms survive
 
   int w = nondet_int();
   if (w != 0)
@@ -31,7 +31,7 @@ int main(void)
   {
     t->p = 3;
   }
-  __ESBMC_assert(t->p == 3, "written on every path");
+  __VERIFIER_assert(t->p == 3); // written on every path
 
   free(t);
   return 0;

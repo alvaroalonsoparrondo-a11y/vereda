@@ -86,23 +86,23 @@ int main(void)
   (void)direct;
   (void)via_union;
 
-  __ESBMC_assert(sizeof(struct pack1_s) == 5, "pack(1) sizeof is 5");
-  __ESBMC_assert(offsetof(struct pack1_s, b) == 1, "pack(1) offsetof(b) is 1");
-  __ESBMC_assert(sizeof(struct pack2_s) == 6, "pack(2) sizeof is 6");
-  __ESBMC_assert(offsetof(struct pack2_s, b) == 2, "pack(2) offsetof(b) is 2");
-  __ESBMC_assert(sizeof(union pack2_u) == 4, "pack(2) union sizeof is 4");
-  __ESBMC_assert(sizeof(struct plain_s) == 8, "unpacked sizeof is 8");
-  __ESBMC_assert(offsetof(struct plain_s, b) == 4, "unpacked offsetof(b) is 4");
-  __ESBMC_assert(
+  __VERIFIER_assert(sizeof(struct pack1_s) == 5); // pack(1) sizeof is 5
+  __VERIFIER_assert(offsetof(struct pack1_s, b) == 1); // pack(1) offsetof(b) is 1
+  __VERIFIER_assert(sizeof(struct pack2_s) == 6); // pack(2) sizeof is 6
+  __VERIFIER_assert(offsetof(struct pack2_s, b) == 2); // pack(2) offsetof(b) is 2
+  __VERIFIER_assert(sizeof(union pack2_u) == 4); // pack(2) union sizeof is 4
+  __VERIFIER_assert(sizeof(struct plain_s) == 8); // unpacked sizeof is 8
+  __VERIFIER_assert(offsetof(struct plain_s, b) == 4); // unpacked offsetof(b) is 4
+  __VERIFIER_assert(
     offsetof(struct zero_bitfield_s, b) ==
-      offsetof(struct plain_zero_bitfield_s, b),
-    "pack does not cap a zero-width bitfield");
-  __ESBMC_assert(offsetof(struct pack1_aligned_s, b) == 1, "pack(1) + aligned(8) offsetof(b) is 1");
-  __ESBMC_assert(sizeof(struct pack1_aligned_s) == 8, "pack(1) + aligned(8) sizeof is 8");
-  __ESBMC_assert(offsetof(struct attr_packed_s, b) == 1, "packed offsetof(b) is 1");
-  __ESBMC_assert(
-    offsetof(struct unrelated_attr_s, b) == 4,
-    "unrelated attribute leaves layout alone");
+      offsetof(struct plain_zero_bitfield_s, b)
+); // pack does not cap a zero-width bitfield
+  __VERIFIER_assert(offsetof(struct pack1_aligned_s, b) == 1); // pack(1) + aligned(8) offsetof(b) is 1
+  __VERIFIER_assert(sizeof(struct pack1_aligned_s) == 8); // pack(1) + aligned(8) sizeof is 8
+  __VERIFIER_assert(offsetof(struct attr_packed_s, b) == 1); // packed offsetof(b) is 1
+  __VERIFIER_assert(
+    offsetof(struct unrelated_attr_s, b) == 4
+); // unrelated attribute leaves layout alone
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_6949

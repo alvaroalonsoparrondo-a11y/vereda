@@ -24,8 +24,8 @@ int main(void)
   int used = wrap("hello %s!", "world");
   /* "hello world!" is 12 characters; recovery must pin the exact length on
    * success (-1 is the allocation failure). */
-  __ESBMC_assert(
-    used < 0 || used == 12, "pointer-va_list recovery pins the exact length");
+  __VERIFIER_assert(
+    used < 0 || used == 12); // pointer-va_list recovery pins the exact length
   return 0;
 }
 // Imported from ESBMC regression/esbmc/vasprintf_valist_recovery_i386

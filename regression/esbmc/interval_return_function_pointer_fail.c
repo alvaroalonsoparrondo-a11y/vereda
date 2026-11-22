@@ -17,7 +17,7 @@ int main()
   fp = nondet_int() ? w : r;
   g = 0;
   f();
-  __ESBMC_assert(g == 0, "g");
+  __VERIFIER_assert(g == 0); // g
 }
 // Imported from ESBMC regression/esbmc/interval_return_function_pointer_fail
 // Needs: --interval-analysis

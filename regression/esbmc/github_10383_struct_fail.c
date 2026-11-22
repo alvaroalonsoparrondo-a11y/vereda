@@ -8,11 +8,11 @@ struct s
 int main(void)
 {
   int n = nondet_int();
-  __ESBMC_assume(n > 0 && n < 4);
+  __VERIFIER_assume(n > 0 && n < 4);
   struct s a[n] = {};
   int *b[n] = {};
-  __ESBMC_assert(a[n - 1].p != 0, "member set");
-  __ESBMC_assert(b[0] != 0, "element set");
+  __VERIFIER_assert(a[n - 1].p != 0); // member set
+  __VERIFIER_assert(b[0] != 0); // element set
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_10383_struct_fail

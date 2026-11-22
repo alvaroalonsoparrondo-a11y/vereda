@@ -4,17 +4,17 @@
 int main()
 {
   int i;
-  __ESBMC_assume(i >= 0);
+  __VERIFIER_assume(i >= 0);
   while (i < 3)
   {
     int j;
-    __ESBMC_assume(j >= 0);
+    __VERIFIER_assume(j >= 0);
     while (j < 2)
       ++j;
-    __ESBMC_assert(j >= 2, "inner bound must be met");
+    __VERIFIER_assert(j >= 2); // inner bound must be met
     ++i;
   }
-  __ESBMC_assert(i >= 3, "outer bound must be met");
+  __VERIFIER_assert(i >= 3); // outer bound must be met
   return 0;
 }
 // Imported from ESBMC regression/esbmc/interval_symex_guard_nested

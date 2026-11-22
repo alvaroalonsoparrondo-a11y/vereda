@@ -7,7 +7,7 @@ int main(void)
 {
   uint32_t buf[2] = {0, 0};
   unsigned o = nondet_uint();
-  __ESBMC_assume(o == 1);
+  __VERIFIER_assume(o == 1);
   struct U val = {0xAABBCCDDu};
   *(struct U *)((unsigned char *)buf + o) = val;
   assert(buf[1] == 0);

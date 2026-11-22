@@ -16,8 +16,8 @@ int main(void)
 {
   double x = nondet_double();
   double y = nondet_double();
-  __ESBMC_assume(x == 1e18);
-  __ESBMC_assume(y == 3.0);
+  __VERIFIER_assume(x == 1e18);
+  __VERIFIER_assume(y == 3.0);
 
   assert(fmod(x, y) == 1.0);
   return 0;

@@ -7,12 +7,12 @@ long long nondet_longlong(void);
 int main(void)
 {
   unsigned b = nondet_uint();
-  __ESBMC_assume(b <= 10);
+  __VERIFIER_assume(b <= 10);
   unsigned y = ~b + 1u;
-  __ESBMC_assert(y + b == 0, "~b + 1 == -b");
+  __VERIFIER_assert(y + b == 0); // ~b + 1 == -b
 
   long long x = nondet_longlong();
-  __ESBMC_assert(~x == -x - 1, "~x == -x - 1");
+  __VERIFIER_assert(~x == -x - 1); // ~x == -x - 1
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_10596_ir_bitnot

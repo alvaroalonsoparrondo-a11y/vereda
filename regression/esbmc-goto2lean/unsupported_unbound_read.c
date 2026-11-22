@@ -5,7 +5,7 @@ int main(void) {
   unsigned y = 1;
 L:
   y = y + 1;
-  __ESBMC_assert(y != 0, "y");
+  __VERIFIER_assert(y != 0); // y
   return 0;
 }
 // Imported from ESBMC regression/goto2lean/unsupported_unbound_read

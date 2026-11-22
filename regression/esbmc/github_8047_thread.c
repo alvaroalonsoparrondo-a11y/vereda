@@ -18,8 +18,8 @@ int main()
   if (c)
     ;
   else
-    __ESBMC_assume(g == 7);
-  __ESBMC_assert(g > -7, "g above -7");
+    __VERIFIER_assume(g == 7);
+  __VERIFIER_assert(g > -7); // g above -7
 }
 // Imported from ESBMC regression/esbmc/github_8047_thread
 // Needs: --interval-symex-assert

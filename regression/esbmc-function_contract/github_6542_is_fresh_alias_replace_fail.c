@@ -23,10 +23,10 @@ void callee(P *a, P *b)
 int main(void)
 {
   P *o = (P *)malloc(sizeof(P));
-  __ESBMC_assume(o != 0);
+  __VERIFIER_assume(o != 0);
   o->coeffs[0] = 5;
   callee(o, o);
-  __ESBMC_assert(o->coeffs[0] == 5, "implied by the second ensures");
+  __VERIFIER_assert(o->coeffs[0] == 5); // implied by the second ensures
   return 0;
 }
 // Imported from ESBMC regression/function_contract/github_6542_is_fresh_alias_replace_fail

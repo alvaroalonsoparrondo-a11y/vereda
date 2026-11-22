@@ -3,7 +3,7 @@ int calls;
 
 void fail(void)
 {
-  __ESBMC_assert(0, "callee assertion");
+  __VERIFIER_assert(0); // callee assertion
   calls++;
 }
 

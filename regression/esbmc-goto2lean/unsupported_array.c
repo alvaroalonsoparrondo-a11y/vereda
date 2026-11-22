@@ -1,4 +1,4 @@
-int main(void) { int a[2] = {1, 2}; int *p = a; __ESBMC_assert(p[1] == 2, "x"); return 0; }
+int main(void) { int a[2] = {1, 2}; int *p = a; __VERIFIER_assert(p[1] == 2); return 0; } // x
 // Imported from ESBMC regression/goto2lean/unsupported_array
 // Needs: --goto2lean
 // RUN: --goto2lean

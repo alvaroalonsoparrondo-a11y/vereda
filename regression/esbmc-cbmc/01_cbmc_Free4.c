@@ -8,7 +8,7 @@ void my_free(int *q)
 int main()
 {
   int *p=malloc(sizeof(int));
-  __ESBMC_assume(p);
+  __VERIFIER_assume(p);
   
   *p=2;
   free(p);

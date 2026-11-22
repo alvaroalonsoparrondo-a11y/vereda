@@ -15,13 +15,13 @@ int nondet_int();
 int main() {
   unsigned u = 5;
   int i = nondet_int();
-  __ESBMC_assume(i == 3);
+  __VERIFIER_assume(i == 3);
   char *p = &buf[10];
   // Independent +i and -i force reassoc to fire and cancel them.
   // The remaining subtraction by `u` (unsigned) must stay subtractive.
   char *q = (p - u) + i - i;
   // q should point to &buf[5] (10 - 5 = 5).
-  __ESBMC_assert(q == &buf[5], "(p - unsigned) + i - i preserves subtraction");
+  __VERIFIER_assert(q == &buf[5]); // (p - unsigned) + i - i preserves subtraction
   return 0;
 }
 // Imported from ESBMC regression/esbmc/ptr_sub_unsigned_reassoc

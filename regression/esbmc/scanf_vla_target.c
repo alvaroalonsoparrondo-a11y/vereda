@@ -4,7 +4,7 @@
 int main()
 {
   unsigned n;
-  __ESBMC_assume(n == 4);
+  __VERIFIER_assume(n == 4);
   char buf[n];
   buf[0] = 'a';
   int r = sscanf("xy", "%s", &buf[1]);

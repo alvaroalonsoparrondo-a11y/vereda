@@ -5,7 +5,7 @@ int main(int argc, char *argv[])
 {
   int x = __VERIFIER_nondet_int();
   if (x == 3)
-    __ESBMC_assert(0, "reached");
+    __VERIFIER_assert(0); // reached
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_9650_argv_witness_fail

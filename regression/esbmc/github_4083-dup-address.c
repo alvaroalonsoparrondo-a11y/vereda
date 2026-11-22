@@ -6,7 +6,7 @@ int main(void)
 {
   void *a = &&L;
   void *b = &&L;
-  __ESBMC_assert(a == b, "one label, one address");
+  __VERIFIER_assert(a == b); // one label, one address
   goto *a;
 L:
   return 0;

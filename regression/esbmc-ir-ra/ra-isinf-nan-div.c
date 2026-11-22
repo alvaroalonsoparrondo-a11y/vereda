@@ -8,10 +8,10 @@ int main(void)
   __ESBMC_rounding_mode = 0;
   double x = __VERIFIER_nondet_double();
   double y = __VERIFIER_nondet_double();
-  __ESBMC_assume(x == 0.0);
-  __ESBMC_assume(y == 0.0);
+  __VERIFIER_assume(x == 0.0);
+  __VERIFIER_assume(y == 0.0);
   double z = x / y;
-  __ESBMC_assert(!isinf(z), "isinf(0.0/0.0) is false");
+  __VERIFIER_assert(!isinf(z)); // isinf(0.0/0.0) is false
   return 0;
 }
 // Imported from ESBMC regression/ir-ra/ra-isinf-nan-div

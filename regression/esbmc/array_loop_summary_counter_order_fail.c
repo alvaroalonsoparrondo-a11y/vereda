@@ -4,7 +4,7 @@ int main() {
   unsigned x = nondet_uint();
   unsigned y = x;
   while (x < 100) { x++; y++; }
-  __ESBMC_assert(x == y + 1, "");
+  __VERIFIER_assert(x == y + 1);
 }
 // Imported from ESBMC regression/esbmc/array_loop_summary_counter_order_fail
 // Needs: --summarize-array-loops

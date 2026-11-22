@@ -6,7 +6,7 @@ typedef struct {
 
 int main() {
   FAM F = {1, {}};
-  __ESBMC_assert(F.arr != NULL, "FAM should be initialized properly");
+  __VERIFIER_assert(F.arr != NULL); // FAM should be initialized properly
 }
 // Imported from ESBMC regression/esbmc/fam_true_0
 // Needs: --compact-trace

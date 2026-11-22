@@ -9,7 +9,7 @@ big_t g;
 int main(void)
 {
   __VERIFIER_nondet_memory(&g, sizeof(big_t));
-  __ESBMC_assert(g.flag != 42, "flag can be havocked to 42");
+  __VERIFIER_assert(g.flag != 42); // flag can be havocked to 42
   return 0;
 }
 // Imported from ESBMC regression/esbmc-unix/github_9784_nondet_memory_whole_object_fail

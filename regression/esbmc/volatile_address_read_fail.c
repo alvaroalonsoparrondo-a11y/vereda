@@ -4,7 +4,7 @@ int main(void)
 {
   int first = *(&value);
   int second = *(&value);
-  __ESBMC_assert(first == second, "volatile address reads may differ");
+  __VERIFIER_assert(first == second); // volatile address reads may differ
 }
 // Imported from ESBMC regression/esbmc/volatile_address_read_fail
 // Needs: --std c11 --volatile-check

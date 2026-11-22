@@ -9,7 +9,7 @@ unsigned int nondet_uint(void);
 int main(void)
 {
   unsigned int n = nondet_uint();
-  __ESBMC_assume(n >= 1 && n <= 4);
+  __VERIFIER_assume(n >= 1 && n <= 4);
 
   int *p = malloc(sizeof(int));
   if (p == 0)

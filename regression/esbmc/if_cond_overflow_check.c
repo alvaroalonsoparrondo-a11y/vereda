@@ -15,8 +15,8 @@ int nondet_int();
 int main() {
   int x = nondet_int();
   int y = nondet_int();
-  __ESBMC_assume(x == INT_MAX);
-  __ESBMC_assume(y == 1);
+  __VERIFIER_assume(x == INT_MAX);
+  __VERIFIER_assume(y == 1);
   // x + y overflows; both arms identical so simplifier folds the if.
   int v = (x + y > 0) ? 42 : 42;
   return v;
