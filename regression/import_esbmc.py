@@ -23,7 +23,9 @@ CHECK_JSON, CHECK_FILE and SEED_FILE lines make a test FUTURE the same
 way, as run.py has none of them.
 
 Tests that read files outside their own directory are skipped, and so is
-ESBMC's "disabled" suite unless named.
+ESBMC's "disabled" suite unless named. So are tests of function contracts
+(__ESBMC_requires, __ESBMC_ensures and the rest, or the contract flags),
+which Vereda does not plan to support; a rerun deletes earlier copies.
 
 With --mark, each copied test then runs through run.py, and one that does
 not behave as its mode says gets the other mode: a failing CORE or THOROUGH
@@ -274,6 +276,29 @@ def rename_builtins(path, unreachable):
                 f.write(renamed)
 
 
+# Function contracts: ESBMC has them for annotated code; SV-COMP never
+# uses them, so Vereda leaves them to ESBMC.
+CONTRACT_FLAGS = re.compile(r"--(enforce-contract|replace-call-with-contract"
+                            r"|enforce-all-contracts|replace-all-contracts)\b")
+CONTRACT_BUILTINS = re.compile(rb"\b__ESBMC_(requires|ensures|assigns|old|old_raw|return_value"
+                               rb"|is_fresh|contract)\b")
+
+
+def uses_contracts(src, args):
+    """Whether the test in src, run with args, uses function contracts.
+    Directories of other tests inside src are not looked at."""
+    if CONTRACT_FLAGS.search(args):
+        return True
+    for root, dirs, names in os.walk(src):
+        dirs[:] = [d for d in dirs if not os.path.exists(os.path.join(root, d, "test.desc"))]
+        for n in names:
+            if n.endswith((".c", ".h", ".i")):
+                with open(os.path.join(root, n), "rb") as f:
+                    if CONTRACT_BUILTINS.search(f.read()):
+                        return True
+    return False
+
+
 def import_test(src, dest, origin, tracked):
     """Copies one test from src to dest, or to dest.c when it has one file.
     Returns the C file written, or why there is none. When tracked is a set
@@ -289,6 +314,11 @@ def import_test(src, dest, origin, tracked):
         return "unreadable flags"
     if any(outside(src, p) for p in paths):
         return "files outside the test"
+    if uses_contracts(src, args):
+        shutil.rmtree(dest, ignore_errors=True)  # an earlier copy
+        if os.path.exists(dest + ".c"):
+            os.remove(dest + ".c")
+        return "function contracts"
     regexes = [r.strip() for r in lines[3:] if r.strip()]
 
     entry = copy_files(src, dest, source, tracked)
