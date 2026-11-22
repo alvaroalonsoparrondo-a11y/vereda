@@ -1,7 +1,7 @@
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 int main(void)
 {
-  unsigned x = nondet_uint();
+  unsigned x = __VERIFIER_nondet_uint();
   unsigned long s = sizeof((x < 10) ? 1 : 0);
   unsigned long b = sizeof(_BitInt(17));
   __VERIFIER_assert(s == 4 && b == 4); // clang sizes

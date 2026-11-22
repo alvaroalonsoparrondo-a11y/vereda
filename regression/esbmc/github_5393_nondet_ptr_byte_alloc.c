@@ -8,11 +8,11 @@
    typed allocations survive the same shape, and did so before the fix. */
 #include <stdlib.h>
 
-void *nondet_voidp(void);
+void *__VERIFIER_nondet_voidp(void);
 
 int main(void)
 {
-  void *q = nondet_voidp();
+  void *q = __VERIFIER_nondet_voidp();
   __VERIFIER_assume(q != 0);
 
   char *raw = malloc(64);

@@ -169,12 +169,12 @@ int main(){
 
 // function that describes the flasher module
 f1() {
-		in8=nondet_bool();
-		in9=nondet_bool();
-		in10=nondet_bool();
-		in11=nondet_bool();
-		in12=nondet_bool();
-		in13=nondet_bool();
+		in8=__VERIFIER_nondet_bool();
+		in9=__VERIFIER_nondet_bool();
+		in10=__VERIFIER_nondet_bool();
+		in11=__VERIFIER_nondet_bool();
+		in12=__VERIFIER_nondet_bool();
+		in13=__VERIFIER_nondet_bool();
 
 
 

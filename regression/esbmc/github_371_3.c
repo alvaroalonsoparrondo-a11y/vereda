@@ -4,17 +4,17 @@
 char global_arr[10];
 
 
-int nondet_init_arr(char *arr)
+int __VERIFIER_nondet_init_arr(char *arr)
 {
   unsigned int i = 0;
   for(; i < 9; i++)
-    arr[i] = nondet_char();
+    arr[i] = __VERIFIER_nondet_char();
   return 1;
 }
 
 void global_fun()
 {
-  int foo = nondet_init_arr(global_arr); // forcing a lhs 
+  int foo = __VERIFIER_nondet_init_arr(global_arr); // forcing a lhs 
   unsigned int len = strlen(global_arr);
   assert(len == 0);
 }

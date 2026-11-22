@@ -1,6 +1,6 @@
 #include <assert.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 struct S
 {
@@ -11,7 +11,7 @@ struct S
 int main(void)
 {
   struct S t;
-  t.a = nondet_int();
+  t.a = __VERIFIER_nondet_int();
   t.b = 2;
   struct S u;
   u = t;

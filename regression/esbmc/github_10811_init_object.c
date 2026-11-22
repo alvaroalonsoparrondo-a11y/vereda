@@ -2,13 +2,13 @@
 #include <stdio.h>
 
 /* #10811: only the object p points to may be written. */
-_Bool nondet_bool(void);
+_Bool __VERIFIER_nondet_bool(void);
 int a[2] = {1, 2};
 int b[2];
 
 int main()
 {
-  int *p = nondet_bool() ? a : b;
+  int *p = __VERIFIER_nondet_bool() ? a : b;
   __VERIFIER_assume(p == b);
   __ESBMC_init_object(p);
   assert(a[0] == 1);

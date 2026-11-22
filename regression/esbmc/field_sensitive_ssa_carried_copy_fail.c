@@ -1,5 +1,5 @@
 #include <assert.h>
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 struct T
 {
   int *p;
@@ -19,7 +19,7 @@ struct T mk(int c, int *a, int *b)
 int main(void)
 {
   int a, b;
-  g = mk(nondet_int(), &a, &b);
+  g = mk(__VERIFIER_nondet_int(), &a, &b);
   assert(g.p == &a);
   return g.k;
 }

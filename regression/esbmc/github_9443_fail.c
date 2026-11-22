@@ -7,7 +7,7 @@ struct S
 
 int main(void)
 {
-  s.x = nondet_uint();
+  s.x = __VERIFIER_nondet_uint();
   unsigned r = s.x++;
   assert(r != 7);
   return 0;

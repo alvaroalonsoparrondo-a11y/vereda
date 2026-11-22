@@ -3,7 +3,7 @@
 // leave x unresolved, drop the write and prove *A != 7.
 #include <stdlib.h>
 #include <assert.h>
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 extern void __VERIFIER_assume(int);
 int *A;
 int n;
@@ -23,7 +23,7 @@ int main()
 {
   A = malloc(sizeof(int));
   *A = 0;
-  while (nondet_int())
+  while (__VERIFIER_nondet_int())
   {
     __VERIFIER_assume(*A != 7);
     h();

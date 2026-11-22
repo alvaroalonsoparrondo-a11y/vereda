@@ -1,13 +1,13 @@
 #include <assert.h>
-int nondet_int(void);
-long nondet_long(void);
+int __VERIFIER_nondet_int(void);
+long __VERIFIER_nondet_long(void);
 int main(void)
 {
-  int m = nondet_int();
-  long n = nondet_long();
+  int m = __VERIFIER_nondet_int();
+  long n = __VERIFIER_nondet_long();
   __VERIFIER_assume(m >= 1 && m <= 3 && n >= 2 && n <= 3);
   int a[2][m][n][3];
-  int i = nondet_int(), k = nondet_int();
+  int i = __VERIFIER_nondet_int(), k = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 0 && i < 2 && k >= 0 && k < 3);
   a[i][m - 1][1][k] = 5;
   a[i][m - 1][0][k] = 6;

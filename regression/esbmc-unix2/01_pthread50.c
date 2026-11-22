@@ -20,7 +20,7 @@ int main()
   val = (long)pthread_getspecific(key);
   assert(val == 0);
 
-  r = pthread_setspecific(key, nondet_bool() ? (void *)16 : NULL);
+  r = pthread_setspecific(key, __VERIFIER_nondet_bool() ? (void *)16 : NULL);
   if(r == ENOMEM)
   {
     exit(1);

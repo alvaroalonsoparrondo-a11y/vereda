@@ -1,7 +1,7 @@
 #include <pthread.h>
 #include <assert.h>
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 int x=0, w=0;
 
 void *t1(void *arg)
@@ -12,7 +12,7 @@ void *t1(void *arg)
 
 void *t2(void *arg)
 {
-  int y=nondet_int();
+  int y=__VERIFIER_nondet_int();
   if ((y^1)==0 || (y^2)==1 || (y^3)==2) w=y;
   return NULL;
 }

@@ -2,11 +2,11 @@
 
 int main(void) 
 {
-  _Bool x = nondet_bool();
-  _Bool y = nondet_bool();
-  int a = nondet_int();
-  int b = nondet_int();
-  unsigned u = nondet_uint();
+  _Bool x = __VERIFIER_nondet_bool();
+  _Bool y = __VERIFIER_nondet_bool();
+  int a = __VERIFIER_nondet_int();
+  int b = __VERIFIER_nondet_int();
+  unsigned u = __VERIFIER_nondet_uint();
 
   // -------------------------------------------------
   // Boolean algebra laws

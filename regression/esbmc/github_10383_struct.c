@@ -1,5 +1,5 @@
 // #10383: VLAs of structs and of pointers with an empty initializer.
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 struct s
 {
   int x;
@@ -7,7 +7,7 @@ struct s
 };
 int main(void)
 {
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   __VERIFIER_assume(n > 0 && n < 4);
   struct s a[n] = {};
   int *b[n] = {};

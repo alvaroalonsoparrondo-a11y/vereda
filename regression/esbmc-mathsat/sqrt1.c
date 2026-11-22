@@ -10,12 +10,12 @@ float sqrt1(const float x)
   u.i = (1<<29) + (u.i >> 1) - (1<<22); 
   return u.x;
 } 
-float nondet_float(); 
+float __VERIFIER_nondet_float(); 
 int main()
 {
   float sq;
   float val;
-  val = nondet_float(); 
+  val = __VERIFIER_nondet_float(); 
   __VERIFIER_assume(val>0 && val<20);
   sq = sqrt1(val);
   assert(sq < 5);

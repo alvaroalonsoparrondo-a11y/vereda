@@ -1,12 +1,12 @@
 #include <assert.h>
 
-unsigned nondet_uint();
+unsigned __VERIFIER_nondet_uint();
 
 // `(a + b) * c` recomputes `a + b` after `a` changed, but only its symbol is
 // assigned, so the symbol for `a + b` must not be reused (#7992).
 int main()
 {
-  unsigned a = nondet_uint(), b = nondet_uint(), c = nondet_uint();
+  unsigned a = __VERIFIER_nondet_uint(), b = __VERIFIER_nondet_uint(), c = __VERIFIER_nondet_uint();
   unsigned x = a + b;
   a = a + 1u;
   unsigned y = (a + b) * c;

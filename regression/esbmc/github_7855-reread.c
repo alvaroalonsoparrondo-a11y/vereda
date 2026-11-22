@@ -8,7 +8,7 @@ int main(void)
   if (!slots)
     return 0;
 
-  unsigned long i = nondet_ulong();
+  unsigned long i = __VERIFIER_nondet_ulong();
   __VERIFIER_assume(i < 2);
 
   const void **slot = &slots[i];

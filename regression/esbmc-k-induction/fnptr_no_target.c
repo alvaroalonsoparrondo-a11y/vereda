@@ -1,12 +1,12 @@
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
   void (*f)(void) = 0;
-  if (nondet_int())
+  if (__VERIFIER_nondet_int())
     f();
 
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   __VERIFIER_assume(n > 0);
 
   int x = 0;

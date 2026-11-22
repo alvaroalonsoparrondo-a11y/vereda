@@ -3,8 +3,8 @@
 // at the first because it holds before the loop.
 int main()
 {
-  int x = nondet_int();
-  int y = nondet_int();
+  int x = __VERIFIER_nondet_int();
+  int y = __VERIFIER_nondet_int();
   if (!(x == y && y >= 0))
     return 0;
   while (x != 0)

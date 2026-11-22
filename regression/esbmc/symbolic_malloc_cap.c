@@ -7,11 +7,11 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-size_t nondet_size(void);
+size_t __VERIFIER_nondet_size(void);
 
 int main(void)
 {
-  size_t n = nondet_size();
+  size_t n = __VERIFIER_nondet_size();
   __VERIFIER_assume(n > (size_t)PTRDIFF_MAX && n <= 0xFFFFFFFFFFFFFF00UL);
 
   char *b = malloc(n);

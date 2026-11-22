@@ -5,7 +5,7 @@ typedef _Bool bool;
 
 int main()
 {
-  bool v = nondet_bool();
+  bool v = __VERIFIER_nondet_bool();
   memset(&v, 0, sizeof(v) + 2);
 }
 // Imported from ESBMC regression/esbmc/github_1458-false

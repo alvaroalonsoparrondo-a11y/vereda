@@ -7,7 +7,7 @@
  * also how every write through a pointer into a struct is encoded, so
  * treating it as an int-to-pointer cast exhausted memory on
  * esbmc-cpp/cpp/ch9_7. */
-uintptr_t nondet_uintptr(void);
+uintptr_t __VERIFIER_nondet_uintptr(void);
 struct S
 {
   int *p;
@@ -17,7 +17,7 @@ int main(void)
   int a = 1, b = 2;
   int *q = &a;
   (void)q;
-  uintptr_t i = nondet_uintptr();
+  uintptr_t i = __VERIFIER_nondet_uintptr();
   struct S s;
   memcpy(&s, &i, sizeof s);
   __VERIFIER_assert(

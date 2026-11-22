@@ -1,8 +1,8 @@
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main() { 
 
   int fail=0;
-  int x=nondet_int();
+  int x=__VERIFIER_nondet_int();
   __VERIFIER_assume(x>0);
   while(x>0) {
     if(fail==1) {

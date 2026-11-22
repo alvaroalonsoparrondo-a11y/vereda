@@ -16,7 +16,7 @@ void VLA_size(unsigned int size)
 
 int main()
 {
-  unsigned int foo = nondet_uint();
+  unsigned int foo = __VERIFIER_nondet_uint();
   __VERIFIER_assume(foo > 0);
   __VERIFIER_assume(foo < 100000);
   VLA_size(foo);

@@ -7,13 +7,13 @@ void f(void)
 {
 }
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
   char buf[4] = {1, 2, 3, 4};
   char dst[4] = {0};
-  const void *p = nondet_int() ? (const void *)f : (const void *)buf;
+  const void *p = __VERIFIER_nondet_int() ? (const void *)f : (const void *)buf;
   memcpy(dst, p, sizeof dst);
   if (p == (const void *)buf)
     assert(dst[0] == 1);

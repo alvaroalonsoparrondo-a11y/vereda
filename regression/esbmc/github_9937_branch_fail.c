@@ -1,6 +1,6 @@
 /* #9937: the out-of-bounds pointer reaches the union write through a
  * merge of two branches. */
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main()
 {
@@ -15,7 +15,7 @@ int main()
   } u;
   int arr[2];
   int x;
-  int c = nondet_int();
+  int c = __VERIFIER_nondet_int();
   if (c)
     u.p = arr + 100;
   else

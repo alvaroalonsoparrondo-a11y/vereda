@@ -13,7 +13,7 @@ int main(void)
   assert(k == 3);
   int r = snprintf(buf, sizeof buf, "%n%d", &n, 45);
   assert(n == 0 && r == 2);
-  int x = nondet_int(), w = -1;
+  int x = __VERIFIER_nondet_int(), w = -1;
   printf("%d%n", x, &w);
   assert(w >= 1 && w <= 11);
   return 0;

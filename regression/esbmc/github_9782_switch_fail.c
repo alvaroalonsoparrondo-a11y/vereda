@@ -1,9 +1,9 @@
 // #9782: case 1 skips j's initializer, so j is indeterminate there
 #include <assert.h>
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int main(void)
 {
-  switch (nondet_int())
+  switch (__VERIFIER_nondet_int())
   {
   case 0:
   {

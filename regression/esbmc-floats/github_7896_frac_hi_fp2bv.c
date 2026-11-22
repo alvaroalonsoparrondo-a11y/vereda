@@ -4,11 +4,11 @@
  * reject instead of answering. */
 #include <assert.h>
 
-_Float16 nondet_h(void);
+_Float16 __VERIFIER_nondet_h(void);
 
 int main(void)
 {
-  _Float16 x = nondet_h();
+  _Float16 x = __VERIFIER_nondet_h();
   __VERIFIER_assume((float)x == 1.0f);
   _Float16 y = x + (_Float16)0x1p-11f;
   assert(y != x);

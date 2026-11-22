@@ -182,7 +182,7 @@ static const struct entry table[2048] = {
 
 int main(void)
 {
-  unsigned i = nondet_uint();
+  unsigned i = __VERIFIER_nondet_uint();
   __VERIFIER_assume(i < 2048);
   __VERIFIER_assert(table[i].kind != 6); // some kind is 6
   __VERIFIER_assert(table[i].len != 6141); // the last len is 6141

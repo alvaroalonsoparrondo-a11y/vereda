@@ -1,9 +1,9 @@
 // #9782: only the path that runs j's initializer may rely on its value
 #include <assert.h>
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int main(void)
 {
-  int took = nondet_int();
+  int took = __VERIFIER_nondet_int();
   if (took)
     goto J;
   unsigned char j = 3;

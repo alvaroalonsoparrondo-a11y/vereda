@@ -3,13 +3,13 @@
 // havoc of p, so p cannot be traced to its assignments in the body.
 #include <stdlib.h>
 #include <assert.h>
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 int *d, *e;
 unsigned n;
 void step(void)
 {
   int *p = d;
-  int j = nondet_int();
+  int j = __VERIFIER_nondet_int();
   while (j > 0)
   {
     p = e;

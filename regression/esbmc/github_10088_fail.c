@@ -6,7 +6,7 @@ struct S
 struct S s[4];
 int main(void)
 {
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i == 0 || i == 2);
   unsigned char *p = (unsigned char *)&s[i] + 4;
   *(unsigned int *)p = 0x00020001u;

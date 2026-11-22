@@ -1,11 +1,11 @@
-double nondet_double(void);
+double __VERIFIER_nondet_double(void);
 
 /* Each value is chosen so that the four predicates disagree on it: an infinity
    separates isinf from isnan and isfinite, and a zero separates isnormal from
    isfinite. A test over 1.0 alone cannot tell any of them apart. */
 int main(void)
 {
-  double d = nondet_double(), z = nondet_double();
+  double d = __VERIFIER_nondet_double(), z = __VERIFIER_nondet_double();
   __VERIFIER_assume(d == 1.0 && z == 0.0);
   const double i = __builtin_inf();
 

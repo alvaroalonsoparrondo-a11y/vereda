@@ -3,12 +3,12 @@
 // the concrete x == 0. The bug at x == 50 is past the unwinding bound.
 #include <assert.h>
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main()
 {
   int x = 0;
-  if (nondet_int())
+  if (__VERIFIER_nondet_int())
   {
     x = 7;
     goto out;

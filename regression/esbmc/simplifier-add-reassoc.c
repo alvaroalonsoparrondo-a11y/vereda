@@ -1,11 +1,11 @@
 #include <assert.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main()
 {
-  int x = nondet_int();
-  int y = nondet_int();
+  int x = __VERIFIER_nondet_int();
+  int y = __VERIFIER_nondet_int();
   int c1 = 3, c2 = 4;
 
   // LLVM-style reassoc: A + (B + C) -> (A + B) + C when A+B simplifies.

@@ -2,8 +2,8 @@
 
 int main(void) 
 {
-  _Bool x = nondet_bool();
-  _Bool y = nondet_bool();
+  _Bool x = __VERIFIER_nondet_bool();
+  _Bool y = __VERIFIER_nondet_bool();
 
   // -------------------------------------------------
   // Boolean algebra laws
@@ -23,8 +23,8 @@ int main(void)
   assert((!!x) == x);
 
   // Logical De Morgan's laws
-  int a = nondet_int();
-  int b = nondet_int();
+  int a = __VERIFIER_nondet_int();
+  int b = __VERIFIER_nondet_int();
 
   assert((!(a && b)) == (!a || !b));
   assert((!a || !b) == (!(a && b)));
@@ -57,7 +57,7 @@ int main(void)
   // -------------------------------------------------
   // Unsigned relational simplification
   // -------------------------------------------------
-  unsigned u = nondet_uint();
+  unsigned u = __VERIFIER_nondet_uint();
   assert((u >= 0) == 1);
 
   return 0;

@@ -4,11 +4,11 @@
  * SSA value unchanged. */
 #include <assert.h>
 
-unsigned long nondet_ulong(void);
+unsigned long __VERIFIER_nondet_ulong(void);
 
 int main(void)
 {
-  int *p = (int *)nondet_ulong();
+  int *p = (int *)__VERIFIER_nondet_ulong();
   int a = *p;
   *p = a + 1;
   int b = *p;

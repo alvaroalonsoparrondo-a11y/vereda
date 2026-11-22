@@ -1,13 +1,13 @@
 typedef unsigned long ulong;
-extern ulong nondet_ulong();
+extern ulong __VERIFIER_nondet_ulong();
 
 #include <limits.h>
 #include <assert.h>
 
 int main()
 {
-  ulong content_len = nondet_ulong();
-  ulong digit = nondet_ulong() % 10; // Simulate a single digit (0-9)
+  ulong content_len = __VERIFIER_nondet_ulong();
+  ulong digit = __VERIFIER_nondet_ulong() % 10; // Simulate a single digit (0-9)
   int overflow_detected = (content_len > (ULONG_MAX - digit) / 10UL);
   int overflow_detected_builtin = 0;
   // First argument will be overwritten with the result if no overflow occurs

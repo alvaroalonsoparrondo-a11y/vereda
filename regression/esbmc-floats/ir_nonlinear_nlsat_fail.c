@@ -9,8 +9,8 @@
 int main(void)
 {
   fesetround(FE_UPWARD); /* ROUND_TO_PLUS_INF */
-  float x = nondet_float();
-  float y = nondet_float();
+  float x = __VERIFIER_nondet_float();
+  float y = __VERIFIER_nondet_float();
   float z = x * y;
   float w = z * z;
 

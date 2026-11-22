@@ -17,14 +17,14 @@ typedef union {
 
 slot_t stack[8];
 
-int16_t nondet_s2(void);
-uint8_t nondet_u1(void);
+int16_t __VERIFIER_nondet_s2(void);
+uint8_t __VERIFIER_nondet_u1(void);
 
 int main(void) {
-    uint8_t sp = nondet_u1();
+    uint8_t sp = __VERIFIER_nondet_u1();
     __VERIFIER_assume(sp >= 1 && sp < 8);
 
-    int16_t val = nondet_s2();
+    int16_t val = __VERIFIER_nondet_s2();
     stack[sp - 1].s = val;
 
     /* Direct union copy at symbolic offset - failed before fix */

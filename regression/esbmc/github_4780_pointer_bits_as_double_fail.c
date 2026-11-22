@@ -1,11 +1,11 @@
 #include <assert.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int x, y;
 
 int main()
 {
-  int *p = nondet_int() ? &x : &y;
+  int *p = __VERIFIER_nondet_int() ? &x : &y;
   void *v = &p;
   double d = *(double *)v;
   double e = *(double *)&p;

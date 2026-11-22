@@ -4,8 +4,8 @@
 int main()
 {
     // Non-deterministic choice of indices
-    int kernel_index = nondet_int();
-    int user_index = nondet_int();
+    int kernel_index = __VERIFIER_nondet_int();
+    int user_index = __VERIFIER_nondet_int();
 
     // Constrain the indices to be within valid ranges
     __VERIFIER_assume(kernel_index >= 0 && kernel_index < KERNEL_MEMORY_SPACE);

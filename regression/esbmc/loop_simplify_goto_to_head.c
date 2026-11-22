@@ -10,11 +10,11 @@
  * ASSIGN) and rewrite the head to ASSIGN i=12, masking the i=10 path
  * and the assertion failure it produces. */
 #include <assert.h>
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main()
 {
   int i = 1;
-  if (nondet_int())
+  if (__VERIFIER_nondet_int())
     goto L;
   i = 0;
 L:

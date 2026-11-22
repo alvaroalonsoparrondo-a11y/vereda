@@ -1,17 +1,17 @@
 // Under --ir integers are unbounded, so ~b must be -b - 1 for every b, not
 // the 64-bit complement (#10596). --no-simplify keeps the simplifier from
 // rewriting ~b + 1 as -b before the solver sees it.
-unsigned nondet_uint(void);
-long long nondet_longlong(void);
+unsigned __VERIFIER_nondet_uint(void);
+long long __VERIFIER_nondet_longlong(void);
 
 int main(void)
 {
-  unsigned b = nondet_uint();
+  unsigned b = __VERIFIER_nondet_uint();
   __VERIFIER_assume(b <= 10);
   unsigned y = ~b + 1u;
   __VERIFIER_assert(y + b == 0); // ~b + 1 == -b
 
-  long long x = nondet_longlong();
+  long long x = __VERIFIER_nondet_longlong();
   __VERIFIER_assert(~x == -x - 1); // ~x == -x - 1
   return 0;
 }

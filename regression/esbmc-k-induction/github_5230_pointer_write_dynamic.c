@@ -7,7 +7,7 @@
 // warning is emitted and the inductive step is disabled. This safe program
 // is then proven by the forward condition.
 #include <stdlib.h>
-extern unsigned char nondet_uchar(void);
+extern unsigned char __VERIFIER_nondet_uchar(void);
 
 int main(void)
 {
@@ -15,7 +15,7 @@ int main(void)
   __VERIFIER_assume(dest != 0);
 
   for (int i = 0; i < 8; i++)
-    (*dest)[i] = nondet_uchar(); // index through a pointer to a dynamic object
+    (*dest)[i] = __VERIFIER_nondet_uchar(); // index through a pointer to a dynamic object
 
   return 0;
 }

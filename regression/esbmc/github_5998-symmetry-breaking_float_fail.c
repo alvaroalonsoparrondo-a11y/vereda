@@ -1,8 +1,8 @@
-float nondet_float(void);
+float __VERIFIER_nondet_float(void);
 
 int main()
 {
-  float x = nondet_float();
+  float x = __VERIFIER_nondet_float();
   float max = 0.0f;
   if (x > max)
     max = x;

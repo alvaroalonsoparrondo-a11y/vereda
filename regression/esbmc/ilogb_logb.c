@@ -3,7 +3,7 @@
 #include <limits.h>
 #include <math.h>
 
-double nondet_double();
+double __VERIFIER_nondet_double();
 
 int main()
 {
@@ -17,7 +17,7 @@ int main()
   assert(logb(0.0) == -INFINITY);
   assert(logb(-INFINITY) == INFINITY);
 
-  double x = nondet_double();
+  double x = __VERIFIER_nondet_double();
   __VERIFIER_assume(x >= 1.0 && x < 2.0);
   assert(ilogb(x) == 0);
   assert(logb(-x) == 0.0);

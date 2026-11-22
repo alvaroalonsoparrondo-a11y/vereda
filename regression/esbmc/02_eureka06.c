@@ -3,7 +3,7 @@ int a[20];
 
 int main(){
   i=0;
-  i=nondet_int();
+  i=__VERIFIER_nondet_int();
   if(i>0){
     while(i<20){
       a[i]=i;

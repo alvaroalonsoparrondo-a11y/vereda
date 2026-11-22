@@ -17,7 +17,7 @@ void *writer(void *arg)
 int main(void)
 {
   pthread_t t;
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 0 && i < 2);
   ap = &a[i];
   pthread_create(&t, 0, writer, 0);

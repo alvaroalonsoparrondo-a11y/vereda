@@ -11,7 +11,7 @@ int main()
   for (int i = 0; i < 96; i++)
     src[i] = 5;
 
-  unsigned long n = nondet_ulong();
+  unsigned long n = __VERIFIER_nondet_ulong();
   __VERIFIER_assume(n == 2);
 
   memcpy(dst, src, n);

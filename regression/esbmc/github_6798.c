@@ -11,7 +11,7 @@ int main(void)
   if (!t)
     return 0;
 
-  int v = nondet_int();
+  int v = __VERIFIER_nondet_int();
   if (v != 0)
   {
     t->p = 1;

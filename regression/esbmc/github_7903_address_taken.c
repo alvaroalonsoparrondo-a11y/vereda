@@ -8,7 +8,7 @@ _start:
         unsigned *p = &t;
         if (r >= 2) { __VERIFIER_assert(r == 2); return 0; } // r == 2
         t = r + 1;
-        if (nondet_int() != 0) { r = t; goto _start; }
+        if (__VERIFIER_nondet_int() != 0) { r = t; goto _start; }
         *p = t + 5;
         r = t - 5; goto _start;
     }

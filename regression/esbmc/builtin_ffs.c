@@ -4,7 +4,7 @@
 // the right interval would still be wrong. #183
 #include <assert.h>
 
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 
 static int ref_ffs(unsigned v)
 {
@@ -16,7 +16,7 @@ static int ref_ffs(unsigned v)
 
 int main(void)
 {
-  unsigned v = nondet_uint();
+  unsigned v = __VERIFIER_nondet_uint();
   assert(__builtin_ffs((int)v) == ref_ffs(v));
 
   // Zero is defined for ffs, unlike clz and ctz.
@@ -38,7 +38,7 @@ int main(void)
   assert(__builtin_ffsll(1LL << 60) == 61);
 
   // ffs is ctz + 1 wherever ctz is defined.
-  unsigned u = nondet_uint();
+  unsigned u = __VERIFIER_nondet_uint();
   __VERIFIER_assume(u != 0);
   assert(__builtin_ffs((int)u) == __builtin_ctz(u) + 1);
 

@@ -3,14 +3,14 @@
 #include <assert.h>
 #include <math.h>
 
-double nondet_double(void);
+double __VERIFIER_nondet_double(void);
 
 int main(void)
 {
   double _Complex a, b;
   __real__ a = INFINITY;
   __imag__ a = INFINITY;
-  __real__ b = nondet_double();
+  __real__ b = __VERIFIER_nondet_double();
   __imag__ b = 0.0;
   __VERIFIER_assume(isfinite(__real__ b) && __real__ b != 0);
   double _Complex r = a * b;

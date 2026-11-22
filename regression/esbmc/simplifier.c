@@ -2,8 +2,8 @@
 
 int main()
 {
-  int x = nondet_int();
-  int y = nondet_int();
+  int x = __VERIFIER_nondet_int();
+  int y = __VERIFIER_nondet_int();
 
   // x + (y - x) -> y
   assert((x + (y - x)) == y);
@@ -17,8 +17,8 @@ int main()
   // x + ~x -> -1
   assert((x + ~x) == -1);
 
-  _Bool a = nondet_bool();
-  _Bool b = nondet_bool();
+  _Bool a = __VERIFIER_nondet_bool();
+  _Bool b = __VERIFIER_nondet_bool();
 
   // (a | ~b) & (a | b) --> a
   assert(((a | ~b) & (a | b)) == a);

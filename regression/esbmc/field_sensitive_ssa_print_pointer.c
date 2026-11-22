@@ -20,7 +20,7 @@ struct pair
 struct node *alias;
 struct container *container;
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
@@ -30,7 +30,7 @@ int main(void)
   alias = storage;
   alias->next = &container->node;
   struct node copy = *(struct node *)storage;
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   struct pair t = {x, 2};
   t = (struct pair){t.b, t.a};
   assert(copy.next == &container->node && t.a == 2 && t.b == x);

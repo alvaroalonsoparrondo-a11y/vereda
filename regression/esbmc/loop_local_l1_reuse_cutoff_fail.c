@@ -1,8 +1,8 @@
-int nondet_int();
+int __VERIFIER_nondet_int();
 int g(int d)
 {
   if (d == 3)
-    return nondet_int();
+    return __VERIFIER_nondet_int();
   int a = 0, b = 0;
   for (int i = 0; i < 2; i++)
   {

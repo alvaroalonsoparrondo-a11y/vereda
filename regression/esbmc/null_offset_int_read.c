@@ -4,7 +4,7 @@ struct dev {
 };
 
 struct dev d;
-_Bool nondet_bool(void);
+_Bool __VERIFIER_nondet_bool(void);
 
 void *detach(struct dev *dev) {
   unsigned long a = (unsigned long)dev;
@@ -13,7 +13,7 @@ void *detach(struct dev *dev) {
 }
 
 int main() {
-  struct dev *p = nondet_bool() ? &d : 0;
+  struct dev *p = __VERIFIER_nondet_bool() ? &d : 0;
   if (p)
     return detach(p) != 0;
   return 0;

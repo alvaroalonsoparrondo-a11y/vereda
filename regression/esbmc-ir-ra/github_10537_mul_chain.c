@@ -1,7 +1,7 @@
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int main()
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x >= 1 && x <= 3);
   int y = x * 65536 * 65536;
   __VERIFIER_assert(y != 0); // 2^16 * 2^16 is folded only if it fits

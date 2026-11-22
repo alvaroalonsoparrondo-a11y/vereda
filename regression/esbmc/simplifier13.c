@@ -2,9 +2,9 @@
 
 int main()
 {
-  float c = nondet_float();
-  float d = nondet_float();
-  float e = nondet_float();
+  float c = __VERIFIER_nondet_float();
+  float d = __VERIFIER_nondet_float();
+  float e = __VERIFIER_nondet_float();
 
   // Pattern: d + c == d + e -> c == e
 
@@ -20,12 +20,12 @@ int main()
   // Variation 4: (c + d) == (e + d) [both commutative]
   assert(((c + d) == (e + d)) == (c == e));
 
-  float b = nondet_float();
+  float b = __VERIFIER_nondet_float();
 
   //  d + b == c + d  ->  b == c
   assert(((d + b) == (c + d)) == (b == c));
 
-  float a = nondet_float();
+  float a = __VERIFIER_nondet_float();
 
   // a + c == c + d  ->  a == d
   assert(((a + c) == (c + d)) == (a == d));

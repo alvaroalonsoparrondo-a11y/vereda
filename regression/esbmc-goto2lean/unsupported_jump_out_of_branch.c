@@ -1,6 +1,6 @@
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 int main(void) {
-  unsigned a = nondet_uint(), b = nondet_uint(), x = 0;
+  unsigned a = __VERIFIER_nondet_uint(), b = __VERIFIER_nondet_uint(), x = 0;
   if (a) {
     if (b) {
       x = 1;

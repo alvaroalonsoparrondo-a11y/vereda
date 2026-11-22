@@ -3,7 +3,7 @@
 
 #define MAX 5
 
-char nondet_char();
+char __VERIFIER_nondet_char();
 
 main()
 {
@@ -12,11 +12,11 @@ main()
   
   
   for(i=0; i<MAX; i++)
-    string_A[i]=nondet_char();    
+    string_A[i]=__VERIFIER_nondet_char();    
   __VERIFIER_assume(string_A[MAX-1]=='\0');
 
   for(i=0; i<MAX; i++)
-    string_B[i]=nondet_char();    
+    string_B[i]=__VERIFIER_nondet_char();    
   __VERIFIER_assume(string_B[MAX-1]=='\0');
 
   // captura o número de caracteres de da string A

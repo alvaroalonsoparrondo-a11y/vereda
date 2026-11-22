@@ -3,11 +3,11 @@
  * assumes contradict, so the assert below is discharged on a dead path. */
 #include <assert.h>
 
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x > 0);
   __VERIFIER_assume(x < 0);
 

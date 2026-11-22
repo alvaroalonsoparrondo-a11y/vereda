@@ -2,10 +2,10 @@
 
 int main()
 {
-  int x = nondet_int();
-  int a = nondet_int();
-  int b = nondet_int();
-  int c = nondet_int();
+  int x = __VERIFIER_nondet_int();
+  int a = __VERIFIER_nondet_int();
+  int b = __VERIFIER_nondet_int();
+  int c = __VERIFIER_nondet_int();
 
   // Existing basic tests
   assert((x && !x) == 0);

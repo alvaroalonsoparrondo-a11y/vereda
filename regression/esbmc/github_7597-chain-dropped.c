@@ -6,14 +6,14 @@
 
 int a[1025];
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
   int i;
 
   for (i = 0; i < 1025; i = i + 1)
-    a[i] = nondet_int();
+    a[i] = __VERIFIER_nondet_int();
 
   assert(i == 1025);
   return 0;

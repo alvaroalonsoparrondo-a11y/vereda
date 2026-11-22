@@ -1,6 +1,6 @@
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 int main(void) {
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   unsigned s = 0, i = 0;
   while (i < n) {
     s = s + 1;

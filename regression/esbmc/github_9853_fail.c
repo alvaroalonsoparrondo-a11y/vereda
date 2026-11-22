@@ -14,7 +14,7 @@ static void fill(uint32_t *dst, uint32_t n, uint32_t v)
 }
 int main(void)
 {
-  unsigned int k = nondet_uint();
+  unsigned int k = __VERIFIER_nondet_uint();
   __VERIFIER_assume(k < 4);
   g.cfg = 1;
   g.tail = 2;

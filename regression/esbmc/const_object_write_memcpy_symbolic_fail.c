@@ -3,7 +3,7 @@ const int t[2] = {1, 2};
 int main()
 {
   int s[2] = {7, 8};
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n > 0 && n <= sizeof t);
   memcpy((void *)t, s, n);
   return 0;

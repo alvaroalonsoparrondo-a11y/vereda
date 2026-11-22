@@ -2,21 +2,21 @@
 // read back must still keep the latest ones rather than lose them all.
 #include <stdlib.h>
 
-const void *nondet_ptr(void);
+const void *__VERIFIER_nondet_ptr(void);
 
 int main(void)
 {
-  unsigned long n = nondet_ulong();
+  unsigned long n = __VERIFIER_nondet_ulong();
   __VERIFIER_assume(n >= 42 && n <= 44);
   const void **slots = malloc(n * sizeof(void *));
   if (!slots)
     return 0;
 
   for (int k = 0; k < 40; ++k)
-    slots[k] = nondet_ptr();
+    slots[k] = __VERIFIER_nondet_ptr();
 
   const void *key;
-  unsigned long i = nondet_ulong();
+  unsigned long i = __VERIFIER_nondet_ulong();
   __VERIFIER_assume(i >= 40 && i < n);
   slots[i] = key;
 

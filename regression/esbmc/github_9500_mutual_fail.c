@@ -1,9 +1,9 @@
 #include <assert.h>
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 void g(_Bool r, int *p);
 
 void f(_Bool r, int *p) {
-  int l = nondet_int();
+  int l = __VERIFIER_nondet_int();
   if (r) {
     *p = 20;
     __VERIFIER_assume(l == 30);

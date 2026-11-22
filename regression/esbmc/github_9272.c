@@ -2,12 +2,12 @@
 
 /* Casting a local's address back from an integer must yield the local, even
  * when the slicer drops every step taking its address before the cast. */
-uintptr_t nondet_uintptr(void);
+uintptr_t __VERIFIER_nondet_uintptr(void);
 int main(void)
 {
   int a;
   uintptr_t ua = (uintptr_t)&a;
-  uintptr_t x = nondet_uintptr();
+  uintptr_t x = __VERIFIER_nondet_uintptr();
   int *p = (int *)x;
   if (x == ua)
     __VERIFIER_assert(p == &a); // cast of a's address is &a

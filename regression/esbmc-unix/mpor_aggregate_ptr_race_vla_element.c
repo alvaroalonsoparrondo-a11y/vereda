@@ -1,7 +1,7 @@
 #include <pthread.h>
 #include <assert.h>
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int g = 0;
 int **pp;
@@ -22,7 +22,7 @@ void *writer(void *arg)
 int main(void)
 {
   pthread_t t;
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   __VERIFIER_assume(n >= 1 && n <= 2);
   int *arr[2][n];
   arr[0][0] = &g;

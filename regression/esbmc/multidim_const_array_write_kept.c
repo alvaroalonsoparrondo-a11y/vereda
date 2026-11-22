@@ -9,7 +9,7 @@
 int main(void)
 {
   int r[2][2];
-  _Bool c = nondet_bool();
+  _Bool c = __VERIFIER_nondet_bool();
 
   __VERIFIER_assume(c);
   if (c)

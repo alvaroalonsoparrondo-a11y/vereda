@@ -8,7 +8,7 @@
 
 void *malloc(unsigned size);
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 int x, y, z;
 
 // Account structure
@@ -66,9 +66,9 @@ int main()
   PACCOUNT acc;
 
   // Initialization
-  x = nondet_int(); //balance
-  y = nondet_int(); //deposit
-  z = nondet_int(); //withdraw
+  x = __VERIFIER_nondet_int(); //balance
+  y = __VERIFIER_nondet_int(); //deposit
+  z = __VERIFIER_nondet_int(); //withdraw
   acc = create(x);
 
   // Threads

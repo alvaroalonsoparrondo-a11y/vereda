@@ -8,11 +8,11 @@
  * exact SMT real. */
 #include <assert.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 16777216 && i <= 16777218);
   float f = (float)i;
   int j = (int)f;

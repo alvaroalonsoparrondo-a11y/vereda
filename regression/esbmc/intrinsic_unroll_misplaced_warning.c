@@ -2,12 +2,12 @@
  * a loop produces a warning instead of being silently ignored.
  */
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main()
 {
   __ESBMC_unroll(5);
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   if(x > 0)
     x = 1;
 

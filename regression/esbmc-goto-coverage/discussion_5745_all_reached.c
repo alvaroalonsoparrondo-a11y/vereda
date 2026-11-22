@@ -1,8 +1,8 @@
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main()
 {
-  int a = nondet_int();
+  int a = __VERIFIER_nondet_int();
   __VERIFIER_assert(a == a); // a equals itself
   if (a > 0)
     __VERIFIER_assert(a > 0); // positive branch

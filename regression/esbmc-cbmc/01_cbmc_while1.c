@@ -18,8 +18,8 @@ int main () {
   b[0] = 2;
   
   for (int i = 1; i < MAX; i++) {
-    a[i] = nondet_char();
-    b[i] = nondet_char();
+    a[i] = __VERIFIER_nondet_char();
+    b[i] = __VERIFIER_nondet_char();
   }
 
   cmp_str(a, b, MAX);

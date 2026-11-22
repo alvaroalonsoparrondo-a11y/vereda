@@ -3,11 +3,11 @@
 // well-defined range [0, width), no UB is reported.
 #include <assert.h>
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main()
 {
-  int a = nondet_int();
+  int a = __VERIFIER_nondet_int();
   __VERIFIER_assume(a >= 0 && a < 32);
   assert((0 >> a) == 0);
   return 0;

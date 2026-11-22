@@ -1,11 +1,11 @@
 
 #include <assert.h>
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main()
 {
-  int x = nondet_int(); // input
-  int y = nondet_int(); // input
-  int z = nondet_int(); // input
+  int x = __VERIFIER_nondet_int(); // input
+  int y = __VERIFIER_nondet_int(); // input
+  int z = __VERIFIER_nondet_int(); // input
   int *r1 = &x;
   int *r2 = &y;
   while(z > 0)

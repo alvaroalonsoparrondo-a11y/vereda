@@ -1,5 +1,5 @@
 // #8055
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 void f(int n, int d)
 {
@@ -20,7 +20,7 @@ void f(int n, int d)
 
 int main()
 {
-  f(nondet_int(), 1);
+  f(__VERIFIER_nondet_int(), 1);
 }
 // Imported from ESBMC regression/esbmc/github_8055_recursion
 // EXPECT: ^VERIFICATION FAILED$

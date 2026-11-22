@@ -4,12 +4,12 @@
  * ASSIGN for Path 2, an assume for Path 1) and fall through past the
  * SKIPs with the pre-loop value. */
 #include <assert.h>
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main()
 {
   int i = 99;
   int j = 99;
-  if (nondet_int())
+  if (__VERIFIER_nondet_int())
     goto L;
   i = 0;
   j = 0;

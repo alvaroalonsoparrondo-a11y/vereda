@@ -4,13 +4,13 @@
    irep2_only_complex_unary's double one. Split from it because both element
    types in one formula take z3 past the Windows job's limit. */
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
   int _Complex a;
-  __real__ a = nondet_int();
-  __imag__ a = nondet_int();
+  __real__ a = __VERIFIER_nondet_int();
+  __imag__ a = __VERIFIER_nondet_int();
   int ar = __real__ a, ai = __imag__ a;
   __VERIFIER_assume(ar >= 1 && ar <= 4 && ai >= 1 && ai <= 4);
 

@@ -1,8 +1,8 @@
-double nondet_double();
+double __VERIFIER_nondet_double();
 
 int main()
 {
-  double x = nondet_double();
+  double x = __VERIFIER_nondet_double();
   assert(x==x);
   return 0;
 }

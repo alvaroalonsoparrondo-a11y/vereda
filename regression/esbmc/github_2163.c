@@ -13,8 +13,8 @@
 
 int main()
 {
-  int x = nondet_int();
-  int y = nondet_int();
+  int x = __VERIFIER_nondet_int();
+  int y = __VERIFIER_nondet_int();
 
   __VERIFIER_assume(x < 100);
   __VERIFIER_assume(x > 0);

@@ -1,6 +1,6 @@
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 int main(void) {
-  unsigned x = nondet_uint(), y = nondet_uint();
+  unsigned x = __VERIFIER_nondet_uint(), y = __VERIFIER_nondet_uint();
   __VERIFIER_assume(y == 0 && x == 7);
   unsigned q = x / y;
   __VERIFIER_assert(q == 0); // q

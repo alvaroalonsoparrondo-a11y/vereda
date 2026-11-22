@@ -1,12 +1,12 @@
 #include <assert.h>
 #include <string.h>
 
-unsigned nondet_uint();
+unsigned __VERIFIER_nondet_uint();
 
 int main()
 {
   char a[4] = {1, 2, 3, 4}, b[4] = {1, 2, 3, 5};
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n <= 4);
   // A null operand is fine when no byte is read (C2y 7.26.1, N3322).
   char *p = n ? a : 0;

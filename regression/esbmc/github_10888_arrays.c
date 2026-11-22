@@ -9,11 +9,11 @@ struct T
 {
   unsigned char a[2], b[2];
 };
-unsigned char nondet_uchar(void);
+unsigned char __VERIFIER_nondet_uchar(void);
 int main(void)
 {
   struct T t = {
-    {nondet_uchar(), nondet_uchar()}, {nondet_uchar(), nondet_uchar()}};
+    {__VERIFIER_nondet_uchar(), __VERIFIER_nondet_uchar()}, {__VERIFIER_nondet_uchar(), __VERIFIER_nondet_uchar()}};
   struct G g = *(struct G *)&t;
   assert(g.f1[0] == t.a[0] && g.f1[1] == t.a[1]);
   assert(g.f2[0] == t.b[0] && g.f2[1] == t.b[1]);

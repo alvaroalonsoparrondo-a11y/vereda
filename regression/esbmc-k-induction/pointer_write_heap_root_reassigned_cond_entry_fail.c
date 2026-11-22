@@ -3,13 +3,13 @@
 // reassigned and the inductive step stays off.
 #include <assert.h>
 #include <stdlib.h>
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 int main()
 {
   int *buf = malloc(sizeof(int) * 2);
   int *p;
   int i = 0, x = 0;
-  if (nondet_int())
+  if (__VERIFIER_nondet_int())
     goto test;
   return 0;
 body:

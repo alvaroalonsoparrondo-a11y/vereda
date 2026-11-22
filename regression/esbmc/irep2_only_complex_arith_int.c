@@ -1,6 +1,6 @@
 #include <assert.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
@@ -10,8 +10,8 @@ int main(void)
      formula is not restated on both sides of the comparison. */
   int _Complex a = 4, b = 0;
   __imag__ a = 2;
-  __real__ b = nondet_int();
-  __imag__ b = nondet_int();
+  __real__ b = __VERIFIER_nondet_int();
+  __imag__ b = __VERIFIER_nondet_int();
   int br = __real__ b, bi = __imag__ b;
   __VERIFIER_assume(br >= 1 && br <= 4 && bi >= 1 && bi <= 4);
 

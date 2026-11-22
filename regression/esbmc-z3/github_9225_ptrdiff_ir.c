@@ -2,7 +2,7 @@
  * toward zero, for power-of-two and other element sizes alike. */
 #include <assert.h>
 
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 int a[10];
 struct s
 {
@@ -11,7 +11,7 @@ struct s
 
 int main(void)
 {
-  unsigned i = nondet_uint();
+  unsigned i = __VERIFIER_nondet_uint();
   __VERIFIER_assume(i < 10);
   assert(&a[i] - a == i);
   assert(a - &a[i] == -(long)i);

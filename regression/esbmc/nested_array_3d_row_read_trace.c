@@ -3,12 +3,12 @@
  * -- get()'s row lowering runs only while a counterexample is built, and a
  * SUCCESSFUL run builds none -- so it guards the verdict rather than gating
  * the fix. The _fail twin is the one that aborts without it. */
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
   int a[2][2][2];
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 0 && i < 2);
 
   a[1][1][0] = 5;

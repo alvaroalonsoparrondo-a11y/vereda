@@ -28,11 +28,11 @@ struct io
 struct plc VAR;
 struct io IO;
 
-unsigned int nondet_uint(void);
+unsigned int __VERIFIER_nondet_uint(void);
 
 int main(void)
 {
-  IO.in = nondet_uint();
+  IO.in = __VERIFIER_nondet_uint();
   /* A merge point, so IO carries no propagated constant afterwards. */
   if (IO.in > 1000u)
     IO.in = 1000u;

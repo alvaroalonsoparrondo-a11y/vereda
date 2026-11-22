@@ -2,7 +2,7 @@ struct S { unsigned short x; unsigned short c : 9; unsigned d : 7; };
 struct S s[2];
 int main(void)
 {
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 0 && i < 2);
   *(unsigned short *)((char *)&s[i] + 2) = 0x7FFFu;
   __VERIFIER_assert(s[i].d == 0); // d

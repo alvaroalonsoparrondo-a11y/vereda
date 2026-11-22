@@ -1,8 +1,8 @@
 #include <assert.h>
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int main(void)
 {
-  int v = nondet_int();
+  int v = __VERIFIER_nondet_int();
   switch (v)
   {
   case 1 ... 5:

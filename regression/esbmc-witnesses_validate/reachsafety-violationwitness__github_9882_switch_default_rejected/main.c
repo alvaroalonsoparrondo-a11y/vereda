@@ -1,10 +1,10 @@
 /* #9882: a default waypoint rules out case 1, so the witness is refuted. */
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main()
 {
   int y = 0;
-  switch (nondet_int())
+  switch (__VERIFIER_nondet_int())
   {
   case 1:
     y = 1;

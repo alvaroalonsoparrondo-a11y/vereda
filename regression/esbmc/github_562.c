@@ -1,5 +1,5 @@
 #include <assert.h>
-extern unsigned nondet_uint(void);
+extern unsigned __VERIFIER_nondet_uint(void);
 int main(void)
 {
   /* narrowing: long double (128-bit fixedbv) -> unsigned long (64) */
@@ -12,7 +12,7 @@ int main(void)
   assert((int)frac == 3);
 
   /* widening: float (32-bit fixedbv) -> long (64) */
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n < 100);
   float f = n;
   assert((long)f == (long)n);

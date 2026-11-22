@@ -3,7 +3,7 @@
 #include <math.h>
 #include <fenv.h>
 
-float nondet_value();
+float __VERIFIER_nondet_value();
 
 // Should work without this as it defaults to off.
 // It is explicitly ignored by GCC
@@ -40,8 +40,8 @@ int main (void)
   roundingTest(f1,f2);
 
   // Test with bitwise model
-  float f3 = nondet_value();
-  float f4 = nondet_value();
+  float f3 = __VERIFIER_nondet_value();
+  float f4 = __VERIFIER_nondet_value();
 
   __VERIFIER_assume((0x1.fffffep-1f < f3) && (f3 < 0x1.000002p+0f));
   __VERIFIER_assume((0x1.7ffffep-24f < f4) && (f4 < 0x1.800002p-24f));

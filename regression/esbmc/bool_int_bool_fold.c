@@ -1,12 +1,12 @@
 // Widening a _Bool yields exactly 0 or 1, so comparing it against zero
 // recovers the bool. The simplifier folds that round trip away; these
 // assertions pin the semantics it must preserve while doing so. #4626.
-_Bool nondet_bool(void);
-int nondet_int(void);
+_Bool __VERIFIER_nondet_bool(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  _Bool b = nondet_bool();
+  _Bool b = __VERIFIER_nondet_bool();
 
   __VERIFIER_assert(((int)b != 0) == b); // (int)b != 0 is b
   __VERIFIER_assert(((int)b == 0) == !b); // (int)b == 0 is !b
@@ -19,7 +19,7 @@ int main(void)
 
   // The reverse trip keeps only whether i was non-zero, so it is not the
   // identity on i. Folding it away would be unsound.
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i == 2);
   __VERIFIER_assert((int)(_Bool)i == 1); // (int)(_Bool)2 is 1, not 2
 

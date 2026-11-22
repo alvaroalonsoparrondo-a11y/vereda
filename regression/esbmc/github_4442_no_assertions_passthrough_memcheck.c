@@ -13,11 +13,11 @@ extern void __assert_fail(const char *, const char *, unsigned int,
                           const char *)
     __attribute__((__nothrow__)) __attribute__((__noreturn__));
 
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   int *p = (int *)0;
   if (x == 42)
   {

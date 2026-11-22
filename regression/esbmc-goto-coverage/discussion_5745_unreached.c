@@ -1,4 +1,4 @@
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 /* Branches hold two assertions each so goto_convert's guarded-assertion
    folding (which only fires on a single assert(false) branch body) does not
@@ -16,7 +16,7 @@ int main()
     __VERIFIER_assert(1); // dead concrete else B
   }
 
-  int a = nondet_int();
+  int a = __VERIFIER_nondet_int();
   if (a % 2)
     ++a;
   __VERIFIER_assert(a % 2 == 0); // a is even

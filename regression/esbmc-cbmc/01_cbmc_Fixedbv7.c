@@ -3,10 +3,10 @@ int main()
   
   float a, b, c;
 
-  a = nondet_float();
-  b = nondet_float();
+  a = __VERIFIER_nondet_float();
+  b = __VERIFIER_nondet_float();
 
-  if (nondet_bool())
+  if (__VERIFIER_nondet_bool())
     c = a + b;
   else
     c = a - b;

@@ -9,7 +9,7 @@ int main()
   struct S s;
   struct S *p = &s;
 
-  p->n = nondet_uint();
+  p->n = __VERIFIER_nondet_uint();
   __VERIFIER_assume(p->n <= 4);
 
   /* n == 4 writes onto `n' itself, which stays inside the enclosing struct:

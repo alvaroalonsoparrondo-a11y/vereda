@@ -1,7 +1,7 @@
-unsigned nondet_uint();
+unsigned __VERIFIER_nondet_uint();
 int main(void)
 {
-  unsigned u = nondet_uint();
+  unsigned u = __VERIFIER_nondet_uint();
   __VERIFIER_assume(u == 3000000000u);
   int x = (int)u;
   return x;

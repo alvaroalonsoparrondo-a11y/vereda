@@ -1,5 +1,5 @@
 int main() {
-   float b = nondet_float();
+   float b = __VERIFIER_nondet_float();
    float c = (int)b;
    assert((long)c > 0); // Crashes with Boolector 
    assert((short)c > 0); // Crashes with Boolector 

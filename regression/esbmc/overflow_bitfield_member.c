@@ -1,4 +1,4 @@
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 struct
 {
@@ -9,7 +9,7 @@ int main()
 {
   // C11 6.5.16.2p3: the addition runs in the promoted type, so the overflow is
   // checked as it is on a plain member; see overflow_plain_member.
-  int a = nondet_int();
+  int a = __VERIFIER_nondet_int();
   b.a += a;
 }
 // Imported from ESBMC regression/esbmc/overflow_bitfield_member

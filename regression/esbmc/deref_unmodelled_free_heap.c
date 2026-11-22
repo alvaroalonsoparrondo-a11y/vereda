@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-unsigned long nondet_ulong(void);
+unsigned long __VERIFIER_nondet_ulong(void);
 char a[64];
 
 /* A valid free through an unresolved pointer; the assert shows it is reached. */
@@ -12,7 +12,7 @@ int main(void)
   if (!q)
     return 0;
   __VERIFIER_assume((uintptr_t)q != 0);
-  unsigned long u = nondet_ulong();
+  unsigned long u = __VERIFIER_nondet_ulong();
   char *p = (char *)(u * 8 - (uintptr_t)&a[0]);
   if ((uintptr_t)p == (uintptr_t)q)
   {

@@ -4,11 +4,11 @@
    malloc whose size is a runtime value, do not. */
 #include <stdlib.h>
 
-void *nondet_voidp(void);
+void *__VERIFIER_nondet_voidp(void);
 
 int main(void)
 {
-  void *q = nondet_voidp();
+  void *q = __VERIFIER_nondet_voidp();
   __VERIFIER_assume(q != 0);
 
   void **s = malloc(sizeof(void *));

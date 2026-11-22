@@ -33,9 +33,9 @@ typedef int u_int32_t;
 
 /* Macros rrextract() uses */
 #define GETSHORT(to, from) \
-  do {(to) = nondet_short(); (from) += INT16SZ;} while(0)
+  do {(to) = __VERIFIER_nondet_short(); (from) += INT16SZ;} while(0)
 #define GETLONG(to, from) \
-  do {(to) = nondet_long(); (from) += INT32SZ;} while(0)
+  do {(to) = __VERIFIER_nondet_long(); (from) += INT32SZ;} while(0)
 #define BOUNDS_CHECK(ptr, count) \
   do {if ((ptr) + (count) > eom) return -1;} while(0)
 

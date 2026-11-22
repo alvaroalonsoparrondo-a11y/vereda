@@ -2,7 +2,7 @@
 
 /* A pointer read from a union member written with a nondet integer can name
  * any object, b included, with or without slicing (#10798). */
-uintptr_t nondet_uintptr(void);
+uintptr_t __VERIFIER_nondet_uintptr(void);
 union U
 {
   uintptr_t i;
@@ -14,7 +14,7 @@ int main(void)
   int *q = &a;
   (void)q;
   union U u;
-  u.i = nondet_uintptr();
+  u.i = __VERIFIER_nondet_uintptr();
   int *p = u.p;
   __VERIFIER_assert(
     __ESBMC_POINTER_OBJECT(p) <= 1 || __ESBMC_same_object(p, &b)

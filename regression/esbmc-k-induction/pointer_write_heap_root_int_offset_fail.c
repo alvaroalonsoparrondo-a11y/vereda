@@ -2,7 +2,7 @@
 // Taking off as a root would havoc only A's object and prove *B < 3.
 #include <stdlib.h>
 #include <assert.h>
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 void w(int *p) { *p = *p + 1; }
 int main()
 {
@@ -11,7 +11,7 @@ int main()
   *A = 0;
   *B = 0;
   long off = (long)B - (long)A;
-  while (nondet_int())
+  while (__VERIFIER_nondet_int())
   {
     w((int *)((long)A + off));
     assert(*B < 3);

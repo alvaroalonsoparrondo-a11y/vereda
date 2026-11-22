@@ -4,11 +4,11 @@
    rather than drop it with its twin. */
 #include <assert.h>
 
-unsigned nondet_uint();
+unsigned __VERIFIER_nondet_uint();
 
 int main()
 {
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   unsigned i = 0;
   __ESBMC_loop_invariant(i <= 10);
   while (i < 10)

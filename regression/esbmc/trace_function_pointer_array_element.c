@@ -1,7 +1,7 @@
 // Building the counterexample read the handler back from the table and then
 // queried the function itself, aborting with "Unimplemented type'd expression
 // (5) in smt get".
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 void (*handlers[6])(int);
 
@@ -12,11 +12,11 @@ void handler(int sig)
 
 int main(void)
 {
-  int installed = nondet_int();
+  int installed = __VERIFIER_nondet_int();
   __VERIFIER_assume(installed >= 0 && installed < 6);
   handlers[installed] = handler;
 
-  int raised = nondet_int();
+  int raised = __VERIFIER_nondet_int();
   __VERIFIER_assume(raised >= 0 && raised < 6);
   void (*resolved)(int) = handlers[raised];
   __VERIFIER_assert(resolved == 0); // no handler installed for the raised slot

@@ -1,6 +1,6 @@
 int main()
 {
-  unsigned x = nondet_uint() % 10;
+  unsigned x = __VERIFIER_nondet_uint() % 10;
   __VERIFIER_assert(x < 5); // x less than five
   return 0;
 }

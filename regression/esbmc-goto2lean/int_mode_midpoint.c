@@ -1,7 +1,7 @@
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int mid(int lo, int hi) { return lo + (hi - lo) / 2; }
 int main(void) {
-  int lo = nondet_int(), hi = nondet_int();
+  int lo = __VERIFIER_nondet_int(), hi = __VERIFIER_nondet_int();
   __VERIFIER_assume(lo <= hi);
   int m = mid(lo, hi);
   __VERIFIER_assert(lo <= m && m <= hi); // midpoint in range

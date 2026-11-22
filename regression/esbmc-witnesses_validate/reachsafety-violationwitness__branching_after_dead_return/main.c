@@ -1,4 +1,4 @@
-int nondet_int();
+int __VERIFIER_nondet_int();
 int g;
 
 int f(int a, int b)
@@ -12,8 +12,8 @@ int f(int a, int b)
 
 int main()
 {
-  f(nondet_int(), nondet_int());
-  f(nondet_int(), nondet_int());
+  f(__VERIFIER_nondet_int(), __VERIFIER_nondet_int());
+  f(__VERIFIER_nondet_int(), __VERIFIER_nondet_int());
   __VERIFIER_assert(g == 0); // g
   return 0;
 }

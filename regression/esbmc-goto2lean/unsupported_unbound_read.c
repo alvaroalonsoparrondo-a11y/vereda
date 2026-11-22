@@ -1,6 +1,6 @@
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 int main(void) {
-  unsigned c = nondet_uint();
+  unsigned c = __VERIFIER_nondet_uint();
   if (c) goto L;
   unsigned y = 1;
 L:

@@ -2,7 +2,7 @@
 
 int main()
 {
-  double x = nondet_double();
+  double x = __VERIFIER_nondet_double();
 
   __VERIFIER_assume(isunordered(x, 0.0));
 

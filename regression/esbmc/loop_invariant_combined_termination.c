@@ -5,12 +5,12 @@
  * leaves an ASSERT there, which aborts. The bound is symbolic and the exit test
  * is `!=`, so the ranking check does not settle the run before the marker
  * transform gets to it. */
-unsigned int nondet_uint(void);
+unsigned int __VERIFIER_nondet_uint(void);
 
 int main(void)
 {
   unsigned int i = 0;
-  unsigned int n = nondet_uint();
+  unsigned int n = __VERIFIER_nondet_uint();
   unsigned int s = 0;
 
   __ESBMC_loop_invariant(s == i);

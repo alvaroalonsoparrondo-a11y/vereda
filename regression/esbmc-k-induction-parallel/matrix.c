@@ -1,5 +1,5 @@
-unsigned int nondet_uint();
-int nondet_int();
+unsigned int __VERIFIER_nondet_uint();
+int __VERIFIER_nondet_int();
 
 main()
 {
@@ -8,11 +8,11 @@ main()
   unsigned int j,k;
   int matriz[N_COL][N_LIN], maior;
   
-  maior = nondet_int();
+  maior = __VERIFIER_nondet_int();
   for(j=0;j<N_COL;j++)
     for(k=0;k<N_LIN;k++)
     {       
-       matriz[j][k] = nondet_int();
+       matriz[j][k] = __VERIFIER_nondet_int();
        
        if(matriz[j][k]>=maior)
           maior = matriz[j][k];                          

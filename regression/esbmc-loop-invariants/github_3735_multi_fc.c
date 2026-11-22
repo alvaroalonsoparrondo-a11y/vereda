@@ -19,7 +19,7 @@ int inc(int qa)
 
 int main()
 {
-  int qm = nondet_bool(); /* qm ∈ {0, 1} */
+  int qm = __VERIFIER_nondet_bool(); /* qm ∈ {0, 1} */
   int qn = 1 - qm;       /* qn = 1-qm, so qm ≠ qn */
 
   __ESBMC_loop_invariant(

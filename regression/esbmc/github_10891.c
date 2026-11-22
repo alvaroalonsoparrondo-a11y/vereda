@@ -1,12 +1,12 @@
 /* #10891: whole-struct read from a scalar array at a symbolic offset. */
 #include <assert.h>
 #include <stdint.h>
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 struct S { uint32_t v; };
 int main(void)
 {
   uint32_t buf[2] = {7, 7};
-  unsigned i = nondet_uint();
+  unsigned i = __VERIFIER_nondet_uint();
   __VERIFIER_assume(i < 2);
   const struct S *p = (const struct S *)&buf[i];
   struct S s = *p;

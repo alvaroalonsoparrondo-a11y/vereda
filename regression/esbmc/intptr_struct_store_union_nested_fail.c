@@ -44,7 +44,7 @@ struct jtag
 static struct jtag ports[2];
 int main(void)
 {
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 0 && i < 2);
   unsigned long port = (unsigned long)ports + (unsigned long)i * sizeof(struct jtag);
   *(unsigned long *)(port + __builtin_offsetof(struct uart_port, mapbase)) = 1;

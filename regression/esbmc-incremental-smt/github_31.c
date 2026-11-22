@@ -1,12 +1,12 @@
 float MaxCost = 100;
 unsigned char PanelQuant = 4;
 float PanelData[4][13];
-unsigned char nondet_uchar();
+unsigned char __VERIFIER_nondet_uchar();
 
 int Faux(float cost)
 {
   unsigned char PanelChoice;
-  PanelChoice = nondet_uchar();
+  PanelChoice = __VERIFIER_nondet_uchar();
   __VERIFIER_assume(PanelChoice <= 3);
   float Ap = PanelData[PanelChoice][0];
   return 0;

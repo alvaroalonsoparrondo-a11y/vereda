@@ -10,15 +10,15 @@ extern int errno;
 
 int main()
 {
-  double x = nondet_double();
-  double y = nondet_double();
+  double x = __VERIFIER_nondet_double();
+  double y = __VERIFIER_nondet_double();
   double z = nextafter(x, y);
 
   /* any NaN argument <-> NaN result */
   assert((isnan(x) || isnan(y)) == (isnan(z) != 0));
 
   __VERIFIER_assume(!isnan(z));
-  double a = nondet_double();
+  double a = __VERIFIER_nondet_double();
 
   if(isless(x, y))
   { /* there is no double 'a' between x and z */

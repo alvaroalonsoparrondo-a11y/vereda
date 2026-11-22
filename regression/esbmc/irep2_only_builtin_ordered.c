@@ -1,8 +1,8 @@
-double nondet_double(void);
+double __VERIFIER_nondet_double(void);
 
 int main(void)
 {
-  double a = nondet_double(), b = nondet_double();
+  double a = __VERIFIER_nondet_double(), b = __VERIFIER_nondet_double();
   __VERIFIER_assume(a == 2.0 && b == 1.0);
 
   __VERIFIER_assert(__builtin_isgreater(a, b)); // 2 > 1

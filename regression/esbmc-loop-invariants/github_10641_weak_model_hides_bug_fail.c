@@ -1,10 +1,10 @@
 /* A model that violates only the claim past the havoc (j == 0, a weak
    invariant) must not hide the real bug on the other branch (#10641). */
 #include <assert.h>
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main()
 {
-  int c = nondet_int(), x = nondet_int(), i = 0, j = 0;
+  int c = __VERIFIER_nondet_int(), x = __VERIFIER_nondet_int(), i = 0, j = 0;
   if (!c)
     assert(x != 3);
   else

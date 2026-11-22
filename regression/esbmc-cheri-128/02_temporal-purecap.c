@@ -5,7 +5,7 @@
 #include <cheri/cheric.h>
 
 int main() {
-	int n = nondet_uint() % 1024; /* model arbitrary user input */
+	int n = __VERIFIER_nondet_uint() % 1024; /* model arbitrary user input */
 	char *__capability a = malloc_c(1+n); /* CHERI-C API */
 	assert(cheri_gettag(a));              /* CHERI-C API */
 	*a = 5;

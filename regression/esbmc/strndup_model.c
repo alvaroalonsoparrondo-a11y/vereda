@@ -33,7 +33,7 @@ int main()
     free(r);
   }
 
-  size_t n = nondet_uint();
+  size_t n = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n <= 4);
   char *u = strndup("abc", n);
   if (u)

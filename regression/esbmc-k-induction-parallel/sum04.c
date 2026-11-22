@@ -1,6 +1,6 @@
 #define a (2)
 #define SIZE 8
-unsigned int nondet_uint();
+unsigned int __VERIFIER_nondet_uint();
 int main() { 
   int i, sn=0;
   for(i=1; i<=SIZE; i++) {

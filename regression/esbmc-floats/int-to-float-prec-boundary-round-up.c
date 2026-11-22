@@ -6,11 +6,11 @@
  * to 16777220.  After the round-trip the result cannot equal 16777219. */
 #include <assert.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 16777218 && i <= 16777220);
   float f = (float)i;
   int j = (int)f;

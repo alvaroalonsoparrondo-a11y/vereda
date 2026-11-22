@@ -14,10 +14,10 @@ struct C
 {
   unsigned char f1, f2;
 };
-unsigned char nondet_uchar(void);
+unsigned char __VERIFIER_nondet_uchar(void);
 int main(void)
 {
-  struct T s = {nondet_uchar(), nondet_uchar(), 3, 4};
+  struct T s = {__VERIFIER_nondet_uchar(), __VERIFIER_nondet_uchar(), 3, 4};
   struct C c = *(struct C *)&s;
   assert(c.f1 == s.a && c.f2 == s.b);
   struct C d = *(struct C *)((char *)&s + 1);

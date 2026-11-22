@@ -13,7 +13,7 @@ typedef struct
 static state_t g;
 int main(void)
 {
-  unsigned k = nondet_uint();
+  unsigned k = __VERIFIER_nondet_uint();
   __VERIFIER_assume(k < 8);
   g.cfg = 1;
   g.tail = 2;

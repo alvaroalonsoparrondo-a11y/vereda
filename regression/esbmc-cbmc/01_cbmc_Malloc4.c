@@ -12,7 +12,7 @@ int main()
   p = (s_t)malloc(sizeof(s_t));
   free(p);
   // this should fail, as the object is not alive anymore
-  p->i = nondet_int();
+  p->i = __VERIFIER_nondet_int();
 }
 // Imported from ESBMC regression/cbmc/01_cbmc_Malloc4
 // EXPECT: ^VERIFICATION FAILED$

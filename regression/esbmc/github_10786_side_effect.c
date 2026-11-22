@@ -1,7 +1,7 @@
 // #10786: C17 6.5.3.4p2 evaluates the size of a VLA operand of sizeof.
 #include <assert.h>
 
-unsigned char nondet_uchar(void);
+unsigned char __VERIFIER_nondet_uchar(void);
 
 int main()
 {
@@ -10,7 +10,7 @@ int main()
   sizeof(int[3][0 * n++]);
   assert(n == 3);
 
-  unsigned char m = nondet_uchar();
+  unsigned char m = __VERIFIER_nondet_uchar();
   __VERIFIER_assume(m > 0 && m < 10);
   assert(sizeof(int[m][3]) == 12u * m);
   assert(sizeof(char[3][m]) == 3u * m);

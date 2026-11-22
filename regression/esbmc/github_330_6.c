@@ -11,9 +11,9 @@ void f (unsigned n)
   g(a, n);
 }
 
-unsigned nondet_uint();
+unsigned __VERIFIER_nondet_uint();
 int main() {
-  f(nondet_uint());
+  f(__VERIFIER_nondet_uint());
   return 0;
 }
 // Imported from ESBMC regression/esbmc/github_330_6

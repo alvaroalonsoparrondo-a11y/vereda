@@ -14,15 +14,15 @@
 // first, so the value-set fixpoint must be built up front (before any loop is
 // transformed), not lazily once the pointer-array loop is reached — building
 // it on a partially-transformed CFG aborts.
-extern unsigned char nondet_uchar(void);
-extern int nondet_int(void);
+extern unsigned char __VERIFIER_nondet_uchar(void);
+extern int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
   unsigned char a[8];
   unsigned char (*dest)[8] = &a;
 
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   __VERIFIER_assume(n > 0);
 
   int y = 0;
@@ -32,7 +32,7 @@ int main(void)
   int x = 0;
   for (int i = 0; i < n; i++)
   {
-    (*dest)[i % 8] = nondet_uchar(); // resolved to `a`, havoc'd as a symbol
+    (*dest)[i % 8] = __VERIFIER_nondet_uchar(); // resolved to `a`, havoc'd as a symbol
     x = 0;                           // scalar inductive invariant
   }
 

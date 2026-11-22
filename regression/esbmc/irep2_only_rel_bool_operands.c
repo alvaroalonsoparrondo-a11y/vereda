@@ -1,8 +1,8 @@
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int x = nondet_int(), y = nondet_int();
+  int x = __VERIFIER_nondet_int(), y = __VERIFIER_nondet_int();
 
   /* Both operands of the outer == are boolean; the usual arithmetic
      conversions promote them to int before it compares them. */

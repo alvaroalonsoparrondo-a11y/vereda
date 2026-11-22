@@ -1,7 +1,7 @@
 #include <string.h>
 
-int nondet_int();
-unsigned nondet_uint();
+int __VERIFIER_nondet_int();
+unsigned __VERIFIER_nondet_uint();
 
 /* The same operands, read only where they point at an object or for zero
  * bytes, which the builtins' C models never dereference. */
@@ -9,10 +9,10 @@ int main()
 {
   char a[4] = {1, 2, 3, 4}, b[4] = {1, 2, 3, 4};
   char *p = (char *)0x1000;
-  if (nondet_int())
+  if (__VERIFIER_nondet_int())
     p = a;
 
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n > 0 && n <= 4);
 
   if (p == a)

@@ -1,14 +1,14 @@
 #include <assert.h>
 #include <limits.h>
 
-int nondet_int();
-unsigned int nondet_uint();
+int __VERIFIER_nondet_int();
+unsigned int __VERIFIER_nondet_uint();
 
 int main()
 {
-  int c_nondet = nondet_int();
-  int d_nondet = nondet_int();
-  int e_nondet = nondet_int();
+  int c_nondet = __VERIFIER_nondet_int();
+  int d_nondet = __VERIFIER_nondet_int();
+  int e_nondet = __VERIFIER_nondet_int();
   // (d - c) == (d - e) -> c == e
   assert(((d_nondet - c_nondet) == (d_nondet - e_nondet)) == (c_nondet == e_nondet));
 
@@ -43,20 +43,20 @@ int main()
   assert(((d_underflow - c_pos) == (d_underflow - e_pos)) == (c_pos == e_pos));
 
   // Test with c = 0
-  int d_zero_c = nondet_int();
+  int d_zero_c = __VERIFIER_nondet_int();
   int e_val_c = 5;
   // (d - 0) == (d - 5) -> 0 == 5 (False)
   assert(((d_zero_c - 0) == (d_zero_c - e_val_c)) == (0 == e_val_c));
 
   // Test with e = 0
-  int d_zero_e = nondet_int();
+  int d_zero_e = __VERIFIER_nondet_int();
   int c_val_e = 5;
   // (d - 5) == (d - 0) -> 5 == 0 (False)
   assert(((d_zero_e - c_val_e) == (d_zero_e - 0)) == (c_val_e == 0));
 
-  unsigned int c_u = nondet_uint();
-  unsigned int d_u = nondet_uint();
-  unsigned int e_u = nondet_uint();
+  unsigned int c_u = __VERIFIER_nondet_uint();
+  unsigned int d_u = __VERIFIER_nondet_uint();
+  unsigned int e_u = __VERIFIER_nondet_uint();
   // (d - c) == (d - e) -> c == e (Should hold for unsigned integers as well)
   assert(((d_u - c_u) == (d_u - e_u)) == (c_u == e_u));
 

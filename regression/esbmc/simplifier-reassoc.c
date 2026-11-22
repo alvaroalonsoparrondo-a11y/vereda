@@ -1,11 +1,11 @@
 #include <assert.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main()
 {
-  int x = nondet_int();
-  int y = nondet_int();
+  int x = __VERIFIER_nondet_int();
+  int y = __VERIFIER_nondet_int();
 
   // Constant fold across an add/sub chain.
   // 2 - x - 10*2 - y*4 should reassociate to -18 - x - 4*y.

@@ -6,7 +6,7 @@ struct S
 int main()
 {
   struct S s[10];
-  int *p, *q, x=nondet_int(), y=nondet_int();
+  int *p, *q, x=__VERIFIER_nondet_int(), y=__VERIFIER_nondet_int();
   
   __VERIFIER_assume(x==0);
   __VERIFIER_assume(y==0);

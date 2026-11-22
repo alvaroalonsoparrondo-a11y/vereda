@@ -1,8 +1,8 @@
 #include <assert.h>
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main()
 {
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   __VERIFIER_assume(n > 0 && n < 100);
   int s = 0;
   for (int i = 0; i < n; i++)

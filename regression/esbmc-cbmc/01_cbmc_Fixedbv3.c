@@ -9,7 +9,7 @@ int main()
 {
   int x = 2;
 
-  if(nondet_int())
+  if(__VERIFIER_nondet_int())
     x = 4;
 
   (void) f1();

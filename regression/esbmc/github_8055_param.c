@@ -1,5 +1,5 @@
 // #8055
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 void f(int n)
 {
@@ -17,7 +17,7 @@ void f(int n)
 int main()
 {
   f(0);
-  f(nondet_int());
+  f(__VERIFIER_nondet_int());
 }
 // Imported from ESBMC regression/esbmc/github_8055_param
 // EXPECT: ^VERIFICATION FAILED$

@@ -2,7 +2,7 @@
  * The struct has 512 fields; F<n>(p) declares n padding fields. */
 #include <assert.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 #define F1(p) int p;
 #define F2(p) F1(p##0) F1(p##1)
@@ -35,7 +35,7 @@ void cycle(struct S *d)
 
 int main(void)
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x >= 0 && x <= 1000);
   db.a0 = x;
   for (int c = 0; c < 200; c++)

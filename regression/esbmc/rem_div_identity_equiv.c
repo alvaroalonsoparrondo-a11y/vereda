@@ -6,12 +6,12 @@
  * by hours, not seconds. Lowering the remainder compositionally as
  * a - (a/b)*b shares the division term and the equivalence collapses
  * structurally, solving in milliseconds. */
-long long nondet_ll(void);
+long long __VERIFIER_nondet_ll(void);
 
 int main(void)
 {
-  long long a = nondet_ll();
-  long long b = nondet_ll();
+  long long a = __VERIFIER_nondet_ll();
+  long long b = __VERIFIER_nondet_ll();
   if (b == 0)
     return 0;
   if (a == -9223372036854775807LL - 1 && b == -1)

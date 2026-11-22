@@ -3,10 +3,10 @@
  * on. */
 #include <stdint.h>
 #include <assert.h>
-_Bool nondet_bool(void); unsigned nondet_uint(void);
+_Bool __VERIFIER_nondet_bool(void); unsigned __VERIFIER_nondet_uint(void);
 int a[4], b[4];
 int main(void) {
-  _Bool c = nondet_bool(); unsigned k = nondet_uint();
+  _Bool c = __VERIFIER_nondet_bool(); unsigned k = __VERIFIER_nondet_uint();
   __VERIFIER_assume(k < 4);
   uintptr_t base = c ? (uintptr_t)a : (uintptr_t)b;
   int *p = (int *)(base + 4 * k);

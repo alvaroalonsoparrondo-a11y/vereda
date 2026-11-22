@@ -11,7 +11,7 @@ int main()
 {
   int a[4];
   struct point p;
-  unsigned i = nondet_uint() % 4;
+  unsigned i = __VERIFIER_nondet_uint() % 4;
   a[i] = 42;
   p.x = a[i];
   p.y = 1.5f;

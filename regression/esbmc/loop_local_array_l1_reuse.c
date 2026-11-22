@@ -1,9 +1,9 @@
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main()
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   int r = 0;
-  while (nondet_int())
+  while (__VERIFIER_nondet_int())
   {
     int t[2] = {x, 0};
     r = t[1];

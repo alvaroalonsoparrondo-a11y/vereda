@@ -3,11 +3,11 @@
 // step stays enabled and proves this unbounded-in-the-base-case program.
 // Matching "Solution found by the inductive step" confirms the gate did
 // not fire (a spurious gate would force VERIFICATION UNKNOWN instead).
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   __VERIFIER_assume(n > 0);
 
   int x = 0;

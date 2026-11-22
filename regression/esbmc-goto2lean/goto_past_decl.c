@@ -1,7 +1,7 @@
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 int main(void) {
-  unsigned c = nondet_uint();
-  unsigned d = nondet_uint();
+  unsigned c = __VERIFIER_nondet_uint();
+  unsigned d = __VERIFIER_nondet_uint();
   if (d) goto L;
   goto L;
   unsigned x;

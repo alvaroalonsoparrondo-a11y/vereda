@@ -1,6 +1,6 @@
 /* #8097: on a big-endian target a union's members share its lowest-addressed
  * bytes, so .c is the most significant byte of .i. */
-unsigned int nondet_uint();
+unsigned int __VERIFIER_nondet_uint();
 union V
 {
   unsigned char c;
@@ -18,7 +18,7 @@ int main()
     } s;
   } u;
   union V w;
-  w.i = nondet_uint();
+  w.i = __VERIFIER_nondet_uint();
   u.s.v[0] = w;
   __VERIFIER_assert(u.s.v[0].i != 0x01020304u); // show
 }

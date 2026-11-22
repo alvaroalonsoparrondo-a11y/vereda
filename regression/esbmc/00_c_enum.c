@@ -9,7 +9,7 @@ main()
 {
 	enumtype val;
 
-	if (nondet_bool()) {
+	if (__VERIFIER_nondet_bool()) {
 		val = notfail;
 	} else {
 		val = alsonotfail;

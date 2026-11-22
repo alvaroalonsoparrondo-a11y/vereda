@@ -1,7 +1,7 @@
 #include <assert.h>
 
 int main() {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x > 0);
 
 start:

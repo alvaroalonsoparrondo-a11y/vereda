@@ -5,7 +5,7 @@ int main(void)
   S *p = malloc(sizeof(S));
   if (!p) return 0;
   p->a = 0; p->z = 0;
-  unsigned k = nondet_uint();
+  unsigned k = __VERIFIER_nondet_uint();
   __VERIFIER_assume(k < 4);
   unsigned *q = &p->arr[k];
   *q = 9;

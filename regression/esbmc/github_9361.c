@@ -5,7 +5,7 @@
 
 int main(void)
 {
-  size_t n = nondet_bool() ? 4 : SIZE_MAX / 2;
+  size_t n = __VERIFIER_nondet_bool() ? 4 : SIZE_MAX / 2;
   int *p = calloc(n, sizeof(int));
   if (n != 4)
     assert(p == NULL);

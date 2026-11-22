@@ -6,9 +6,9 @@ bool func() { return notdet_bool(); }
 
 int main()
 {
-  bool a = nondet_bool();
+  bool a = __VERIFIER_nondet_bool();
   bool b =  true;
-  bool c = nondet_bool();
+  bool c = __VERIFIER_nondet_bool();
   if (b && c|| a && b) 
   {
     assert(1);

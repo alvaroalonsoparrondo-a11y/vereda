@@ -5,7 +5,7 @@ int main()
 	int data = 0;
 	switch (42) {
 	case 42: { // line 7
-		data = nondet_int(); // line 8
+		data = __VERIFIER_nondet_int(); // line 8
 		break;
 	}
 	default:

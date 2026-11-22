@@ -10,9 +10,9 @@ struct S
 struct S s[2];
 int main(void)
 {
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 0 && i < 2);
-  int k = nondet_int();
+  int k = __VERIFIER_nondet_int();
   __VERIFIER_assume(k == 1);
   unsigned int *p = (unsigned int *)&s[i] + k;
   *p = 7u;

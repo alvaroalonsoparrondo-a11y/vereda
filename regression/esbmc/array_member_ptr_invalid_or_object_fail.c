@@ -3,7 +3,7 @@ S g;
 int main(void)
 {
   S *p;
-  if (nondet_int())
+  if (__VERIFIER_nondet_int())
     p = &g;
   unsigned *q = &p->arr[1];
   return *q;

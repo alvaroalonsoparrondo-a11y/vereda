@@ -8,7 +8,7 @@ typedef struct
 static state_t g;
 int main(void)
 {
-  unsigned int k = nondet_uint();
+  unsigned int k = __VERIFIER_nondet_uint();
   __VERIFIER_assume(k < 2);
   uint32_t *p = g.shadow + k;
   p[7] = 5;

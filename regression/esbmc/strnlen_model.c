@@ -10,7 +10,7 @@ int main()
   assert(strnlen(buf, 4) == 4);
 
   char s[6] = "abcde";
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n <= 5);
   s[n] = '\0';
   assert(strnlen(s, 6) == n);

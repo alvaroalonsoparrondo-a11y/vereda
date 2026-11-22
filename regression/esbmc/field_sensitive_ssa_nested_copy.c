@@ -1,6 +1,6 @@
 #include <assert.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 struct Inner
 {
@@ -21,7 +21,7 @@ int main(void)
   tmp.a[1] = 2;
   tmp.a[2] = 3;
   tmp.a[3] = 4;
-  tmp.n = nondet_int();
+  tmp.n = __VERIFIER_nondet_int();
   struct Outer o;
   int *p = &o.pad;
   o.in = tmp;

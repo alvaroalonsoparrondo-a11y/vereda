@@ -1,6 +1,6 @@
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 int main(void) {
-  unsigned x = nondet_uint();
+  unsigned x = __VERIFIER_nondet_uint();
   if (x == 3) reach_error();
   return 0;
 }

@@ -1,8 +1,8 @@
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x >= 16 && x <= 32);
   int y = x >> 2;
   __VERIFIER_assert(y != 4); // x in [16,19] gives y == 4

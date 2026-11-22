@@ -19,7 +19,7 @@ void loop2()
 int main()
 
 {
-   switch (nondet_int())
+   switch (__VERIFIER_nondet_int())
    {
    case 1:
       loop1();

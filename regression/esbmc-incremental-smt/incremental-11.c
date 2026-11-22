@@ -2,7 +2,7 @@
 
 int main()
 {
-  int x=nondet_int();
+  int x=__VERIFIER_nondet_int();
   while(x>0)
   {
    __VERIFIER_assume(x>100);

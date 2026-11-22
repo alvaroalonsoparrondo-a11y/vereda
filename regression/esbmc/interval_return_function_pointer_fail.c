@@ -14,7 +14,7 @@ void f(void)
 }
 int main()
 {
-  fp = nondet_int() ? w : r;
+  fp = __VERIFIER_nondet_int() ? w : r;
   g = 0;
   f();
   __VERIFIER_assert(g == 0); // g

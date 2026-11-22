@@ -1,7 +1,7 @@
 // KNOWNBUG since #7964: the inductive step proved this only by pinning r1 to
 // its loop-entry target; a sound proof needs the loop-head fixpoint.
 #include <assert.h>
-int nondet_int();
+int __VERIFIER_nondet_int();
 int x[2], y[2];
 int main()
 {
@@ -9,7 +9,7 @@ int main()
   x[1] = 2;
   y[0] = 3;
   y[1] = 4;
-  int z = nondet_int(); // input
+  int z = __VERIFIER_nondet_int(); // input
   int *r1 = &x[1];
   int *r2 = &y[1];
   while(z > 0)

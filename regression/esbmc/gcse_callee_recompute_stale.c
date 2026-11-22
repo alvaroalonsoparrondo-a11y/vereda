@@ -1,6 +1,6 @@
 #include <assert.h>
 
-unsigned nondet_uint();
+unsigned __VERIFIER_nondet_uint();
 unsigned a, b, sink;
 
 void f()
@@ -13,8 +13,8 @@ void f()
 // caller without assigning the caller's symbol for it (#7992).
 int main()
 {
-  a = nondet_uint();
-  b = nondet_uint();
+  a = __VERIFIER_nondet_uint();
+  b = __VERIFIER_nondet_uint();
   unsigned x = a + b;
   f();
   unsigned z = a + b;

@@ -6,7 +6,7 @@ int bar(void *ptr) {
 }
 
 int main() {
-    unsigned int alloc_size = nondet_uint();
+    unsigned int alloc_size = __VERIFIER_nondet_uint();
     __VERIFIER_assume(alloc_size > 0 && alloc_size < 60);
     void * foo = malloc(alloc_size);
     bar(foo); 

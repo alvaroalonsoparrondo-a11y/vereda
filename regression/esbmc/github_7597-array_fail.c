@@ -4,11 +4,11 @@
 
 int A[3];
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int in = nondet_int();
+  int in = __VERIFIER_nondet_int();
 
   for (A[0] = 1; A[0] <= 5; A[0] = A[0] + 1)
     A[1] = in;

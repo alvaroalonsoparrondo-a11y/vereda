@@ -4,7 +4,7 @@
 int main()
 {
   int a;
-  double b=nondet_double();
+  double b=__VERIFIER_nondet_double();
 
   a = (int)b;
 }

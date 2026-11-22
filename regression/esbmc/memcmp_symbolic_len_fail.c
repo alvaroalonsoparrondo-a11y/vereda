@@ -4,7 +4,7 @@ int main()
 {
   char a[4] = "abc";
   char b[4] = "abd";
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n <= 5);
   return memcmp(a, b, n) != 0;
 }

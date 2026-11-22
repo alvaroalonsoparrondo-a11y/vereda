@@ -4,7 +4,7 @@ int main()
 {
   void *bar;
   char *ptr = &bar;
-  ptr[0] = nondet_char();
+  ptr[0] = __VERIFIER_nondet_char();
 
   __VERIFIER_assert(bar != &some_var);
 }

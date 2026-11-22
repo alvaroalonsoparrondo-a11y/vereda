@@ -4,7 +4,7 @@
 
 int token;
 _Bool event_E1=0, event_E2=0, event_E3=0, event_E4=0, event_E5=0, event_EM=0;
-int nondet_int();
+int __VERIFIER_nondet_int();
 void __ESBMC_atomic_begin();
 void __ESBMC_atomic_end();
 
@@ -31,7 +31,7 @@ void* SC_THREAD_master(void* arg)
   int local;
 
 //  while(1) { 
-    token = nondet_int(); 
+    token = __VERIFIER_nondet_int(); 
     local = token;
     event_E1 = notify_event(); 
     wait_event(event_EM, &event_EM); 

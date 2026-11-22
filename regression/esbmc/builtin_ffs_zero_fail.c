@@ -4,11 +4,11 @@
 // undefined-behaviour claim the flag adds for clz/ctz does not apply. #183
 #include <assert.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x == 0);
   assert(__builtin_ffs(x) == 1);
   return 0;

@@ -3,8 +3,8 @@
 #include <string.h>
 
 unsigned char buffer[1024] __attribute__((__aligned__(4)));
-extern struct adj nondet_struct();
-extern uintptr_t nondet_uaddr();
+extern struct adj __VERIFIER_nondet_struct();
+extern uintptr_t __VERIFIER_nondet_uaddr();
 struct adj{
   int a;
 };
@@ -21,10 +21,10 @@ _Bool valid(uintptr_t addr){
 }
 
 int main() {
-  struct adj adj = nondet_struct();
+  struct adj adj = __VERIFIER_nondet_struct();
   adj.a = 2;
   (void)memcpy(buffer, &adj, sizeof(adj));
-  uintptr_t addr = nondet_uaddr();
+  uintptr_t addr = __VERIFIER_nondet_uaddr();
   if(!valid(addr))
     return 0;
   struct adj* adj2 = buffer_ptr(addr);

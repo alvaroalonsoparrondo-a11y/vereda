@@ -4,10 +4,10 @@
  * shows up when something reads the accumulator mid-loop. Must decline, and
  * must leave the verdict alone. */
 #include <assert.h>
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main(void)
 {
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   __VERIFIER_assume(n >= 1 && n <= 10);
   int i = 1, sn = 0;
   while (i <= n)

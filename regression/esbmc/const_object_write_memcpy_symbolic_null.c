@@ -3,10 +3,10 @@ const int t[2] = {1, 2};
 int main()
 {
   int s[2] = {7, 8};
-  int c = nondet_int();
+  int c = __VERIFIER_nondet_int();
   int *p = c ? (int *)t : NULL;
   __VERIFIER_assume(!c);
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n > 0 && n <= sizeof t);
   memcpy(p, s, n);
   return 0;

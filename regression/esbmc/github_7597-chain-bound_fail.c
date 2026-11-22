@@ -11,12 +11,12 @@ struct plc
 
 struct plc VAR;
 
-float nondet_float(void);
+float __VERIFIER_nondet_float(void);
 
 int main(void)
 {
   for (VAR.step = 0; VAR.step < 1000; VAR.step = VAR.step + 1)
-    VAR.out[VAR.step] = nondet_float();
+    VAR.out[VAR.step] = __VERIFIER_nondet_float();
 
   assert(VAR.step == 999);
   return 0;

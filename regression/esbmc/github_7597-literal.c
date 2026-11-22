@@ -12,11 +12,11 @@ struct pair
   int r;
 };
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int v = nondet_int();
+  int v = __VERIFIER_nondet_int();
   struct pair s = {5, v};
   int c = 0;
 

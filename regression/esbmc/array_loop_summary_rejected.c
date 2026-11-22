@@ -1,10 +1,10 @@
 // Loops the pass must leave alone; only the last one is summarised.
-int nondet_int();
+int __VERIFIER_nondet_int();
 void g(void) {}
 int a[10], b[10];
 int main()
 {
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   int i = 0;
   do { a[i] = 1; i++; } while (i < 10);
   for (int k = 10; k > 0; k--) a[k - 1] = 2;

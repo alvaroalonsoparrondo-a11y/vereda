@@ -1,5 +1,5 @@
-unsigned int nondet_uint();
-int nondet_int();
+unsigned int __VERIFIER_nondet_uint();
+int __VERIFIER_nondet_int();
 
 int main()
 {
@@ -7,12 +7,12 @@ int main()
   unsigned int j, k;
   int array[SIZE], menor;
 
-  menor = nondet_int();
+  menor = __VERIFIER_nondet_int();
 
   __ESBMC_loop_invariant(j <= SIZE && (j == 0 || menor <= array[0]));
   for (j = 0; j < SIZE; j++)
   {
-    array[j] = nondet_int();
+    array[j] = __VERIFIER_nondet_int();
 
     if (array[j] <= menor)
       menor = array[j];

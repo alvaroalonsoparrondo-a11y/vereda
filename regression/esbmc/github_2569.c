@@ -2,7 +2,7 @@
 extern int x;
 int main(int argc, char **argv)
 {
-  if (nondet_int())
+  if (__VERIFIER_nondet_int())
   {
     argc = 3;
   }

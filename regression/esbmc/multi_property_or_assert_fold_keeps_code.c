@@ -2,7 +2,7 @@
 int main()
 {
   int x = 0;
-  if (nondet_int())
+  if (__VERIFIER_nondet_int())
   {
     __VERIFIER_assert(0); // v
     x = 1;

@@ -2,7 +2,7 @@
 // entered by a conditional jump into its body.
 #include <stdlib.h>
 #include <assert.h>
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 extern void __VERIFIER_assume(int);
 int *A;
 int F;
@@ -26,7 +26,7 @@ int main()
   *A = 0;
   int n = 0;
   int *r;
-  while (nondet_int())
+  while (__VERIFIER_nondet_int())
   {
     r = g();
     __VERIFIER_assume(*A != 7);

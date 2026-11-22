@@ -2,7 +2,7 @@
 // so the outer loop cannot trace p to its assignments in the body.
 #include <stdlib.h>
 #include <assert.h>
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 int main()
 {
   int *d = malloc(sizeof(int));
@@ -12,7 +12,7 @@ int main()
   {
     int *p = d;
     *d = 0;
-    int j = nondet_int();
+    int j = __VERIFIER_nondet_int();
     while (j > 0)
     {
       p = e;

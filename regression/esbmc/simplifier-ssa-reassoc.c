@@ -1,6 +1,6 @@
 #include <assert.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 // Sub-heavy chain on two int args. GOTO reassoc canonicalizes the constants
 // among themselves, but until symex substitutes the args it can't fold across
@@ -12,8 +12,8 @@ static int compute(int a, int b)
 
 int main()
 {
-  int x = nondet_int();
-  int y = nondet_int();
+  int x = __VERIFIER_nondet_int();
+  int y = __VERIFIER_nondet_int();
 
   // First arg concrete, second nondet: after symex inlines compute(10, x)
   // the body is "5 - 10 - 8 - x - 2", which SSA reassoc folds to "-15 - x".

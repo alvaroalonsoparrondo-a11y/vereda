@@ -1,7 +1,7 @@
 /* An in-range conversion, and a symbolic one the caller has bounded, must not
    be flagged; truncation toward zero makes the representable operands exactly
    [MIN, MAX + 1) (#7572). */
-extern double nondet_double(void);
+extern double __VERIFIER_nondet_double(void);
 
 int main(void)
 {
@@ -10,7 +10,7 @@ int main(void)
   if (x != 42)
     return 1;
 
-  double e = nondet_double();
+  double e = __VERIFIER_nondet_double();
   __VERIFIER_assume(e >= -100.0 && e <= 100.0);
   int y = (int)e;
   (void)y;

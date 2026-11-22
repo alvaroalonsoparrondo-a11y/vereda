@@ -5,7 +5,7 @@ _start:
         unsigned t;
         if (r != 0) return 0;
         t = 1;
-        if (nondet_int() != 0) goto after;
+        if (__VERIFIER_nondet_int() != 0) goto after;
         r = t; goto _start;
     after:
         r = t;

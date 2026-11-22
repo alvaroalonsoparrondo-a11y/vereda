@@ -1,9 +1,9 @@
-double nondet_double(void);
+double __VERIFIER_nondet_double(void);
 double sqrt(double);
 
 int main(void)
 {
-  double d = nondet_double();
+  double d = __VERIFIER_nondet_double();
   __VERIFIER_assume(d == -3.0);
 
   __VERIFIER_assert(__builtin_fabs(d) == 3.0); // fabs negates a negative

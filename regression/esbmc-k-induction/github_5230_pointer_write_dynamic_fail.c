@@ -7,7 +7,7 @@
 // too-strong hypothesis and report a spurious SUCCESSFUL (the #5027 / #5224
 // unsoundness class); this test pins that it does not.
 #include <stdlib.h>
-extern unsigned char nondet_uchar(void);
+extern unsigned char __VERIFIER_nondet_uchar(void);
 
 int main(void)
 {
@@ -15,7 +15,7 @@ int main(void)
   __VERIFIER_assume(dest != 0);
 
   for (int i = 0; i < 8; i++)
-    (*dest)[i] = nondet_uchar();
+    (*dest)[i] = __VERIFIER_nondet_uchar();
 
   __VERIFIER_assert((*dest)[7] != 0x2A); // (*dest)[7] is nondet, so 0x2A is reachable
   return 0;

@@ -95,7 +95,7 @@ bb:
 }
 
 
-_Bool nondet_bool();  // returns non-deterministic boolean value
+_Bool __VERIFIER_nondet_bool();  // returns non-deterministic boolean value
 
 /**********************main C program***********************/
 int main(){

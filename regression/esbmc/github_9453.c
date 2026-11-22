@@ -17,7 +17,7 @@ int main(void)
   w += 1;
   assert(w == 0);
 
-  signed char s = nondet_char();
+  signed char s = __VERIFIER_nondet_char();
   __VERIFIER_assume(s > 0 && s < 10);
   s -= 20;
   assert(s < 0);

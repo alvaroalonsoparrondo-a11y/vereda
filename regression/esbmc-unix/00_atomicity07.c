@@ -1,7 +1,7 @@
 #include <pthread.h>
 #include <assert.h>
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 pthread_mutex_t m, n;
 int x, y, z, balance;
@@ -42,9 +42,9 @@ int main()
   pthread_mutex_init(&m, 0);
   pthread_mutex_init(&n, 0);
 
-  x = nondet_int();
-  y = nondet_int();
-  z = nondet_int();
+  x = __VERIFIER_nondet_int();
+  y = __VERIFIER_nondet_int();
+  z = __VERIFIER_nondet_int();
   balance = x;
 
   pthread_create(&t1, 0, deposit, 0);

@@ -291,8 +291,8 @@ int getc ()
   static int getc_count = 0;
   if (getc_count++ < MAX_GETC)
   {
-    if (nondet_int ())
-      return (int) nondet_unsigned_char ();
+    if (__VERIFIER_nondet_int ())
+      return (int) __VERIFIER_nondet_unsigned_char ();
 
     return EOF;
   }
@@ -302,7 +302,7 @@ int getc ()
     return EOF;
   }
 #else
-  return nondet_int ();
+  return __VERIFIER_nondet_int ();
 #endif
 }
 
@@ -329,7 +329,7 @@ char *strrand (char *s)
 {
   int i;
   for (i = 0; s[i] != EOS; i++)
-    if (nondet_int () == 1) 
+    if (__VERIFIER_nondet_int () == 1) 
       return &s[i];
 
   return NULL;
@@ -339,7 +339,7 @@ int istrrand (char *s)
 {
   int i;
   for (i = 0; s[i] != EOS; i++)
-    if (nondet_int () == 1) 
+    if (__VERIFIER_nondet_int () == 1) 
       return i;
 
   return -1;

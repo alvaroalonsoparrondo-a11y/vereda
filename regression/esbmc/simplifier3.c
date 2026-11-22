@@ -1,7 +1,7 @@
 #include <assert.h>
 
 int test_xor_zero_vs_false() {
-    int x = nondet_int();
+    int x = __VERIFIER_nondet_int();
     int result1 = x ^ 0;  // Integer 0
     assert(result1 == x);
     int zero = 0;
@@ -11,7 +11,7 @@ int test_xor_zero_vs_false() {
 }
 
 int test_unsigned_comparison() {
-    unsigned int u = nondet_uint();
+    unsigned int u = __VERIFIER_nondet_uint();
     int result1 = (u < 0);  // Integer 0, not boolean false
     assert(result1 == 0);
     int zero = 0;
@@ -22,9 +22,9 @@ int test_unsigned_comparison() {
 }
 
 int test_wide_bitwidth() {
-    unsigned char c = nondet_uchar();
-    unsigned short s = nondet_ushort();
-    unsigned long long ll = nondet_ullong();
+    unsigned char c = __VERIFIER_nondet_uchar();
+    unsigned short s = __VERIFIER_nondet_ushort();
+    unsigned long long ll = __VERIFIER_nondet_ullong();
     assert((c & (unsigned char)(-1)) == c);
     assert((s & (unsigned short)(-1)) == s);
     assert((ll & (unsigned long long)(-1)) == ll);
@@ -45,7 +45,7 @@ int test_vector_simplifications() {
 }
 
 int test_mixed_operations() {
-    int x = nondet_int();
+    int x = __VERIFIER_nondet_int();
     _Bool b = 0;
     int i = 0;
     int result1 = x ^ b;

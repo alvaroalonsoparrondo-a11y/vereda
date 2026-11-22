@@ -5568,7 +5568,7 @@ void __SLIC_fun_spin_lock_init_exit(spinlock_t *__SLIC_arg_1 )
 //#line 255
     if (! __SLIC_state_which_spinlock) {
 //#line 256
-      tmp = nondet_bool();
+      tmp = __VERIFIER_nondet_bool();
 //#line 256
       if (tmp) {
 //#line 257

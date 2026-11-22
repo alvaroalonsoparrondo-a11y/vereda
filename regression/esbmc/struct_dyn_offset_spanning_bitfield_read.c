@@ -2,7 +2,7 @@ struct S { unsigned int a : 4; unsigned int b : 28; unsigned int c; };
 struct S s[2];
 int main(void)
 {
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 0 && i < 2);
   s[i].a = 1; s[i].b = 3;
   unsigned int v = *(unsigned int *)&s[i];

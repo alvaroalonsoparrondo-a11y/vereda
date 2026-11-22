@@ -1,8 +1,8 @@
-int nondet_int(void);
-unsigned nondet_uint(void);
+int __VERIFIER_nondet_int(void);
+unsigned __VERIFIER_nondet_uint(void);
 int main(void) {
-  int x = nondet_int(), y = nondet_int();
-  unsigned a = nondet_uint(), b = nondet_uint();
+  int x = __VERIFIER_nondet_int(), y = __VERIFIER_nondet_int();
+  unsigned a = __VERIFIER_nondet_uint(), b = __VERIFIER_nondet_uint();
   int s = x - y;
   int p = x * y;
   int q = x / y;

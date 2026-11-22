@@ -2,8 +2,8 @@
 
 int main()
 {
-  int x = nondet_int();
-  int y = nondet_int();
+  int x = __VERIFIER_nondet_int();
+  int y = __VERIFIER_nondet_int();
   int c1 = 1, c2 = 2;
 
   // x - (-y) -> x + y

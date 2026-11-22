@@ -3,10 +3,10 @@
  * (i - i0) * e would draw overflow claims on arithmetic the user never wrote.
  * Must decline while overflow checking is on. */
 #include <assert.h>
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main(void)
 {
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   __VERIFIER_assume(n >= 1 && n <= 10);
   int i = 1, sn = 0;
   while (i <= n) { sn = sn + 2; i++; }

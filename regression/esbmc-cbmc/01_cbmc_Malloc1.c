@@ -1,7 +1,7 @@
 int main() {
   int *p;
   unsigned o;
-  unsigned int n=nondet_uint();
+  unsigned int n=__VERIFIER_nondet_uint();
   
   __VERIFIER_assume(n>=1);
   __VERIFIER_assume(n<10000000);

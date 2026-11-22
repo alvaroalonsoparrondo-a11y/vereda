@@ -3,7 +3,7 @@
 // object, B[1] keeps its pre-loop 0 and the step proves B[1] < 3.
 #include <stdlib.h>
 #include <assert.h>
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 int main()
 {
   int *B = malloc(2 * sizeof(int));
@@ -12,7 +12,7 @@ int main()
   long *d0 = malloc(sizeof(long));
   *d0 = (long)B;
   long *d = realloc(d0, sizeof(long));
-  while (nondet_int())
+  while (__VERIFIER_nondet_int())
   {
     int *r = (int *)(*d + 4);
     *r = *r + 1;

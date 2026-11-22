@@ -4,8 +4,8 @@
 
 int main() 
 {
-    double x = nondet_double();
-    double y = nondet_double();
+    double x = __VERIFIER_nondet_double();
+    double y = __VERIFIER_nondet_double();
 
     __VERIFIER_assume(x > 0.0 && x < 1.0e-154);
     __VERIFIER_assume(y > 0.0 && y < 1.0e-154);

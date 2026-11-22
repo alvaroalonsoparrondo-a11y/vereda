@@ -1,12 +1,12 @@
 #include <assert.h>
 #include <string.h>
 
-unsigned nondet_uint(void);
-unsigned long long nondet_ulonglong(void);
+unsigned __VERIFIER_nondet_uint(void);
+unsigned long long __VERIFIER_nondet_ulonglong(void);
 
 int main(void)
 {
-  unsigned zb = nondet_uint();
+  unsigned zb = __VERIFIER_nondet_uint();
   __VERIFIER_assume(zb == 0);
   float z;
   memcpy(&z, &zb, sizeof z);
@@ -15,7 +15,7 @@ int main(void)
   memcpy(&fbits, &f, sizeof fbits);
   assert(fbits == 0x7fc00000u);
 
-  unsigned long long zdb = nondet_ulonglong();
+  unsigned long long zdb = __VERIFIER_nondet_ulonglong();
   __VERIFIER_assume(zdb == 0);
   double zd;
   memcpy(&zd, &zdb, sizeof zd);

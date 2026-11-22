@@ -1,9 +1,9 @@
-int nondet_int();
+int __VERIFIER_nondet_int();
 int g;
 
 void cs(void)
 {
-  if (nondet_int())
+  if (__VERIFIER_nondet_int())
     g++;
 }
 
@@ -15,13 +15,13 @@ void t2(void)
 void t1(void)
 {
   cs();
-  if (nondet_int())
+  if (__VERIFIER_nondet_int())
     g += 10;
 }
 
 int main()
 {
-  void (*f)(void) = nondet_int() ? t1 : t2;
+  void (*f)(void) = __VERIFIER_nondet_int() ? t1 : t2;
   f();
   __VERIFIER_assert(g != 11); // g
   return 0;

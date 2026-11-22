@@ -1,10 +1,10 @@
 /* #7516: a base case that only refutes the loop-invariant abstraction must
    not stop the search for a real bug at a larger k. */
 #include <assert.h>
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main()
 {
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   int j = 0;
   while (j < n)
   {

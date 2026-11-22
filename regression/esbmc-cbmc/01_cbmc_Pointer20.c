@@ -5,7 +5,7 @@ void f() {
   int local;
   int input;
   
-  input=nondet_int();
+  input=__VERIFIER_nondet_int();
 
   p=input?&local:&global;
 }

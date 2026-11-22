@@ -1,7 +1,7 @@
 #include <pthread.h>
 #include <stdbool.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int global = 0;
 int badgers;
 int batsignal = 0;
@@ -16,7 +16,7 @@ thread(void *dummy)
 int
 main()
 {
-  badgers = nondet_int();
+  badgers = __VERIFIER_nondet_int();
   int nou;
   pthread_t face;
   pthread_create(&face, NULL, thread, NULL);

@@ -3,7 +3,7 @@
 
 char global_arr[10];
 
-void nondet_arr(char *arr)
+void __VERIFIER_nondet_arr(char *arr)
 {
   unsigned int i = 0;
   for(; i < 10; i++)
@@ -13,7 +13,7 @@ void nondet_arr(char *arr)
 
 void global_fun()
 {
-  nondet_arr(global_arr);
+  __VERIFIER_nondet_arr(global_arr);
   int len = strlen(global_arr);
   assert(len != 0);
 }

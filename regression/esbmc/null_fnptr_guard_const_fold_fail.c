@@ -18,7 +18,7 @@ static int op_push(vm_t *v)
 }
 static const handler_t table[4] = {op_push, 0, op_push, 0};
 static vm_t vm;
-unsigned int nondet_u4(void);
+unsigned int __VERIFIER_nondet_u4(void);
 
 static int step(vm_t *v, unsigned int op)
 {
@@ -31,7 +31,7 @@ static int step(vm_t *v, unsigned int op)
 int main(void)
 {
   vm.sp = 1;
-  int st = step(&vm, nondet_u4());
+  int st = step(&vm, __VERIFIER_nondet_u4());
   __VERIFIER_assert(st == 0); // a null entry must keep its miss path
   return 0;
 }

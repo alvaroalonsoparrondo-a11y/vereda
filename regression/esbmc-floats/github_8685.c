@@ -5,7 +5,7 @@
 #include <limits.h>
 #include <math.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
@@ -36,7 +36,7 @@ int main(void)
   assert(ldexp(0x1.fp-1070, -4) == tiny);
   fesetround(FE_TONEAREST);
 
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   __VERIFIER_assume(n >= -1074 && n <= 1023);
   assert(ldexp(ldexp(1.0, n), -n) == 1.0);
   return 0;

@@ -1,15 +1,15 @@
 /* The inductive step proves the claim past the loop once it drops the paths
    the unwinding bound cuts out of the loop (esbmc/esbmc#1320). */
-int nondet_int();
-_Bool nondet_bool();
+int __VERIFIER_nondet_int();
+_Bool __VERIFIER_nondet_bool();
 int x;
 
 int main()
 {
-  x = nondet_int();
+  x = __VERIFIER_nondet_int();
   do
   {
-    if (nondet_bool())
+    if (__VERIFIER_nondet_bool())
       x--;
     else
       x -= 2;

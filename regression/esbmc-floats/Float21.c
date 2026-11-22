@@ -12,7 +12,7 @@
 #include <assert.h>
 #include <math.h>
 
-float nondet_float(void);
+float __VERIFIER_nondet_float(void);
 
 int main (void)
 {
@@ -29,14 +29,14 @@ int main (void)
   // Check the encodings are correct
   assert(fpclassify(largestSubnormalFloat) == FP_SUBNORMAL);
 
-  f = nondet_float();
+  f = __VERIFIER_nondet_float();
   __VERIFIER_assume(fpclassify(f) == FP_SUBNORMAL);
   assert(f <= largestSubnormalFloat);
 
 
   assert(fpclassify(smallestNormalFloat) == FP_NORMAL);
 
-  f = nondet_float();
+  f = __VERIFIER_nondet_float();
   __VERIFIER_assume(fpclassify(f) == FP_NORMAL);
   assert(smallestNormalFloat <= fabs(f));
 
@@ -56,7 +56,7 @@ int main (void)
   assert(((double)smallestNormalFloat) - v <= v - ((double)largestSubnormalFloat));
   assert(((float)v) == smallestNormalFloat);
 
-  f = nondet_float();
+  f = __VERIFIER_nondet_float();
   __VERIFIER_assume(fpclassify(f) == FP_SUBNORMAL);
   assert( ((float)((double)f)) == f );
   

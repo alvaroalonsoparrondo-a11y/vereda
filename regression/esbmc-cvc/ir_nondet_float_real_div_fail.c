@@ -1,6 +1,6 @@
 int main()
 {
-  double x = nondet_double();
+  double x = __VERIFIER_nondet_double();
   __VERIFIER_assume(x == 3.0);
   __VERIFIER_assert(x / 2.0 == 1.0); // real division
   return 0;

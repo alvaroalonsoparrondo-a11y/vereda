@@ -4,7 +4,7 @@ struct S { unsigned short h; unsigned short a : 4, b : 12; unsigned int c; };
 struct S s[2];
 int main(void)
 {
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 0 && i < 2);
   *(unsigned int *)&s[i] = 0x12340005u;
   assert(s[i].h == 5);

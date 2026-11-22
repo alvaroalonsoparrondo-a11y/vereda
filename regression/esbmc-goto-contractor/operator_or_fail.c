@@ -5,7 +5,7 @@ int main()
   x = 0;
   y = 0;
   __VERIFIER_assume(y >= 0);
-  while(y <= 1000 && nondet_int())
+  while(y <= 1000 && __VERIFIER_nondet_int())
   {
     y++;
     x -= y;

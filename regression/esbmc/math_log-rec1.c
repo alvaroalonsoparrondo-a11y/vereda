@@ -22,7 +22,7 @@ int main()
   assert(result1 <= c*result2);
 
   // step case
-  unsigned char n = nondet_uchar();
+  unsigned char n = __VERIFIER_nondet_uchar();
   __VERIFIER_assume(n>=2);
   unsigned char result3 = T(n);
   unsigned char result4 = log2(n);

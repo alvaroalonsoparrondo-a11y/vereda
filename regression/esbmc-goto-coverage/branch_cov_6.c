@@ -2025,7 +2025,7 @@ int main()
     kappa = 0;
     int symb;
 
-    symb = nondet_int();
+    symb = __VERIFIER_nondet_int();
     calculate_output(symb);
 
     return 0;

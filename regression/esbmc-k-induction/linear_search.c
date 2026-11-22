@@ -12,7 +12,7 @@ int linear_search(int *a, int n, int q)
 
 int main()
 {
-  unsigned int SIZE = nondet_uint() / 2 + 1;
+  unsigned int SIZE = __VERIFIER_nondet_uint() / 2 + 1;
 
   int a[SIZE];
   a[SIZE / 2] = 3;

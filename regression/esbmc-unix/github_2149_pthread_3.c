@@ -4,13 +4,13 @@
 #include <pthread.h>
 #include <stdatomic.h>
 
-unsigned int nondet_uint();
+unsigned int __VERIFIER_nondet_uint();
 
 atomic_uint counter = 0;
 
 void *assign(void *arg)
 {
-  unsigned int v = nondet_uint();
+  unsigned int v = __VERIFIER_nondet_uint();
   __VERIFIER_assume(v >= 1 && v <= 100);
   counter = v; /* CK_NonAtomicToAtomic */
   return NULL;

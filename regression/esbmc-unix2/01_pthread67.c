@@ -8,9 +8,9 @@
 #include <assert.h>
 #include <string.h>
 #define N 2
-char nondet_char();
-unsigned short nondet_ushort();
-unsigned int nondet_uint();
+char __VERIFIER_nondet_char();
+unsigned short __VERIFIER_nondet_ushort();
+unsigned int __VERIFIER_nondet_uint();
 int i;
 unsigned short key;
 char str[N];
@@ -34,7 +34,7 @@ void *server(void *arg)
 }
 int main()
 {
-  key = nondet_ushort() % 26 + 1;
+  key = __VERIFIER_nondet_ushort() % 26 + 1;
   pthread_t encryption, decryption;
   pthread_create(&decryption, 0, server, 0);
   pthread_create(&encryption, 0, client, 0);

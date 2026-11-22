@@ -1,5 +1,5 @@
-unsigned char nondet_uchar();
-unsigned short nondet_ushort();
+unsigned char __VERIFIER_nondet_uchar();
+unsigned short __VERIFIER_nondet_ushort();
 
 int main(void) {
   unsigned short size = 10;
@@ -9,8 +9,8 @@ int main(void) {
   _Bool found = 0;
 
   for(i = 0; i < size; ++i)
-    a[i] = nondet_uchar();
-  k = nondet_uchar();
+    a[i] = __VERIFIER_nondet_uchar();
+  k = __VERIFIER_nondet_uchar();
 
   while(i <= j) {
     if(a[i]*a[j] == k) {

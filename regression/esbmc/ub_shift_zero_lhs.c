@@ -9,10 +9,10 @@
  *  2. expr2t::simplify short-circuits on overflow2t (no descent), so the
  *     simplifier cannot fold the shift inside the overflow check.
  */
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main() {
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   // n could be negative or >= 32 — the shift is UB even though lhs is 0.
   int v = 0 << n;
   (void)v;

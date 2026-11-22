@@ -3,8 +3,8 @@
 #include <math.h>
  
 int main() {
-    double x = nondet_double();
-    double y = nondet_double();
+    double x = __VERIFIER_nondet_double();
+    double y = __VERIFIER_nondet_double();
  
     __VERIFIER_assume(x > 0.0 && x < 1.0e-154);
     __VERIFIER_assume(y > 0.0 && y < 1.0e-154);
@@ -14,7 +14,7 @@ int main() {
  
     if (product < DBL_MIN) {
         // Force underflow
-        product = nondet_double();
+        product = __VERIFIER_nondet_double();
         __VERIFIER_assume(product == 0.0);
         ulp = DBL_MIN * 0x1p-52;
     } else {
@@ -22,7 +22,7 @@ int main() {
     }
  
     // Model IEEE-754 rounding error
-    double rounding_error = nondet_double();
+    double rounding_error = __VERIFIER_nondet_double();
     __VERIFIER_assume(rounding_error >= -ulp/2 && rounding_error <= ulp/2);
  
     double result = product + rounding_error;

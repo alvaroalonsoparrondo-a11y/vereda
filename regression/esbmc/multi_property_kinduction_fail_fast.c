@@ -6,8 +6,8 @@
 
 int main()
 {
-  unsigned n = nondet_uint();
-  unsigned m = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
+  unsigned m = __VERIFIER_nondet_uint();
   assert(n != 7);
   assert(m + 1 > m || m == 0xffffffffu);
   return 0;

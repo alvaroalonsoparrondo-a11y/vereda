@@ -6,11 +6,11 @@ struct S {
 };
 
 int main(int argc, char *argv[]) {
-  int *p, *q, i=nondet_int();
+  int *p, *q, i=__VERIFIER_nondet_int();
 
   p = &i;
   
-  argc=nondet_int();
+  argc=__VERIFIER_nondet_int();
 
   if (argc > 1) {
     q = &i;

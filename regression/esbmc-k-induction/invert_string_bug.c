@@ -6,7 +6,7 @@ int main() {
     cont = 0;
     
     for (i=0; i<MAX; i++) {
-        str1[i]=nondet_char();
+        str1[i]=__VERIFIER_nondet_char();
     }
 	str1[MAX-1]= '\0';
 

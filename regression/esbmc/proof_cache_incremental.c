@@ -2,7 +2,7 @@
 
 int main(void)
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x > 0 && x < 10);
   assert(x + 1 > x);
   assert(x + 1 > x);

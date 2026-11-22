@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <pthread.h>
 
-_Bool nondet_bool(void);
+_Bool __VERIFIER_nondet_bool(void);
 
 pthread_t c;
 int d;
@@ -16,7 +16,7 @@ void *e(void *arg)
 
 int main()
 {
-  if (nondet_bool())
+  if (__VERIFIER_nondet_bool())
   {
     pthread_create(&c, 0, e, 0);
     return 0;

@@ -25,7 +25,7 @@ struct sample g = {1, 'g', {2, {3, 4}}};
 struct sample table[2] = {{5, 't', {6, {7, 8}}}, {9, 'u', {10, {11, 12}}}};
 extern struct inner ext;
 struct flex fl;
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int sum(struct sample s)
 {
@@ -51,7 +51,7 @@ int main(void)
   fresh.total = 7;
   assert(fresh.total == 7);
 
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 0 && i < 2);
   struct sample picked;
   picked = table[i];

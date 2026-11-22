@@ -1,10 +1,10 @@
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int i = nondet_int();
-  int k = nondet_int();
-  int m = nondet_int();
+  int i = __VERIFIER_nondet_int();
+  int k = __VERIFIER_nondet_int();
+  int m = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 200000);
   __VERIFIER_assume(k >= 300000);
   __VERIFIER_assume(m <= -400000);

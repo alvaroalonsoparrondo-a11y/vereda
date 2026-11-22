@@ -1,5 +1,5 @@
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main() {
   int x=0;

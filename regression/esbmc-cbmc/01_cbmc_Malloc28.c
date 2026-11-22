@@ -3,7 +3,7 @@
 
 void test() {
 	
-  int size = nondet_uint();
+  int size = __VERIFIER_nondet_uint();
   
   if (size > 0) {
     

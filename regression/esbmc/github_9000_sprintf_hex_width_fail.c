@@ -2,11 +2,11 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-unsigned short nondet_ushort();
+unsigned short __VERIFIER_nondet_ushort();
 int main()
 {
   char d[8];
-  unsigned short c = nondet_ushort();
+  unsigned short c = __VERIFIER_nondet_ushort();
   int r = sprintf(d, "%-2x", c);
   assert(r < 4);
   return 0;

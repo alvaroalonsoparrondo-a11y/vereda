@@ -1,15 +1,15 @@
 /* github #8706 */
 #include <assert.h>
 #include <limits.h>
-unsigned nondet_uint();
-int nondet_int();
+unsigned __VERIFIER_nondet_uint();
+int __VERIFIER_nondet_int();
 int main(void)
 {
-  unsigned a = nondet_uint(), b = nondet_uint();
+  unsigned a = __VERIFIER_nondet_uint(), b = __VERIFIER_nondet_uint();
   __VERIFIER_assume(a == 0x80000000u && b == 0xffffffffu);
   unsigned q = a / b;
   assert(q == 1);
-  int x = nondet_int(), y = nondet_int();
+  int x = __VERIFIER_nondet_int(), y = __VERIFIER_nondet_int();
   __VERIFIER_assume(x == INT_MIN && y == -1);
   int s = x / y;
   return s;

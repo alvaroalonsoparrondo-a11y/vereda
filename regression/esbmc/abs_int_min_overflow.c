@@ -6,10 +6,10 @@
  * --overflow-check.
  */
 #include <limits.h>
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main() {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x == INT_MIN);
   // -INT_MIN overflows. The cond's negation arm is exercised when x < 0.
   int y = (x >= 0) ? x : -x;

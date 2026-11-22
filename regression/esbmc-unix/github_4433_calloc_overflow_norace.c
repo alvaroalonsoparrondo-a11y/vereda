@@ -35,7 +35,7 @@ int main(void)
   return 0;
 }
 // Imported from ESBMC regression/esbmc-unix/github_4433_calloc_overflow_norace
-// Needs: --enable-unreachability-intrinsic REQUIRES arch32
-// RUN: --no-div-by-zero-check --force-malloc-success --no-align-check --no-vla-size-check --32 --enable-unreachability-intrinsic --no-pointer-check --no-bounds-check
+// Needs: REQUIRES arch32
+// RUN: --no-div-by-zero-check --force-malloc-success --no-align-check --no-vla-size-check --32 --no-pointer-check --no-bounds-check
 // MODE: FUTURE
 // EXPECT: ^VERIFICATION SUCCESSFUL$

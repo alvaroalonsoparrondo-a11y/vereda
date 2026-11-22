@@ -9,7 +9,7 @@ struct S
 struct S s[2];
 int main(void)
 {
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 0 && i < 2);
   *(unsigned int *)&s[i] = 0x10000031u;
   assert(s[i].a == 0);

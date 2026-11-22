@@ -2,7 +2,7 @@
 // imaginary parts, a clang extension (github #7643).
 #include <assert.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 _Complex int gi = {1, 2};
 
@@ -12,7 +12,7 @@ int main(void)
   assert(__real__ gi == 1 && __imag__ gi == 2);
   assert(__real__ fl == 1.5f && __imag__ fl == 2.0f);
 
-  int re = nondet_int(), im = nondet_int();
+  int re = __VERIFIER_nondet_int(), im = __VERIFIER_nondet_int();
   _Complex int z = {re, im};
   assert(__real__ z == re && __imag__ z == im);
   return 0;

@@ -4,7 +4,7 @@
 int g,x;
 pthread_mutex_t mutex;
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 void *t1(void *arg)
 {
@@ -39,7 +39,7 @@ int main()
 {
   pthread_t id1, id2, id3;
 
-  x=nondet_int();
+  x=__VERIFIER_nondet_int();
 
   pthread_create(&id1, NULL, t1, NULL);
   pthread_create(&id2, NULL, t2, NULL);

@@ -2,8 +2,8 @@
 
 int main()
 {
-  _Bool a = nondet_bool();
-  _Bool b = nondet_bool();
+  _Bool a = __VERIFIER_nondet_bool();
+  _Bool b = __VERIFIER_nondet_bool();
 
   // (a & ~b) | (a ^ b) --> a ^ b
   assert(((a & ~b) | (a ^ b)) == (a ^ b));

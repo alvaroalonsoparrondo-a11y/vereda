@@ -3,7 +3,7 @@
 // for the write and prove B[1] < 3.
 #include <stdlib.h>
 #include <assert.h>
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 
 struct dev
 {
@@ -17,7 +17,7 @@ int main()
   B[0] = 0;
   B[1] = 0;
   d->base = (long)B;
-  while (nondet_int())
+  while (__VERIFIER_nondet_int())
   {
     long base = *(long *)(unsigned long)d;
     int *r = (int *)(base + 4);

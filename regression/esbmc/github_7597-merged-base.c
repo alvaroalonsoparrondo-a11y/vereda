@@ -11,13 +11,13 @@ struct plc
 
 struct plc VAR;
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int in = nondet_int();
+  int in = __VERIFIER_nondet_int();
 
-  if (nondet_int())
+  if (__VERIFIER_nondet_int())
     VAR.out = 1;
   else
     VAR.out = 2;

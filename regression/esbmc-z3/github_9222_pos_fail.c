@@ -1,8 +1,8 @@
 // #9222: a signed product above INT_MAX is an overflow.
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int main(void)
 {
-  int a = nondet_int(), b = nondet_int();
+  int a = __VERIFIER_nondet_int(), b = __VERIFIER_nondet_int();
   __VERIFIER_assume((a < 0 && b < 0) || (a > 0 && b > 0));
   return a * b;
 }

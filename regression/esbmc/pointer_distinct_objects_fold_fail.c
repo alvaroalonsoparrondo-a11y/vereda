@@ -8,12 +8,12 @@ struct S
 struct S s;
 int a[4], b[4];
 int *q;
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int *p = nondet_int() ? &a[0] : &b[0];
-  q = nondet_int() ? &a[2] : &b[2];
+  int *p = __VERIFIER_nondet_int() ? &a[0] : &b[0];
+  q = __VERIFIER_nondet_int() ? &a[2] : &b[2];
   __VERIFIER_assert(p != &a[0]); // a chosen pointer may equal either object
   __VERIFIER_assert(&q[-2] != &b[0]); // a dereference-rooted address may too
   struct S *r = &s;

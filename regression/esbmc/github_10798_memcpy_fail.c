@@ -3,13 +3,13 @@
 
 /* A pointer whose bytes are copied from a nondet integer can name any object,
  * b included, with or without slicing (#10798). */
-uintptr_t nondet_uintptr(void);
+uintptr_t __VERIFIER_nondet_uintptr(void);
 int main(void)
 {
   int a = 1, b = 2;
   int *q = &a;
   (void)q;
-  uintptr_t i = nondet_uintptr();
+  uintptr_t i = __VERIFIER_nondet_uintptr();
   int *p;
   memcpy(&p, &i, sizeof p);
   __VERIFIER_assert(

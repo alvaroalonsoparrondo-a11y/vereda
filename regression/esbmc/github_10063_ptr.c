@@ -210,11 +210,11 @@ static state_t *ps = &g_state;
 static void dma_read(uint32_t *dst, uint32_t nwords)
 {
   for (uint32_t w = 0; w < nwords; w++)
-    dst[w] = nondet_uint();
+    dst[w] = __VERIFIER_nondet_uint();
 }
 int main(void)
 {
-  uint32_t n = nondet_uint();
+  uint32_t n = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n <= 1000000u);
   for (uint32_t i = 0; i < n; i++)
   {

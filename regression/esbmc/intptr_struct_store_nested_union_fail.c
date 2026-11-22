@@ -19,7 +19,7 @@ struct port
 static struct port ports[2];
 int main(void)
 {
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 0 && i < 2);
   unsigned long p = (unsigned long)ports + (unsigned long)i * sizeof(struct port);
   *(unsigned short *)(p + __builtin_offsetof(struct port, lock.half.tail)) = 5;

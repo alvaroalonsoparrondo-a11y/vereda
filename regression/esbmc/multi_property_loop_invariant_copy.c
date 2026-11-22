@@ -1,11 +1,11 @@
 /* Both copies --loop-invariant makes of assert(n != 7) are proved. */
 #include <assert.h>
 
-unsigned nondet_uint();
+unsigned __VERIFIER_nondet_uint();
 
 int main()
 {
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   unsigned i = 0;
   __VERIFIER_assume(n != 7);
   __ESBMC_loop_invariant(i <= 10);

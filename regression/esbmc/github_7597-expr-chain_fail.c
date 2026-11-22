@@ -20,19 +20,19 @@ struct io
 struct plc VAR;
 struct io IO;
 
-float nondet_float(void);
-_Bool nondet_bool(void);
+float __VERIFIER_nondet_float(void);
+_Bool __VERIFIER_nondet_bool(void);
 
 int main(void)
 {
-  IO.in = nondet_float();
+  IO.in = __VERIFIER_nondet_float();
   if (IO.in < -1.0e38f)
     IO.in = -1.0e38f;
   else if (IO.in > 1.0e38f)
     IO.in = 1.0e38f;
 
   /* VAR carries no literal past here, so `VAR.out = ..` stays a `with`. */
-  if (nondet_bool())
+  if (__VERIFIER_nondet_bool())
     VAR.mode = 1;
   else
     VAR.mode = 2;

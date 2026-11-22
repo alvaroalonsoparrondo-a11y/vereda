@@ -2,7 +2,7 @@ _Bool flag = 0;
 
 int main()
 {
-  flag = nondet_bool();
+  flag = __VERIFIER_nondet_bool();
   if (!flag)
   {
     flag = 1;

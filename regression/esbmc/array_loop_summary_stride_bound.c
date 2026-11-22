@@ -1,7 +1,7 @@
 // hi widens an unsigned short, so i += 2 cannot wrap past it.
-unsigned short nondet_ushort(void);
+unsigned short __VERIFIER_nondet_ushort(void);
 int main() {
-  unsigned short N = nondet_ushort();
+  unsigned short N = __VERIFIER_nondet_ushort();
   unsigned x = 0;
   while (x < N) x += 2;
   __VERIFIER_assert(x % 2 == 0);

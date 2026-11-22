@@ -3,12 +3,12 @@
  * read alike, rather than keying on the location, turns this SUCCESSFUL. */
 #include <assert.h>
 
-unsigned long nondet_ulong(void);
+unsigned long __VERIFIER_nondet_ulong(void);
 
 int main(void)
 {
-  int *p = (int *)nondet_ulong();
-  int *q = (int *)nondet_ulong();
+  int *p = (int *)__VERIFIER_nondet_ulong();
+  int *q = (int *)__VERIFIER_nondet_ulong();
   int a = *p;
   int b = *q;
   assert(a == b);

@@ -1,6 +1,6 @@
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int main(void) {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   long y = x;
   _Bool b = x;
   int z = b;

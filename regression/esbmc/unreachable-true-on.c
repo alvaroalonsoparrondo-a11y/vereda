@@ -1,7 +1,7 @@
 
 int main()
 {
-	if(nondet_bool())
+	if(__VERIFIER_nondet_bool())
 		reach_error();
 }
 // Imported from ESBMC regression/esbmc/unreachable-true-on

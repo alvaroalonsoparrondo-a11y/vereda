@@ -2,7 +2,7 @@
  * The struct has 8 fields; F<n>(p) declares n padding fields. */
 #include <assert.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 struct S
 {
@@ -12,7 +12,7 @@ struct S
 int main(void)
 {
   struct S s;
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x >= 0 && x <= 1000);
   struct S *p = &s;
   p->a0 = x;

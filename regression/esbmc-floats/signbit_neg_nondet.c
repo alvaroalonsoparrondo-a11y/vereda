@@ -1,11 +1,11 @@
 #include <assert.h>
 #include <math.h>
 
-double nondet_double(void);
+double __VERIFIER_nondet_double(void);
 
 int main(void)
 {
-  double d = nondet_double();
+  double d = __VERIFIER_nondet_double();
   __VERIFIER_assume(d > 0);
   assert(signbit(-d) == 1);
   assert(signbit(fabs(-d)) == 0);

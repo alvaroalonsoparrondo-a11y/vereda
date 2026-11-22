@@ -11,13 +11,13 @@ typedef struct
   E c[2];
 } S;
 
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 
 void f(S *s)
 {
   for (int i = 0; i < 2; i++)
   {
-    s->a[i] = nondet_uint() % 2;
+    s->a[i] = __VERIFIER_nondet_uint() % 2;
     s->c[s->a[i]].x = i + 1;
   }
 }

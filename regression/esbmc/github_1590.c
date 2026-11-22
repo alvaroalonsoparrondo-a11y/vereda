@@ -2,8 +2,8 @@
 #include <string.h>
 
 unsigned char buffer[1024] __attribute__((__aligned__(4)));
-extern struct adj nondet_struct();
-extern unsigned long nondet_ulong();
+extern struct adj __VERIFIER_nondet_struct();
+extern unsigned long __VERIFIER_nondet_ulong();
 struct adj{
   int a;
 };
@@ -20,10 +20,10 @@ _Bool valid(unsigned long addr){
 }
 
 int main() {
-  struct adj adj = nondet_struct();
+  struct adj adj = __VERIFIER_nondet_struct();
   adj.a = 2;
   (void)memcpy(buffer, &adj, sizeof(adj));
-  unsigned long addr = nondet_ulong();
+  unsigned long addr = __VERIFIER_nondet_ulong();
   if(!valid(addr))
     return 0;
   struct adj* adj2 = buffer_ptr(addr);

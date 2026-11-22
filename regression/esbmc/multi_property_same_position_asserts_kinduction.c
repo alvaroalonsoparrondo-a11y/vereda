@@ -3,7 +3,7 @@
 int a[4];
 int main()
 {
-  unsigned i = nondet_uint(), j = nondet_uint();
+  unsigned i = __VERIFIER_nondet_uint(), j = __VERIFIER_nondet_uint();
   __VERIFIER_assume(i < 4);
   int s = a[i] + a[j];
   return s;

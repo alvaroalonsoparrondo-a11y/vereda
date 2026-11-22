@@ -5,11 +5,11 @@
  * nearest ASSIGN (i=9), commit to post-value 13, and silently drop
  * the init=0 path, masking the bug. */
 #include <assert.h>
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main()
 {
   int i;
-  int cond = nondet_int();
+  int cond = __VERIFIER_nondet_int();
   if (cond)
     i = 0;
   else

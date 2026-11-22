@@ -4,7 +4,7 @@
 /* As github_8083_symex_guard, with a bound that holds. */
 int main()
 {
-  int n = 1, m = nondet_int();
+  int n = 1, m = __VERIFIER_nondet_int();
   memcpy(&n, &m, sizeof n);
   __VERIFIER_assume(n >= 0 && n <= 1);
   int i = 0;

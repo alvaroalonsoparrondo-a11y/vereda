@@ -4,11 +4,11 @@
    the counterexample v==0 produces "0" (1 char, not 8). */
 #include <assert.h>
 #include <stdio.h>
-extern unsigned nondet_uint(void);
+extern unsigned __VERIFIER_nondet_uint(void);
 int main()
 {
 #ifndef _WIN32
-  unsigned v = nondet_uint();
+  unsigned v = __VERIFIER_nondet_uint();
   int r = printf("%x", v);
   assert(r == 8);
 #else

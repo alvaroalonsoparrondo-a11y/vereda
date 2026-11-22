@@ -4,7 +4,7 @@ int tt;
 
 int foo() {
 	int x;
-    tt = nondet_int();
+    tt = __VERIFIER_nondet_int();
 	tt += 1;
 	int y = 25;
 	int res = tt + y;

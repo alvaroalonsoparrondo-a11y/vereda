@@ -21,11 +21,11 @@ struct io
 struct plc VAR;
 struct io IO;
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  IO.in = nondet_int();
+  IO.in = __VERIFIER_nondet_int();
   /* A merge point, so IO carries no propagated constant afterwards, and a
    * bound that keeps the sums below from overflowing. */
   if (IO.in < -1000)

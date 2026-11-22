@@ -1,10 +1,10 @@
 #include <assert.h>
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main()
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   assert(x > 5);
   return 0;
 }

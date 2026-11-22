@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main()
 {
@@ -13,7 +13,7 @@ int main()
   p[0] = 'h';
   p[1] = '\n';
   p[2] = '\0';
-  int choice = nondet_int();
+  int choice = __VERIFIER_nondet_int();
   if (choice)
     free(p);
   printf(p);

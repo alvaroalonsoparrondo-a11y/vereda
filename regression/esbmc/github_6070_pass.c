@@ -1,8 +1,8 @@
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main()
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x >= 0 && x < 4);
   int i;
   for (i = 0; i < 4; i++)

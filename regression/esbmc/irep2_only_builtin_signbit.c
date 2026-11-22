@@ -1,8 +1,8 @@
-double nondet_double(void);
+double __VERIFIER_nondet_double(void);
 
 int main(void)
 {
-  double p = nondet_double(), n = nondet_double();
+  double p = __VERIFIER_nondet_double(), n = __VERIFIER_nondet_double();
   __VERIFIER_assume(p == 1.0 && n == -1.0);
 
   __VERIFIER_assert(!__builtin_signbit(p)); // 1.0 is positive

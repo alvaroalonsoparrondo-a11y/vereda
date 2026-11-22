@@ -1,15 +1,15 @@
 // A store at a symbolic index after the loop leaves the read unreduced, so
 // the solver gets the whole summarised array.
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 int a[100];
 int main()
 {
   for (unsigned i = 0; i < 100; i++)
     a[i] = i;
-  unsigned c = nondet_uint();
+  unsigned c = __VERIFIER_nondet_uint();
   __VERIFIER_assume(c < 100);
   a[c] = -1;
-  unsigned y = nondet_uint();
+  unsigned y = __VERIFIER_nondet_uint();
   __VERIFIER_assume(y < 100);
   __VERIFIER_assert(a[y] == y); // only a[c] changed
 }

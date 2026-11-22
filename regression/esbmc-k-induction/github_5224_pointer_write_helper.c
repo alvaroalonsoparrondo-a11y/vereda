@@ -5,22 +5,22 @@
 // case nor the forward condition can prove the program safe: only the
 // inductive step can, over the havoced a, since the element just written is 0
 // or 1 whatever a held.
-extern unsigned char nondet_uchar(void);
-extern unsigned nondet_uint(void);
-extern int nondet_int(void);
+extern unsigned char __VERIFIER_nondet_uchar(void);
+extern unsigned __VERIFIER_nondet_uint(void);
+extern int __VERIFIER_nondet_int(void);
 
 static void setelem(unsigned char (*dest)[8], unsigned i)
 {
-  (*dest)[i] = nondet_uchar() & 1u; // array element written through a pointer
+  (*dest)[i] = __VERIFIER_nondet_uchar() & 1u; // array element written through a pointer
 }
 
 int main(void)
 {
   unsigned char a[8] = {0};
 
-  while (nondet_int())
+  while (__VERIFIER_nondet_int())
   {
-    unsigned i = nondet_uint() % 8;
+    unsigned i = __VERIFIER_nondet_uint() % 8;
     setelem(&a, i);
     __VERIFIER_assert(a[i] <= 1); // the element just set is 0 or 1
   }

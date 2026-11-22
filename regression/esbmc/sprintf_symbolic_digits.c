@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 int main() {
-  unsigned char c = nondet_uchar();
-  int v = nondet_int();
+  unsigned char c = __VERIFIER_nondet_uchar();
+  int v = __VERIFIER_nondet_int();
   char b[32];
   int n = sprintf(b, "\\%03o", c);
   __VERIFIER_assert(b[0] == '\\' && b[1] == '0' + (c >> 6) && b[2] == '0' + ((c >> 3) & 7) && b[3] == '0' + (c & 7) && b[4] == 0 && n == 4); // oct

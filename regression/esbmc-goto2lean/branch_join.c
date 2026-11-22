@@ -1,4 +1,4 @@
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int clamp(int x, int lo, int hi) {
   if (x < lo)
     return lo;
@@ -17,7 +17,7 @@ int sign(int x) {
   return s;
 }
 int main(void) {
-  int x = nondet_int(), lo = nondet_int(), hi = nondet_int();
+  int x = __VERIFIER_nondet_int(), lo = __VERIFIER_nondet_int(), hi = __VERIFIER_nondet_int();
   __VERIFIER_assume(lo <= hi);
   int c = clamp(x, lo, hi);
   __VERIFIER_assert(lo <= c && c <= hi); // clamp in range

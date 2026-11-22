@@ -36,7 +36,7 @@ int main(void)
   assert(fmtn(3, "%s-%d", "ab", 7) == 4);
   assert(b[0] == 'a' && b[1] == 'b' && b[2] == '\0' && b[3] == 'y');
 
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x >= 0 && x < 10);
   int r = fmt("%x", x);
   assert(r == 1 && b[1] == '\0');

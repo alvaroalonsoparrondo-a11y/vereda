@@ -1,12 +1,12 @@
 #include <assert.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main()
 {
-  int x = nondet_int();
-  int y = nondet_int();
-  int w = nondet_int();
+  int x = __VERIFIER_nondet_int();
+  int y = __VERIFIER_nondet_int();
+  int w = __VERIFIER_nondet_int();
 
   // X + (-X) cancellation across a chain.
   // (x + y) + w - x - y should reassociate down to w.

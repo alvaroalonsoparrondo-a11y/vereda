@@ -1,11 +1,11 @@
 #include <stdio.h>
 
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 
 int main(void)
 {
   char b[4];
-  sprintf(b, "%x", nondet_uint());
+  sprintf(b, "%x", __VERIFIER_nondet_uint());
   return 0;
 }
 // Imported from ESBMC regression/esbmc/sprintf_symbolic_output_fail

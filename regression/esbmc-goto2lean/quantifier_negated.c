@@ -1,7 +1,7 @@
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 int main(void)
 {
-  unsigned x = nondet_uint();
+  unsigned x = __VERIFIER_nondet_uint();
   unsigned i = 0;
   __VERIFIER_assert(!__ESBMC_forall(&i, i < x)); // some i is not below x
   return 0;

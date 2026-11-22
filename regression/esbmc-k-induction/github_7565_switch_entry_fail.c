@@ -5,11 +5,11 @@
 
 #include <assert.h>
 
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 
 int main()
 {
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   int i = 0, s = 0, x = 0;
   if (n < 0 || n > 1)
     return 0;

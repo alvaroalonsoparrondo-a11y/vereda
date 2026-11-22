@@ -1,25 +1,25 @@
 // #9534: the assumptions against type bounds are kept under --ir, and the
 // properties below still fail because the bounds do not imply them.
-extern unsigned long nondet_ulong(void);
-extern unsigned char nondet_uchar(void);
-extern int nondet_int(void);
+extern unsigned long __VERIFIER_nondet_ulong(void);
+extern unsigned char __VERIFIER_nondet_uchar(void);
+extern int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  unsigned long u = nondet_ulong();
+  unsigned long u = __VERIFIER_nondet_ulong();
   __VERIFIER_assume(u <= 18446744073709551615UL);
   __VERIFIER_assert(u / 2 <= 4611686018427387903UL); // unsigned max
 
-  unsigned long v = nondet_ulong();
+  unsigned long v = __VERIFIER_nondet_ulong();
   __VERIFIER_assume(v >= 0);
   __VERIFIER_assume(v <= 10);
   __VERIFIER_assert(v * v < 100); // unsigned min
 
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x >= -2147483647 - 1);
   __VERIFIER_assert(x > -2147483648LL); // signed min
 
-  unsigned char c = nondet_uchar();
+  unsigned char c = __VERIFIER_nondet_uchar();
   __VERIFIER_assume(c >= 0);
   __VERIFIER_assume(c <= 10);
   __VERIFIER_assert(c * c < 100); // promoted unsigned

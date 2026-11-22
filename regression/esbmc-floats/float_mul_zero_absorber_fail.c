@@ -1,11 +1,11 @@
 #include <assert.h>
 #include <math.h>
 
-float nondet_float(void);
+float __VERIFIER_nondet_float(void);
 
 int main()
 {
-  float i = nondet_float();
+  float i = __VERIFIER_nondet_float();
   __VERIFIER_assume(isinf(i));
   assert(i * 0.0f == 0.0f);
   return 0;

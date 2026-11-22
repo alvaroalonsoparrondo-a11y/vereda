@@ -12,7 +12,7 @@ int main()
 
   xx=&x;
 
-  x->i=nondet_int();
+  x->i=__VERIFIER_nondet_int();
   
   assert(x->i==2);
 

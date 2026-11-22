@@ -4,8 +4,8 @@ int main()
 {
   _Bool x, y;
   int a, b, f;
-  x = nondet_bool();
-  y = nondet_bool();
+  x = __VERIFIER_nondet_bool();
+  y = __VERIFIER_nondet_bool();
   a = ((2 * x) - (3 * y));
   if(a < 0)
     a = 0;

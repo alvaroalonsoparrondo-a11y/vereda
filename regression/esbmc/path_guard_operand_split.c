@@ -3,7 +3,7 @@
  * the call, so the callee's own range check is already decided by the
  * path condition — but matching the two requires chasing the split
  * m = (mn >> 4) & 0x0F as a stable value, not just bare copies. */
-unsigned char nondet_u1(void);
+unsigned char __VERIFIER_nondet_u1(void);
 
 static int handler(unsigned char mn)
 {
@@ -33,7 +33,7 @@ static int offset_handler(unsigned char mn)
 
 int main(void)
 {
-  unsigned char mn = nondet_u1();
+  unsigned char mn = __VERIFIER_nondet_u1();
   unsigned char m_ = (mn >> 4) & 0x0F, n_ = mn & 0x0F;
   if (m_ >= 1 && m_ <= 2 && n_ >= 1 && n_ <= 2)
     return 0;

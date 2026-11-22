@@ -1,6 +1,6 @@
 #include <assert.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 void __VERIFIER_assume(_Bool);
 
 typedef int (*handler_t)(int);
@@ -11,7 +11,7 @@ int sub_one(int x) { return x - 1; }
 handler_t handlers[2] = { add_one, sub_one };
 
 int main() {
-    int idx = nondet_int();
+    int idx = __VERIFIER_nondet_int();
     __VERIFIER_assume(idx >= 0 && idx < 2);
 
     handler_t h = handlers[idx];

@@ -5,13 +5,13 @@
 #include <pthread.h>
 #include <stdatomic.h>
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 atomic_int shared = 0;
 
 void *assign(void *arg)
 {
-  int v = nondet_int();
+  int v = __VERIFIER_nondet_int();
   __VERIFIER_assume(v >= -10 && v <= 10);
   shared = v; /* CK_NonAtomicToAtomic */
   return NULL;

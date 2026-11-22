@@ -4,11 +4,11 @@
  * address. */
 #include <stdint.h>
 #include <stdlib.h>
-_Bool nondet_bool(void);
+_Bool __VERIFIER_nondet_bool(void);
 int x, y;
 int main(void)
 {
-  int *p = nondet_bool() ? &x : &y;
+  int *p = __VERIFIER_nondet_bool() ? &x : &y;
   int *h = malloc(8);
   if (!h)
     return 0;

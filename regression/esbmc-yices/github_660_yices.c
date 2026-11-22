@@ -1,6 +1,6 @@
 int main()
 {
-  double d = nondet_double();
+  double d = __VERIFIER_nondet_double();
   float f = d;
   assert(f == d);
 }

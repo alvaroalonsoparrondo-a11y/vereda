@@ -10,11 +10,11 @@
  * as sub2tc(pointer, acc, term) for pointer chains.
  */
 char buf[100];
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main() {
   unsigned u = 5;
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i == 3);
   char *p = &buf[10];
   // Independent +i and -i force reassoc to fire and cancel them.

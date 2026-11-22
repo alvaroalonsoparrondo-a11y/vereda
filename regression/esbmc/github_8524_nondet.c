@@ -8,7 +8,7 @@ int main(void)
   char name[11];
 
   for (int i = 0; i < 10; i++)
-    name[i] = nondet_char();
+    name[i] = __VERIFIER_nondet_char();
   name[10] = '\0';
 
   unsigned char key_len = snprintf(b, sizeof(b), "%s=%d", name, 7);

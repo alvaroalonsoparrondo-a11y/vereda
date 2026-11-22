@@ -1,9 +1,9 @@
 // #8055
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int f(void)
 {
-  int r = nondet_int();
+  int r = __VERIFIER_nondet_int();
   __VERIFIER_assume(r <= 0);
   return r;
 }
@@ -33,7 +33,7 @@ int main()
   }
   __VERIFIER_assert(i == 0); // loop not entered
   g(0);
-  g(-nondet_int() * 0);
+  g(-__VERIFIER_nondet_int() * 0);
 }
 // Imported from ESBMC regression/esbmc/github_8055_safe
 // EXPECT: ^VERIFICATION SUCCESSFUL$

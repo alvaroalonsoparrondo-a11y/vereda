@@ -15,8 +15,8 @@ int main() {
   return 0;
 }
 // Imported from ESBMC regression/bitwuzla/ts_bmc_setjmp_declined
-// Needs: --error-label ERROR --enable-unreachability-intrinsic --ts-bmc --ts-no-fallback
-// RUN: --bitwuzla --no-pointer-check --no-bounds-check --error-label ERROR --enable-unreachability-intrinsic --ts-bmc --ts-no-fallback --max-k-step 4
+// Needs: --error-label ERROR --ts-bmc --ts-no-fallback
+// RUN: --bitwuzla --no-pointer-check --no-bounds-check --error-label ERROR --ts-bmc --ts-no-fallback --max-k-step 4
 // MODE: FUTURE
 // EXPECT: ^WARNING: calls c:@F@_?setjmp, which extraction declines$
 // EXPECT: ^VERIFICATION UNKNOWN$

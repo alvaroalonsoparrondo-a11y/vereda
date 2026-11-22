@@ -7,7 +7,7 @@ struct D {
 
 int main()
 {
-  unsigned n = nondet_uint() % 1024;
+  unsigned n = __VERIFIER_nondet_uint() % 1024;
   struct D data[n];
   assert(data->fmt);
 }

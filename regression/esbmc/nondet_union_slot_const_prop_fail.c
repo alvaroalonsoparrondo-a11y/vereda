@@ -9,7 +9,7 @@ typedef union
   short s;
   u2 r;
 } slot_t;
-u2 nondet_u2(void);
+u2 __VERIFIER_nondet_u2(void);
 
 struct fr
 {
@@ -20,7 +20,7 @@ static struct fr f;
 
 int main(void)
 {
-  f.stack[0].r = nondet_u2();
+  f.stack[0].r = __VERIFIER_nondet_u2();
   f.sp = 1;
   __VERIFIER_assert(f.stack[0].r == 5); // a nondet slot is not 5
   return 0;

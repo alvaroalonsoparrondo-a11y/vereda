@@ -1,4 +1,4 @@
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 /* A return inside the loop leaves through the loop function's `ret`. */
 unsigned find(unsigned n, unsigned key) {
   for (unsigned i = 0; i < n; i++)
@@ -7,7 +7,7 @@ unsigned find(unsigned n, unsigned key) {
   return n;
 }
 int main(void) {
-  unsigned n = nondet_uint(), key = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint(), key = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n <= 8);
   unsigned r = find(n, key);
   __VERIFIER_assert(r <= n); // result in range

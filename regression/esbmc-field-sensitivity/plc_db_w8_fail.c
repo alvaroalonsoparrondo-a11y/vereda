@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <stdbool.h>
 
-_Bool nondet_bool(void);
+_Bool __VERIFIER_nondet_bool(void);
 
 typedef struct
 {
@@ -37,8 +37,8 @@ int main(void)
   db.setpoint = 50;
   for (int k = 0; k < 20; k++)
   {
-    db.start = nondet_bool();
-    db.stop = nondet_bool();
+    db.start = __VERIFIER_nondet_bool();
+    db.stop = __VERIFIER_nondet_bool();
     cycle(&db);
     assert(db.timer < 15);
   }

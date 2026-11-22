@@ -1,11 +1,11 @@
 // #8055
-int nondet_int();
+int __VERIFIER_nondet_int();
 int g;
 
 int f(void)
 {
   g = 0;
-  return nondet_int();
+  return __VERIFIER_nondet_int();
 }
 
 int main()

@@ -138,7 +138,7 @@ int main(void)
 	for (i = 0; i<xsize; ++i)
 	{
 		y[i] = 0;
-		x[i] = nondet_int()*delta; //nondet_float();
+		x[i] = __VERIFIER_nondet_int()*delta; //nondet_float();
 		__VERIFIER_assume(x[i]>=min && x[i]<=max);
 	}
 

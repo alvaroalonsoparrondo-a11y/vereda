@@ -1,9 +1,9 @@
 // A symbolic size reaches the solver as a quantified definition of the
 // whole array.
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 int main()
 {
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n > 77 && n < 100);
   int a[n];
   for (unsigned i = 0; i < n; i++)

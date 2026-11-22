@@ -7,7 +7,7 @@
    either arm alone solves in milliseconds, but both in one formula take z3
    past the Windows job's limit. */
 
-double nondet_double(void);
+double __VERIFIER_nondet_double(void);
 
 int main(void)
 {
@@ -16,8 +16,8 @@ int main(void)
      sides of the comparison. The assumed ranges also exclude NaN, which no
      equality would hold over. */
   double _Complex z;
-  __real__ z = nondet_double();
-  __imag__ z = nondet_double();
+  __real__ z = __VERIFIER_nondet_double();
+  __imag__ z = __VERIFIER_nondet_double();
   double zr = __real__ z, zi = __imag__ z;
   __VERIFIER_assume(zr > 1.0 && zr < 2.0 && zi > 3.0 && zi < 4.0);
 

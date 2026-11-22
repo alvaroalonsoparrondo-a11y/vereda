@@ -20,7 +20,7 @@ int test(){
 
 int main(){
 
-   n = nondet_int();
+   n = __VERIFIER_nondet_int();
    
    if (n <= 0 || n >= 10){
       n=5;

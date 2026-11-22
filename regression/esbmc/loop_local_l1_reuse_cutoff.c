@@ -1,4 +1,4 @@
-int nondet_int();
+int __VERIFIER_nondet_int();
 int g(int d)
 {
   if (d == 3)

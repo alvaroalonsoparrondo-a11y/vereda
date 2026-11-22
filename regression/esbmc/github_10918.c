@@ -2,11 +2,11 @@
  * order and difference as intptr_t. */
 #include <assert.h>
 #include <stdint.h>
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int main(void)
 {
   uint64_t g[4];
-  int i = nondet_int(), j = nondet_int();
+  int i = __VERIFIER_nondet_int(), j = __VERIFIER_nondet_int();
   __VERIFIER_assume(0 <= i && i < 4 && 0 <= j && j < 4);
   intptr_t a = (intptr_t)&g[i], b = (intptr_t)&g[j];
   intptr_t r;

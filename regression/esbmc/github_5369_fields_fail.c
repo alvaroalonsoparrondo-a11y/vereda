@@ -4,7 +4,7 @@
  * pointer and the read type alone merges them. */
 #include <assert.h>
 
-unsigned long nondet_ulong(void);
+unsigned long __VERIFIER_nondet_ulong(void);
 
 struct S
 {
@@ -14,7 +14,7 @@ struct S
 
 int main(void)
 {
-  struct S *p = (struct S *)nondet_ulong();
+  struct S *p = (struct S *)__VERIFIER_nondet_ulong();
   int x = p->a;
   int y = p->b;
   assert(x == y);

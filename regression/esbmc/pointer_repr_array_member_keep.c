@@ -6,7 +6,7 @@ struct S
   char buf[8];
 };
 
-unsigned nondet_uint();
+unsigned __VERIFIER_nondet_uint();
 
 // Pointers held in an array member are not rebuilt as themselves, but a byte
 // written into buf still leaves them unchanged.
@@ -17,7 +17,7 @@ int main()
   s.a[0] = &k;
   s.a[1] = &j;
   unsigned char *bytes = (unsigned char *)&s;
-  bytes[2 * sizeof(int *) + nondet_uint() % 8] = 'a';
+  bytes[2 * sizeof(int *) + __VERIFIER_nondet_uint() % 8] = 'a';
   assert(s.a[0] == &k);
 }
 // Imported from ESBMC regression/esbmc/pointer_repr_array_member_keep

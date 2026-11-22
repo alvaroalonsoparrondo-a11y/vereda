@@ -1,7 +1,7 @@
 #define a (2)
-int nondet_int();
-unsigned int nondet_uint();
-_Bool nondet_bool();
+int __VERIFIER_nondet_int();
+unsigned int __VERIFIER_nondet_uint();
+_Bool __VERIFIER_nondet_bool();
 
 int main() { 
   int sn=0;

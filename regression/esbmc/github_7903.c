@@ -1,4 +1,4 @@
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 extern void __VERIFIER_assert(_Bool); // const char *
 int main(void) {
     unsigned r = 0;
@@ -7,7 +7,7 @@ _start:
         unsigned t;
         if (r != 0) { __VERIFIER_assert(r == 1); return 0; } // r == 1
         t = 1;
-        if (nondet_int() != 0) { r = t; goto _start; }
+        if (__VERIFIER_nondet_int() != 0) { r = t; goto _start; }
         r = t; goto _start;
     }
 }

@@ -2,7 +2,7 @@
 #include <assert.h>
 
 int flag[2], turn, x, i;
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 void *t1(void *arg) {
   flag[0] = 1;
@@ -31,7 +31,7 @@ void *t2(void *arg) {
 int main(void) {
 
   pthread_t id1, id2;
-  i = nondet_int();
+  i = __VERIFIER_nondet_int();
   pthread_create(&id1, NULL, t1, NULL);
   pthread_create(&id2, NULL, t2, NULL);
 

@@ -1,10 +1,10 @@
 // The c != 0 path jumps past the back edge and back into the body at mid, so
 // that jump does not leave the loop and c == 0 must not be assumed.
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main()
 {
   int y = 0;
-  int c = nondet_int();
+  int c = __VERIFIER_nondet_int();
   while (1)
   {
     __VERIFIER_assert(!(c && y == 15)); // y != 15

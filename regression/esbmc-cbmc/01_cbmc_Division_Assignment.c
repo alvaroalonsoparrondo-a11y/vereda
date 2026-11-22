@@ -2,7 +2,7 @@ void main()
 {
   int i=2;
   
-  if(nondet_bool())
+  if(__VERIFIER_nondet_bool())
     i++;
 
   i/=2;

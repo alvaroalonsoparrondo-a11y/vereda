@@ -5,12 +5,12 @@
 
 #include <assert.h>
 
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 
 int main()
 {
   int i = 0, s = 0, x = 0;
-  if (nondet_int())
+  if (__VERIFIER_nondet_int())
     goto mid;
   return 0;
 top:

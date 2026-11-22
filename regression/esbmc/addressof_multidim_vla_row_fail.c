@@ -4,7 +4,7 @@
 
 int main(void)
 {
-  int m = nondet_int();
+  int m = __VERIFIER_nondet_int();
   __VERIFIER_assume(m >= 3 && m <= 5);
 
   int a[2][m][3];

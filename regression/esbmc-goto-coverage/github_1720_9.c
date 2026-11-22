@@ -3,10 +3,10 @@ int main( )
 int a;
 int b;
 int c;
-a = nondet_int();
+a = __VERIFIER_nondet_int();
 __CPROVER_input("a",a);
 b = 1;
-c = nondet_int(); 
+c = __VERIFIER_nondet_int(); 
 __CPROVER_input("c",c);
 if (a > 5)
 {

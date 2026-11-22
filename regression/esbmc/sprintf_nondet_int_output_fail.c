@@ -1,10 +1,10 @@
 #include <stdio.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x >= 10 && x <= 99);
   char d[2];
   sprintf(d, "%d", x);

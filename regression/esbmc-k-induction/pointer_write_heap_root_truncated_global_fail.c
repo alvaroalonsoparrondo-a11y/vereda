@@ -2,7 +2,7 @@
 // global another function assigns.
 #include <stdlib.h>
 #include <assert.h>
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 unsigned G;
 int *P;
 void set(void) { G = (unsigned)(unsigned long)P; }
@@ -12,7 +12,7 @@ int main()
   *P = 0;
   set();
   int *r;
-  while (nondet_int())
+  while (__VERIFIER_nondet_int())
   {
     r = (int *)(unsigned long)G;
     *r = *r + 1;

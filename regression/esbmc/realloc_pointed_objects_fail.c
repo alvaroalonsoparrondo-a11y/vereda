@@ -2,7 +2,7 @@
 // may be (C17 7.22.3.5p2).
 #include <assert.h>
 #include <stdlib.h>
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main()
 {
   int *a = malloc(2 * sizeof(int));
@@ -11,7 +11,7 @@ int main()
     return 0;
   a[0] = 1;
   b[0] = 2;
-  int pick_b = nondet_int();
+  int pick_b = __VERIFIER_nondet_int();
   int *p = pick_b ? b : a;
   int *q = realloc(p, 4 * sizeof(int));
   if (!q)

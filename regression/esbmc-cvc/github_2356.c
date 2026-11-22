@@ -1,10 +1,10 @@
 // #2356: building the counterexample under --cvc5 --ir read an integer model
 // value as a bit-vector and aborted.
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x + 2 == -3);
   __VERIFIER_assert(x != -5); // x is -5
   return 0;

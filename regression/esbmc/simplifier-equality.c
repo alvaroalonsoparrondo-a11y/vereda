@@ -2,7 +2,7 @@
 
 int main()
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   const int c1 = 1, c2 = 2, c = 3;
 
   // (x + c1) == c2 -> x == (c2 - c1)

@@ -1,6 +1,6 @@
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 int main(void) {
-  unsigned c = nondet_uint();
+  unsigned c = __VERIFIER_nondet_uint();
   unsigned result = c, post = c, ret = c;
   __VERIFIER_assert(result == post && post == ret); // same
   return 0;

@@ -7702,7 +7702,7 @@ int main(void)
 }
 char _SLAM_alloc_dummy  ;
 
-char *nondet_malloc(int i ) 
+char *__VERIFIER_nondet_malloc(int i ) 
 { int __BLAST_NONDET___0 ;
   int tmp ;
 
@@ -7743,7 +7743,7 @@ PVOID ExAllocatePoolWithTag(POOL_TYPE PoolType , SIZE_T NumberOfBytes ,
 
   {
   {
-  tmp = nondet_malloc(NumberOfBytes);
+  tmp = __VERIFIER_nondet_malloc(NumberOfBytes);
   x = tmp;
   }
   return (x);
@@ -7808,7 +7808,7 @@ PMDL IoAllocateMdl(PVOID VirtualAddress , ULONG Length , BOOLEAN SecondaryBuffer
     if (0) {
       switch_23_0: /* CIL Label */ 
       {
-      tmp = nondet_malloc(sizeof(MDL ));
+      tmp = __VERIFIER_nondet_malloc(sizeof(MDL ));
       }
       return ((void *)tmp);
       switch_23_default: /* CIL Label */ ;

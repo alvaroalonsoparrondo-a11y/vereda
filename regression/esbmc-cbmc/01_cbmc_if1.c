@@ -1,5 +1,5 @@
 int main() {
-	int i, j=nondet_int();
+	int i, j=__VERIFIER_nondet_int();
 
 	i = 1;
 	if(j > 0)

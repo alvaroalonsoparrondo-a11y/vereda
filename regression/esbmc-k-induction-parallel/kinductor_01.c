@@ -1,4 +1,4 @@
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int rotate(int N)
 {
@@ -24,7 +24,7 @@ int rotate(int N)
 
 int main()
 {
-  rotate(nondet_int());  
+  rotate(__VERIFIER_nondet_int());  
   return 0;
 }
 // Imported from ESBMC regression/k-induction-parallel/kinductor_01

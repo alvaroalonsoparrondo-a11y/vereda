@@ -1,11 +1,11 @@
 #include <assert.h>
 #include <stdlib.h>
 
-unsigned nondet_uint();
+unsigned __VERIFIER_nondet_uint();
 
 void test_vector_growth()
 {
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n > 0 && n <= 20); // symbolic but bounded
 
   int *vec = malloc(sizeof(int));

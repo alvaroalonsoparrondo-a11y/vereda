@@ -3,18 +3,18 @@
 
 char global_arr[10];
 
-char nondet_char();
+char __VERIFIER_nondet_char();
 
-void nondet_init_arr(char *arr)
+void __VERIFIER_nondet_init_arr(char *arr)
 {
   unsigned int i = 0;
   for(; i < 9; i++)
-    arr[i] = nondet_char();
+    arr[i] = __VERIFIER_nondet_char();
 }
 
 void global_fun()
 {
-  nondet_init_arr(global_arr);
+  __VERIFIER_nondet_init_arr(global_arr);
   unsigned int len = strlen(global_arr);
   __VERIFIER_assert(len == 0); // Error: array must be empty
 }

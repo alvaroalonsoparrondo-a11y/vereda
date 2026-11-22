@@ -1,4 +1,4 @@
-int Test = nondet_int();
+int Test = __VERIFIER_nondet_int();
 
 int f()
 {

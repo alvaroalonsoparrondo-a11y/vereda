@@ -1,6 +1,6 @@
 int main()
 {
-  float f = nondet_float();
+  float f = __VERIFIER_nondet_float();
   double d = f;
   __VERIFIER_assert(d == f); // widening keeps the value
   return 0;

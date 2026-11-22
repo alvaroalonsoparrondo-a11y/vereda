@@ -33,9 +33,9 @@ typedef int u_int32_t;
 
 /* Macros rrextract() uses */
 #define GETSHORT(to, from) \
-  do {(to) = nondet_short(); (from) += INT16SZ;} while(0)
+  do {(to) = __VERIFIER_nondet_short(); (from) += INT16SZ;} while(0)
 #define GETLONG(to, from) \
-  do {(to) = nondet_long(); (from) += INT32SZ;} while(0)
+  do {(to) = __VERIFIER_nondet_long(); (from) += INT32SZ;} while(0)
 #define BOUNDS_CHECK(ptr, count) \
   do {if ((ptr) + (count) > eom) return -1;} while(0)
 
@@ -46,7 +46,7 @@ typedef int u_int32_t;
 int dn_expand(const u_char *msg, const u_char *eomorig,
               const u_char *comp_dn, char *exp_dn, int length)
 {
-  if (nondet_int ())
+  if (__VERIFIER_nondet_int ())
     return -1;
   else {
     exp_dn[length-1] = (u_char) EOS;

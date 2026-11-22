@@ -13,8 +13,8 @@ int minus(int a, int b) {
 int main()
 {
   int a, b;
-  a = nondet_int();
-  b = nondet_int();
+  a = __VERIFIER_nondet_int();
+  b = __VERIFIER_nondet_int();
   minus(a, b);
   return 0;
 }

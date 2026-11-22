@@ -5,13 +5,13 @@
  * wild: constant on the right (ref >= 0, ref < 0) and on the left
  * (0 <= ref, 0 > ref). Before the fix each guard stayed symbolic and
  * everything behind it stopped folding. */
-unsigned short nondet_u2(void);
+unsigned short __VERIFIER_nondet_u2(void);
 
 static unsigned short count; /* zero */
 
 int main(void)
 {
-  unsigned short ref = nondet_u2();
+  unsigned short ref = __VERIFIER_nondet_u2();
   int refused = 0;
   if (ref >= count)
     refused = 1;
@@ -20,7 +20,7 @@ int main(void)
     n++;
   __VERIFIER_assert(n == 3); // constant-right: the refusal folded
 
-  unsigned short ref2 = nondet_u2();
+  unsigned short ref2 = __VERIFIER_nondet_u2();
   int refused2 = 0;
   if (0 <= ref2)
     refused2 = 1;
@@ -29,7 +29,7 @@ int main(void)
     m++;
   __VERIFIER_assert(m == 3); // constant-left <=: the refusal folded
 
-  unsigned short ref3 = nondet_u2();
+  unsigned short ref3 = __VERIFIER_nondet_u2();
   int refused3 = 0;
   if (!(0 > ref3))
     refused3 = 1;
@@ -38,7 +38,7 @@ int main(void)
     k++;
   __VERIFIER_assert(k == 3); // constant-left >: the refusal folded
 
-  unsigned short ref4 = nondet_u2();
+  unsigned short ref4 = __VERIFIER_nondet_u2();
   int refused4 = 0;
   if (!(ref4 < count))
     refused4 = 1;

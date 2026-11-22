@@ -3,7 +3,7 @@
 
 #define XLen 10
 
-unsigned int nondet_uint();
+unsigned int __VERIFIER_nondet_uint();
 //unsigned int XLen=nondet_uint();
 
 float y(int n, float *x)

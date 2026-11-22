@@ -2,13 +2,13 @@
 #include <limits.h>
 #include <stdlib.h>
 
-int nondet_int(void);
-long nondet_long(void);
+int __VERIFIER_nondet_int(void);
+long __VERIFIER_nondet_long(void);
 
 int main()
 {
-  int x = nondet_int();
-  long y = nondet_long();
+  int x = __VERIFIER_nondet_int();
+  long y = __VERIFIER_nondet_long();
   __VERIFIER_assume(x > INT_MIN && y > LONG_MIN);
   assert(abs(x) >= 0);
   assert(labs(y) >= 0);

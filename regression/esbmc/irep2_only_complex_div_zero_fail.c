@@ -1,4 +1,4 @@
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int sink;
 
 int main(void)
@@ -10,8 +10,8 @@ int main(void)
      _Complex rather than <complex.h>'s `complex`: MSVC ships no C99 header. */
   int _Complex a = 4, b = 0;
   __imag__ a = 2;
-  __real__ b = nondet_int();
-  __imag__ b = nondet_int();
+  __real__ b = __VERIFIER_nondet_int();
+  __imag__ b = __VERIFIER_nondet_int();
 
   int _Complex w = a / b;
   sink = __real__ w;

@@ -1,6 +1,6 @@
 #include <assert.h>
 
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 
 int main()
 {
@@ -9,7 +9,7 @@ int main()
   assert(__builtin_rotateleft16(0x1234, 4) == 0x2341);
   assert(__builtin_rotateright64(1, 65) == 1ull << 63);
 
-  unsigned x = nondet_uint(), n = nondet_uint();
+  unsigned x = __VERIFIER_nondet_uint(), n = __VERIFIER_nondet_uint();
   assert(__builtin_rotateleft32(x, 32) == x);
   assert(__builtin_rotateright32(__builtin_rotateleft32(x, n), n) == x);
   return 0;

@@ -4,7 +4,7 @@
 int main()
 {
   int r = 5;
-  int a = nondet_int();
+  int a = __VERIFIER_nondet_int();
   __builtin_sadd_overflow(a, 1, &r);
   assert(r == 5);
   return 0;

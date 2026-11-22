@@ -10,8 +10,8 @@ struct wrap
 
 int main()
 {
-  unsigned int x = nondet_uint();
-  unsigned int y = nondet_uint();
+  unsigned int x = __VERIFIER_nondet_uint();
+  unsigned int y = __VERIFIER_nondet_uint();
   struct wrap w;
 
   __VERIFIER_assume(y > 0x80000000u);

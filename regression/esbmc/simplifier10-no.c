@@ -1,12 +1,12 @@
 #include <assert.h>
 #include <stdint.h>
 
-extern uint32_t nondet_uint32_t();
+extern uint32_t __VERIFIER_nondet_uint32_t();
 
 int main() {
-    uint32_t a = nondet_uint32_t();
-    uint32_t b = nondet_uint32_t();
-    uint32_t c = nondet_uint32_t(); // for nested checks
+    uint32_t a = __VERIFIER_nondet_uint32_t();
+    uint32_t b = __VERIFIER_nondet_uint32_t();
+    uint32_t c = __VERIFIER_nondet_uint32_t(); // for nested checks
 
     // identity: (a & ~b) | (a ^ b) == (a ^ b)
     assert( (((a & ~b) | (a ^ b)) ) == ( (a ^ b) ) );

@@ -15,7 +15,7 @@ struct G
   int x;
 } g;
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main()
 {
@@ -26,7 +26,7 @@ int main()
     s.b = i;
     s.f = 1.5f;
     s.a[0] = i;
-    s.a[1] = nondet_int();
+    s.a[1] = __VERIFIER_nondet_int();
     sum += s.a[0] + (s.b ? 1 : 0) + (int)s.f + g.x;
   }
   assert(sum == 4);

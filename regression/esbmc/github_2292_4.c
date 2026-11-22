@@ -13,7 +13,7 @@ _Bool b()
 void d();
 void main()
 {
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   f[0] = (c){b};
   __VERIFIER_assume(i >= 0 && i < 1);
   if (g[i].a())

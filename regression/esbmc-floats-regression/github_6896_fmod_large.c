@@ -1,7 +1,7 @@
 #include <math.h>
 #include <assert.h>
 
-double nondet_double(void);
+double __VERIFIER_nondet_double(void);
 
 /* fmod(1e18, 3.0) is exactly 1.0: 1e18 is an integer in double, and
  * 10 == 1 (mod 3), so 10^18 == 1 (mod 3).
@@ -14,8 +14,8 @@ double nondet_double(void);
  * model is never exercised. */
 int main(void)
 {
-  double x = nondet_double();
-  double y = nondet_double();
+  double x = __VERIFIER_nondet_double();
+  double y = __VERIFIER_nondet_double();
   __VERIFIER_assume(x == 1e18);
   __VERIFIER_assume(y == 3.0);
 

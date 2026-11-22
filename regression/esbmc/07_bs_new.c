@@ -107,13 +107,13 @@ binary_search(int x)
   return fvalue;
 }
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 main()
 {
   unsigned i;
   for(i=0; i<15; i++)
-     data[i].value=nondet_int();
+     data[i].value=__VERIFIER_nondet_int();
 
 	binary_search(8);
 }

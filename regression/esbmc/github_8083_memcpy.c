@@ -4,7 +4,7 @@
 /* A loop bound copied in by memcpy, through its pointer parameter. */
 int main()
 {
-  int n = 3, m = nondet_int();
+  int n = 3, m = __VERIFIER_nondet_int();
   memcpy(&n, &m, sizeof n);
   __VERIFIER_assume(n >= 0 && n < 6);
   int c = 0;

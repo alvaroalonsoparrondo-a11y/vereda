@@ -2,7 +2,7 @@ struct S { unsigned short a, b, c; };
 struct S s[4];
 int main(void)
 {
-  int j = nondet_int();
+  int j = __VERIFIER_nondet_int();
   __VERIFIER_assume(j == 0 || j == 1);
   unsigned long long *r = (unsigned long long *)s + j;
   *r = 0x0004000300020001ull;

@@ -2,8 +2,8 @@
 #include <fenv.h>
 #include <assert.h>
 
-float nondet_float();
-int nondet_int();
+float __VERIFIER_nondet_float();
+int __VERIFIER_nondet_int();
 
 float castWithRounding (int rounding_mode, int value)
 {
@@ -23,11 +23,11 @@ int main(void)
   float higher = 0x1.000004p+25f;// 33554440
 
   // There are no other floating point numbers between these
-  float other = nondet_float();
+  float other = __VERIFIER_nondet_float();
   assert(!((low < other) && (other < high)));
 
   // Inference tests
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
 
   // x is 33554433, 33554434 or 33554435
   __VERIFIER_assume((33554432 < x) && (x < 33554436));

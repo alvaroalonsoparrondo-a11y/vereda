@@ -7,12 +7,12 @@ void f(void)
 {
 }
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
   char buf[4] = {1, 2, 3, 4};
-  void *p = nondet_int() ? (void *)f : (void *)buf;
+  void *p = __VERIFIER_nondet_int() ? (void *)f : (void *)buf;
   memset(p, 0, sizeof buf);
   if (p == (void *)buf)
     assert(buf[0] == 0);

@@ -22,7 +22,7 @@ void *cons_task(void *arg)
 
 int main()
 {
-  data_vfy = nondet_int();
+  data_vfy = __VERIFIER_nondet_int();
   sem_init(&sem, 0, 0);
 
   pthread_t prod_thrd;

@@ -5,10 +5,10 @@
  * decline has to look at every accumulator's type too. Must decline, and the
  * user's own verdict must be unaffected. */
 #include <assert.h>
-unsigned int nondet_uint();
+unsigned int __VERIFIER_nondet_uint();
 int main(void)
 {
-  unsigned int n = nondet_uint();
+  unsigned int n = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n <= 8);
   unsigned int i = 0;
   int sn = 0;

@@ -2,7 +2,7 @@
 
 void calculate_output()
 {
-    int input = nondet_int();
+    int input = __VERIFIER_nondet_int();
     if (input == 2)
         assert(0);
     if (input == 1)

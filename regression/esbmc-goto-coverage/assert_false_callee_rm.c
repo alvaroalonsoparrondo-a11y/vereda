@@ -1,4 +1,4 @@
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int calls;
 
 void fail(void)
@@ -9,8 +9,8 @@ void fail(void)
 
 int main()
 {
-  int a = nondet_int();
-  int b = nondet_int();
+  int a = __VERIFIER_nondet_int();
+  int b = __VERIFIER_nondet_int();
   fail();
   if (a > 0 && b > 0)
     return 2;

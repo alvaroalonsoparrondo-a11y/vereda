@@ -1,6 +1,6 @@
 /* esbmc/esbmc#1320 */
-_Bool nondet_bool();
-int nondet_int();
+_Bool __VERIFIER_nondet_bool();
+int __VERIFIER_nondet_int();
 
 //x is an input variable
 int x;
@@ -10,9 +10,9 @@ void foo() {
 }
 
 int main() {
-  x=nondet_int();
+  x=__VERIFIER_nondet_int();
   while (x > 0) {
-    _Bool c = nondet_bool();
+    _Bool c = __VERIFIER_nondet_bool();
     if(c) foo();
     else foo();
   }

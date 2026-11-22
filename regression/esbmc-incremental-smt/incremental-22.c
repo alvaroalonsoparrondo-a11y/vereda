@@ -1,8 +1,8 @@
 #include <assert.h>
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main()
 {
-  int a = nondet_int();
+  int a = __VERIFIER_nondet_int();
   int b = 0;
   int *c = &a;
   int *d = &b;

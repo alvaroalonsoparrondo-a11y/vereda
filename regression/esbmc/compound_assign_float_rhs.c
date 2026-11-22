@@ -1,11 +1,11 @@
 #include <assert.h>
 #include <fenv.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main()
 {
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 0 && i <= 100);
   int d = i;
   d /= 2.5;

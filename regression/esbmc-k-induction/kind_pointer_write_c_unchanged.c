@@ -7,7 +7,7 @@ struct list
   int *slot;
 };
 
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 
 int main(void)
 {
@@ -18,7 +18,7 @@ int main(void)
   l->slot = malloc(16 * sizeof(int));
   if (!l->slot)
     return 0;
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   for (unsigned i = 0; i < n; i++)
   {
     l->slot[i % 16] = 1;

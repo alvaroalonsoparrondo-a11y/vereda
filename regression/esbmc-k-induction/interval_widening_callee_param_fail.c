@@ -12,7 +12,7 @@ void run(int i, int n)
 }
 int main()
 {
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   if (n > 100000)
     return 0;
   run(0, n);

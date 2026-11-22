@@ -1,11 +1,11 @@
 #include <assert.h>
 #include <stdio.h>
 
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 
 int main(void)
 {
-  unsigned x = nondet_uint();
+  unsigned x = __VERIFIER_nondet_uint();
 
   char b[12] = "abcdefghijk";
   int r = sprintf(b, "%x", x);

@@ -1,11 +1,11 @@
 #include <assert.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main()
 {
-  int x = nondet_int();
-  int y = nondet_int();
+  int x = __VERIFIER_nondet_int();
+  int y = __VERIFIER_nondet_int();
 
   // Same shape as the passing test, but with a wrong expected value.
   int z = 2 - x - 10 * 2 - y * 4;

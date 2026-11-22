@@ -26,7 +26,7 @@ int main(void)
   int intArray[MAX];
 
   for (size_t i = 0; i < MAX; i++)
-    intArray[i] = nondet_int();
+    intArray[i] = __VERIFIER_nondet_int();
 
   bubbleSort(intArray, MAX);
 

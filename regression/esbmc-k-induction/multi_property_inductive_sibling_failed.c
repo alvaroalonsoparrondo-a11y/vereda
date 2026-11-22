@@ -1,11 +1,11 @@
 /* #7900 §7 question 2: x > 0 is inductive on its own, y != ... is not. */
 #include <assert.h>
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int main(void)
 {
-  int x = nondet_int(), y = 0;
+  int x = __VERIFIER_nondet_int(), y = 0;
   __VERIFIER_assume(x > 0);
-  while (nondet_int())
+  while (__VERIFIER_nondet_int())
   {
     assert(x > 0);
     assert(y != 1);

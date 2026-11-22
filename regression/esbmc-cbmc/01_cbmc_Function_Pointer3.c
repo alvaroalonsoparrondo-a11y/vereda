@@ -16,7 +16,7 @@ int main()
   int res;
   FuncType pf;
 
-  if( nondet_int() )
+  if( __VERIFIER_nondet_int() )
     pf = f1;
   else
     pf = f2;

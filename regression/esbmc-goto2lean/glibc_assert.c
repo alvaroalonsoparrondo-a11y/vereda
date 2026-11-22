@@ -9,14 +9,14 @@ __assert_fail(const char *, const char *, unsigned int, const char *);
      else                                                                      \
        __assert_fail(#expr, __FILE__, __LINE__, __func__);                     \
    }))
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 unsigned mid(unsigned lo, unsigned hi)
 {
   return (lo + hi) / 2;
 }
 int main(void)
 {
-  unsigned lo = nondet_uint(), hi = nondet_uint();
+  unsigned lo = __VERIFIER_nondet_uint(), hi = __VERIFIER_nondet_uint();
   __VERIFIER_assume(lo <= hi);
   unsigned m = mid(lo, hi);
   ASSERT_GLIBC(lo <= m && m <= hi);

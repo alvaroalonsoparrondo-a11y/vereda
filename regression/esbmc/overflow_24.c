@@ -26,8 +26,8 @@ extern struct2_t global_extern_var;
 
 uint64_t bar(bool bool_param1, bool bool_param2)
 {
-  int16_t local_var1 = nondet_int();
-  int32_t local_var2 = nondet_int() << 1;
+  int16_t local_var1 = __VERIFIER_nondet_int();
+  int32_t local_var2 = __VERIFIER_nondet_int() << 1;
 
   local_var1 = local_var1 + local_var2;
 

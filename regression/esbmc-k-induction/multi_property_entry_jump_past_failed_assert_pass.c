@@ -1,6 +1,6 @@
 /* The dead entry jump now gets a havoc; the inductive-step proof must survive
    (esbmc/esbmc#7900). */
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main()
 {
   int i = 0, x = 0, y = 0;

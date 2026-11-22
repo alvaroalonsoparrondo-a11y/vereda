@@ -2,7 +2,7 @@
 
 int main()
 {
-  double x = nondet_float();
+  double x = __VERIFIER_nondet_float();
 
   __VERIFIER_assume(isgreaterequal(x, 0.0));
 

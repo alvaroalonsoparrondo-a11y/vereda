@@ -1,8 +1,8 @@
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main()
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assert(x != 1); // first
   __VERIFIER_assert(x != 2); // second
   return 0;

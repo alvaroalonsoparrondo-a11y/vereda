@@ -2,12 +2,12 @@
 // the dispatch chain has to branch rather than collapse onto one label
 // (issue #4083). github_4083-invalid-target pins the other side, that a
 // target matching no label is caught.
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main()
 {
   void *labels[] = {&&L1, &&L2};
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 0 && i < 2);
   int x = 0;
   goto *labels[i];

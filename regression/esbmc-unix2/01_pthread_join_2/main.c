@@ -2,12 +2,12 @@
 
 int a, b, c, d, e;
 
-unsigned int nondet_uint();
+unsigned int __VERIFIER_nondet_uint();
 
 void *
 thread1(void *dummy)
 {
-	unsigned int s = nondet_uint();
+	unsigned int s = __VERIFIER_nondet_uint();
 	__VERIFIER_assume(s < 4);
 	switch (s) {
 		case 0:
@@ -25,7 +25,7 @@ void *
 thread2(void *dummy)
 {
 
-	unsigned int s = nondet_uint();
+	unsigned int s = __VERIFIER_nondet_uint();
 	__VERIFIER_assume(s < 4);
 	switch (s) {
 		case 0:

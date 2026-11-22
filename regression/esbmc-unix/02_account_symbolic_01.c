@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 pthread_mutex_t m;
-int nondet_int();
+int __VERIFIER_nondet_int();
 int x, y, z, balance;
 int deposit_done=0, withdraw_done=0;
 
@@ -36,9 +36,9 @@ int main()
 
   pthread_mutex_init(&m, 0);
 
-  x = nondet_int();
-  y = nondet_int();
-  z = nondet_int();
+  x = __VERIFIER_nondet_int();
+  y = __VERIFIER_nondet_int();
+  z = __VERIFIER_nondet_int();
   balance = x;
 
   assert(balance==x);

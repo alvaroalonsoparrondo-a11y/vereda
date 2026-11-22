@@ -1,8 +1,8 @@
 #include <assert.h>
 #include <limits.h>
 
-int nondet_int(void);
-unsigned nondet_uint(void);
+int __VERIFIER_nondet_int(void);
+unsigned __VERIFIER_nondet_uint(void);
 
 /* The type-generic __builtin_{add,sub,mul}_overflow, unlike the typed
  * __builtin_sadd_overflow family, reach ESBMC as calls clang has not lowered.
@@ -14,14 +14,14 @@ unsigned nondet_uint(void);
  * + 200 overflows a signed char even though the ints add fine. */
 int main(void)
 {
-  int a = nondet_int(), b = nondet_int();
+  int a = __VERIFIER_nondet_int(), b = __VERIFIER_nondet_int();
   long long exact = (long long)a + (long long)b;
   int r;
   assert(__builtin_add_overflow(a, b, &r) ==
          (exact < INT_MIN || exact > INT_MAX));
   assert(r == (int)exact);
 
-  unsigned c = nondet_uint(), d = nondet_uint();
+  unsigned c = __VERIFIER_nondet_uint(), d = __VERIFIER_nondet_uint();
   unsigned long long prod = (unsigned long long)c * d;
   unsigned ur;
   assert(__builtin_mul_overflow(c, d, &ur) == (prod > UINT_MAX));

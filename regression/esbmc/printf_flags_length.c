@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
@@ -18,7 +18,7 @@ int main(void)
   assert(n == 14);
   assert(strcmp(b, "7   |+042|0XAB") == 0);
 
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   int r = printf("%+d", x);
   assert(r >= 2 && r <= 11);
 

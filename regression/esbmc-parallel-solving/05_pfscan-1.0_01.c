@@ -5106,7 +5106,7 @@ extern int pqueue_get(PQUEUE *bp, void **item);
 extern void pqueue_close(PQUEUE *bp);
 
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 
 
@@ -5464,7 +5464,7 @@ int
 deslash(unsigned char *str)
 {
 # 486 "pfscan-1.0.c"
-  return nondet_int();
+  return __VERIFIER_nondet_int();
 }
 
 

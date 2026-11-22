@@ -9,7 +9,7 @@ int main()
   char src[8] = {1, 2, 3, 4, 5, 6, 7, 8};
   char dst[8] = {7, 7, 7, 7, 7, 7, 7, 7};
 
-  unsigned long n = nondet_ulong();
+  unsigned long n = __VERIFIER_nondet_ulong();
   __VERIFIER_assume(n == 3);
 
   void *r = memcpy(dst, src, n);

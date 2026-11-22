@@ -1,7 +1,7 @@
 #include <pthread.h>
 #include <assert.h>
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int g = 0;
 
@@ -28,7 +28,7 @@ void *writer(void *arg)
 int main(void)
 {
   pthread_t th;
-  int c = nondet_int();
+  int c = __VERIFIER_nondet_int();
   pp = c ? &s.p : &t.p;
   pthread_create(&th, 0, writer, 0);
   g = 2;

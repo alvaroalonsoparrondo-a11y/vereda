@@ -2,7 +2,7 @@
  * callee's range check is genuinely open — legal encodings reach the
  * accumulation and refute the blanket refusal claim. Over-eager
  * operand-split matching would prove this vacuously. */
-unsigned char nondet_u1(void);
+unsigned char __VERIFIER_nondet_u1(void);
 
 static int handler(unsigned char mn)
 {
@@ -18,7 +18,7 @@ static int handler(unsigned char mn)
 
 int main(void)
 {
-  unsigned char mn = nondet_u1();
+  unsigned char mn = __VERIFIER_nondet_u1();
   __VERIFIER_assert(handler(mn) == -1); // legal encodings must stay reachable
   return 0;
 }

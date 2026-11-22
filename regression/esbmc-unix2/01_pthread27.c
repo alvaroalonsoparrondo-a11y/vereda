@@ -2,7 +2,7 @@
 #include <assert.h>
 
 int x=0;
-int nondet_int();
+int __VERIFIER_nondet_int();
 void *t1(void *arg)
 {
   assert(x==0);

@@ -11,7 +11,7 @@ struct s
 
 int main(void)
 {
-  unsigned i = nondet_uint();
+  unsigned i = __VERIFIER_nondet_uint();
   __VERIFIER_assume(i < 2);
   long *buf = calloc(4, sizeof(long));
   if (!buf)

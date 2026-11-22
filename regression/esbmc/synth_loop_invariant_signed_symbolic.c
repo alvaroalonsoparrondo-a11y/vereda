@@ -2,10 +2,10 @@
  * which is only establishable for an unsigned counter starting at 0 or 1, so
  * the relaxation must not apply here. Declines. */
 #include <assert.h>
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main(void)
 {
-  int n = nondet_int(), a = nondet_int();
+  int n = __VERIFIER_nondet_int(), a = __VERIFIER_nondet_int();
   __VERIFIER_assume(n >= 1 && n <= 6);
   __VERIFIER_assume(a >= 0 && a <= 3);
   int i = 1, sn = 0;

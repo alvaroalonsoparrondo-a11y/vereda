@@ -7,7 +7,7 @@ main()
   unsigned int foo = (unsigned int*)&bees;
   unsigned int bar = (unsigned int*)&fleas;
 
-  bool baz = nondet_bool();
+  bool baz = __VERIFIER_nondet_bool();
   __VERIFIER_assume(baz == true);
   unsigned int qux = (baz) ? foo : bar;
   int *fin = (int *)qux;

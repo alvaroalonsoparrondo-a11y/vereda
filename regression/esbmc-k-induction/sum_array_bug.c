@@ -1,4 +1,4 @@
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 main()
 {
@@ -7,10 +7,10 @@ main()
   unsigned int  i;
   
   for(i=0;i<M;i++)
-    A[i] = nondet_int();
+    A[i] = __VERIFIER_nondet_int();
   
   for(i=0;i<M;i++)
-    B[i] = nondet_int();
+    B[i] = __VERIFIER_nondet_int();
 
   for(i=0;i<M;i++)
      C[i]=A[i]+B[i];

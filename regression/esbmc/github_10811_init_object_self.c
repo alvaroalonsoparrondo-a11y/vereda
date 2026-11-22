@@ -3,7 +3,7 @@ int x = 0;
 void *p;
 int main()
 {
-  p = nondet_bool() ? (void *)&x : (void *)&p;
+  p = __VERIFIER_nondet_bool() ? (void *)&x : (void *)&p;
   __VERIFIER_assume(p == (void *)&p);
   __ESBMC_init_object(p);
   assert(x == 0);

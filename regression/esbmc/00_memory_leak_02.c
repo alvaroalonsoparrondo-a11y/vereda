@@ -4,7 +4,7 @@ int analyze_this()
   int *p_int=malloc(sizeof(int));
   void *p;
   
-  p=nondet_bool()?p_char:p_int;
+  p=__VERIFIER_nondet_bool()?p_char:p_int;
 
   p_int=p;
   

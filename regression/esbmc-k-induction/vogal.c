@@ -4,7 +4,7 @@
 
 #define MAX 5
 
-char nondet_char();
+char __VERIFIER_nondet_char();
 
 main(void)
 {
@@ -12,7 +12,7 @@ main(void)
   unsigned int  i,j,cont, tam_string, n_caracter;
 
   for(i=0;i<MAX;i++)
-    string_entrada[i] = nondet_char();
+    string_entrada[i] = __VERIFIER_nondet_char();
   __VERIFIER_assume(string_entrada[MAX-1]=='\0');
   
   // captura o número de caracteres de da string

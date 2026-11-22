@@ -3,7 +3,7 @@
 
 int main()
 {
-  int addr2 = nondet_int();
+  int addr2 = __VERIFIER_nondet_int();
   __VERIFIER_assume(addr2 < 0);
   void *b = (void *)malloc(addr2);
   assert(0);

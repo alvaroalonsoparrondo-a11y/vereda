@@ -1,5 +1,5 @@
 int main() {
-  int y = nondet_int();
+  int y = __VERIFIER_nondet_int();
   __VERIFIER_assume(y>=0 && y <=10);
   while (y >= 0 && y <= 10) {
     y = (2*y + 1) / 2;

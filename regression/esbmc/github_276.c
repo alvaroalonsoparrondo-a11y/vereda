@@ -1,10 +1,10 @@
-long nondet_long(void);
+long __VERIFIER_nondet_long(void);
  
 int main(void) {
   long l = 0;
   int c = 0;
-  long t = nondet_long();
-  long s = nondet_long();
+  long t = __VERIFIER_nondet_long();
+  long s = __VERIFIER_nondet_long();
   long *b = &s;
  
   l = (t + *b) & (0xffffffffL); 

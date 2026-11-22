@@ -6,7 +6,7 @@ int main()
   int s = 0;
   for (unsigned k = 0; k < 3; ++k)
   {
-    unsigned i = nondet_uint(), j = nondet_uint();
+    unsigned i = __VERIFIER_nondet_uint(), j = __VERIFIER_nondet_uint();
     __VERIFIER_assume(i < 4);
     if (k == 1)
       __VERIFIER_assume(j < 4);

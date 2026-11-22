@@ -8,7 +8,7 @@ struct S
 int main(void)
 {
   s.x = 5;
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n <= sizeof s);
   memset(&s, 0, n);
   assert(s.x == 5);

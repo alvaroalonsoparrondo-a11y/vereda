@@ -1,10 +1,10 @@
 #include <assert.h>
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main()
 {
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   __VERIFIER_assume(n == 3);
 
   int i = 0;

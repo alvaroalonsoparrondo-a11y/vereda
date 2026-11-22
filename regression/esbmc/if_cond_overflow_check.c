@@ -10,11 +10,11 @@
  * --overflow-check.
  */
 #include <limits.h>
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main() {
-  int x = nondet_int();
-  int y = nondet_int();
+  int x = __VERIFIER_nondet_int();
+  int y = __VERIFIER_nondet_int();
   __VERIFIER_assume(x == INT_MAX);
   __VERIFIER_assume(y == 1);
   // x + y overflows; both arms identical so simplifier folds the if.

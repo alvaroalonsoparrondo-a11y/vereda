@@ -1,7 +1,7 @@
 #include <assert.h>
 int main()
 {
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   unsigned i = 0;
   while (i < n)
   {

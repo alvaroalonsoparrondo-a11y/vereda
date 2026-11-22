@@ -1,6 +1,6 @@
 #include <assert.h>
 
-float nondet_float(void);
+float __VERIFIER_nondet_float(void);
 
 // Regression for the IEEE-NaN blocking-clause bug flagged on PR #4310:
 // without special handling, plain `==` on floatbv lowers to SMT
@@ -14,7 +14,7 @@ float nondet_float(void);
 
 int main(void)
 {
-  float x = nondet_float();
+  float x = __VERIFIER_nondet_float();
   assert(x > 0); // violated by NaN, +/-inf, +/-0, and any negative
   return 0;
 }

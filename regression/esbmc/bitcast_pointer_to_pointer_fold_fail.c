@@ -2,12 +2,12 @@
  * claim. */
 #include <stddef.h>
 
-_Bool nondet_bool(void);
+_Bool __VERIFIER_nondet_bool(void);
 int x;
 
 int main()
 {
-  int *p = nondet_bool() ? &x : NULL;
+  int *p = __VERIFIER_nondet_bool() ? &x : NULL;
   void *q = *(void **)&p;
   __VERIFIER_assert(q != NULL); // q may be NULL
   return 0;

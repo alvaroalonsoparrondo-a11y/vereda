@@ -11,7 +11,7 @@ struct foo
 
 int main()
 {
-  int a = nondet_int();
+  int a = __VERIFIER_nondet_int();
   struct foo *npe = 0;
   __VERIFIER_assume(a != 1);
   if (a == 1)

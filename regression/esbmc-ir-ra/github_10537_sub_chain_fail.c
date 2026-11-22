@@ -1,9 +1,9 @@
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int main()
 {
   /* x - 1 - INT_MAX folds its constants to the magnitude 2^31, which an int
    * cannot hold: the fold must be refused, not wrapped to x + INT_MIN. */
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x >= 0 && x <= 10);
   int y = x - 1 - 2147483647;
   __VERIFIER_assert(y >= 0); // y >= 0

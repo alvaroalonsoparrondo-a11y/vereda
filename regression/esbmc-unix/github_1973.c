@@ -17,7 +17,7 @@ void *thread1(void *arg) {
 }
 
 int main(void) {
-    if (nondet_int()) 
+    if (__VERIFIER_nondet_int()) 
     {
       pthread_create(&t1, NULL, thread1, NULL);
       return 0;

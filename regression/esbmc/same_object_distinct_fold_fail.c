@@ -4,7 +4,7 @@ int a, b;
 
 int main()
 {
-  int *p = nondet_bool() ? &a : &b;
+  int *p = __VERIFIER_nondet_bool() ? &a : &b;
   __VERIFIER_assert(!__ESBMC_same_object(p, &a)); // p may point at a
   return 0;
 }

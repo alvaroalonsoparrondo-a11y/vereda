@@ -5,11 +5,11 @@ struct S
 {
   int a, b;
 };
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 int main(void)
 {
   struct S s;
-  int t = nondet_int();
+  int t = __VERIFIER_nondet_int();
   size_t n = __builtin_object_size(&s.a, t);
   assert(n == ((t == 1 || t == 3) ? sizeof(s.a) : sizeof(s)));
 }

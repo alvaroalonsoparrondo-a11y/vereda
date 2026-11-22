@@ -14,7 +14,7 @@ int main()
     }
   } // status = 1 U 2
 
-  while(nondet_int())
+  while(__VERIFIER_nondet_int())
     __VERIFIER_assert(status != 3);
 
   return 0;

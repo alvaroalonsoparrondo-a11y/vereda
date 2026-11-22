@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-size_t nondet_size(void);
+size_t __VERIFIER_nondet_size(void);
 
 int main()
 {
@@ -10,7 +10,7 @@ int main()
   // 21s -> >400s on github_1352-success-32bit -- so a request the address space
   // cannot lay out is excluded instead of failed, and this assert is unreachable.
   // See docs/roadmap/goto-symex-verification-plan.md, R25 and R38.
-  size_t n = nondet_size();
+  size_t n = __VERIFIER_nondet_size();
   __VERIFIER_assume(n >= 0xFFFFFFFFFFFFFFF0UL);
   char *b = malloc(n);
   if (b)

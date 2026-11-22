@@ -1,9 +1,9 @@
 #include <assert.h>
 typedef unsigned int u32;
-unsigned int nondet_uint(void);
+unsigned int __VERIFIER_nondet_uint(void);
 int main(void)
 {
-  u32 a = nondet_uint();
+  u32 a = __VERIFIER_nondet_uint();
   __VERIFIER_assume(a >= 0x80000000u);
   /* logical shift: a>>1 <= 0x7FFFFFFF.  arithmetic shift would give >=0xC0000000 */
   assert((a >> 1) < 0x80000000u);

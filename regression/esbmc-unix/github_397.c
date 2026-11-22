@@ -7,7 +7,7 @@ void *e(void *)
 }
 int main()
 {
-  if(nondet_bool())
+  if(__VERIFIER_nondet_bool())
   {
     pthread_create(&c, 0, e, 0);
     return 0;

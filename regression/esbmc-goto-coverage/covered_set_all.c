@@ -1,8 +1,8 @@
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int value = nondet_int();
+  int value = __VERIFIER_nondet_int();
   if (value > 0)
     return 1;
   return 0;

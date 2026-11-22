@@ -1,9 +1,9 @@
 #include <assert.h>
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int main(void)
 {
-  int v = nondet_int();
-  unsigned char c = nondet_int();
+  int v = __VERIFIER_nondet_int();
+  unsigned char c = __VERIFIER_nondet_int();
   int r = 0;
   switch (v)
   {
@@ -26,7 +26,7 @@ int main(void)
   if (v == 0) assert(r == 10);
   if (v == 7) assert(r == 3);
   switch (c) { case 'a' ... 'z': assert(c >= 97 && c <= 122); break; default: assert(c < 97 || c > 122); }
-  unsigned u = nondet_int();
+  unsigned u = __VERIFIER_nondet_int();
   switch (u)
   {
   case -1 ... 5:

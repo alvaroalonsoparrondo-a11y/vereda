@@ -1,8 +1,8 @@
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main() {
   int x = 0;
-  while (nondet_int())
+  while (__VERIFIER_nondet_int())
     x++;
   for (;;)
     __VERIFIER_assert(x >= 0); // x stays non-negative

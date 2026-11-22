@@ -10,7 +10,7 @@ typedef union {
   uint8_t bytes[8];
 } qword_t;
 
-uint32_t nondet_uint32_t() {
+uint32_t __VERIFIER_nondet_uint32_t() {
   uint32_t val;
   return val;
 }
@@ -22,7 +22,7 @@ int main() {
   
   for (int i = 0; i < ARR_SIZE; i++) { 
     for (int j = 0; j < 2; j++) {
-      a[i].dwords[j] = nondet_uint32_t();
+      a[i].dwords[j] = __VERIFIER_nondet_uint32_t();
     }
     b[i] = a[i];
   }

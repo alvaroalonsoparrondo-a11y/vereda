@@ -2,7 +2,7 @@
 int main(){
   int x,i;
   x=5;
-  x=nondet_int();
+  x=__VERIFIER_nondet_int();
   while(x<4){    
     if(x>0){
       x=x+1;  

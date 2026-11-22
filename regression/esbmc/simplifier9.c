@@ -1,12 +1,12 @@
 #include <assert.h>
 #include <stdint.h>
 
-extern uint16_t nondet_uint16_t();
+extern uint16_t __VERIFIER_nondet_uint16_t();
 
 int main() {
-    uint16_t a = nondet_uint16_t();
-    uint16_t b = nondet_uint16_t();
-    uint16_t c = nondet_uint16_t(); // for nested checks
+    uint16_t a = __VERIFIER_nondet_uint16_t();
+    uint16_t b = __VERIFIER_nondet_uint16_t();
+    uint16_t c = __VERIFIER_nondet_uint16_t(); // for nested checks
 
     // identity: (a & ~b) | (a ^ b) == (a ^ b)
     assert( (((a & ~b) | (a ^ b)) ) == ( (a ^ b) ) );

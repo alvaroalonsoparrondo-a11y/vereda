@@ -13,7 +13,7 @@ int main(void)
 
   t->p = 1;
 
-  int v = nondet_int();
+  int v = __VERIFIER_nondet_int();
   if (v != 0)
   {
     t->p = 2;
@@ -22,7 +22,7 @@ int main(void)
   /* The join must keep both versions reachable, not just the branch's. */
   __VERIFIER_assert(t->p == 1 || t->p == 2); // both join arms survive
 
-  int w = nondet_int();
+  int w = __VERIFIER_nondet_int();
   if (w != 0)
   {
     t->p = 3;

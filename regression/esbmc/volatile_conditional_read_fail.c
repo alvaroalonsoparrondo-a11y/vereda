@@ -1,10 +1,10 @@
 volatile int left;
 volatile int right;
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int selector = nondet_int();
+  int selector = __VERIFIER_nondet_int();
   int first = *(selector ? &left : &right);
   int second = *(selector ? &left : &right);
   __VERIFIER_assert(first == second); // volatile conditional reads may differ

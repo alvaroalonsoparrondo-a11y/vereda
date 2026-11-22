@@ -10,11 +10,11 @@ int main()
   char b[8] = {2, 2, 2, 2, 2, 2, 2, 2};
   char d[8] = {0};
 
-  unsigned long i = nondet_ulong();
+  unsigned long i = __VERIFIER_nondet_ulong();
   __VERIFIER_assume(i < 2);
   char *s = i ? a : b;
 
-  unsigned long n = nondet_ulong();
+  unsigned long n = __VERIFIER_nondet_ulong();
   __VERIFIER_assume(n == 4);
 
   memcpy(d, s, n);

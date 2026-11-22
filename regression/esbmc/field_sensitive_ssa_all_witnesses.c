@@ -5,12 +5,12 @@ struct S
   int a, b;
 };
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main()
 {
   struct S s;
-  s.a = nondet_int();
+  s.a = __VERIFIER_nondet_int();
   s.b = 2;
   assert(s.a != 5);
   return 0;

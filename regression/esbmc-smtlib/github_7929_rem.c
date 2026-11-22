@@ -1,11 +1,11 @@
 /* github #7929: same root cause reached through arithmetic -- INT_MIN read as
  * 2147483648 makes the remainder fold to a value outside the type. */
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int x = nondet_int();
-  int y = nondet_int();
+  int x = __VERIFIER_nondet_int();
+  int y = __VERIFIER_nondet_int();
   __VERIFIER_assume(x == -2147483647 - 1);
   __VERIFIER_assume(y == -104635056);
   int r = x % y;

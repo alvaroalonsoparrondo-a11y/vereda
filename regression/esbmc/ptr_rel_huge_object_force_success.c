@@ -8,11 +8,11 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-uint64_t nondet_uint64(void);
+uint64_t __VERIFIER_nondet_uint64(void);
 
 int main(void)
 {
-  uint64_t n = nondet_uint64();
+  uint64_t n = __VERIFIER_nondet_uint64();
 
   char *p = malloc(n);
   if (!p)

@@ -8,7 +8,7 @@ void __VERIFIER_nondet_memory(void *, size_t);
 int main()
 {
   int s[2] = {7, 8};
-  int *p = nondet_bool() ? (int *)t : g;
+  int *p = __VERIFIER_nondet_bool() ? (int *)t : g;
   __VERIFIER_assume(p == g);
   memcpy(p, s, sizeof g);
   assert(g[1] == 8);
@@ -17,7 +17,7 @@ int main()
   __VERIFIER_nondet_memory(p, sizeof g);
   __ESBMC_init_object(g);
   memcpy((void *)t, s, 0);
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n <= sizeof g);
   memcpy(g, s, n);
   if (n == 0)

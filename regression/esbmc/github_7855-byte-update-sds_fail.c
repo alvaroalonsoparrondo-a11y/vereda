@@ -3,7 +3,7 @@ int g[4];
 int main(void)
 {
   int *p = &g[0];
-  unsigned char k = nondet_uchar();
+  unsigned char k = __VERIFIER_nondet_uchar();
   __VERIFIER_assume(k < 2);
   ((unsigned char *)&p)[k] = 0x5a;
   assert(p == &g[0]);

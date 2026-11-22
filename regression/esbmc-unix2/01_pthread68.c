@@ -22,7 +22,7 @@ void *server(void *arg)
 }
 int main()
 {
-  key = nondet_ushort() % 26 + 1;
+  key = __VERIFIER_nondet_ushort() % 26 + 1;
   pthread_t encryption, decryption;
   pthread_create(&decryption, 0, server, 0);
   pthread_create(&encryption, 0, client, 0);

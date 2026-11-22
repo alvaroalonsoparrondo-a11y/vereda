@@ -1,12 +1,12 @@
 #include <assert.h>
 #include <stdint.h>
 
-extern uint8_t nondet_uint8_t();
+extern uint8_t __VERIFIER_nondet_uint8_t();
 
 int main() {
-    uint8_t a = nondet_uint8_t();
-    uint8_t b = nondet_uint8_t();
-    uint8_t c = nondet_uint8_t(); // for nested checks
+    uint8_t a = __VERIFIER_nondet_uint8_t();
+    uint8_t b = __VERIFIER_nondet_uint8_t();
+    uint8_t c = __VERIFIER_nondet_uint8_t(); // for nested checks
 
     // identity: (a & ~b) | (a ^ b) == (a ^ b)
     assert( (((a & ~b) | (a ^ b)) ) == ( (a ^ b) ) );

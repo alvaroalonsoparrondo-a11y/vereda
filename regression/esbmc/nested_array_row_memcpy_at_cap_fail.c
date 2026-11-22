@@ -1,5 +1,5 @@
 #include <string.h>
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 /* a[2][128] flattens to exactly array_may_propagate's 256-element cap,
    and interleaving the row writes defeats decompose_stores' in-place
@@ -11,7 +11,7 @@ int main(void)
 {
   int a[2][128];
   int b[128];
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 0 && i < 128);
 
   a[0][0] = 9; a[1][0] = 1; b[0] = 5;

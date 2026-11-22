@@ -1,6 +1,6 @@
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main() {
-  int i, j=nondet_int();
+  int i, j=__VERIFIER_nondet_int();
   i = 2147483640 ;
   i = i+j;
   return 0;

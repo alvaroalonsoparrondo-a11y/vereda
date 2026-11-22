@@ -4,8 +4,8 @@
 
 int main()
 {
-	double x = nondet_double();
-	int xe = nondet_int();
+	double x = __VERIFIER_nondet_double();
+	int xe = __VERIFIER_nondet_int();
 	double xm = frexp(x, &xe);
 	assert(isfinite(xm) == isfinite(x));
 	assert(isinf(xm) == isinf(x));
@@ -23,7 +23,7 @@ int main()
 		assert((fpclassify(x) == FP_SUBNORMAL) == (xe < DBL_MIN_EXP));
 	}
 
-	double y = nondet_double();
+	double y = __VERIFIER_nondet_double();
 	int ye;
 	double ym = frexp(y, &ye);
 	__VERIFIER_assume(ym == 0.0 || (ym >= 0.5 && ym < 1));

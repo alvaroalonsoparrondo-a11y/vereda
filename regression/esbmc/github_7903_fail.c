@@ -4,7 +4,7 @@ _start:
     {
         unsigned t = r + 5;
         if (r != 0) { __VERIFIER_assert(r == 5); return 0; } // r == 5
-        if (nondet_int() != 0) { r = t; goto _start; }
+        if (__VERIFIER_nondet_int() != 0) { r = t; goto _start; }
         r = 15 - t; goto _start;
     }
 }

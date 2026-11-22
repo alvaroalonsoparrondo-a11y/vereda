@@ -4,11 +4,11 @@
 // blanket alarm on nondet operands.
 #include <stdint.h>
 
-extern int64_t nondet_int64(void);
+extern int64_t __VERIFIER_nondet_int64(void);
 
 int main(void)
 {
-  int64_t data = nondet_int64();
+  int64_t data = __VERIFIER_nondet_int64();
   __VERIFIER_assume(data < 9223372036854775807LL);
   int64_t result = data + 1; // cannot overflow: data <= INT64_MAX - 1
   return result == 0;

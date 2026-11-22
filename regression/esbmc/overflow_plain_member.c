@@ -1,4 +1,4 @@
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 struct
 {
@@ -9,7 +9,7 @@ int main()
 {
   // The same arithmetic on a non-bitfield member is checked; pins the boundary
   // rather than --overflow-check as a whole.
-  int a = nondet_int();
+  int a = __VERIFIER_nondet_int();
   b.a += a;
 }
 // Imported from ESBMC regression/esbmc/overflow_plain_member

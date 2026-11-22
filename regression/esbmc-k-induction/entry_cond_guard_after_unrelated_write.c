@@ -2,7 +2,7 @@
 // may still assume c < k at the head.
 int main()
 {
-  int k = nondet_int();
+  int k = __VERIFIER_nondet_int();
   if (k < 0 || k > 100)
     return 0;
   int c = 0, i = 0;

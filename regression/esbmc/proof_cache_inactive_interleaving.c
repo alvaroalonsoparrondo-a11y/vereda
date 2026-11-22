@@ -11,7 +11,7 @@ void *inc(void *arg)
 
 int main(void)
 {
-  x = nondet_int();
+  x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x > 0 && x < 10);
 
   pthread_t t;

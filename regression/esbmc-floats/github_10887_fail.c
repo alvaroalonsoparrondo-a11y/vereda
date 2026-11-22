@@ -3,11 +3,11 @@
 #include <stdint.h>
 #include <string.h>
 
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 
 int main(void)
 {
-  uint32_t x = nondet_uint();
+  uint32_t x = __VERIFIER_nondet_uint();
   __VERIFIER_assume((x & 0x7f800000u) == 0x7f800000u && (x & 0x007fffffu) > 1);
   float f;
   memcpy(&f, &x, sizeof f);

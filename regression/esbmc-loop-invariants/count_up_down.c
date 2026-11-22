@@ -1,8 +1,8 @@
-unsigned int nondet_uint();
+unsigned int __VERIFIER_nondet_uint();
 
 int main()
 {
-  unsigned int n = nondet_uint();
+  unsigned int n = __VERIFIER_nondet_uint();
   unsigned int x = n, y = 0;
   __ESBMC_loop_invariant(x + y == n);
   while (x > 0)

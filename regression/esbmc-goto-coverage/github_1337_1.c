@@ -5,7 +5,7 @@ int main()
 
    int x[2];
    x[3] = 10;
-   switch (nondet_int())
+   switch (__VERIFIER_nondet_int())
    {
    case 1:
       assert(0);

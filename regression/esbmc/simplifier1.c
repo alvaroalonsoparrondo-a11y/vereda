@@ -4,7 +4,7 @@
 
 int main()
 {
-  _Bool x = nondet_bool();
+  _Bool x = __VERIFIER_nondet_bool();
 
   assert((x && x) == x);
   assert((x || x) == x);
@@ -13,7 +13,7 @@ int main()
   assert((n == n) == 1);
   assert((n < n) == 0);
 
-  int y = nondet_int();
+  int y = __VERIFIER_nondet_int();
 
   assert((y == y) == 1);
   assert((y != y) == 0);
@@ -22,18 +22,18 @@ int main()
   assert((y <= y) == 1);
   assert((y >= y) == 1);
 
-  _Bool a = nondet_bool();
+  _Bool a = __VERIFIER_nondet_bool();
 
   assert((a & a) == a);
   assert((a | a) == a);
   assert((a & 0) == 0);
   assert((0 & a) == 0);
 
-  unsigned int u = nondet_uint();
+  unsigned int u = __VERIFIER_nondet_uint();
   assert((u & 0) == 0);
   assert((u & UINT_MAX) == u);
 
-  float f = nondet_float();
+  float f = __VERIFIER_nondet_float();
   __VERIFIER_assume(isnan(f));  
   assert(f != f); // must hold for NaN
 

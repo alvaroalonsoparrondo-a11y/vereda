@@ -3,9 +3,9 @@
 
 int main()
 {
-  int d = nondet_int();
-  int c = nondet_int();
-  char e = nondet_char();
+  int d = __VERIFIER_nondet_int();
+  int c = __VERIFIER_nondet_int();
+  char e = __VERIFIER_nondet_char();
 
   // Cast on one side breaks canonical cancellation form
   assert(((d + c) == (d + (int)e)) ? (c == (int)e) : 1);

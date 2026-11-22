@@ -4,7 +4,7 @@
 // proves calls < 3.
 #include <stdlib.h>
 extern void abort(void);
-extern unsigned char nondet_uchar(void);
+extern unsigned char __VERIFIER_nondet_uchar(void);
 void reach_error() {}
 void __VERIFIER_assert(int c) { if (!c) { ERROR: { reach_error(); abort(); } } }
 
@@ -36,7 +36,7 @@ int main()
   d->n = 0;
   for (;;)
   {
-    irq(d, nondet_uchar());
+    irq(d, __VERIFIER_nondet_uchar());
     __VERIFIER_assert(calls < 3);
   }
 }

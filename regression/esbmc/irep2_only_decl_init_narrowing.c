@@ -6,12 +6,12 @@
    a constant initialiser folds before the mismatch can reach the encoder. */
 #include <assert.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  _ExtInt(10) x = nondet_int();
-  _ExtInt(10) y = nondet_int();
+  _ExtInt(10) x = __VERIFIER_nondet_int();
+  _ExtInt(10) y = __VERIFIER_nondet_int();
   _ExtInt(10) z = x + y;
   /* The declared width bounds the initialised value; unconverted, the
      initialiser is an int and the encoder never gets this far. */

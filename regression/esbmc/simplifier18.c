@@ -2,9 +2,9 @@
 
 int main()
 {
-  int c = nondet_int();
-  int d = nondet_int();
-  int e = nondet_int();
+  int c = __VERIFIER_nondet_int();
+  int d = __VERIFIER_nondet_int();
+  int e = __VERIFIER_nondet_int();
 
   // (d - c) == (d - e) -> c == e
   assert(((d - c) == (d - e)) == (c == e));

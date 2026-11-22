@@ -15,11 +15,11 @@
 // not what this regression is here to exercise. NaN comparisons are
 // false so `x >= -FLT_MAX` filters NaN as well as -Infinity.
 
-extern float nondet_float(void);
+extern float __VERIFIER_nondet_float(void);
 
 int main(void)
 {
-  float x = nondet_float();
+  float x = __VERIFIER_nondet_float();
   __VERIFIER_assume(x < -1.0e+38f && x >= -FLT_MAX);
   assert(x > 0);
   return 0;

@@ -1,9 +1,9 @@
 /* esbmc/esbmc#10913: several Boolector re-solves until the blocking clauses
    exhaust the input tuples. */
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main()
 {
-  int x = nondet_int(), y = nondet_int();
+  int x = __VERIFIER_nondet_int(), y = __VERIFIER_nondet_int();
   __VERIFIER_assume(x >= 0 && x <= 3 && y >= 0 && y <= 3);
   __VERIFIER_assert(x + y != 3); // x + y != 3
   return 0;

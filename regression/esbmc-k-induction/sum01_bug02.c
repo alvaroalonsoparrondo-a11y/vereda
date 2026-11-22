@@ -1,7 +1,7 @@
 #define a (2)
-unsigned int nondet_uint();
+unsigned int __VERIFIER_nondet_uint();
 int main() { 
-  int i, j=10, n=nondet_uint(), sn=0;
+  int i, j=10, n=__VERIFIER_nondet_uint(), sn=0;
   for(i=1; i<=n; i++) {
     if (i<j) //first case
     sn = sn + a; //second case OK

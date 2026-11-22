@@ -5,7 +5,7 @@
 #include <cheri/cheric.h>
 
 int main() {
-	int n = nondet_uint() % 1024; /* model arbitrary user input */
+	int n = __VERIFIER_nondet_uint() % 1024; /* model arbitrary user input */
 	char a[n+1];
 	a[n] = 17; /* succeeds */
 	char *__capability b = a;

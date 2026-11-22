@@ -150,7 +150,7 @@ int checkOverflow(void)
 	for (i = 0; i<xsize; ++i)
 	{
 		y[i] = 0;
-		x[i] = nondet_float();
+		x[i] = __VERIFIER_nondet_float();
 		__VERIFIER_assume(x[i]>=min && x[i]<=max);
 	}
 
@@ -228,7 +228,7 @@ int checkLimitCycle(void)
 //	memset(xaux, 0, sizeof(float) * Nb);
 	for (i = 0; i<Na; ++i)
 	{
-		yaux[i] = nondet_float();
+		yaux[i] = __VERIFIER_nondet_float();
 		__VERIFIER_assume(yaux[i]>-1.0 && yaux[i]<1.0);
 	}
 	for (i = 0; i<Nb; ++i)

@@ -1,12 +1,12 @@
 #include <assert.h>	
 #include <math.h>
 
-unsigned int nondet_uint();
-double nondet_double();
+unsigned int __VERIFIER_nondet_uint();
+double __VERIFIER_nondet_double();
 
 int main() {
   unsigned int N = 2;
-  double x = nondet_double();
+  double x = __VERIFIER_nondet_double();
 
   if(x <= 0 || isnan(x))
     return 0;

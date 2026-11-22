@@ -8,11 +8,11 @@ union U
   unsigned short s;
 };
 
-union U nondet_U();
+union U __VERIFIER_nondet_U();
 
 int main()
 {
-  union U h = nondet_U();
+  union U h = __VERIFIER_nondet_U();
   __VERIFIER_assume(h.i == 0x01020304u);
   assert(h.s != 0x0102);
   return 0;

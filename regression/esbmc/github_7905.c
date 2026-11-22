@@ -8,7 +8,7 @@ typedef short v8s __attribute__((__vector_size__(16)));
 typedef float v4f __attribute__((__vector_size__(16)));
 typedef int v2i __attribute__((__vector_size__(8)));
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
@@ -31,7 +31,7 @@ int main(void)
   v2i w = (v2i)x;
   assert(w[1] == 2);
 
-  v4i a = {nondet_int(), 2, 3, 4};
+  v4i a = {__VERIFIER_nondet_int(), 2, 3, 4};
   v4u m = (v4u)(a == (v4i){1, 2, 0, 4});
   assert(m[1] == 0xffffffffu && m[2] == 0);
   assert(m[0] == 0 || m[0] == 0xffffffffu);

@@ -8,5 +8,5 @@ char * ap_cpystrn(char *dst, const char *src, size_t dst_size);
 
 /* GET_CHAR reads a char from a file. We're not modelling the
  * underlying file, so just non-deterministically return something. */
-#define GET_CHAR(c,ret) {c = nondet_char();}
+#define GET_CHAR(c,ret) {c = __VERIFIER_nondet_char();}
 

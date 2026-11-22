@@ -1,9 +1,9 @@
 /* esbmc/esbmc#10920: an input the claim does not read is not enumerated. */
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main()
 {
-  int unused = nondet_int();
-  int x = nondet_int();
+  int unused = __VERIFIER_nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x >= 0 && x <= 10);
   __VERIFIER_assert(x != 5); // x != 5
   return 0;

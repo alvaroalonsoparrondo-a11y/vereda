@@ -2,11 +2,11 @@
  * them is discharged on a dead path. That is the intended safe outcome -- the
  * overflow genuinely cannot happen -- so the vacuity probe must not downgrade
  * the verdict on account of it. */
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x > 0);
   __VERIFIER_assume(x < 0);
 

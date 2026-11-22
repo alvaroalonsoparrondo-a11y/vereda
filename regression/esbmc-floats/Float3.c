@@ -1,4 +1,4 @@
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 double d = 0.0;
 
@@ -11,7 +11,7 @@ int main()
 {
   int x = 2;
 
-  if(nondet_int())
+  if(__VERIFIER_nondet_int())
     x = 4;
 
   (void) f1();

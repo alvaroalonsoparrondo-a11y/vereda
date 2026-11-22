@@ -4,7 +4,7 @@ int main(void)
     unsigned int a = 0;
     int table[2][2]  = {{1,0}, {1,0}};
 
-    if (nondet_uint() == 0) {
+    if (__VERIFIER_nondet_uint() == 0) {
         a = 1;
     } else {
         __VERIFIER_assume(0);

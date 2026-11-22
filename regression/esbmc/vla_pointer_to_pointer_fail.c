@@ -1,8 +1,8 @@
 #include <assert.h>
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int main(void)
 {
-  int m = nondet_int();
+  int m = __VERIFIER_nondet_int();
   __VERIFIER_assume(m >= 2 && m <= 4);
   int a[3][m];
   a[1][1] = 7;

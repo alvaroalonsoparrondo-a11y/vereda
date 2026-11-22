@@ -320,13 +320,13 @@ double internal_pow(double a, double b);
 signed int nchoosek(signed int n, signed int k);
 // nondet_double
 // file /home/lucascordeiro/dsverifier/bmc/engine/verify_limit_cycle_closedloop.h line 27
-double nondet_double();
+double __VERIFIER_nondet_double();
 // nondet_float
 // file /home/lucascordeiro/dsverifier/bmc/engine/verify_overflow.h line 18
-float nondet_float();
+float __VERIFIER_nondet_float();
 // nondet_int
 // file /home/lucascordeiro/dsverifier/bmc/engine/verify_overflow.h line 17
-signed int nondet_int();
+signed int __VERIFIER_nondet_int();
 // order
 // file /home/lucascordeiro/dsverifier/bmc/core/functions.h line 158
 signed int order(signed int Na, signed int Nb);
@@ -723,7 +723,7 @@ void call_closedloop_verification_task(void *closedloop_verification_task)
         if((signed int)base_case_executed == 0 && IEEE_FLOAT_EQUAL(factor, 0.000000))
           base_case_executed = (_Bool)0;
 
-      plant.b[(signed long int)i] = nondet_double();
+      plant.b[(signed long int)i] = __VERIFIER_nondet_double();
       _Bool tmp_if_expr$1;
       if(plant.b[(signed long int)i] >= call_closedloop_verification_task$$1$$1$$1$$1$$min)
         tmp_if_expr$1 = plant.b[(signed long int)i] <= call_closedloop_verification_task$$1$$1$$1$$1$$max ? (_Bool)1 : (_Bool)0;
@@ -753,7 +753,7 @@ void call_closedloop_verification_task(void *closedloop_verification_task)
         if((signed int)base_case_executed == 0 && IEEE_FLOAT_EQUAL(call_closedloop_verification_task$$1$$2$$1$$1$$factor, 0.000000))
           base_case_executed = (_Bool)0;
 
-      plant.a[(signed long int)i] = nondet_double();
+      plant.a[(signed long int)i] = __VERIFIER_nondet_double();
       _Bool tmp_if_expr$2;
       if(plant.a[(signed long int)i] >= min)
         tmp_if_expr$2 = plant.a[(signed long int)i] <= max ? (_Bool)1 : (_Bool)0;
@@ -794,7 +794,7 @@ void call_verification_task(void *verification_task)
           if((signed int)base_case_executed == 0 && IEEE_FLOAT_EQUAL(call_verification_task$$1$$1$$1$$1$$1$$factor, 0.000000))
             base_case_executed = (_Bool)0;
 
-        ds.b[(signed long int)call_verification_task$$1$$i] = nondet_double();
+        ds.b[(signed long int)call_verification_task$$1$$i] = __VERIFIER_nondet_double();
         _Bool tmp_if_expr$1;
         if(ds.b[(signed long int)call_verification_task$$1$$i] >= call_verification_task$$1$$1$$1$$1$$1$$min)
           tmp_if_expr$1 = ds.b[(signed long int)call_verification_task$$1$$i] <= max ? (_Bool)1 : (_Bool)0;
@@ -824,7 +824,7 @@ void call_verification_task(void *verification_task)
           if((signed int)base_case_executed == 0 && IEEE_FLOAT_EQUAL(factor, 0.000000))
             base_case_executed = (_Bool)0;
 
-        ds.a[(signed long int)call_verification_task$$1$$i] = nondet_double();
+        ds.a[(signed long int)call_verification_task$$1$$i] = __VERIFIER_nondet_double();
         _Bool tmp_if_expr$2;
         if(ds.a[(signed long int)call_verification_task$$1$$i] >= call_verification_task$$1$$1$$2$$1$$1$$min)
           tmp_if_expr$2 = ds.a[(signed long int)call_verification_task$$1$$i] <= call_verification_task$$1$$1$$2$$1$$1$$max ? (_Bool)1 : (_Bool)0;
@@ -859,7 +859,7 @@ void call_verification_task(void *verification_task)
           if((signed int)base_case_executed == 0 && IEEE_FLOAT_EQUAL(call_verification_task$$1$$2$$1$$1$$1$$factor, 0.000000))
             base_case_executed = (_Bool)0;
 
-        ds.b[(signed long int)i] = nondet_double();
+        ds.b[(signed long int)i] = __VERIFIER_nondet_double();
         _Bool tmp_if_expr$3;
         if(ds.b[(signed long int)i] >= min)
           tmp_if_expr$3 = ds.b[(signed long int)i] <= call_verification_task$$1$$2$$1$$1$$1$$max ? (_Bool)1 : (_Bool)0;
@@ -889,7 +889,7 @@ void call_verification_task(void *verification_task)
           if((signed int)base_case_executed == 0 && IEEE_FLOAT_EQUAL(call_verification_task$$1$$2$$2$$1$$1$$factor, 0.000000))
             base_case_executed = (_Bool)0;
 
-        ds.a[(signed long int)i] = nondet_double();
+        ds.a[(signed long int)i] = __VERIFIER_nondet_double();
         _Bool tmp_if_expr$4;
         if(ds.a[(signed long int)i] >= call_verification_task$$1$$2$$2$$1$$1$$min)
           tmp_if_expr$4 = ds.a[(signed long int)i] <= call_verification_task$$1$$2$$2$$1$$1$$max ? (_Bool)1 : (_Bool)0;
@@ -4431,7 +4431,7 @@ signed int verify_error(void)
   for( ; !(i >= X_SIZE_VALUE); i = i + 1)
   {
     y[(signed long int)i] = 0l;
-    signed int return_value_nondet_int$1=nondet_int();
+    signed int return_value_nondet_int$1=__VERIFIER_nondet_int();
     x[(signed long int)i] = (signed long int)return_value_nondet_int$1;
     _Bool tmp_if_expr$2;
     if(x[(signed long int)i] >= min_fxp)
@@ -4500,24 +4500,24 @@ signed int verify_error_closedloop(void)
   double xaux_double[xaux_qtz$array_size0];
   const signed long int xaux_double$array_size0=(signed long int)ans_num_size;
   double xaux[xaux_double$array_size0];
-  double nondet_constant_input=nondet_double();
-  __DSVERIFIER_assume(nondet_constant_input >= impl.min && nondet_constant_input <= impl.max);
+  double __VERIFIER_nondet_constant_input=__VERIFIER_nondet_double();
+  __DSVERIFIER_assume(__VERIFIER_nondet_constant_input >= impl.min && __VERIFIER_nondet_constant_input <= impl.max);
   i = 0;
   for( ; !(i >= X_SIZE_VALUE); i = i + 1)
   {
-    x_qtz[(signed long int)i] = nondet_constant_input;
-    x_double[(signed long int)i] = nondet_constant_input;
+    x_qtz[(signed long int)i] = __VERIFIER_nondet_constant_input;
+    x_double[(signed long int)i] = __VERIFIER_nondet_constant_input;
     y_qtz[(signed long int)i] = 0.000000;
     y_double[(signed long int)i] = 0.000000;
   }
   i = 0;
   for( ; !(i >= ans_num_size); i = i + 1)
   {
-    xaux_qtz[(signed long int)i] = nondet_constant_input;
-    xaux_double[(signed long int)i] = nondet_constant_input;
+    xaux_qtz[(signed long int)i] = __VERIFIER_nondet_constant_input;
+    xaux_double[(signed long int)i] = __VERIFIER_nondet_constant_input;
   }
-  const signed long int nondet_constant_input$array_size0=(signed long int)ans_den_size;
-  double yaux_qtz[nondet_constant_input$array_size0];
+  const signed long int __VERIFIER_nondet_constant_input$array_size0=(signed long int)ans_den_size;
+  double yaux_qtz[__VERIFIER_nondet_constant_input$array_size0];
   const signed long int yaux_qtz$array_size0=(signed long int)ans_den_size;
   double yaux_double[yaux_qtz$array_size0];
   const signed long int yaux_double$array_size0=(signed long int)ans_den_size;
@@ -4682,7 +4682,7 @@ signed int verify_generic_timing(void)
   for( ; !(i >= X_SIZE_VALUE); i = i + 1)
   {
     y[(signed long int)i] = 0.000000;
-    float return_value_nondet_float$1=nondet_float();
+    float return_value_nondet_float$1=__VERIFIER_nondet_float();
     x[(signed long int)i] = (double)return_value_nondet_float$1;
     _Bool tmp_if_expr$2;
     if(x[(signed long int)i] >= impl.min)
@@ -4752,17 +4752,17 @@ signed int verify_limit_cycle(void)
   signed long int max_fxp=fxp_double_to_fxp(impl.max);
   const signed long int max_fxp$array_size0=(signed long int)ds.b_size;
   signed long int xaux[max_fxp$array_size0];
-  signed int nondet_constant_input=nondet_int();
-  __DSVERIFIER_assume((signed long int)nondet_constant_input >= min_fxp && (signed long int)nondet_constant_input <= max_fxp);
+  signed int __VERIFIER_nondet_constant_input=__VERIFIER_nondet_int();
+  __DSVERIFIER_assume((signed long int)__VERIFIER_nondet_constant_input >= min_fxp && (signed long int)__VERIFIER_nondet_constant_input <= max_fxp);
   i = 0;
   for( ; !(i >= X_SIZE_VALUE); i = i + 1)
   {
-    x[(signed long int)i] = (signed long int)nondet_constant_input;
+    x[(signed long int)i] = (signed long int)__VERIFIER_nondet_constant_input;
     y[(signed long int)i] = 0l;
   }
   i = 0;
   for( ; !(i >= ds.b_size); i = i + 1)
-    xaux[(signed long int)i] = (signed long int)nondet_constant_input;
+    xaux[(signed long int)i] = (signed long int)__VERIFIER_nondet_constant_input;
   signed int Nw=0;
   Nw = ds.a_size > ds.b_size ? ds.a_size : ds.b_size;
   const signed long int Nw$array_size0=(signed long int)ds.a_size;
@@ -4776,7 +4776,7 @@ signed int verify_limit_cycle(void)
   i = 0;
   for( ; !(i >= Nw); i = i + 1)
   {
-    signed int return_value_nondet_int$1=nondet_int();
+    signed int return_value_nondet_int$1=__VERIFIER_nondet_int();
     waux[(signed long int)i] = (signed long int)return_value_nondet_int$1;
     _Bool tmp_if_expr$2;
     if(waux[(signed long int)i] >= min_fxp)
@@ -4838,19 +4838,19 @@ signed int verify_limit_cycle_closed_loop(void)
   double x[y$array_size0];
   const signed long int x$array_size0=(signed long int)ans_num_size;
   double xaux[x$array_size0];
-  double nondet_constant_input=nondet_double();
-  __DSVERIFIER_assume(nondet_constant_input >= impl.min && nondet_constant_input <= impl.max);
+  double __VERIFIER_nondet_constant_input=__VERIFIER_nondet_double();
+  __DSVERIFIER_assume(__VERIFIER_nondet_constant_input >= impl.min && __VERIFIER_nondet_constant_input <= impl.max);
   i = 0;
   for( ; !(i >= X_SIZE_VALUE); i = i + 1)
   {
-    x[(signed long int)i] = nondet_constant_input;
+    x[(signed long int)i] = __VERIFIER_nondet_constant_input;
     y[(signed long int)i] = 0.000000;
   }
   i = 0;
   for( ; !(i >= ans_num_size); i = i + 1)
-    xaux[(signed long int)i] = nondet_constant_input;
-  const signed long int nondet_constant_input$array_size0=(signed long int)ans_den_size;
-  double yaux[nondet_constant_input$array_size0];
+    xaux[(signed long int)i] = __VERIFIER_nondet_constant_input;
+  const signed long int __VERIFIER_nondet_constant_input$array_size0=(signed long int)ans_den_size;
+  double yaux[__VERIFIER_nondet_constant_input$array_size0];
   const signed long int yaux$array_size0=(signed long int)ans_den_size;
   double y0[yaux$array_size0];
   signed int Nw=ans_den_size > ans_num_size ? ans_den_size : ans_num_size;
@@ -4861,7 +4861,7 @@ signed int verify_limit_cycle_closed_loop(void)
   i = 0;
   for( ; !(i >= Nw); i = i + 1)
   {
-    signed int return_value_nondet_int$1=nondet_int();
+    signed int return_value_nondet_int$1=__VERIFIER_nondet_int();
     waux[(signed long int)i] = (double)return_value_nondet_int$1;
     _Bool tmp_if_expr$2;
     if(waux[(signed long int)i] >= impl.min)
@@ -5091,7 +5091,7 @@ signed int verify_overflow(void)
   for( ; !(i >= X_SIZE_VALUE); i = i + 1)
   {
     y[(signed long int)i] = 0l;
-    signed int return_value_nondet_int$1=nondet_int();
+    signed int return_value_nondet_int$1=__VERIFIER_nondet_int();
     x[(signed long int)i] = (signed long int)return_value_nondet_int$1;
     _Bool tmp_if_expr$2;
     if(x[(signed long int)i] >= min_fxp)
@@ -5188,7 +5188,7 @@ signed int verify_timing_msp_430(void)
   for( ; !(i >= X_SIZE_VALUE); i = i + 1)
   {
     y[(signed long int)i] = 0.000000;
-    float return_value_nondet_float$1=nondet_float();
+    float return_value_nondet_float$1=__VERIFIER_nondet_float();
     x[(signed long int)i] = (double)return_value_nondet_float$1;
     _Bool tmp_if_expr$2;
     if(x[(signed long int)i] >= impl.min)
@@ -5270,7 +5270,7 @@ signed int verify_zero_input_limit_cycle(void)
   i = 0;
   for( ; !(i >= Nw); i = i + 1)
   {
-    signed int return_value_nondet_int$1=nondet_int();
+    signed int return_value_nondet_int$1=__VERIFIER_nondet_int();
     waux[(signed long int)i] = (signed long int)return_value_nondet_int$1;
     _Bool tmp_if_expr$2;
     if(waux[(signed long int)i] >= min_fxp)

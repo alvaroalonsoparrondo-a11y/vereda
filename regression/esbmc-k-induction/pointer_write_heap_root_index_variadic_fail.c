@@ -4,7 +4,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <assert.h>
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 
 struct dev
 {
@@ -28,7 +28,7 @@ int main()
   B[0] = 0;
   B[1] = 0;
   set(2, d, B);
-  while (nondet_int())
+  while (__VERIFIER_nondet_int())
   {
     long base = *(long *)(unsigned long)d;
     int *r = (int *)(base + 4);

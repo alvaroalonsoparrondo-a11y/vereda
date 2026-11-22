@@ -1,12 +1,12 @@
 #include <string.h>
 #include <assert.h>
 
-extern char nondet_char(void);
+extern char __VERIFIER_nondet_char(void);
 
 int main()
 {
   char a[4] = {10, 20, 30, 40};
-  char c = nondet_char();
+  char c = __VERIFIER_nondet_char();
   void *p = memchr(a, c, 4);
 
   /* If a match is reported, the byte at that address must equal c. */

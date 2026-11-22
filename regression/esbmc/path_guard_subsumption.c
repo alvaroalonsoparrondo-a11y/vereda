@@ -4,7 +4,7 @@
  * explored symbolically, and everything it dominates is dragged into
  * the SSA for nothing. With it, `check` collapses on this path and the
  * assertion simplifies away: 0 VCCs remain. */
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 static int check(int v)
 {
@@ -15,7 +15,7 @@ static int check(int v)
 
 int main(void)
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   if (x >= 0)
     return 0;
   __VERIFIER_assert(check(x) == 1); // negative path decided by subsumption

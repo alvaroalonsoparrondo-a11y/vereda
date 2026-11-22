@@ -6,11 +6,11 @@
 
 int A[2];
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
 
   for (A[0] = 1; A[0] <= 5; A[0] = A[0] + 1)
     A[1] = x + 1;

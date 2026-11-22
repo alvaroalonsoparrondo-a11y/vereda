@@ -2,7 +2,7 @@
 
 /* A sliced step takes s's address and the kept step only s.g[1]'s, after the
  * cast: s must still be registered before the cast for it to reach s.g[1]. */
-uintptr_t nondet_uintptr(void);
+uintptr_t __VERIFIER_nondet_uintptr(void);
 struct S
 {
   int f;
@@ -13,7 +13,7 @@ int main(void)
   struct S s;
   uintptr_t us = (uintptr_t)&s;
   (void)us;
-  uintptr_t x = nondet_uintptr();
+  uintptr_t x = __VERIFIER_nondet_uintptr();
   int *p = (int *)x;
   uintptr_t ug = (uintptr_t)&s.g[1];
   if (x == ug)

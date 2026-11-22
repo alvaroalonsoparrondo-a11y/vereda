@@ -1,8 +1,8 @@
 #include <limits.h>
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 int main(void)
 {
-  unsigned a = nondet_uint(), b = nondet_uint();
+  unsigned a = __VERIFIER_nondet_uint(), b = __VERIFIER_nondet_uint();
   if (a <= UINT_MAX - b)
     return a + b;
   return 0;

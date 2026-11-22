@@ -4,7 +4,7 @@
  * infeasible: the assertion stays reachable. */
 int main(void)
 {
-  unsigned long n = nondet_ulong();
+  unsigned long n = __VERIFIER_nondet_ulong();
   if (n > 18446744073709551615ul - 4000 && n <= 18446744073709551615ul - 16)
   {
     char a[n];

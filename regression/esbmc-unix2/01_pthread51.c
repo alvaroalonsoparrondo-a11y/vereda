@@ -6,7 +6,7 @@
 int main()
 {
   pthread_key_t key;
-  int r = pthread_key_create(nondet_bool() ? &key : NULL, NULL);
+  int r = pthread_key_create(__VERIFIER_nondet_bool() ? &key : NULL, NULL);
   if(r == ENOMEM)
   {
     exit(1);

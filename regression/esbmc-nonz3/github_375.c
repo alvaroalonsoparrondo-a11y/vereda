@@ -14,7 +14,7 @@ typedef struct _RANGE
   unsigned int top;
 } RANGE;
 
-unsigned int nondet_ull()
+unsigned int __VERIFIER_nondet_ull()
 {
   unsigned int val;
   return val;
@@ -32,28 +32,28 @@ typedef union N_RANGE
 
 N_RANGE RangeArr;
 
-void nondet_RANGE_by_fields(RANGE *val)
+void __VERIFIER_nondet_RANGE_by_fields(RANGE *val)
 {
-  val->len = nondet_ull();
-  val->base = nondet_ull();
+  val->len = __VERIFIER_nondet_ull();
+  val->base = __VERIFIER_nondet_ull();
   val->top = val->len + val->base;
 }
 
-RANGE nondet_RANGE()
+RANGE __VERIFIER_nondet_RANGE()
 {
   RANGE val;
 
-  val.len = nondet_ull();
-  val.base = nondet_ull();
+  val.len = __VERIFIER_nondet_ull();
+  val.base = __VERIFIER_nondet_ull();
   val.top = val.len + val.base;
 
   return val;
 }
 
-#define nondet_RANGE_fields(some_range)                                        \
+#define __VERIFIER_nondet_RANGE_fields(some_range)                                        \
   ({                                                                           \
-    (some_range).base = nondet_ull();                                          \
-    (some_range).len = nondet_ull();                                           \
+    (some_range).base = __VERIFIER_nondet_ull();                                          \
+    (some_range).len = __VERIFIER_nondet_ull();                                           \
     (some_range).top = (some_range).base + (some_range).len;                   \
   })
 
@@ -67,9 +67,9 @@ void range_fun()
 
   for(; i < 4; i++)
   {
-    RangeArr.Raw[i] = nondet_RANGE();
+    RangeArr.Raw[i] = __VERIFIER_nondet_RANGE();
     //nondet_RANGE_by_fiedls(&RangeArr.Raw[i]);
-    nondet_RANGE_fields(RangeArr.Raw[i]);
+    __VERIFIER_nondet_RANGE_fields(RangeArr.Raw[i]);
     __VERIFIER_assume(RangeArr.Raw[i].base >= _4GB - _16MB);
 
     current_base = RangeArr.Raw[i].base;

@@ -1,8 +1,8 @@
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 
 int main(void)
 {
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   __VERIFIER_assert(n <= 4294967295u); // an unsigned fits in 32 bits
   return 0;
 }

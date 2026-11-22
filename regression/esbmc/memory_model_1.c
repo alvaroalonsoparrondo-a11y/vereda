@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-_Bool nondet_bool();
+_Bool __VERIFIER_nondet_bool();
 
 typedef unsigned short uint16_t;
 typedef unsigned char uint8_t;
@@ -21,7 +21,7 @@ int main()
   quux->bar[1] = 2;
   quux->baz = 'c';
   uint16_t *fuzz;
-  if(nondet_bool())
+  if(__VERIFIER_nondet_bool())
   {
     fuzz = &quux->bar[0];
   }

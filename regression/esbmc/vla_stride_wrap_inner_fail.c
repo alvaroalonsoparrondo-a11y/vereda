@@ -1,9 +1,9 @@
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int main(void)
 {
-  int m = nondet_int();
+  int m = __VERIFIER_nondet_int();
   __VERIFIER_assume(m == 1431655766); /* 3 * m == 2^32 + 2 */
-  int i = nondet_int(), k = nondet_int();
+  int i = __VERIFIER_nondet_int(), k = __VERIFIER_nondet_int();
   __VERIFIER_assume(i == 1 && k == 2);
   int a[2][3][m];
   a[0][0][k] = 1;

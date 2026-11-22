@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <stdio.h>
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 int x=0, w=0, z=0;
 
 void *t1(void *arg)
@@ -14,7 +14,7 @@ void *t1(void *arg)
 
 void *t2(void *arg)
 {
-  int y=nondet_int();
+  int y=__VERIFIER_nondet_int();
   if (y==0 || y==1) 
   {
     x=0;

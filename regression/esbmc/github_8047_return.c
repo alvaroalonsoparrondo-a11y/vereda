@@ -1,7 +1,7 @@
 // #8047: an early return parks a path at the end of the function; its domain
 // must be joined back there too.
 int g;
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 void f()
 {
@@ -12,7 +12,7 @@ void f()
 
 int main()
 {
-  g = nondet_int();
+  g = __VERIFIER_nondet_int();
   f();
   __VERIFIER_assert(g > -7); // g above -7
 }

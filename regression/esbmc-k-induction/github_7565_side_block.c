@@ -4,12 +4,12 @@
 
 #include <assert.h>
 
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 
 int main()
 {
   int i = 0, s = 0;
-  if (nondet_int())
+  if (__VERIFIER_nondet_int())
     goto head;
   goto side;
 head:
@@ -19,7 +19,7 @@ side:
   goto after;
 cont:
   s = 1;
-  if (nondet_int())
+  if (__VERIFIER_nondet_int())
     goto head;
 after:
   assert(i == 0 || i == 1);

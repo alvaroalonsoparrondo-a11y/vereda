@@ -1,6 +1,6 @@
 int main()
 {
-  char ch=nondet_char();
+  char ch=__VERIFIER_nondet_char();
   
   switch(ch)
   {

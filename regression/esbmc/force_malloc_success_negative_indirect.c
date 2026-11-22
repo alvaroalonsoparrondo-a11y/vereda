@@ -10,7 +10,7 @@
 
 int main(void)
 {
-  int a = nondet_int();
+  int a = __VERIFIER_nondet_int();
   __VERIFIER_assume(a < 0);
 
   size_t n = a;

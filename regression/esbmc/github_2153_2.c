@@ -12,7 +12,7 @@ int some_var;
 int main()
 {
   char *ptr = (char *)&bug.bar;
-  ptr[1] = nondet_char();
+  ptr[1] = __VERIFIER_nondet_char();
 
   __VERIFIER_assert(bug.bar != &some_var);
 }

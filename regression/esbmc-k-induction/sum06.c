@@ -1,9 +1,9 @@
 #define a (2)
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main()
 {
-  int i=1, n = nondet_int(), sn = 0;
+  int i=1, n = __VERIFIER_nondet_int(), sn = 0;
   __VERIFIER_assume(n < 1000 && n >= -1000);
 
   while (i <= n)

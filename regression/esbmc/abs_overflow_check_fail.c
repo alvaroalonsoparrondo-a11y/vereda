@@ -1,11 +1,11 @@
 #include <limits.h>
 #include <stdlib.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main()
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x <= -2147483647);
   return abs(x);
 }

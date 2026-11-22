@@ -1,8 +1,8 @@
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main(void)
 {
-  int a = nondet_int();
+  int a = __VERIFIER_nondet_int();
   __VERIFIER_assume(a == -7);
   __VERIFIER_assert(a / 2 == -4 || a % 2 == 1); // Euclidean rounding
   return 0;

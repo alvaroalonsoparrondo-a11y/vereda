@@ -1,14 +1,14 @@
 #include <assert.h>
 #include <math.h>
 
-float nondet_float (void);
+float __VERIFIER_nondet_float (void);
 
 int main (void) {
-	float f = nondet_float();
+	float f = __VERIFIER_nondet_float();
 	__VERIFIER_assume(f < +INFINITY);
 	__VERIFIER_assume(f > 1.0f);
 
-	float g = nondet_float();
+	float g = __VERIFIER_nondet_float();
 	__VERIFIER_assume(g < 1.0f);
 	__VERIFIER_assume(g >= 0x1.0p-126f);
 	__VERIFIER_assume(g > 0.0f);

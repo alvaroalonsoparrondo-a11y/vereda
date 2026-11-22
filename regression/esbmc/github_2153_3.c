@@ -13,7 +13,7 @@ int some_var;
 int main()
 {
   char *ptr = (char *)&bug; /* points to the struct, not to bug.bar directly */
-  ptr[0] = nondet_char();
+  ptr[0] = __VERIFIER_nondet_char();
 
   __VERIFIER_assert(bug.bar != &some_var);
 }

@@ -2,7 +2,7 @@
 
 int mk()
 {
-  int res = nondet_int();
+  int res = __VERIFIER_nondet_int();
   res = res < 0 ? -res : res;
   res %= MAX;
   return res;
@@ -27,7 +27,7 @@ int main()
   //--------------------------------------------------
   // CASE 1: expr,fun; fun middle in invar: FAIL (bug case)
 
-  qm = nondet_bool();
+  qm = __VERIFIER_nondet_bool();
   qn = (qm + 1) % MAX; // expr for asn
 
   __ESBMC_loop_invariant(
@@ -44,7 +44,7 @@ int main()
   //--------------------------------------------------
   // CASE 2: expr,fun; fun first in invar: PASS
 
-  qm = nondet_bool();
+  qm = __VERIFIER_nondet_bool();
   qn = (qm + 1) % MAX;
 
   __ESBMC_loop_invariant(
@@ -61,7 +61,7 @@ int main()
   //--------------------------------------------------
   // CASE 3: expr,fun; fun last in invar: PASS
 
-  qm = nondet_bool();
+  qm = __VERIFIER_nondet_bool();
   qn = (qm + 1) % MAX;
 
   __ESBMC_loop_invariant(

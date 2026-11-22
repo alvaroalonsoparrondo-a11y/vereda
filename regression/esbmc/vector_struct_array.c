@@ -6,11 +6,11 @@ struct S
   v4i v;
   int k;
 };
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main()
 {
   struct S a[2];
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 0 && i < 2);
   a[i].v = (v4i){1, 2, 3, 4};
   a[i].k = 5;

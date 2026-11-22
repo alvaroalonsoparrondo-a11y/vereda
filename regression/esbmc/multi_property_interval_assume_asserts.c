@@ -4,7 +4,7 @@
 #include <assert.h>
 int main()
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   assert(x > 10);
   assert(x > 5);
   return 0;

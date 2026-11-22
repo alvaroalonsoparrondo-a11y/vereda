@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 struct pair
 {
@@ -38,7 +38,7 @@ int main(void)
   k = 5;
   assert(bsearch(&k, a, 4, sizeof a[0], cmp_int) == NULL);
 
-  int x = nondet_int(), y = nondet_int(), z = nondet_int();
+  int x = __VERIFIER_nondet_int(), y = __VERIFIER_nondet_int(), z = __VERIFIER_nondet_int();
   int b[3] = {x, y, z};
   qsort(b, 3, sizeof b[0], cmp_int);
   assert(b[0] <= b[1] && b[1] <= b[2]);

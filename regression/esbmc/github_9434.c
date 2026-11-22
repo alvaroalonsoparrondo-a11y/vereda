@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <pthread.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 pthread_key_t k;
 int v, done = 0;
@@ -25,7 +25,7 @@ int main(void)
 {
   pthread_t th;
   pthread_key_create(&k, dtor);
-  pthread_create(&th, 0, t, (void *)(long)nondet_int());
+  pthread_create(&th, 0, t, (void *)(long)__VERIFIER_nondet_int());
   pthread_join(th, 0);
   assert(done == 1);
   return 0;

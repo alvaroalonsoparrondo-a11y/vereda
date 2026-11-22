@@ -1,9 +1,9 @@
-unsigned long nondet_ulong(void);
+unsigned long __VERIFIER_nondet_ulong(void);
 
 int main()
 {
   // The nondet counterpart of deref_constant_int_address (#6544).
-  int *p = (int *)nondet_ulong();
+  int *p = (int *)__VERIFIER_nondet_ulong();
   return *p;
 }
 // Imported from ESBMC regression/esbmc/deref_nondet_int_address

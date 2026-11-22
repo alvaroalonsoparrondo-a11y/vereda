@@ -12,8 +12,8 @@ int foo(int a, int b)
 
 int main()
 {
-  int x = nondet_int();
-  int y = nondet_int();
+  int x = __VERIFIER_nondet_int();
+  int y = __VERIFIER_nondet_int();
   assert(foo(x,y) == 10);
   return 0;
 }

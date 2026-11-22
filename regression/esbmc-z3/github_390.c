@@ -7,13 +7,13 @@
 
 int main(){
 float norm = (float)1/(float)100;
-int x0 = nondet_int();
+int x0 = __VERIFIER_nondet_int();
 __VERIFIER_assume((x0 >= 441)&&(x0 <=539));
-int x1 = nondet_int();
+int x1 = __VERIFIER_nondet_int();
 __VERIFIER_assume((x1 >= 270)&&(x1 <=330));
-int x2 = nondet_int();
+int x2 = __VERIFIER_nondet_int();
 __VERIFIER_assume((x2 >= 126)&&(x2 <=154));
-int x3 = nondet_int();
+int x3 = __VERIFIER_nondet_int();
 __VERIFIER_assume((x3 >= 18)&&(x3 <=22));
 //unsigned int x0 = Frama_C_interval(235, 255);
 //unsigned int x1 = Frama_C_interval(235, 255);

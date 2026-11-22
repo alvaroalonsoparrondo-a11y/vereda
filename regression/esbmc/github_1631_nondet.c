@@ -3,9 +3,9 @@
 
 int main()
 {
-  int addr1 = nondet_int();
+  int addr1 = __VERIFIER_nondet_int();
   __VERIFIER_assume(addr1 == 4);
-  int addr2 = nondet_int();
+  int addr2 = __VERIFIER_nondet_int();
 
   void *a = (void *)malloc(addr1);
   void *b = (void *)malloc(addr2);

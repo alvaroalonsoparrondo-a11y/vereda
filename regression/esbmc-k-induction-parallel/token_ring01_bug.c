@@ -33,7 +33,7 @@ int tmp_var ;
   }
   M_ENTRY: ;
   {
-  int i=0, loop1 = nondet_int();
+  int i=0, loop1 = __VERIFIER_nondet_int();
   while (i<loop1) {
     while_0_continue: /* CIL Label */ ;
     {
@@ -91,7 +91,7 @@ void transmit1(void)
   }
   T1_ENTRY: ;
   {
-  int i=0, loop2 = nondet_int();
+  int i=0, loop2 = __VERIFIER_nondet_int();
   while (i<loop2) {
     while_1_continue: /* CIL Label */ ;
     t1_pc = 1;
@@ -204,7 +204,7 @@ void eval(void)
 
   {
   {
-  int i=0, loop3 = nondet_int();
+  int i=0, loop3 = __VERIFIER_nondet_int();
   while (i<loop3) {
     while_2_continue: /* CIL Label */ ;
     {
@@ -424,7 +424,7 @@ void start_simulation(void)
   reset_delta_events();
   }
   {
-  int i=0, loop4 = nondet_int();
+  int i=0, loop4 = __VERIFIER_nondet_int();
   while (i<loop4) {
     while_3_continue: /* CIL Label */ ;
     {

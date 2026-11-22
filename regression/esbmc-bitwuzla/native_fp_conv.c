@@ -1,13 +1,13 @@
 #include <assert.h>
-double nondet_double(void);
-int nondet_int(void);
+double __VERIFIER_nondet_double(void);
+int __VERIFIER_nondet_int(void);
 int main(void)
 {
-  double x = nondet_double();
+  double x = __VERIFIER_nondet_double();
   __VERIFIER_assume(x == 3.75);
   assert((int)x == 3);
   assert((float)x == 3.75f);
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i == -7);
   assert((double)i == -7.0);
   unsigned u = 42u;

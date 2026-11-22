@@ -4,8 +4,8 @@
 int main()
 {
  // Non-deterministic choice of indices
-    int kernel_index = nondet_int();
-    int user_index = nondet_int();
+    int kernel_index = __VERIFIER_nondet_int();
+    int user_index = __VERIFIER_nondet_int();
 
     // Constrain the indices to be within valid ranges
     __VERIFIER_assume(kernel_index >= 0 && kernel_index < KERNEL_MEMORY_SPACE);
@@ -15,7 +15,7 @@ int main()
     char* kernel_addr = kernel_memory + kernel_index;
     char* user_addr = kernel_memory + user_index;
 
-    unsigned long size = nondet_int();
+    unsigned long size = __VERIFIER_nondet_int();
 
     __VERIFIER_assume(size < 200);
     __VERIFIER_assume(kernel_index + size <= KERNEL_MEMORY_SPACE);

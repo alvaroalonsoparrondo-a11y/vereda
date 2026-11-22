@@ -4,11 +4,11 @@
 // *(int *)m < 3.
 #include <stdlib.h>
 #include <assert.h>
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 void f(long m)
 {
   int *r;
-  while (nondet_int())
+  while (__VERIFIER_nondet_int())
   {
     r = (int *)m;
     *r = *r + 1;

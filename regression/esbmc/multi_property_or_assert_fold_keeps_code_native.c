@@ -2,7 +2,7 @@
    (esbmc/esbmc#7900). */
 int main()
 {
-  int c = nondet_int();
+  int c = __VERIFIER_nondet_int();
   int x = 0;
   if (c)
   {

@@ -4,8 +4,8 @@
 
 int main()
 {
-	float x = nondet_float();
-	int xe = nondet_int();
+	float x = __VERIFIER_nondet_float();
+	int xe = __VERIFIER_nondet_int();
 	float xm = frexpf(x, &xe);
 	assert(isfinite(xm) == isfinite(x));
 	assert(isinf(xm) == isinf(x));
@@ -22,7 +22,7 @@ int main()
 		assert((fpclassify(x) == FP_SUBNORMAL) == (xe < FLT_MIN_EXP));
 	}
 
-	float y = nondet_float();
+	float y = __VERIFIER_nondet_float();
 	int ye;
 	float ym = frexpf(y, &ye);
 	__VERIFIER_assume(ym == 0.0 || (ym >= 0.5 && ym < 1));

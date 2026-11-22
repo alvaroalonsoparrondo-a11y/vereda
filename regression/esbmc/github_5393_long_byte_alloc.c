@@ -2,11 +2,11 @@
    trip, because its byte stitching is exact. Only pointers are lost. */
 #include <stdlib.h>
 
-long nondet_long(void);
+long __VERIFIER_nondet_long(void);
 
 int main(void)
 {
-  long v = nondet_long();
+  long v = __VERIFIER_nondet_long();
   __VERIFIER_assume(v != 0);
 
   char *raw = malloc(64);

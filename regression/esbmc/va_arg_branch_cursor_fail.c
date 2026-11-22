@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <stdarg.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int branch(int c, ...)
 {
@@ -27,7 +27,7 @@ int ternary(int c, ...)
 
 int main(void)
 {
-  int c = nondet_int();
+  int c = __VERIFIER_nondet_int();
   assert(branch(c, 1, 2) == (c ? 12 : 2));
   assert(ternary(c, 1, 2) == (c ? 12 : 2));
   return 0;

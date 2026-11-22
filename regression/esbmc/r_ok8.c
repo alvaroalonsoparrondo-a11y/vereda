@@ -3,7 +3,7 @@
 
 int main() {
   int N, M;  
-  char *arr = malloc(nondet_int() ? N : N-1);
+  char *arr = malloc(__VERIFIER_nondet_int() ? N : N-1);
   __VERIFIER_assume(N > 0 && M < N); 
   assert(__ESBMC_r_ok(arr, M));
 }

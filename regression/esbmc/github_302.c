@@ -11,7 +11,7 @@ float r[no] = {2.5}; // obstacles radius
 
 //points of the path information
 int x[n][DIM];
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 // helper functions declaration
 void rest_points(int P1[DIM], int i, float xo, float yo, float r);
@@ -28,7 +28,7 @@ int main(){
   // set x[i][j] to non-deterministic
   for(i = 0; i < n; i++){
     for(j = 0; j < DIM; j++)
-      x[i][j] = nondet_int();
+      x[i][j] = __VERIFIER_nondet_int();
   } // end for
 
   // constraints on environment limits and obstacles

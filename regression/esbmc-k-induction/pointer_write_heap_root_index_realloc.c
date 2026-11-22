@@ -3,7 +3,7 @@
 // whole and proves calls < 3.
 #include <stdlib.h>
 extern void abort(void);
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 void reach_error() {}
 void __VERIFIER_assert(int c) { if (!c) { ERROR: { reach_error(); abort(); } } }
 
@@ -18,7 +18,7 @@ int main()
   {
     long n = d[0];
     if (n > 0 && n < 4)
-      d[n] = nondet_int();
+      d[n] = __VERIFIER_nondet_int();
     calls = (calls + 1) % 3;
     __VERIFIER_assert(calls < 3);
   }

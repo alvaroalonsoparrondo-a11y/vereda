@@ -27,8 +27,8 @@ int f2(unsigned char a, unsigned char b)
 int main()
 {
   unsigned char a, b;
-  a=nondet_uchar();
-  b=nondet_uchar();
+  a=__VERIFIER_nondet_uchar();
+  b=__VERIFIER_nondet_uchar();
   assert(f1(a,b)==f2(a,b));
 
   return 0;

@@ -3,11 +3,11 @@
    fix for github_7572_trunc cannot be a blanket relaxation.
    clang -fsanitize=float-cast-overflow: "-1 is outside the range of
    representable values of type 'unsigned int'". */
-extern float nondet_float(void);
+extern float __VERIFIER_nondet_float(void);
 
 int main(void)
 {
-  float a = nondet_float();
+  float a = __VERIFIER_nondet_float();
   __VERIFIER_assume(a == -1.0f);
   unsigned int u = (unsigned int)a;
   (void)u;

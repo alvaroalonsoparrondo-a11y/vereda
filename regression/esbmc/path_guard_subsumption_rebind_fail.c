@@ -3,7 +3,7 @@
  * callee's re-check is NOT implied and must still fork — x can be
  * nonnegative again. A match keyed on the base name instead of the
  * generation would subsume the stale guard and prove this vacuously. */
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 static int check(int v)
 {
@@ -14,10 +14,10 @@ static int check(int v)
 
 int main(void)
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   if (x >= 0)
     return 0;
-  x = nondet_int();
+  x = __VERIFIER_nondet_int();
   __VERIFIER_assert(check(x) == 1); // x may be nonnegative after rebinding
   return 0;
 }

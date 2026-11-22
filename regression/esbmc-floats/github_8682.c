@@ -3,7 +3,7 @@
 #include <fenv.h>
 #include <math.h>
 
-double nondet_double(void);
+double __VERIFIER_nondet_double(void);
 
 int main(void)
 {
@@ -26,7 +26,7 @@ int main(void)
   assert(asin(-0.0) == 0.0 && signbit(asin(-0.0)));
   fesetround(FE_TONEAREST);
 
-  double u = nondet_double();
+  double u = __VERIFIER_nondet_double();
   __VERIFIER_assume(u < 0.0);
   assert(atan2(-0.0, u) == -M_PI);
   return 0;

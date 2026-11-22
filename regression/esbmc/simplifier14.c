@@ -3,9 +3,9 @@
 
 int main()
 {
-  uint32_t d = nondet_uint();
-  uint16_t c = nondet_ushort();
-  uint16_t e = nondet_ushort();
+  uint32_t d = __VERIFIER_nondet_uint();
+  uint16_t c = __VERIFIER_nondet_ushort();
+  uint16_t e = __VERIFIER_nondet_ushort();
 
   // Mixed-width additions – must not simplify
   // (uint32)d + (uint16)c == (uint32)d + (uint16)e  DOES NOT imply c == e  

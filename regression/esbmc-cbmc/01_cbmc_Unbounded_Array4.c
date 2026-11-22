@@ -18,7 +18,7 @@ int main() {
   asdfasdf[0].baz = 1;
 
   uint32_t *fuzz;
-  if (nondet_bool()) {
+  if (__VERIFIER_nondet_bool()) {
     fuzz = &asdfasdf[0].bar;
   } else {
     fuzz = &asdfasdf[0].baz;

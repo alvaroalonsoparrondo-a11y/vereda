@@ -5,7 +5,7 @@
 
 int main(void)
 {
-  unsigned long n = nondet_ulong();
+  unsigned long n = __VERIFIER_nondet_ulong();
   __VERIFIER_assume(n >= 9 && n <= 10);
   const void **slots = malloc(n * sizeof(void *));
   if (!slots)
@@ -22,7 +22,7 @@ int main(void)
   slots[7] = p7;
 
   const void *key;
-  unsigned long i = nondet_ulong();
+  unsigned long i = __VERIFIER_nondet_ulong();
   __VERIFIER_assume(i >= 8 && i < n);
   slots[i] = key;
 

@@ -1,4 +1,4 @@
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 // The pointer under a dereference and the index of an array store are values,
 // so GCSE may still replace them inside an assignment target; storing to
@@ -6,7 +6,7 @@ int nondet_int();
 int main()
 {
   int arr[3] = {0, 0, 0};
-  int k = nondet_int();
+  int k = __VERIFIER_nondet_int();
   int *p = arr;
   int x = *(p + k);
   *(p + k) = 5;

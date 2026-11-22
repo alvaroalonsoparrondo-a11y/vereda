@@ -18,7 +18,7 @@ struct B wrapped[4] = {{1}, {2}, {3}, {4}};
 
 int main()
 {
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n <= 4);
   unsigned char d[4] = {0, 0, 0, 0};
   memcpy(d, &pairs[1], n);

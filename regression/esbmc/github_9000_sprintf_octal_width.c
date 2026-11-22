@@ -2,11 +2,11 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-unsigned char nondet_uchar();
+unsigned char __VERIFIER_nondet_uchar();
 int main()
 {
   char *d = malloc(5);
-  unsigned char c = nondet_uchar();
+  unsigned char c = __VERIFIER_nondet_uchar();
   int r = sprintf(d, "\\%03o", c);
   assert(r == 4 && d[4] == 0 && d[3] != 0);
   free(d);

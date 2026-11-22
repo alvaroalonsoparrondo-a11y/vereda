@@ -7,7 +7,7 @@ struct S
 int main(void)
 {
   int *end = s.a + 4;
-  int k = nondet_int();
+  int k = __VERIFIER_nondet_int();
   __VERIFIER_assume(k >= 1 && k <= 4);
   *(end - k) = 7;
   assert(s.a[4 - k] != 7);

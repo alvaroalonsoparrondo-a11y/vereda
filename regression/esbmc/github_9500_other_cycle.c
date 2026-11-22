@@ -1,5 +1,5 @@
 #include <assert.h>
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int helper(int x) { return x; }
 
@@ -13,7 +13,7 @@ void other(int n) {
 void rec(int n) {
   if (n > 0)
     rec(n - 1);
-  int l = nondet_int();
+  int l = __VERIFIER_nondet_int();
   __VERIFIER_assume(l > 0 && l < 10);
   other(1);
   helper(1);

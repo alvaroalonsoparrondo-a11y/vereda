@@ -5,11 +5,11 @@ double fabs(double x)
   return 42.0;
 }
 
-double nondet_double(void);
+double __VERIFIER_nondet_double(void);
 
 int main(void)
 {
-  double d = nondet_double();
+  double d = __VERIFIER_nondet_double();
   __VERIFIER_assume(d == -3.0);
   __VERIFIER_assert(fabs(d) == 42.0); // the program's own fabs is called
   return 0;

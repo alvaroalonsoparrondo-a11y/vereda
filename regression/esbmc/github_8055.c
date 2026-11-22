@@ -1,9 +1,9 @@
 // #8055
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int f(void)
 {
-  int r = nondet_int();
+  int r = __VERIFIER_nondet_int();
   return r;
 }
 

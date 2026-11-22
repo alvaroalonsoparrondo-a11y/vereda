@@ -3,7 +3,7 @@
 // --clz-zero-check must leave clrsb alone: it is defined at zero.
 #include <assert.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 static int ref_clrsb(int x)
 {
@@ -16,7 +16,7 @@ static int ref_clrsb(int x)
 
 int main(void)
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   assert(__builtin_clrsb(x) == ref_clrsb(x));
 
   assert(__builtin_clrsb(0) == 31);

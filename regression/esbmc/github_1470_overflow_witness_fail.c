@@ -5,11 +5,11 @@
 // the assumption `data == 9223372036854775807` on the assignment edge.
 #include <stdint.h>
 
-extern int64_t nondet_int64(void);
+extern int64_t __VERIFIER_nondet_int64(void);
 
 int main(void)
 {
-  int64_t data = nondet_int64();
+  int64_t data = __VERIFIER_nondet_int64();
   int64_t result = data + 1; // overflow when data == INT64_MAX
   return result == 0;
 }

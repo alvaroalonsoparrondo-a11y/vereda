@@ -2,14 +2,14 @@
    every claim, so the diagnostic inductive step at max-k proves the other
    two. */
 #include <assert.h>
-_Bool nondet_bool();
-unsigned nondet_uint();
+_Bool __VERIFIER_nondet_bool();
+unsigned __VERIFIER_nondet_uint();
 int main()
 {
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n < 10);
   unsigned i = 0, j = 3;
-  while (nondet_bool())
+  while (__VERIFIER_nondet_bool())
   {
     i++;
     assert(i != 2);

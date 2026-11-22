@@ -33,7 +33,7 @@
 #define MAP_CAP 4
 #define SEQ_LEN 4
 
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 
 /* renaming::level2t::valuet, reduced to the one field the property observes
  * (§6.2 stub inventory: node ids, the propagated constant and the expression
@@ -68,7 +68,7 @@ int main(void)
 
   for (unsigned i = 0; i < SEQ_LEN; i++)
   {
-    unsigned key = nondet_uint();
+    unsigned key = __VERIFIER_nondet_uint();
     __VERIFIER_assume(key < MAP_CAP);
 
     unsigned before = current_names[key].count;

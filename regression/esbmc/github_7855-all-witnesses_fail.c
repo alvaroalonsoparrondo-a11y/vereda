@@ -1,12 +1,12 @@
 #include <assert.h>
 #include <stdint.h>
-int nondet_int(void);
-uintptr_t nondet_addr(void);
+int __VERIFIER_nondet_int(void);
+uintptr_t __VERIFIER_nondet_addr(void);
 int main(void)
 {
   int a[2] = {0, 1};
-  uintptr_t u = nondet_addr();
-  int x = nondet_int();
+  uintptr_t u = __VERIFIER_nondet_addr();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x >= 0 && x < 4);
   int *p = (int *)u;
   assert(p != (int *)((uintptr_t)a + sizeof(int)) || x != 1);

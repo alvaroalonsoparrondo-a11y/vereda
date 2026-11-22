@@ -1,7 +1,7 @@
 #include <assert.h>
 int main() {
-  int valve = nondet_int();  // environment
-  int input = nondet_int();  // user input
+  int valve = __VERIFIER_nondet_int();  // environment
+  int input = __VERIFIER_nondet_int();  // user input
   while (input) {
     if (!valve) {
       assert(valve == 0); // "privacy"

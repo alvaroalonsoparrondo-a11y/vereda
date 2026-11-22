@@ -9,8 +9,8 @@ static inline double fabs_custom(double x)
 
 int main(void)
 {
-  double a = nondet_double();
-  double b = nondet_double();
+  double a = __VERIFIER_nondet_double();
+  double b = __VERIFIER_nondet_double();
   __VERIFIER_assume(a >= -1000.0 && a <= 1000.0);
   __VERIFIER_assume(b >= -1000.0 && b <= 1000.0);
   double diff = a - b;

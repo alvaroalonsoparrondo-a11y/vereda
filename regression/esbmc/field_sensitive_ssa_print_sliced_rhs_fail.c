@@ -8,8 +8,8 @@ struct S
 
 int main(void)
 {
-  int v = nondet_int() | 1;
-  struct S s = {v, nondet_int()};
+  int v = __VERIFIER_nondet_int() | 1;
+  struct S s = {v, __VERIFIER_nondet_int()};
   assert(s.b != 5);
   return 0;
 }

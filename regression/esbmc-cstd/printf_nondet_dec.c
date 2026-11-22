@@ -3,11 +3,11 @@
    The return value r is in [1,11] (11 for "-2147483648").  assert(r>20) must fail. */
 #include <assert.h>
 #include <stdio.h>
-extern unsigned nondet_uint(void);
+extern unsigned __VERIFIER_nondet_uint(void);
 int main()
 {
 #ifndef _WIN32
-  unsigned v = nondet_uint();
+  unsigned v = __VERIFIER_nondet_uint();
   int r = printf("%d", v);
   assert(r > 20);
 #else

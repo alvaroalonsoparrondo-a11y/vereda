@@ -3,12 +3,12 @@
    check's violation must not drop it, or no base case ever solves it. */
 #include <assert.h>
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main()
 {
   int x = 1;
-  int *p = nondet_int() ? &x : 0;
+  int *p = __VERIFIER_nondet_int() ? &x : 0;
   assert(*p == 2);
   return 0;
 }

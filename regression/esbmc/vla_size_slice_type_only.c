@@ -14,10 +14,10 @@ void check(int cond) {
   if (!cond)
   ERROR: abort();
 }
-int nondet_int();
-short nondet_short();
+int __VERIFIER_nondet_int();
+short __VERIFIER_nondet_short();
 int main() {
-  n = nondet_short();
+  n = __VERIFIER_nondet_short();
   assume(n > 0);
   int array[n][n];
   for (; row < n; row++) {
@@ -26,10 +26,10 @@ int main() {
       array[row][col] = 0;
   }
   while (1) {
-    idx = nondet_short();
+    idx = __VERIFIER_nondet_short();
     assume(idx >= 0 && idx < n);
     array[fixed_row][idx] = 1;
-    done = nondet_int();
+    done = __VERIFIER_nondet_int();
     if (done)
       break;
   }

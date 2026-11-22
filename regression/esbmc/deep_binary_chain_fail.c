@@ -11,7 +11,7 @@
 
 int main(void)
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assert(DEEP); // a deep conjunction does not hold for x == 0
   return 0;
 }

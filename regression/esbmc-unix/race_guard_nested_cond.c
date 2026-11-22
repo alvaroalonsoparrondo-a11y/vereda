@@ -7,7 +7,7 @@ int dummy = 0;
 
 void *t1(void *arg)
 {
-  if (nondet_int())
+  if (__VERIFIER_nondet_int())
   {
     if (receive)
       receive = 0;
@@ -19,7 +19,7 @@ void *t1(void *arg)
 int main()
 {
   pthread_t id;
-  n = nondet_int() != 0;
+  n = __VERIFIER_nondet_int() != 0;
   pthread_create(&id, NULL, t1, NULL);
   if (n)
     receive = 1;

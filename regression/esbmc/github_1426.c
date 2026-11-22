@@ -9,11 +9,11 @@ typedef struct {
   t1 y;
 } t2;
 
-t2 nondet_t2();
+t2 __VERIFIER_nondet_t2();
 
 int main()
 {
-  t2 a = nondet_t2();
+  t2 a = __VERIFIER_nondet_t2();
   int *b = &a.x;
   b[1] = a.x;
   assert(*b);

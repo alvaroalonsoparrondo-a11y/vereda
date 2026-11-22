@@ -1,13 +1,13 @@
 #include <assert.h>
 #include <stdio.h>
 
-char nondet_char();
+char __VERIFIER_nondet_char();
 
 int main()
 {
   char s[4];
   for (int i = 0; i < 3; ++i)
-    s[i] = nondet_char();
+    s[i] = __VERIFIER_nondet_char();
   s[3] = '\0';
 
   int x = 7, y = 9, len = 5;

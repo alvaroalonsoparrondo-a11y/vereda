@@ -1,10 +1,10 @@
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int main(void)
 {
   int a[2][2];
   int (*p)[2] = a;
-  int i = nondet_int();
-  int c = nondet_int();
+  int i = __VERIFIER_nondet_int();
+  int c = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 0 && i < 2);
 
   a[1][0] = 1;

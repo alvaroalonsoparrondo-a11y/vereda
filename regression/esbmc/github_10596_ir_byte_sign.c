@@ -1,10 +1,10 @@
 // Under --ir, a value rebuilt from bytes reads its bits as two's complement.
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 int main(void)
 {
   int a[2];
   int *p = a;
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 0 && i < 2);
   a[0] = -16777217;
   a[1] = -1;

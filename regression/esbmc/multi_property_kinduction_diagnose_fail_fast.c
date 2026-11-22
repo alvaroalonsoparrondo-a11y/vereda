@@ -3,14 +3,14 @@
    The diagnostic inductive step at max-k proves both inductive -- the third
    by the simplifier alone -- but that round did not back either proof. */
 #include <assert.h>
-_Bool nondet_bool();
-unsigned nondet_uint();
+_Bool __VERIFIER_nondet_bool();
+unsigned __VERIFIER_nondet_uint();
 int main()
 {
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n < 10);
   unsigned i = 0, j = 3;
-  while (nondet_bool())
+  while (__VERIFIER_nondet_bool())
   {
     i++;
     assert(i != 2);

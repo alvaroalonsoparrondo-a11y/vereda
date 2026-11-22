@@ -4,12 +4,12 @@
 
 typedef int v4i __attribute__((__vector_size__(16)));
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
   v4i a[3];
-  int k = nondet_int();
+  int k = __VERIFIER_nondet_int();
   __VERIFIER_assume(k >= 0 && k < 3);
   v4i *q = a + k;
   *q = (v4i){1, 2, 3, 4};

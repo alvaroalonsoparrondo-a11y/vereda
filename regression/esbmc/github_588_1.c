@@ -1,10 +1,10 @@
 #include <assert.h>
 
-unsigned nondet_uint();
+unsigned __VERIFIER_nondet_uint();
 
 int main()
 {
-    unsigned n = nondet_uint();  // n is nondeterministically assigned
+    unsigned n = __VERIFIER_nondet_uint();  // n is nondeterministically assigned
     __VERIFIER_assume(n > 0);  // Ensure that n is greater than 0, so the array size is valid
 
     char a[n];  // Variable-length array with size n

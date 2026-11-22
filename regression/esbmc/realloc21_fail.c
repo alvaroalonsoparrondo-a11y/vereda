@@ -13,7 +13,7 @@ Aborted (core dumped)
 
 void test_alternating_resize()
 {
-    unsigned steps = nondet_uint();
+    unsigned steps = __VERIFIER_nondet_uint();
     __VERIFIER_assume(steps > 0 && steps <= 10); // symbolic upper bound
 
     unsigned n = 0;
@@ -31,7 +31,7 @@ void test_alternating_resize()
             assert(vec != NULL);
         }
         vec[n++] = i;
-        unsigned shrink_step = nondet_uint() % 2;
+        unsigned shrink_step = __VERIFIER_nondet_uint() % 2;
         // Shrink step
         if (n > 0 && (shrink_step == 0)) // symbolic choice to shrink
         {

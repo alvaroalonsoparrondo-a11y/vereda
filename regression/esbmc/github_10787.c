@@ -20,10 +20,10 @@ int main()
   int *p = &b.a[c];
   int i = 2;
   int (*row)[3] = &m[i];
-  int k = nondet_int();
+  int k = __VERIFIER_nondet_int();
   __VERIFIER_assume(k >= 0 && k <= 3);
   int *q = &m[1][k];
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   __VERIFIER_assume(n >= 1 && n <= 4);
   int v[n];
   int *w = &v[n];

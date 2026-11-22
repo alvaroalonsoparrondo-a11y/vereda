@@ -10,9 +10,9 @@ struct P
 int main()
 {
   struct P p;
-  p.x = nondet_ushort();
-  p.y = nondet_ushort();
-  unsigned k = nondet_ushort() % 4;
+  p.x = __VERIFIER_nondet_ushort();
+  p.y = __VERIFIER_nondet_ushort();
+  unsigned k = __VERIFIER_nondet_ushort() % 4;
   unsigned short v = k < 2 ? p.x : p.y;
   unsigned char *c = (unsigned char *)&p;
   assert(c[k] == (unsigned char)(k % 2 == 0 ? v : v >> 8));

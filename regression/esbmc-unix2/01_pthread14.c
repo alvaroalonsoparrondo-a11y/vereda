@@ -2,7 +2,7 @@
 #define N 10
 
 int a[N], i, j = 1, x = 2;
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 void *t1(void *arg)
 {

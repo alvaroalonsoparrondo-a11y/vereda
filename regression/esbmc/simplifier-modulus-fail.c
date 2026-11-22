@@ -2,7 +2,7 @@
 
 int main()
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   assert(x % x == 0);
   return 0;
 }

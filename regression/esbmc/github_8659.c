@@ -2,10 +2,10 @@
  * only checked a > 0 for positive minus negative. */
 #include <assert.h>
 #include <limits.h>
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main(void)
 {
-  int a = nondet_int(), b = nondet_int(), r;
+  int a = __VERIFIER_nondet_int(), b = __VERIFIER_nondet_int(), r;
   long long diff = (long long)a - b;
   assert(
     __builtin_ssub_overflow(a, b, &r) == (diff > INT_MAX || diff < INT_MIN));

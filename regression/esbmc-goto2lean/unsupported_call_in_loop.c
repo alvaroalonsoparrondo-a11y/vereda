@@ -1,4 +1,4 @@
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 unsigned inc(unsigned v) { return v + 1; }
 unsigned find(unsigned n) {
   unsigned i = 0;
@@ -14,7 +14,7 @@ unsigned find(unsigned n) {
   return n;
 }
 int main(void) {
-  unsigned n = nondet_uint();
+  unsigned n = __VERIFIER_nondet_uint();
   unsigned r = find(n);
   __VERIFIER_assert(r <= n || r == 7); // r
   return 0;

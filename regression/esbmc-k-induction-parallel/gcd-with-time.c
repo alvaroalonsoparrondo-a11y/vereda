@@ -22,11 +22,11 @@ int gcd(int a, int b)
   return a;
 }
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main()
 {
-  gcd(nondet_int(),nondet_int());
+  gcd(__VERIFIER_nondet_int(),__VERIFIER_nondet_int());
 //  int a=15, b=4;
 //  gcd(a,b);
 //  printf("mdc: %d\n", gcd(a,b));

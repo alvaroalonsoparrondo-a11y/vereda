@@ -8,7 +8,7 @@
  * to treat this struct as pointer-free loses the store through `p` and turns
  * this genuine violation into VERIFICATION SUCCESSFUL. */
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int a = 0, b = 0;
 
@@ -85,7 +85,7 @@ int main()
 {
   struct handle h;
 
-  h.addr = nondet_int() ? (uintptr_t)&a : (uintptr_t)&b;
+  h.addr = __VERIFIER_nondet_int() ? (uintptr_t)&a : (uintptr_t)&b;
 
   int *p = (int *)h.addr;
   *p = 5;

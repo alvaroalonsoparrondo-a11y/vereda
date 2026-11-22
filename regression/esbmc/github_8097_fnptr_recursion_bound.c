@@ -1,7 +1,7 @@
 /* #8097: a function-pointer call whose first target stops at the recursion
  * bound must still run the remaining targets. */
 #include <assert.h>
-int nondet_int();
+int __VERIFIER_nondet_int();
 int f3(void *p)
 {
   return 1;
@@ -14,7 +14,7 @@ int f2(int (*a)(void *))
 }
 int main()
 {
-  int (*b)(void *) = nondet_int() ? (int (*)(void *))f3 : (int (*)(void *))f2;
+  int (*b)(void *) = __VERIFIER_nondet_int() ? (int (*)(void *))f3 : (int (*)(void *))f2;
   return f2(b);
 }
 // Imported from ESBMC regression/esbmc/github_8097_fnptr_recursion_bound

@@ -1,8 +1,8 @@
-float nondet_float();
+float __VERIFIER_nondet_float();
 
 int main()
 {
-  float x = nondet_float();
+  float x = __VERIFIER_nondet_float();
   assert(x==x);
   return 0;
 }

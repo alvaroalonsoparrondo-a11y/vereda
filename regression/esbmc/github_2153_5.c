@@ -1,8 +1,8 @@
-char nondet_char();
+char __VERIFIER_nondet_char();
 
 void init_loop(void *base, unsigned int size) {
   for (int i = 0; i < size; i++) {
-    *((char *)base + i) = nondet_char();
+    *((char *)base + i) = __VERIFIER_nondet_char();
   }
 }
 

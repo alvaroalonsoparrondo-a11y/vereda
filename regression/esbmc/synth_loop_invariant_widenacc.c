@@ -3,11 +3,11 @@
  * counter's and widening afterwards let the narrow subtraction wrap where the
  * widening did not, so the havoc could pick i near INT_MIN and fail the
  * inductive step on a correct program. */
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   __VERIFIER_assume(n >= 1 && n <= 8);
 
   int i = 1;

@@ -3,13 +3,13 @@
 
 int main(void)
 {
-  unsigned long n = nondet_ulong();
+  unsigned long n = __VERIFIER_nondet_ulong();
   __VERIFIER_assume(n >= 2 && n <= 3);
   const void **slots = malloc(n * sizeof(void *));
   if (!slots)
     return 0;
 
-  unsigned long i = nondet_ulong(), j = nondet_ulong();
+  unsigned long i = __VERIFIER_nondet_ulong(), j = __VERIFIER_nondet_ulong();
   __VERIFIER_assume(i < n && j < n && i != j);
   const void *key, *other;
   slots[i] = key;

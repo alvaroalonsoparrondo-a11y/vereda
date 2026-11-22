@@ -1,8 +1,8 @@
 #include <assert.h>
 
 int main() {
-    int x = nondet_int();
-    unsigned u = nondet_uint();
+    int x = __VERIFIER_nondet_int();
+    unsigned u = __VERIFIER_nondet_uint();
     
     int zero_int = 0;
     assert((x ^ zero_int) == x);

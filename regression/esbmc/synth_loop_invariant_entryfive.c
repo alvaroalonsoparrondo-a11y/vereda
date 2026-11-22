@@ -5,10 +5,10 @@
  * holds. Must decline. The literal-addend regime would admit this entry
  * value via its third disjunct, so this pins the boundary between the two. */
 #include <assert.h>
-unsigned int nondet_uint();
+unsigned int __VERIFIER_nondet_uint();
 int main(void)
 {
-  unsigned int n = nondet_uint(), a = nondet_uint();
+  unsigned int n = __VERIFIER_nondet_uint(), a = __VERIFIER_nondet_uint();
   __VERIFIER_assume(n <= 8);
   __VERIFIER_assume(a <= 3);
   unsigned int i = 5, s = 0;

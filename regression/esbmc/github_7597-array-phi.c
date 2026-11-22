@@ -10,11 +10,11 @@
 int A[4];
 int IN;
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  IN = nondet_int();
+  IN = __VERIFIER_nondet_int();
   /* A merge point, so IN carries no propagated constant afterwards, and a
    * bound that keeps the sums below from overflowing. */
   if (IN < -1000)

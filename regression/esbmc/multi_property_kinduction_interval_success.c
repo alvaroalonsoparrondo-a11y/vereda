@@ -6,7 +6,7 @@
 int main()
 {
   int status = 0;
-  while (nondet_int())
+  while (__VERIFIER_nondet_int())
   {
     if (!status)
       status = 1;

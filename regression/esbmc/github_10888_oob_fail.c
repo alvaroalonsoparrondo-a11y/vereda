@@ -7,10 +7,10 @@ struct H
 {
   unsigned char a[2];
 };
-unsigned char nondet_uchar(void);
+unsigned char __VERIFIER_nondet_uchar(void);
 int main(void)
 {
-  struct H h = {{nondet_uchar(), nondet_uchar()}};
+  struct H h = {{__VERIFIER_nondet_uchar(), __VERIFIER_nondet_uchar()}};
   struct G g = *(struct G *)&h;
   return g.f2[0];
 }

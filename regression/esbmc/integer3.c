@@ -1,8 +1,8 @@
 #include <assert.h>
 
 int main() {
-  int a = nondet_int();
-  int b = nondet_int();
+  int a = __VERIFIER_nondet_int();
+  int b = __VERIFIER_nondet_int();
 
   __VERIFIER_assume(a > 0 && b < 0);
 

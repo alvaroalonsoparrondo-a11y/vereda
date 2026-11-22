@@ -8,7 +8,7 @@
 // and sound: it cannot prove the property (a[7] is nondet) and the base case
 // finds the genuinely reachable violation. The pointer-write warning is NOT
 // emitted because the write is resolved, not gated.
-extern unsigned char nondet_uchar(void);
+extern unsigned char __VERIFIER_nondet_uchar(void);
 
 int main(void)
 {
@@ -16,7 +16,7 @@ int main(void)
   unsigned char (*dest)[8] = &a;
 
   for (int i = 0; i < 8; i++)
-    (*dest)[i] = nondet_uchar(); // array element written through a pointer
+    (*dest)[i] = __VERIFIER_nondet_uchar(); // array element written through a pointer
 
   __VERIFIER_assert(a[7] != 0x2A); // a[7] is nondet, so 0x2A is reachable
   return 0;

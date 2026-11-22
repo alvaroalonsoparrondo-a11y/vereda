@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-void *nondet_ptr(void);
+void *__VERIFIER_nondet_ptr(void);
 
 struct entry
 {
@@ -17,7 +17,7 @@ int main(void)
   struct entry *t = malloc(4 * sizeof(struct entry));
   if (!s || !t)
     return 0;
-  const void *key = nondet_ptr();
+  const void *key = __VERIFIER_nondet_ptr();
   s[1].key = key;
   t[1].key = key;
   assert(t[1].key != key);

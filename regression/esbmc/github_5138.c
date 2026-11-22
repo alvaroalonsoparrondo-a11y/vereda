@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-extern char nondet_char(void);
+extern char __VERIFIER_nondet_char(void);
 
 static void cleanup(void)
 {
@@ -30,7 +30,7 @@ int main(void)
     a[i] = malloc(8);
     if (!a[i])
       return 0;
-    a[i][0] = nondet_char();
+    a[i][0] = __VERIFIER_nondet_char();
   }
   terminate(a, n); /* exit() while `a` and every a[i] are still reachable */
   for (int i = 0; i < n; i++)

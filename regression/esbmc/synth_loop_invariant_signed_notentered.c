@@ -4,10 +4,10 @@
  * assertion after the loop. Note the assertion is deliberately one the spurious
  * state violates: an assertion like `s == n || s == 0` would absorb it and pass
  * for the wrong reason. */
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main(void)
 {
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   int i = 0, s = 0;
   while (i < n)
   {

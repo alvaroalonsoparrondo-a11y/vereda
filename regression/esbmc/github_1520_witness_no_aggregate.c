@@ -11,11 +11,11 @@
  * element the assumption carries nothing a validator could not compute, and
  * constant propagation is free to drop it. */
 unsigned char status[2][3];
-unsigned char nondet_uchar(void);
+unsigned char __VERIFIER_nondet_uchar(void);
 
 int main()
 {
-  status[1][2] = nondet_uchar();
+  status[1][2] = __VERIFIER_nondet_uchar();
   unsigned char x = status[1][2];
   assert(x);
 }

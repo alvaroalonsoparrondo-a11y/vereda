@@ -15,13 +15,14 @@ __VERIFIER_assert, __VERIFIER_assume, memset and memcpy in the copied
 sources, and __ESBMC_unreachable becomes reach_error in tests run with
 --enable-unreachability-intrinsic, a flag then dropped. Setting
 __ESBMC_rounding_mode becomes fesetround() where that covers every use
-of it. ESBMC flags with a Vereda equivalent are translated. Flags that
-only turn off a check Vereda does not have are dropped. A test that
-needs any other flag keeps its ESBMC flags and becomes FUTURE, with the
-missing flags named in a "// Needs:" line; Vereda then rejects the
-flags, so the test passes until Vereda learns them and the script runs
-again. ESBMC's REQUIRES, CHECK_JSON, CHECK_FILE and SEED_FILE lines make
-a test FUTURE the same way, as run.py has none of them.
+of it, and nondet_X becomes __VERIFIER_nondet_X. ESBMC flags with a
+Vereda equivalent are translated. Flags that only turn off a check
+Vereda does not have are dropped. A test that needs any other flag keeps
+its ESBMC flags and becomes FUTURE, with the missing flags named in a
+"// Needs:" line; Vereda then rejects the flags, so the test passes
+until Vereda learns them and the script runs again. ESBMC's REQUIRES,
+CHECK_JSON, CHECK_FILE and SEED_FILE lines make a test FUTURE the same
+way, as run.py has none of them.
 
 Tests that read files outside their own directory are skipped, and so is
 ESBMC's "disabled" suite unless named. So are tests of features only
@@ -304,19 +305,63 @@ def rewrite_rounding(text):
     return text if uses else "".join(out)
 
 
+NONDET = re.compile(r"\bnondet_\w+")
+LITERAL_START = re.compile(r"//|/\*|[\"']")
+
+
+def segments(text):
+    """Splits text into (is_code, chunk) pieces: comments, strings and
+    character literals are the pieces that are not code."""
+    i = 0
+    for m in LITERAL_START.finditer(text):
+        if m.start() < i:
+            continue
+        yield True, text[i:m.start()]
+        i = skip_literal(text, m.start())
+        yield False, text[m.start():i]
+    yield True, text[i:]
+
+
+def code_sub(pattern, repl, text):
+    """pattern.sub(repl, text) outside comments, strings and character
+    literals."""
+    return "".join(pattern.sub(repl, c) if code else c for code, c in segments(text))
+
+
+def nondets_to_rename(texts):
+    """The nondet_ names in texts, a test's sources, to rename to
+    __VERIFIER_nondet_: ESBMC and Vereda both treat a bodyless function so
+    named as returning a nondet value and call one with a body, so renaming
+    every use keeps the meaning, unless the test defines nondet_X with a
+    body while also using __VERIFIER_nondet_X."""
+    code = " ".join(c for t in texts for is_code, c in segments(t) if is_code)
+    names = set(NONDET.findall(code))
+    verifier = set(re.findall(r"__VERIFIER_(nondet_\w+)", code))
+    defined = set(re.findall(r"\b(nondet_\w+)\s*\([^;{)]*\)\s*\{", code))
+    return names - (verifier & defined)
+
+
 def rename_builtins(path, unreachable):
     """Renames ESBMC builtins to what Vereda models in the C files at path,
-    a file or a directory; see rewrite_asserts and rename."""
+    a file or a directory; see rewrite_asserts, rename, rewrite_rounding and
+    nondets_to_rename. Returns the nondet_ names renamed."""
     files = [path] if os.path.isfile(path) else [
         os.path.join(root, n) for root, _, names in os.walk(path) for n in names
         if n.endswith((".c", ".h", ".i"))]
+    texts = {}
     for name in files:
         with open(name, encoding="latin-1") as f:  # any bytes round-trip
-            text = f.read()
+            texts[name] = f.read()
+    nondets = nondets_to_rename(texts.values())
+    for name, text in texts.items():
         renamed = rewrite_rounding(rewrite_asserts(text, unreachable))
+        if nondets:
+            renamed = code_sub(NONDET, lambda m: "__VERIFIER_" + m.group(0)
+                               if m.group(0) in nondets else m.group(0), renamed)
         if renamed != text:
             with open(name, "w", encoding="latin-1", newline="") as f:
                 f.write(renamed)
+    return nondets
 
 
 # Features ESBMC has for its own users that SV-COMP never uses, so Vereda
@@ -381,10 +426,12 @@ def import_test(src, dest, origin, tracked):
         return "a main.c besides the source"
     flag = re.compile(r"(?<!\S)" + UNREACHABLE_FLAG + r"(?!\S)\s*")
     unreachable = bool(flag.search(args))
-    rename_builtins(entry if entry == dest + ".c" else dest, unreachable)
+    nondets = rename_builtins(entry if entry == dest + ".c" else dest, unreachable)
     # The flag's work is done in the source; -Dldv_assume=__ESBMC_assume and
     # the like name builtins too.
     args = rename(flag.sub("", args).strip(), unreachable)
+    for nondet in nondets:  # e.g. an assertion's text in the results list
+        regexes = [re.sub(r"(?<!\w)" + nondet + r"\b", "__VERIFIER_" + nondet, r) for r in regexes]
     name = os.path.basename(entry)
     if source != name:
         # The output names the source file, so the expectations follow it.

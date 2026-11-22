@@ -1,9 +1,9 @@
 /* Entry value far past any admissible bound, so the loop never runs. The
  * accumulator must still read as its entry value at the exit. */
-int nondet_int();
+int __VERIFIER_nondet_int();
 int main(void)
 {
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   __VERIFIER_assume(n >= 0 && n <= 20);
   int i = 1000, s = 0;
   while (i < n)

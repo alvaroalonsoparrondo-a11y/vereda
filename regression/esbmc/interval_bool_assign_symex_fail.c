@@ -2,9 +2,9 @@ _Bool b;
 
 int main()
 {
-  b = nondet_bool();
+  b = __VERIFIER_nondet_bool();
   __VERIFIER_assume(b);
-  b = nondet_bool();
+  b = __VERIFIER_nondet_bool();
 
   int i = 0;
   do

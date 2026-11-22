@@ -1,7 +1,7 @@
 /* The fold dropped the assume(0) after a failed assertion (esbmc/esbmc#7900). */
 int main()
 {
-  int c = nondet_int();
+  int c = __VERIFIER_nondet_int();
   if (!c)
   {
     __VERIFIER_assert(0); // v

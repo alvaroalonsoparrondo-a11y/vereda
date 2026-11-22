@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
   p->x = 5;
   p->n = NULL;
   
-  argc=nondet_int();
+  argc=__VERIFIER_nondet_int();
 
   if (argc > 1) {
     q = malloc(sizeof(struct S));

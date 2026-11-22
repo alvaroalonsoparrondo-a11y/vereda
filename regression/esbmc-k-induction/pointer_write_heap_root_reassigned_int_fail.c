@@ -2,7 +2,7 @@
 // reassigns before writing through it.
 #include <stdlib.h>
 #include <assert.h>
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 int main()
 {
   int *A = malloc(sizeof(int));
@@ -11,7 +11,7 @@ int main()
   *B = 0;
   long off = (long)B - (long)A;
   int *r;
-  while (nondet_int())
+  while (__VERIFIER_nondet_int())
   {
     r = (int *)((long)A + off);
     *r = *r + 1;

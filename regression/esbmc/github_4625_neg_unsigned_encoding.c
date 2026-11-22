@@ -1,8 +1,8 @@
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 
 int main(void)
 {
-  unsigned x = nondet_uint();
+  unsigned x = __VERIFIER_nondet_uint();
   unsigned y = -x;
 
   /* Modular negation: both hold for every unsigned x. Simplifying -x to

@@ -4,7 +4,7 @@
 int b = 2;
 int main()
 {
-  int a = nondet_int();
+  int a = __VERIFIER_nondet_int();
   // if (a == 1 && b == 2) { // |1|
   if ((a == 1 && b == 2) != 0)
   { // |2|

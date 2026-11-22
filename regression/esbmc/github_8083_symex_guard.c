@@ -5,7 +5,7 @@
    with n stuck at 1 it pruned the second loop iteration. */
 int main()
 {
-  int n = 1, m = nondet_int();
+  int n = 1, m = __VERIFIER_nondet_int();
   memcpy(&n, &m, sizeof n);
   __VERIFIER_assume(n >= 0 && n <= 2);
   int i = 0;

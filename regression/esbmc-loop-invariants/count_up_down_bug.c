@@ -1,8 +1,8 @@
-unsigned int nondet_uint();
+unsigned int __VERIFIER_nondet_uint();
 
 int main()
 {
-  unsigned int n = nondet_uint();
+  unsigned int n = __VERIFIER_nondet_uint();
   //  __VERIFIER_assume(n>0 && n<10000);
   unsigned int x = n, y = 0;
   //  __VERIFIER_assume(x==n);

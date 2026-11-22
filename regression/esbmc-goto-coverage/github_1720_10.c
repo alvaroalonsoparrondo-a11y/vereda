@@ -10,9 +10,9 @@ int  date,ch;
 
 printf("ENTER DATE OF BIRTH AND THEN MONTH NO. codewithc");
 //scanf("%d %d",&date,&ch);
-date = nondet_int();
+date = __VERIFIER_nondet_int();
 _ESBMC_input("date",date);   
-ch = nondet_int();
+ch = __VERIFIER_nondet_int();
 _ESBMC_input("ch",ch);   
 /*klee_make_symbolic(&date, sizeof(int), "date");*/
 /*klee_make_symbolic(&ch, sizeof(int), "ch");*/

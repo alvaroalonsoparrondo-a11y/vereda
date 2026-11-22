@@ -1,6 +1,6 @@
 #include <assert.h>
 
-unsigned nondet_uint(void);
+unsigned __VERIFIER_nondet_uint(void);
 
 /* __builtin_addc/__builtin_subc return the modular result and store whether
  * either partial step wrapped. Both steps need checking: a + b may fit and
@@ -8,7 +8,7 @@ unsigned nondet_uint(void);
  * llvm-libc's add_with_carry silently produced a zero sum. */
 int main(void)
 {
-  unsigned a = nondet_uint(), b = nondet_uint(), cin = nondet_uint();
+  unsigned a = __VERIFIER_nondet_uint(), b = __VERIFIER_nondet_uint(), cin = __VERIFIER_nondet_uint();
   __VERIFIER_assume(cin <= 1);
 
   unsigned cout;

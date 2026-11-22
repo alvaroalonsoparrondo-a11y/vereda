@@ -17,11 +17,11 @@ struct io
 struct plc VAR;
 struct io IO;
 
-float nondet_float(void);
+float __VERIFIER_nondet_float(void);
 
 int main(void)
 {
-  IO.in = nondet_float();
+  IO.in = __VERIFIER_nondet_float();
   if (IO.in < -1.0e38f)
     IO.in = -1.0e38f;
   else if (IO.in > 1.0e38f)

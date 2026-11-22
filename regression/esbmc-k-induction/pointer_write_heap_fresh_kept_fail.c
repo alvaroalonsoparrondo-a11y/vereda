@@ -4,11 +4,11 @@
 // write through p would be dropped and the step would prove *p < 3.
 #include <stdlib.h>
 #include <assert.h>
-extern int nondet_int(void);
+extern int __VERIFIER_nondet_int(void);
 int main()
 {
   int *p = 0;
-  while (nondet_int())
+  while (__VERIFIER_nondet_int())
   {
     if (!p)
     {

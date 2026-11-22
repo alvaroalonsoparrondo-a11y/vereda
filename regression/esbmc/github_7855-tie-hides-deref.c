@@ -20,7 +20,7 @@ struct container
 struct node *alias;
 struct container *container;
 
-size_t nondet_size(void);
+size_t __VERIFIER_nondet_size(void);
 
 static void follow(struct node *stored)
 {
@@ -30,7 +30,7 @@ static void follow(struct node *stored)
 
 int main(void)
 {
-  void *storage = malloc(nondet_size());
+  void *storage = malloc(__VERIFIER_nondet_size());
   alias = storage;
   alias->next = &container->node;
   follow(storage);

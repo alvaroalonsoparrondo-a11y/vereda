@@ -1,8 +1,8 @@
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 int main()
 {
-  int a = nondet_int();
+  int a = __VERIFIER_nondet_int();
   __VERIFIER_assume(a % 2 == 0);
   if (a % 2)
   {

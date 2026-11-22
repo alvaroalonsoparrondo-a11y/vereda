@@ -5,7 +5,7 @@ static state_t g;
 union P { uint32_t *w; char *c; };
 int main(void)
 {
-  unsigned k = nondet_uint();
+  unsigned k = __VERIFIER_nondet_uint();
   if (k >= 8) return 0;
   g.tail = 0;
   union P u;

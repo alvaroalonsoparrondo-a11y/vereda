@@ -1,11 +1,11 @@
 #include <assert.h>
 #include <stdio.h>
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x >= 99 && x <= 999);
   int r = printf("%d", x);
   assert(r == 3);

@@ -8,7 +8,7 @@ struct s
 
 struct s *head_a, *head_b;
 
-int nondet_int();
+int __VERIFIER_nondet_int();
 
 void *safe_malloc(size_t size)
 {
@@ -20,7 +20,7 @@ void *safe_malloc(size_t size)
 
 int main()
 {
-  int c = nondet_int();
+  int c = __VERIFIER_nondet_int();
 
   head_a = safe_malloc(sizeof(struct s));
   head_b = safe_malloc(sizeof(struct s));

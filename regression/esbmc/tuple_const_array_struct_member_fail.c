@@ -72,7 +72,7 @@ static const struct entry table[1025] = {
 };
 int main(void)
 {
-  unsigned i = nondet_uint();
+  unsigned i = __VERIFIER_nondet_uint();
   __VERIFIER_assume(i < 1025);
   __VERIFIER_assert(table[i].in.kind != 6); // some kind is 6
   return 0;

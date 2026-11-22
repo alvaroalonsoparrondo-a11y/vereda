@@ -6,7 +6,7 @@ void check(int c)
 }
 int main()
 {
-  int n = nondet_int();
+  int n = __VERIFIER_nondet_int();
   if (n > 100000)
     return 0;
   for (int j = 0; j < n; j++)

@@ -9,9 +9,9 @@ struct P
 int main()
 {
   struct P p;
-  p.x = nondet_ushort();
-  p.y = nondet_ushort();
-  unsigned k = nondet_uint();
+  p.x = __VERIFIER_nondet_ushort();
+  p.y = __VERIFIER_nondet_ushort();
+  unsigned k = __VERIFIER_nondet_uint();
   __VERIFIER_assume(k < 4);
   unsigned char *c = (unsigned char *)&p;
   unsigned short v = k < 2 ? p.x : p.y;

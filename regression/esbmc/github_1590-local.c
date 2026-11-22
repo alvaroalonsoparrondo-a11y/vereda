@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include <string.h>
 
-extern struct adj nondet_struct();
-extern uintptr_t nondet_uaddr();
+extern struct adj __VERIFIER_nondet_struct();
+extern uintptr_t __VERIFIER_nondet_uaddr();
 struct adj{
   int a;
 };
@@ -21,11 +21,11 @@ _Bool valid(const unsigned char *buffer, uintptr_t addr, size_t n){
 }
 
 int main() {
-  struct adj adj = nondet_struct();
+  struct adj adj = __VERIFIER_nondet_struct();
   adj.a = 2;
   unsigned char buffer[1024] __attribute__((__aligned__(4)));
   (void)memcpy(buffer, &adj, sizeof(adj));
-  uintptr_t addr = nondet_uaddr();
+  uintptr_t addr = __VERIFIER_nondet_uaddr();
   if(!valid(buffer, addr, sizeof(buffer)))
     return 0;
   struct adj* adj2 = buffer_ptr(buffer, addr);

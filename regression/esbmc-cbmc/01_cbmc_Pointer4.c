@@ -4,7 +4,7 @@ int main()
   int *p=0;
   int x;
 
-  if(nondet_bool())
+  if(__VERIFIER_nondet_bool())
     p=&x;
 
   if(p) *p=1;

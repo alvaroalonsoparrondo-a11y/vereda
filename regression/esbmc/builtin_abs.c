@@ -1,8 +1,8 @@
 #include <assert.h>
 #include <limits.h>
 
-int nondet_int(void);
-long nondet_long(void);
+int __VERIFIER_nondet_int(void);
+long __VERIFIER_nondet_long(void);
 
 int main()
 {
@@ -10,11 +10,11 @@ int main()
   assert(__builtin_labs(-3l) == 3);
   assert(__builtin_llabs(LLONG_MIN + 1) == LLONG_MAX);
 
-  int x = nondet_int();
+  int x = __VERIFIER_nondet_int();
   __VERIFIER_assume(x != INT_MIN);
   assert(__builtin_abs(x) >= 0 && __builtin_abs(-x) == __builtin_abs(x));
 
-  long y = nondet_long();
+  long y = __VERIFIER_nondet_long();
   __VERIFIER_assume(y != LONG_MIN);
   assert(__builtin_labs(y) == (y < 0 ? -y : y));
   return 0;

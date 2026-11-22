@@ -3,7 +3,7 @@
 
 typedef int v4i __attribute__((__vector_size__(16)));
 
-int nondet_int(void);
+int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
@@ -15,7 +15,7 @@ int main(void)
   *p = (v4i){5, 6, 7, 8};
   assert(s[3] == 8);
 
-  int i = nondet_int();
+  int i = __VERIFIER_nondet_int();
   __VERIFIER_assume(i >= 0 && i < 4);
   int x = (*p)[i];
   assert(x == i + 5);

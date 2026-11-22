@@ -2,8 +2,8 @@ int main()
 {
   int i, j, k;
   
-  i=nondet_int();
-  k=nondet_int();
+  i=__VERIFIER_nondet_int();
+  k=__VERIFIER_nondet_int();
   
   if(i)
   {

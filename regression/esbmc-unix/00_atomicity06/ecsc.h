@@ -2,7 +2,7 @@
 #define _ECSC_H
 
 int global_time=0; 			//global timer
-int nondet_int(); 			//returns a non-deterministic interger value
+int __VERIFIER_nondet_int(); 			//returns a non-deterministic interger value
 void __ESBMC_atomic_begin();//begin block of the atomic section
 void __ESBMC_atomic_end();	//end block of the atomic section
 void __ESBMC_yield();		//force esbmc's scheduler to make a context switch
