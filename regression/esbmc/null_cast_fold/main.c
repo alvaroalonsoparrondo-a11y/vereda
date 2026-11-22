@@ -1,0 +1,20 @@
+/* `p != NULL` against a `T *` reaches the simplifier as `(T *)NULL`. The
+ * non-null fold has to recognise it, or the claim goes to the solver. */
+#include <stddef.h>
+
+struct node
+{
+  unsigned long size;
+};
+
+int main()
+{
+  struct node *p = __ESBMC_alloca(sizeof(struct node));
+  __ESBMC_assert(p != NULL, "an allocation is not NULL");
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/null_cast_fold
+// EXPECT: ^Generated \d+ VCC\(s\), 0 remaining after simplification \(\d+ assignments\)$
+// EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^Generated \d+ VCC\(s\), 0 remaining after simplification \(\d+ assignments\)$
+// MODE: FUTURE

@@ -1,0 +1,13 @@
+#include <time.h>
+
+int main()
+{
+  struct tm buf;
+  struct tm *result = localtime_r((void *)0, &buf);
+  (void)result;
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/time_h_localtime_r_null_fail
+// EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// MODE: FUTURE

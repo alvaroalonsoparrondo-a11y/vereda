@@ -1,0 +1,11 @@
+int arr[2] = {0,0};
+
+int main()
+{
+  unsigned place = nondet_int();
+  __ESBMC_assume(place<2);
+  assert(arr[place]==0);
+  return 0;
+}
+// Imported from ESBMC regression/cbmc/01_cbmc_Array_Initialization2
+// EXPECT: ^VERIFICATION SUCCESSFUL$

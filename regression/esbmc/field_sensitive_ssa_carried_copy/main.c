@@ -1,0 +1,31 @@
+#include <assert.h>
+int nondet_int(void);
+struct T
+{
+  int *p;
+  int k;
+};
+struct T g;
+struct T mk(int c, int *a, int *b)
+{
+  struct T t;
+  t.k = 0;
+  if (c)
+    t.p = a;
+  else
+    t.p = b;
+  return t;
+}
+int main(void)
+{
+  int a, b;
+  g = mk(nondet_int(), &a, &b);
+  assert(g.k == 0);
+  return *g.p;
+}
+// Imported from ESBMC regression/esbmc/field_sensitive_ssa_carried_copy
+// Needs: --field-sensitive-ssa
+// RUN: --field-sensitive-ssa
+// MODE: FUTURE
+// EXPECT: ^Generated 7 VCC\(s\), 1 remaining after simplification
+// EXPECT: ^VERIFICATION SUCCESSFUL$

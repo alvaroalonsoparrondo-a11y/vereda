@@ -1,0 +1,14 @@
+#include <stdatomic.h>
+#include <stdbool.h>
+
+int
+main(void) {
+        atomic_bool x = false;
+        (void)atomic_compare_exchange_strong(&x, &(bool){ false }, true);
+
+        return 0;
+}
+// Imported from ESBMC regression/esbmc/github_2142
+// EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

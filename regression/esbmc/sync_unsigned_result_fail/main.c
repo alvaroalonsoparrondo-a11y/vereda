@@ -1,0 +1,14 @@
+#include <assert.h>
+
+int main()
+{
+  unsigned char c = 200;
+  int k = __sync_fetch_and_add(&c, 1);
+  assert(k < 128);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/sync_unsigned_result_fail
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: assertion k < 128
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// MODE: FUTURE

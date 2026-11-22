@@ -1,0 +1,26 @@
+/* #9000: a pointer that may be a VLA that may be too small or NULL; the VLA is sized by
+ * its allocation. */
+_Bool nondet_bool();
+unsigned nondet_uint();
+void g(int *p)
+{
+  __ESBMC_requires(__ESBMC_is_fresh(p, 4 * sizeof(int)));
+  __ESBMC_ensures(1);
+  __ESBMC_assigns();
+}
+int main()
+{
+  unsigned n = nondet_uint();
+  __ESBMC_assume(n >= 1 && n < 8);
+  int v[n];
+  int *p = nondet_bool() ? v : 0;
+  __ESBMC_assume(p != 0);
+  g(p);
+  return 0;
+}
+// Imported from ESBMC regression/function_contract/github_9000_is_fresh_vla_ptr_fail
+// Needs: --replace-call-with-contract g
+// RUN: --replace-call-with-contract g --multi-property
+// MODE: FUTURE
+// EXPECT: ^ +FAILED.*contract requires$
+// EXPECT: ^VERIFICATION FAILED$

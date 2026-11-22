@@ -1,0 +1,10 @@
+int main()
+{
+  char buf[4] = "abc";
+  char *p = nondet_bool() ? "abc" : buf;
+  __ESBMC_assume(p == buf);
+  __ESBMC_init_object(p);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_10812_init_object_literal
+// EXPECT: ^VERIFICATION SUCCESSFUL$

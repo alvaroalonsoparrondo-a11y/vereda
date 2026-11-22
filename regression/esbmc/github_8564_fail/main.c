@@ -1,0 +1,18 @@
+#include <assert.h>
+#include <stdio.h>
+
+int nondet_int(void);
+
+int main(void)
+{
+  int x = nondet_int();
+  __ESBMC_assume(x >= 99 && x <= 999);
+  int r = printf("%d", x);
+  assert(r == 3);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_8564_fail
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: ^  assertion r == 3$
+// Vereda: unmet EXPECT: ^  assertion r == 3$
+// MODE: FUTURE

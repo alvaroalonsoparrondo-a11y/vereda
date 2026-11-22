@@ -1,0 +1,24 @@
+// KNOWNBUG since #7964: the inductive step proved this only by pinning r1 to
+// its loop-entry target; a sound proof needs the loop-head fixpoint.
+#include <assert.h>
+int nondet_int();
+int main() {
+  int x = nondet_int(); // input
+  int y = nondet_int(); // input
+  int z = nondet_int(); // input
+  int* r1 = &x;
+  int* r2 = &y;
+  while( z>0 ) {
+    int* tmp = r1;
+    r1 = r2;
+    r2 = tmp;
+    z = z-1;
+    assert(*r1 == x || *r1 == y); 
+  }
+  return 0;
+}
+// Imported from ESBMC regression/incremental-smt/incremental-09
+// Needs: --smt-during-symex --smt-symex-assert --k-induction
+// RUN: --smt-during-symex --smt-symex-assert --k-induction --z3 --max-k-step 5
+// MODE: KNOWNBUG
+// EXPECT: ^VERIFICATION SUCCESSFUL$

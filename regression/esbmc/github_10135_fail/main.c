@@ -1,0 +1,25 @@
+// #10135: the issue's reproducer; p.f can be 12345 after p.f &= m.
+#include <assert.h>
+
+extern unsigned long __VERIFIER_nondet_ulong(void);
+
+struct s
+{
+  unsigned long f : 52;
+};
+
+int main(void)
+{
+  struct s p;
+  p.f = __VERIFIER_nondet_ulong();
+  unsigned long m = __VERIFIER_nondet_ulong();
+  p.f &= m;
+  assert(p.f != 12345);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_10135_fail
+// RUN: -m64
+// EXPECT: ^\s+FAILED\s+\[main\.assertion\.1\]\s+line 17\s+assertion p\.f != 12345$
+// EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^\s+FAILED\s+\[main\.assertion\.1\]\s+line 17\s+assertion p\.f != 12345$
+// MODE: FUTURE

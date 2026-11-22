@@ -1,0 +1,21 @@
+#include <ctype.h>
+
+int main ()
+{
+  int i=0;
+  char str[]="Test String.\n";
+  char str1[]="test String.\n";
+  char c, c1;
+  while (str[i])
+  {
+    c=str[i];
+    c1 = str1[i];
+    assert(tolower(c) == c1);
+    i++;
+  }
+  return 0;
+}
+// Imported from ESBMC regression/cstd/tolower_bug
+// EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// MODE: FUTURE

@@ -1,0 +1,30 @@
+// A pointer computed from one rebuilt from bytes reads back equal, so
+// asserting it differs must fail.
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct node { struct node *next; };
+struct container { int header; struct node node; };
+struct container *container;
+
+int main(void)
+{
+  unsigned char *a = malloc(8), *b = malloc(8);
+  if (!a || !b)
+    return 0;
+  struct node *p = &container->node, *q, *s;
+  memcpy(a, &p, 8);
+  memcpy(&q, a, 8);
+  struct node *r = q + 1;
+  *(struct node **)b = r;
+  s = *(struct node **)b;
+  assert(s != q + 1);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/pointer_repr_derived_fail
+// RUN: -m64 --incremental-bmc
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: ^  FAILED +\[main\.assertion\.\d+\] +line +\d+ +assertion s != q \+ 1$
+// Vereda: unmet EXPECT: ^  FAILED +\[main\.assertion\.\d+\] +line +\d+ +assertion s != q \+ 1$
+// MODE: FUTURE

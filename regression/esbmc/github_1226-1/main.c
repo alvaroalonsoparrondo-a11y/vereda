@@ -1,0 +1,12 @@
+int main()
+{
+    double x = nondet_float();
+
+	__ESBMC_assume(x >= 0);
+	
+	__ESBMC_assert(x == x, "");
+
+    return 0;
+}
+// Imported from ESBMC regression/esbmc/github_1226-1
+// EXPECT: ^VERIFICATION SUCCESSFUL$

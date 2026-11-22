@@ -1,0 +1,30 @@
+#include <pthread.h>
+#include <assert.h>
+
+int a,b;
+void __VERIFIER_atomic_acquire(void)
+{
+  __VERIFIER_assume(a == 0);
+  a = 1;
+  b = 1;
+}
+void* c(void *arg)
+{
+  __VERIFIER_atomic_acquire();
+  b = 1;
+  return NULL;
+}
+pthread_t d;
+int main()
+{
+  pthread_create(&d, 0, c, 0);
+  __VERIFIER_atomic_acquire();
+  if(b)
+    assert(0);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc-unix2/github_402_fail
+// Needs: --no-goto-merge
+// RUN: --no-goto-merge
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION FAILED$

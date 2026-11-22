@@ -1,0 +1,24 @@
+/* Regression: GitHub #7480 -- the invariant is genuine but too weak to carry
+ * the post-loop assertion.  The claim is checked against the havoc'd state, so
+ * its counterexample (i == 3, s == 0) is unreachable in the program and the
+ * verdict must be "cannot prove", not "the program is wrong". */
+#include <assert.h>
+
+int main()
+{
+  int i = 0, s = 0;
+  __ESBMC_loop_invariant(i >= 0);
+  while (i < 3)
+  {
+    s++;
+    i++;
+  }
+  assert(s == 3);
+  return 0;
+}
+// Imported from ESBMC regression/loop-invariants/github_7480
+// Needs: --loop-invariant-check
+// RUN: --loop-invariant-check --multi-property
+// MODE: FUTURE
+// EXPECT: ^\s+UNKNOWN\s+\[main\.assertion\.3\]\s+line\s+16\s+assertion s == 3
+// EXPECT: ^VERIFICATION UNKNOWN$

@@ -1,0 +1,36 @@
+unsigned offset, count, job;
+void check(int c)
+{
+}
+void task(void)
+{
+  offset += count++;
+}
+#define STEP                                                                   \
+  task();                                                                      \
+  switch (job)                                                                 \
+  {                                                                            \
+  case 0:                                                                      \
+    check(0);                                                                  \
+  case 1:                                                                      \
+    check(1);                                                                  \
+  case 2:                                                                      \
+    check(2);                                                                  \
+  case 3:                                                                      \
+    check(3);                                                                  \
+  }
+#define STEP10 STEP STEP STEP STEP STEP STEP STEP STEP STEP STEP
+#define STEP40 STEP10 STEP10 STEP10 STEP10
+int main()
+{
+  STEP40;
+  STEP40;
+  STEP40;
+  STEP40;
+  __ESBMC_assert(count == 159, "count");
+}
+// Imported from ESBMC regression/esbmc/interval_widen_callee_many_calls_fail
+// Needs: --interval-analysis --interval-analysis-arithmetic --interval-analysis-extrapolate
+// RUN: --interval-analysis --interval-analysis-arithmetic --interval-analysis-extrapolate
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION FAILED$

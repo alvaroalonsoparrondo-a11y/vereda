@@ -1,0 +1,34 @@
+/* esbmc/esbmc#2386: the atomic write to x is not synchronised with main's
+ * plain read of x. Safe variant: the read is atomic too. */
+#include <pthread.h>
+
+extern void __VERIFIER_atomic_begin(void);
+extern void __VERIFIER_atomic_end(void);
+
+int x;
+
+void *thread(void *arg)
+{
+  __VERIFIER_atomic_begin();
+  x = 1;
+  __VERIFIER_atomic_end();
+  return 0;
+}
+
+int main(void)
+{
+  pthread_t t;
+  pthread_create(&t, 0, thread, 0);
+  int r;
+  __VERIFIER_atomic_begin();
+  r = x;
+  __VERIFIER_atomic_end();
+  (void)r;
+  pthread_join(t, 0);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc-unix/github_2386_atomic_write_race
+// Needs: --data-races-check --context-bound 2
+// RUN: --data-races-check --context-bound 2
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION SUCCESSFUL$

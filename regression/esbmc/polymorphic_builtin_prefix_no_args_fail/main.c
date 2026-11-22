@@ -1,0 +1,18 @@
+#include <assert.h>
+
+/* Counterpart of polymorphic_builtin_prefix_no_args: the call is not a
+ * polymorphic builtin, so it keeps its body-less declaration and returns
+ * nondet -- which the assertion must be free to violate. */
+int __sync_fetch_and_add_mine(void);
+
+int main(void)
+{
+  int r = __sync_fetch_and_add_mine();
+  assert(r == 42);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/polymorphic_builtin_prefix_no_args_fail
+// EXPECT: ^\s*FAILED\s+\[main\.assertion\.1\]\s+line 11\s+assertion r == 42$
+// EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^\s*FAILED\s+\[main\.assertion\.1\]\s+line 11\s+assertion r == 42$
+// MODE: FUTURE

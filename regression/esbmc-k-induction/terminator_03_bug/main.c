@@ -1,0 +1,24 @@
+int nondet_int();
+_Bool nondet_bool();
+
+main()
+{
+  int x=nondet_int();
+  int y=nondet_int();
+
+  if (y>0)
+  {
+    while(x<100) 
+    {
+      x=x+y;
+     }
+  }                           
+  assert(0);    
+}
+
+
+// Imported from ESBMC regression/k-induction/terminator_03_bug
+// Needs: --k-induction
+// RUN: --k-induction -Wno-error=implicit-function-declaration -Wno-error=implicit-int
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION FAILED$

@@ -1,0 +1,12 @@
+int main()
+{
+  unsigned x = nondet_uint() % 10;
+  __ESBMC_assert(x < 10, "x in range");
+  return 0;
+}
+// Imported from ESBMC regression/neurosym/no-verdict
+// Needs: --neurosym --neurosym-prog mute-neurosym.sh --result-only
+// RUN: --neurosym --neurosym-prog mute-neurosym.sh --result-only
+// MODE: FUTURE
+// EXPECT: no sat/unsat verdict
+// EXPECT: SMT solver failed

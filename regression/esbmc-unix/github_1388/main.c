@@ -1,0 +1,33 @@
+#include <pthread.h>
+
+void* t1(void *arg) {
+    int* shared1 = (int*) arg;
+    *shared1 = 4;                 //race here
+
+    return NULL;
+}
+
+void* t2(void *arg) {
+    int* shared2 = (int*) arg;
+    *shared2 = 2;                //race here
+
+    return NULL;
+}
+
+int main() {
+    pthread_t id1, id2;
+    int shared_data = 0;
+
+    pthread_create(&id1, NULL, t1, &shared_data);
+    pthread_create(&id2, NULL, t2, &shared_data);
+
+    pthread_join(id1, NULL);
+    pthread_join(id2, NULL);
+
+    return 0;
+}
+// Imported from ESBMC regression/esbmc-unix/github_1388
+// EXPECT: schedules_explored 1[0-9][0-9],
+// EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: schedules_explored 1[0-9][0-9],
+// MODE: FUTURE

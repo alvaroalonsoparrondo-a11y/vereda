@@ -1,0 +1,14 @@
+#include <stdlib.h>
+#include <assert.h>
+int main(){
+  size_t len = 2;
+  char *p = malloc(len - 4);
+  if (p) p[0] = 1;
+  assert(0);
+}
+// Imported from ESBMC regression/esbmc/default_underflow_malloc
+// EXPECT: ^Violated property:$
+// EXPECT: ^  assertion 0$
+// EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  assertion 0$
+// MODE: FUTURE

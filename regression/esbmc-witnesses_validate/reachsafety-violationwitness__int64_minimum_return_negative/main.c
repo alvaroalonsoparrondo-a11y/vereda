@@ -1,0 +1,15 @@
+long long value(void)
+{
+  return -9223372036854775807LL - 1;
+}
+
+int main(void)
+{
+  long long x = value();
+  __ESBMC_assert(x != (-9223372036854775807LL - 1), "target");
+}
+// Imported from ESBMC regression/witnesses_validate/reachsafety-violationwitness/int64_minimum_return_negative
+// Needs: --std c11 --validate-violation-witness --witness witness.yml
+// RUN: --64 --std c11 --validate-violation-witness --witness witness.yml
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION SUCCESSFUL$

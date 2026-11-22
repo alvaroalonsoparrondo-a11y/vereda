@@ -1,0 +1,53 @@
+#include <assert.h>
+#include <stdarg.h>
+
+int copy_first(int n, ...)
+{
+  va_list ap, aq;
+  va_start(ap, n);
+  va_copy(aq, ap);
+  int a = va_arg(ap, int);
+  int b = va_arg(aq, int);
+  va_end(aq);
+  va_end(ap);
+  return a * 10 + b;
+}
+
+int restart(int n, ...)
+{
+  va_list ap;
+  va_start(ap, n);
+  int a = va_arg(ap, int);
+  va_end(ap);
+  va_start(ap, n);
+  int b = va_arg(ap, int);
+  va_end(ap);
+  return a * 10 + b;
+}
+
+int two_lists(int n, ...)
+{
+  va_list ap, bp;
+  va_start(ap, n);
+  va_start(bp, n);
+  int a = va_arg(ap, int);
+  int b = va_arg(bp, int);
+  va_end(bp);
+  va_end(ap);
+  return a * 10 + b;
+}
+
+int main()
+{
+  assert(copy_first(1, 3, 4) == 34);
+  assert(restart(1, 3, 4) == 34);
+  assert(two_lists(1, 5, 6) == 56);
+}
+// Imported from ESBMC regression/esbmc/va_list_own_cursor_fail
+// RUN: --multi-property
+// EXPECT: ^  FAILED +\[main\.assertion\.1\] +line 42  assertion copy_first\(1, 3, 4\) == 34$
+// EXPECT: ^  FAILED +\[main\.assertion\.2\] +line 43  assertion restart\(1, 3, 4\) == 34$
+// EXPECT: ^  FAILED +\[main\.assertion\.3\] +line 44  assertion two_lists\(1, 5, 6\) == 56$
+// EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  FAILED +\[main\.assertion\.1\] +line 42  assertion copy_first\(1, 3, 4\) == 34$
+// MODE: FUTURE

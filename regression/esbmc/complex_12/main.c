@@ -1,0 +1,17 @@
+#include <assert.h>
+#include <complex.h>
+
+int main()
+{
+  /* arg(1 + 0i) = 0, not 99 */
+  double complex z = 1.0 + 0.0 * I;
+
+  assert(carg(z) == 99.0);
+
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/complex_12
+// MODE: THOROUGH
+// EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// MODE: FUTURE

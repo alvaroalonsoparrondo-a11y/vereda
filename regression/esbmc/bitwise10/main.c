@@ -1,0 +1,22 @@
+#include <assert.h>
+
+int my_nand(int a, int b) {
+    return !(a & b);  // NAND is the negation of AND
+}
+
+int main() {
+    // Test NAND operation
+    assert(my_nand(1, 1) != 0); // 1 NAND 1 should be 0
+    assert(my_nand(1, 0) != 1); // 1 NAND 0 should be 1
+    assert(my_nand(0, 1) != 1); // 0 NAND 1 should be 1
+    assert(my_nand(0, 0) != 1); // 0 NAND 0 should be 1
+    return 0;
+}
+
+// Imported from ESBMC regression/esbmc/bitwise10
+// Needs: --ir
+// RUN: --z3 --ir --no-simplify --multi-property
+// MODE: FUTURE
+// EXPECT: VERIFICATION FAILED
+// EXPECT: != 1
+// EXPECT: != 0

@@ -1,0 +1,18 @@
+#include <assert.h>
+int nondet_int(void);
+
+int inc(int x) { return x + 1; }
+
+int main(void) {
+  int k = nondet_int();
+  __ESBMC_assume(k > 0 && k < 10);
+  int l = inc(5);
+  assert(k < 10);
+  return l - 6;
+}
+// Imported from ESBMC regression/esbmc/github_9500_nonrecursive
+// Needs: --interval-analysis
+// RUN: --interval-analysis
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION SUCCESSFUL$
+// EXPECT: ^Generated 1 VCC\(s\), 0 remaining after simplification

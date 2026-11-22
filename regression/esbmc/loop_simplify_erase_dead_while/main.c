@@ -1,0 +1,20 @@
+/* Same v1 erase contract as loop_simplify_erase_dead_for but for
+ * the while loop shape. The frontend lowers `while` and `for` to the
+ * same IF/back-edge structure, so the pass should handle them
+ * uniformly. */
+int main()
+{
+  {
+    int i = 0;
+    while (i < 17)
+      i++;
+    /* end of scope — DEAD i immediately follows */
+  }
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/loop_simplify_erase_dead_while
+// RUN: --unwind 1 --no-unwinding-assertions
+// EXPECT: ^Generated 0 VCC\(s\)
+// EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^Generated 0 VCC\(s\)
+// MODE: FUTURE

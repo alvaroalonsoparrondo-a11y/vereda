@@ -1,0 +1,15 @@
+int main(void)
+{
+  int x = 0;
+  unsigned int i, j;
+  for (i = 0; i < 2; ++i)
+    for (j = 0; j < 2; ++j)
+      ++x;
+  __ESBMC_assert(x == 2, "iteration count");
+  return 0;
+}
+// Imported from ESBMC regression/witnesses_validate/reachsafety-correctnesswitness/injected_unbraced_loops_fail
+// Needs: --sv-comp --state-hashing --add-symex-value-sets --k-step 2 --unlimited-k-steps --enable-unreachability-intrinsic --interval-analysis --error-label ERROR --k-induction --max-inductive-step 3 --validate-correctness-witness --witness witness.yml REQUIRES arch32
+// RUN: --sv-comp --32 --no-div-by-zero-check --state-hashing --add-symex-value-sets --no-align-check --k-step 2 --unlimited-k-steps --no-vla-size-check --enable-unreachability-intrinsic --no-pointer-check --interval-analysis --no-bounds-check --error-label ERROR --k-induction --max-inductive-step 3 --validate-correctness-witness --witness witness.yml
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION FAILED$

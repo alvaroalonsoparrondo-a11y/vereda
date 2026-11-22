@@ -1,0 +1,14 @@
+#include <assert.h>
+#include <complex.h>
+
+int main()
+{
+  double complex z = 3.0 + 2.0 * I;
+
+  assert(creal(z) == 3.0);
+
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/complex_05
+// MODE: THOROUGH
+// EXPECT: ^VERIFICATION SUCCESSFUL$

@@ -1,0 +1,13 @@
+int main()
+{
+  int x = 42;
+  int y = x + 1;
+  __ESBMC_assert(y == 43, "y is 43");
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/no_propagation_02
+// Needs: --no-propagation
+// RUN: --no-propagation
+// MODE: FUTURE
+// EXPECT: ^Generated 1 VCC\(s\), 1 remaining after simplification
+// EXPECT: ^VERIFICATION SUCCESSFUL$

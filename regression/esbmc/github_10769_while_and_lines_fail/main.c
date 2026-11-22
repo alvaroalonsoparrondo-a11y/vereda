@@ -1,0 +1,26 @@
+// A loop condition && with calls is split into one goto per operand.
+extern int __VERIFIER_nondet_int(void);
+extern void reach_error(void);
+int pa(int x) { return x > 0; }
+int pb(int x) { return x < 5; }
+int main(void)
+{
+  int x = __VERIFIER_nondet_int();
+  int n = 0;
+  while (pa(x) &&
+         pb(x))
+  {
+    x = x + 1;
+    n = n + 1;
+  }
+  if (n == 2)
+    reach_error();
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_10769_while_and_lines_fail
+// Needs: --witness-output-yaml -
+// RUN: --unwind 6 --witness-output-yaml -
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: (?s)type: "branching"(?:(?!type:).)*?^\s+line: 16$
+// EXPECT: (?s)\A(?!.*type: "branching"(?:(?!type:).)*?^\s+line: 1[01]$)

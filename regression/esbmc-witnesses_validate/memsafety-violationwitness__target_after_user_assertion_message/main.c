@@ -1,0 +1,11 @@
+extern void reach_error(void);
+int main(void)
+{
+  __ESBMC_assert(0, "dereference failure: unrelated application condition");
+  reach_error();
+}
+// Imported from ESBMC regression/witnesses_validate/memsafety-violationwitness/target_after_user_assertion_message
+// Needs: --std c11 --validate-violation-witness --witness witness.yml
+// RUN: --32 --std c11 --validate-violation-witness --witness witness.yml
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION FAILED$

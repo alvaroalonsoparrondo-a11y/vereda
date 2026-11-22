@@ -1,0 +1,11 @@
+#include <ubuntu20.04/kernel_5.15.0-76/include/linux/slab.h>
+int main()
+{
+    void * ptr =  kmalloc(30,2);
+
+    return 0;
+}
+// Imported from ESBMC regression/linux/kmalloc_valid_flag
+// EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

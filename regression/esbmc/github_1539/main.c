@@ -1,0 +1,14 @@
+#include <assert.h>
+
+/* String literal declared BEFORE the int-to-ptr cast: the cast result
+ * must include str1 as a possible match. The solver can place str1 at
+ * 0x1000, making str0 == str1 possible, so the assertion cannot be proven. */
+int main()
+{
+  char *str1 = "";
+  char *str0 = (char *)0x1000;
+  assert(str0 != str1);
+}
+// Imported from ESBMC regression/esbmc/github_1539
+// RUN: --no-unwinding-assertions --unwind 1
+// EXPECT: ^VERIFICATION FAILED$

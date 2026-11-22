@@ -1,0 +1,14 @@
+
+struct { int x, y; } A[2];
+
+int main()
+{
+	assert(!A);
+}
+// Imported from ESBMC regression/esbmc/output-format-array_of-struct-int
+// Needs: --witness-output-graphml - --compact-trace
+// RUN: --witness-output-graphml - --compact-trace -Wno-error=implicit-function-declaration
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: \bA = \{ \{ \.x\s*=\s*0 \} \}
+// EXPECT: (?s)\A(?!.*key="assumption">[^<]*[{}])

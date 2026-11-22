@@ -1,0 +1,15 @@
+// Negative counterpart of github_7643_complex_init: the second initialiser is
+// the imaginary part, not the real one.
+#include <assert.h>
+
+int main(void)
+{
+  _Complex int z = {1, 2};
+  assert(__real__ z == 2);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_7643_complex_init_fail
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: ^  assertion __real__ z == 2$
+// Vereda: unmet EXPECT: ^  assertion __real__ z == 2$
+// MODE: FUTURE

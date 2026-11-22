@@ -1,0 +1,17 @@
+/* An access wider than the object it starts in is out of bounds at every
+   offset, including 0. That arm is a constant in the bounds check, so it needs
+   a test of its own: the offset comparison can never reach it. */
+#include <assert.h>
+
+int main(void)
+{
+  int x = 7;
+  long long v = *(long long *)((char *)&x + 0);
+  assert(v == 7);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/deref_oversized_access_fail
+// EXPECT: ^  dereference failure: Access to object out of bounds$
+// EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  dereference failure: Access to object out of bounds$
+// MODE: FUTURE

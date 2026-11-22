@@ -1,0 +1,16 @@
+/* Issue #8701: an unrecognised mode leaves the rounding direction unchanged,
+ * so it is still FE_UPWARD here, not FE_TONEAREST. */
+#include <assert.h>
+#include <fenv.h>
+int main(void)
+{
+  fesetround(FE_UPWARD);
+  fesetround(12345);
+  assert(fegetround() == FE_TONEAREST);
+  return 0;
+}
+// Imported from ESBMC regression/floats/github_8701_fail
+// EXPECT: ^  FAILED .*assertion fegetround\(\) == FE_TONEAREST
+// EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  FAILED .*assertion fegetround\(\) == FE_TONEAREST
+// MODE: FUTURE

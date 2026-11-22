@@ -1,0 +1,18 @@
+#include <assert.h>
+int nondet_int(void);
+int main(void)
+{
+  int v = nondet_int();
+  switch (v)
+  {
+  case 1 ... 5:
+    assert(v != 3);
+    break;
+  }
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_8676_case_range_fail
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: ^\s*FAILED\s+\[main\.assertion\.1\]\s+line 9\s+assertion v != 3$
+// Vereda: unmet EXPECT: ^\s*FAILED\s+\[main\.assertion\.1\]\s+line 9\s+assertion v != 3$
+// MODE: FUTURE

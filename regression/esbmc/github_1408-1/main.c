@@ -1,0 +1,17 @@
+struct InnerStruct
+{
+   char innerValue[10];
+};
+
+int main()
+{
+   struct InnerStruct array[2];
+   strcpy(array[0].innerValue, "20");
+   char *ptr;
+   assert(strtol(array[0].innerValue, ptr, 10) == 40);
+}
+// Imported from ESBMC regression/esbmc/github_1408-1
+// Needs: --no-bound
+// RUN: --unwind 3 --no-pointer-check --no-bound --no-div-by-zero-check --no-slice -Wno-error=implicit-function-declaration
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION FAILED$

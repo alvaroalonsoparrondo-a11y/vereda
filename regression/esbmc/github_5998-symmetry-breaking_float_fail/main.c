@@ -1,0 +1,17 @@
+float nondet_float(void);
+
+int main()
+{
+  float x = nondet_float();
+  float max = 0.0f;
+  if (x > max)
+    max = x;
+  __ESBMC_assert(x <= max, "post-merge bound should fail for NaN x");
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_5998-symmetry-breaking_float_fail
+// Needs: --no-standard-checks
+// RUN: --multi-property --no-standard-checks
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: post-merge bound should fail for NaN x

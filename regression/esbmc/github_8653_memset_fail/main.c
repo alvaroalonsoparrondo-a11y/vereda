@@ -1,0 +1,27 @@
+/* #8653: with --no-pointer-check, memset must not claim a code-object
+   dereference failure when the pointer may target a function. */
+#include <assert.h>
+#include <string.h>
+
+void f(void)
+{
+}
+
+int nondet_int(void);
+
+int main(void)
+{
+  char buf[4] = {1, 2, 3, 4};
+  void *p = nondet_int() ? (void *)f : (void *)buf;
+  memset(p, 0, sizeof buf);
+  if (p == (void *)buf)
+    assert(buf[0] == 1);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_8653_memset_fail
+// RUN: --multi-property
+// EXPECT: FAILED +\[main\.assertion\.1\] +line +18 +assertion buf\[0\] == 1
+// EXPECT: ^\*\* 1 of 1 properties failed$
+// EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: FAILED +\[main\.assertion\.1\] +line +18 +assertion buf\[0\] == 1
+// MODE: FUTURE

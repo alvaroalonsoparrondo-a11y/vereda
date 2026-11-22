@@ -1,0 +1,21 @@
+#include <assert.h>
+#include <errno.h>
+#include <semaphore.h>
+#include <time.h>
+
+sem_t s;
+
+int main(void)
+{
+  struct timespec ts = {0, 0};
+  sem_init(&s, 0, 0);
+  int r = sem_timedwait(&s, &ts);
+  assert(!(r == -1 && errno == ETIMEDOUT));
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_9435_timedwait_fail
+// RUN: -m64 --unwind 20
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: assertion !\(r == -1 && errno == ETIMEDOUT\)$
+// Vereda: unmet EXPECT: assertion !\(r == -1 && errno == ETIMEDOUT\)$
+// MODE: FUTURE

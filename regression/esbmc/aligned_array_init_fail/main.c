@@ -1,0 +1,12 @@
+#include <assert.h>
+#include <string.h>
+int a[8] __attribute__((aligned(16))) = { 10, 20, 30, 30, 20, 10, 10, 20 };
+int main() {
+  int b[8];
+  memcpy(b, a, sizeof(a));
+  assert(b[0] == 10);
+  assert(a[3] == 31);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/aligned_array_init_fail
+// EXPECT: ^VERIFICATION FAILED$

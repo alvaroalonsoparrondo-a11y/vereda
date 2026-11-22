@@ -1,0 +1,23 @@
+/* assert(*p == 0) fails at k = 1 and is skipped; the bounds check raised in
+   its guard goes with it, so no later base case solves that check. The
+   forward condition must not promote it: it fails at i == 2. */
+#include <assert.h>
+
+int main()
+{
+  int a[2] = {5, 5};
+  int *p = a;
+  for (int i = 0; i < 3; i++)
+  {
+    assert(*p == 0);
+    p++;
+  }
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/multi_property_incremental_check_in_skipped_assert_fail
+// RUN: --incremental-bmc --multi-property --max-k-step 6
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: ^\s+FAILED\s+\[main\.assertion\.1\]\s+line\s+12\s+assertion \*p == 0$
+// EXPECT: ^\s+UNKNOWN\s+\[main\.array-bounds-violated\.1\]\s+line\s+12\s+dereference failure: array bounds violated$
+// Vereda: unmet EXPECT: ^\s+FAILED\s+\[main\.assertion\.1\]\s+line\s+12\s+assertion \*p == 0$
+// MODE: FUTURE

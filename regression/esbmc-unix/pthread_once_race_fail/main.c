@@ -1,0 +1,29 @@
+#include <pthread.h>
+
+int g;
+pthread_once_t once = PTHREAD_ONCE_INIT;
+
+void init(void)
+{
+  g = 1;
+}
+
+void *worker(void *arg)
+{
+  pthread_once(&once, init);
+  return NULL;
+}
+
+int main(void)
+{
+  pthread_t t;
+  pthread_create(&t, NULL, worker, NULL);
+  g = 2;
+  return 0;
+}
+// Imported from ESBMC regression/esbmc-unix/pthread_once_race_fail
+// Needs: --data-races-check-only
+// RUN: --data-races-check-only
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: W/W data race on c:@g

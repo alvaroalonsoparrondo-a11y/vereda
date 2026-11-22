@@ -1,0 +1,20 @@
+// Counterpart of function_address_signal_sentinels: an integer no libc reserves
+// as a handler sentinel may still convert to a function's address.
+#include <assert.h>
+
+void handler(int sig)
+{
+  (void)sig;
+}
+
+int main(void)
+{
+  void (*f)(int) = handler;
+  assert(f != (void (*)(int))4096);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/function_address_signal_sentinels_fail
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: ^  assertion f != \(void \(\*\)\(int\)\)4096$
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// MODE: FUTURE

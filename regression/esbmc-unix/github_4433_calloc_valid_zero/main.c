@@ -1,0 +1,34 @@
+// Regression test: calloc(2^30, sizeof(int)) in 32-bit mode previously
+// triggered a false alarm because nmemb*size wrapped to 0, malloc(0) was
+// called, and data[0] got a nondet (non-zero) value.
+//
+// calloc now returns NULL when nmemb*size overflows (#9361), so the
+// assertion below is guarded away on the overflow path.  ESBMC should report
+// VERIFICATION SUCCESSFUL (no counterexample found).
+#include <stdlib.h>
+#include <limits.h>
+
+void reach_error(void) {}
+static void verifier_assert(int cond)
+{
+  if (!cond)
+    reach_error();
+}
+
+int main(void)
+{
+  // n = 2^30.  On 32-bit size_t: n * sizeof(int) = 4294967296 = 0 (overflow).
+  // Previously this bypassed memset and gave nondet data[0].
+  int n = 1073741824;
+  int *data = (int *)calloc((size_t)n, sizeof(int));
+  // If calloc succeeds, data must be zeroed.  On overflow it returns NULL.
+  if (data)
+    verifier_assert(data[0] == 0);
+  free(data);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc-unix/github_4433_calloc_valid_zero
+// Needs: --enable-unreachability-intrinsic REQUIRES arch32
+// RUN: --no-div-by-zero-check --force-malloc-success --no-align-check --no-vla-size-check --32 --enable-unreachability-intrinsic --no-pointer-check --no-bounds-check
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION SUCCESSFUL$

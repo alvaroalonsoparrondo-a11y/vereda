@@ -1,0 +1,18 @@
+#include <assert.h>
+
+int main()
+{
+  int i = 0;
+  do
+  {
+    if (i < 5)
+      i++;
+  } while (i < 3);
+  assert(i == 5);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_9498_fail
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: assertion i == 5$
+// Vereda: unmet EXPECT: assertion i == 5$
+// MODE: FUTURE

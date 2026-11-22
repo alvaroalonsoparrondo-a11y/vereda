@@ -1,0 +1,26 @@
+#include <assert.h>
+#include <unistd.h>
+
+/* #9391: getopt() returns the option character it finds, so "prog -a"
+ * reaches case 'a' and violates the assertion. */
+int main(int argc, char **argv)
+{
+  int aflag = 0, c;
+  while ((c = getopt(argc, argv, "a")) != -1)
+    switch (c)
+    {
+    case 'a':
+      aflag = 1;
+      break;
+    default:
+      return 1;
+    }
+  assert(aflag == 0);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc-unix/github_9391
+// RUN: --unwind 3 --multi-property
+// EXPECT: ^  FAILED +\[main\.assertion\.[0-9]+\] +line +18 +assertion aflag == 0$
+// EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  FAILED +\[main\.assertion\.[0-9]+\] +line +18 +assertion aflag == 0$
+// MODE: FUTURE

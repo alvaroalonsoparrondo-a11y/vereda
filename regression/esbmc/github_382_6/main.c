@@ -1,0 +1,16 @@
+#include <assert.h>
+
+int main(void);
+
+unsigned int global_var3;
+
+int main(void) {
+  global_var3 = *main;
+  assert(global_var3 == *main);
+  return 0;
+}
+
+// Imported from ESBMC regression/esbmc/github_382_6
+// EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// MODE: FUTURE

@@ -1,0 +1,27 @@
+/* Regression: GitHub #7478 -- same defect reached through a guard that calls a
+ * function.  The DECL/FUNCTION_CALL pair sits between the loop head and the
+ * IF, so the call was evaluated on the pre-havoc state. */
+#include <assert.h>
+
+static int positive(int c)
+{
+  return c > 0;
+}
+
+int main()
+{
+  int cnt = 4;
+  __ESBMC_loop_invariant(cnt >= 0);
+  while (positive(cnt))
+  {
+    cnt--;
+  }
+  assert(0);
+  return 0;
+}
+// Imported from ESBMC regression/loop-invariants/github_7478_call_fail
+// Needs: --loop-invariant-check
+// RUN: --loop-invariant-check --multi-property
+// MODE: FUTURE
+// EXPECT: ^\s+FAILED\s+\[main\.assertion\.3\]\s+line\s+19\s+assertion 0$
+// EXPECT: ^VERIFICATION FAILED$

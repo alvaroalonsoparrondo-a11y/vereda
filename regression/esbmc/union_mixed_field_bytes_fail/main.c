@@ -1,0 +1,21 @@
+union u
+{
+  int a;
+  short b;
+};
+
+int main(void)
+{
+  union u u;
+  u.b = 1;
+  u.a = 0x12345678;
+
+  __ESBMC_assert(u.b == 1, "the narrow field must not survive the wide write");
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/union_mixed_field_bytes_fail
+// Needs: --little-endian
+// RUN: --little-endian
+// MODE: FUTURE
+// EXPECT: ^\s+the narrow field must not survive the wide write$
+// EXPECT: ^VERIFICATION FAILED$

@@ -1,0 +1,28 @@
+#include <assert.h>
+#include <pthread.h>
+
+_Bool receive = 0;
+_Bool other = 0;
+
+void *t1(void *arg)
+{
+  for (int i = 0; i < 2; i++)
+    if (receive)
+    {
+      assert(i < 1);
+      other = 0;
+    }
+  return NULL;
+}
+
+int main()
+{
+  pthread_t id;
+  pthread_create(&id, NULL, t1, NULL);
+  receive = 1;
+  return 0;
+}
+// Imported from ESBMC regression/esbmc-unix/race_guard_other_write
+// EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// MODE: FUTURE

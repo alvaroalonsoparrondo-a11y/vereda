@@ -1,0 +1,18 @@
+#include <assert.h>
+
+int main()
+{
+  int x=nondet_int();
+  while(x>0)
+  {
+   __ESBMC_assume(x>100);
+   x--;
+  }
+  assert(0);
+  return 0;
+}
+// Imported from ESBMC regression/incremental-smt/incremental-11
+// Needs: --smt-during-symex --smt-symex-assert
+// RUN: --smt-during-symex --smt-symex-assert --incremental-bmc
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION FAILED$

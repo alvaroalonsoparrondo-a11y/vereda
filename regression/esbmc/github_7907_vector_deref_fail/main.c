@@ -1,0 +1,18 @@
+// #7907: the lanes must survive the load through the pointer in order.
+#include <assert.h>
+
+typedef int v4i __attribute__((__vector_size__(16)));
+
+int main(void)
+{
+  v4i s = {1, 2, 3, 4};
+  v4i *p = &s;
+  v4i c = *p;
+  assert(c[0] == 4);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_7907_vector_deref_fail
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: ^.*assertion c\[0\] == 4$
+// Vereda: unmet EXPECT: ^.*assertion c\[0\] == 4$
+// MODE: FUTURE

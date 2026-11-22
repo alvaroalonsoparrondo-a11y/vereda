@@ -1,0 +1,24 @@
+#include <assert.h>
+int nondet_int(void);
+
+void rec(_Bool r, int *p) {
+  int l = nondet_int();
+  if (r) {
+    *p = 20;
+    __ESBMC_assume(l == 30);
+  } else {
+    rec(1, &l);
+    assert(l != 20); /* l == 20 after the call: must FAIL */
+  }
+}
+
+int main(void) {
+  rec(0, 0);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_9500_fail
+// Needs: --interval-analysis
+// RUN: --interval-analysis
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: assertion l != 20$

@@ -1,0 +1,18 @@
+/* #9000: sprintf measures a field width and an octal or hex conversion. */
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+unsigned short nondet_ushort();
+int main()
+{
+  char d[8];
+  unsigned short c = nondet_ushort();
+  int r = sprintf(d, "%-2x", c);
+  assert(r < 4);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_9000_sprintf_hex_width_fail
+// EXPECT: ^  assertion r < 4$
+// EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  assertion r < 4$
+// MODE: FUTURE

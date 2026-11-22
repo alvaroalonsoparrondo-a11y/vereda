@@ -1,0 +1,15 @@
+#include <assert.h>
+int main(void)
+{
+  int n = 3;
+  typedef int row[n];
+  n = 5;
+  row x;
+  assert(sizeof(x) == 5 * sizeof(int));
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/vla_size_fixed_typedef_fail
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: ^\s+assertion sizeof\(x\) == 5 \* sizeof\(int\)$
+// Vereda: unmet EXPECT: ^\s+assertion sizeof\(x\) == 5 \* sizeof\(int\)$
+// MODE: FUTURE

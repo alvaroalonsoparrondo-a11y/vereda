@@ -1,0 +1,23 @@
+// GitHub #9763: under --printf-check the va_list of a v* call is not a
+// pointer argument to dereference.
+#include <stdarg.h>
+#include <stdio.h>
+
+static void say(const char *fmt, ...)
+{
+  va_list ap;
+  va_start(ap, fmt);
+  vprintf(fmt, ap);
+  va_end(ap);
+}
+
+int main(void)
+{
+  say("%s\n", "abc");
+  return 0;
+}
+// Imported from ESBMC regression/esbmc-unix/github_9763
+// Needs: --printf-check
+// RUN: --printf-check --32
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION SUCCESSFUL$

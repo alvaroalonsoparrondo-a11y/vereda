@@ -1,0 +1,17 @@
+extern int __VERIFIER_nondet_int(void);
+
+int next(int x)
+{
+  return x + 1;
+}
+
+int main(void)
+{
+  return next(__VERIFIER_nondet_int());
+}
+// Imported from ESBMC regression/esbmc/github_9885_yaml_target_return
+// Needs: --overflow-check --witness-output-yaml -
+// RUN: --overflow-check --witness-output-yaml -
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: type: "target"\n.*\n.*\n.*\n\s*line: 5\n\s*column: 10$

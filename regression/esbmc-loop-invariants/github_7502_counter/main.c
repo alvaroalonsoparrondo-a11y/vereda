@@ -1,0 +1,23 @@
+/* Regression: GitHub #7502 -- the passing half.  The counter is havoc'd and the
+ * invariant carries it, so the loop still leaves `i == 4`. */
+#include <assert.h>
+
+int main()
+{
+  int cnt = 4;
+  int *p = &cnt;
+  int i;
+  __ESBMC_loop_invariant(i >= 0 && i <= 4);
+  for (i = 0; i < 4; i++)
+  {
+    (*p)--;
+  }
+  assert(i == 4);
+  return 0;
+}
+// Imported from ESBMC regression/loop-invariants/github_7502_counter
+// Needs: --loop-invariant-check
+// RUN: --loop-invariant-check --multi-property
+// MODE: FUTURE
+// EXPECT: ^\s+PASSED\s+\[main\.assertion\.5\]\s+line\s+15\s+assertion i == 4$
+// EXPECT: ^VERIFICATION SUCCESSFUL$

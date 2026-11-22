@@ -1,0 +1,25 @@
+#include <limits.h>
+#include <assert.h>
+
+long nondet_long(void);
+
+void __VERIFIER_error(void);
+void reach_error() { __VERIFIER_error(); }
+void nope() { ERROR: reach_error(); }
+
+int main()
+{
+	long x = nondet_long();
+	if (x > LONG_MIN)
+		return 0;
+	if (x == LONG_MIN)
+		nope();
+	return 0;
+}
+// Imported from ESBMC regression/esbmc/cpachecker-long-min-64.c
+// RUN: -m64
+// MODE: THOROUGH
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: x = -9223372036854775807 - 1
+// Vereda: unmet EXPECT: x = -9223372036854775807 - 1
+// MODE: FUTURE

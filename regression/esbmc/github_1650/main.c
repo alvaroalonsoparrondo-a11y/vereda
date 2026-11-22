@@ -1,0 +1,19 @@
+#include <assert.h>
+extern void __VERIFIER_assume(int cond);
+#include <stdlib.h>
+int main() {
+  int *ptr = malloc(sizeof(int));
+  *ptr = 0;
+  int a[1] = {5};
+  a[*ptr] = 5;
+  __VERIFIER_assume(a[*ptr] < 5 || a[*ptr] < 2147483647 || a[*ptr] > 1 || a[*ptr] >= 1);
+  assert(a[*ptr] > 2147483646);
+  if (a[*ptr]) {}
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_1650
+// RUN: --multi-property
+// EXPECT: ^ +FAILED .*line +10 +assertion a\[\*ptr\] > 2147483646$
+// EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^ +FAILED .*line +10 +assertion a\[\*ptr\] > 2147483646$
+// MODE: FUTURE

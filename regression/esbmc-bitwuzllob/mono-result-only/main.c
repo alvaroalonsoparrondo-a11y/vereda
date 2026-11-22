@@ -1,0 +1,11 @@
+int main()
+{
+  unsigned x = nondet_uint() % 10;
+  __ESBMC_assert(x < 5, "x less than five");
+  return 0;
+}
+// Imported from ESBMC regression/bitwuzllob/mono-result-only
+// Needs: --bitwuzllob --bitwuzllob-prog fake-mallob.sh --result-only
+// RUN: --bitwuzllob --bitwuzllob-prog fake-mallob.sh --result-only
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION FAILED$

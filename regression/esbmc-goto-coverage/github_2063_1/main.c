@@ -1,0 +1,35 @@
+#include <assert.h>
+int main()
+{
+	int a, x, y = 0, z;
+	a = nondet_int();
+	x = nondet_int();
+	z = nondet_int();
+	if (a > 25000 && x == 30000)
+	{
+		while (y++ < z)
+		{
+			if (y % 3 != 0)
+			{
+				a++;
+				x--;
+			}
+			else
+			{
+				a--;
+				x++;
+			}
+			assert(a != x);
+		}
+	}
+}
+// Imported from ESBMC regression/goto-coverage/github_2063_1
+// Needs: --assertion-coverage
+// RUN: --unwind 4 --assertion-coverage
+// MODE: FUTURE
+// EXPECT: ^Total Asserts: 1
+// EXPECT: ^Total Assertion Instances: unknown / non-deterministic
+// EXPECT: ^Reached Assertion Instances: 4
+// EXPECT: ^Assertion Instances Coverage Unknown
+// EXPECT: ^COVERAGE ANALYSIS INCOMPLETE
+// EXPECT: reason: the total number of assertion instances could not be determined

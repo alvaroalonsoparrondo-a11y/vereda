@@ -1,0 +1,19 @@
+int impure(int a)
+{
+  int s = 0;
+  for (int i = 0; i < a; i++)
+    s += i;
+  return s;
+}
+
+int main()
+{
+  int var;
+  __ESBMC_assert(__ESBMC_exists(&var, impure(var) == 0), "e");
+}
+// Imported from ESBMC regression/z3/github_6100_noninline
+// RUN: --solver z3
+// MODE: THOROUGH
+// EXPECT: cannot model call to .* on a quantified variable inside __ESBMC_forall/__ESBMC_exists
+// Vereda: TIMEOUT after 60 s
+// MODE: FUTURE

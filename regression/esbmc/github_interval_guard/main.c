@@ -1,0 +1,15 @@
+int main()
+{
+  int idx;
+  __ESBMC_assume(0 <= idx);
+  while (idx < 5)
+  {
+    ++idx;
+  }
+  __ESBMC_assert(idx >= 5, "assert");
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_interval_guard
+// EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: TIMEOUT after 60 s
+// MODE: FUTURE

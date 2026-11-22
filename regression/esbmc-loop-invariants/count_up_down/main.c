@@ -1,0 +1,19 @@
+unsigned int nondet_uint();
+
+int main()
+{
+  unsigned int n = nondet_uint();
+  unsigned int x = n, y = 0;
+  __ESBMC_loop_invariant(x + y == n);
+  while (x > 0)
+  {
+    x--;
+    y++;
+  }
+  assert(y == n);
+}
+// Imported from ESBMC regression/loop-invariants/count_up_down
+// Needs: --loop-invariant-check
+// RUN: --loop-invariant-check
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION SUCCESSFUL$

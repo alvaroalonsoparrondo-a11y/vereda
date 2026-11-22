@@ -1,0 +1,10 @@
+int main()
+{
+  // gcc eats this
+  int i;
+  extern int i;
+}
+// Imported from ESBMC regression/cbmc/01_cbmc_ExternExtern2
+// EXPECT: ^ERROR: PARSING ERROR$
+// Vereda: unmet EXPECT: ^ERROR: PARSING ERROR$
+// MODE: FUTURE

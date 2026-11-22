@@ -1,0 +1,15 @@
+#include <assert.h>
+#include <fenv.h>
+
+int main()
+{
+  long long x = 1LL << 53;
+  fesetround(FE_UPWARD);
+  x += 1.0;
+  assert(x == (1LL << 53));
+}
+// Imported from ESBMC regression/esbmc/compound_assign_float_rhs_fail
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: assertion x == \(1LL << 53\)
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// MODE: FUTURE

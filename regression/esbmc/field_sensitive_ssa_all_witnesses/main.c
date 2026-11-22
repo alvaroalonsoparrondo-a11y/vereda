@@ -1,0 +1,23 @@
+#include <assert.h>
+
+struct S
+{
+  int a, b;
+};
+
+int nondet_int();
+
+int main()
+{
+  struct S s;
+  s.a = nondet_int();
+  s.b = 2;
+  assert(s.a != 5);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/field_sensitive_ssa_all_witnesses
+// Needs: --field-sensitive-ssa --all-witnesses
+// RUN: --field-sensitive-ssa --all-witnesses
+// MODE: FUTURE
+// EXPECT: ^WARNING: --field-sensitive-ssa is ignored with --all-witnesses$
+// EXPECT: ^VERIFICATION FAILED$

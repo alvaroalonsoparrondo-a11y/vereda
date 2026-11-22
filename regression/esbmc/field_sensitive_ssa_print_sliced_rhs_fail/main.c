@@ -1,0 +1,21 @@
+#include <assert.h>
+
+struct S
+{
+  int a;
+  int b;
+};
+
+int main(void)
+{
+  int v = nondet_int() | 1;
+  struct S s = {v, nondet_int()};
+  assert(s.b != 5);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/field_sensitive_ssa_print_sliced_rhs_fail
+// Needs: --field-sensitive-ssa
+// RUN: --field-sensitive-ssa
+// MODE: FUTURE
+// EXPECT: \A(?![\s\S]*\n  s = )[\s\S]*\Z
+// EXPECT: ^VERIFICATION FAILED$

@@ -1,0 +1,13 @@
+#include <assert.h>
+#include <math.h>
+
+int main()
+{
+  double r = pow(101.0, 0.5);
+  assert(r > 10.0 && r < 10.1);
+  return 0;
+}
+// Imported from ESBMC regression/floats/pow_fractional_exponent
+// EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

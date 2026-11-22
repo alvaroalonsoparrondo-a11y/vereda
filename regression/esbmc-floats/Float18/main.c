@@ -1,0 +1,23 @@
+#include <math.h>
+
+int main()
+{
+   double  s, f=0.0, fStep=0.1*M_PI;
+   int     n=0;
+
+   do
+   {
+       s = sin(f);
+       f += fStep;
+       n++;
+   }
+   while( f < M_PI );
+
+   assert( n < 11 );
+}
+
+
+// Imported from ESBMC regression/floats/Float18
+// EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

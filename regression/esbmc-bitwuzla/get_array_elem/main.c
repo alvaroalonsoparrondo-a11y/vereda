@@ -1,0 +1,21 @@
+#include <stdlib.h>
+
+union
+{
+  int *p0;
+  int p1;
+} data;
+
+void main(void)
+{
+  data.p0 = (int *)malloc(sizeof(int));
+  data.p1 = 1;
+  void *ptr = data.p0;
+  free(ptr);
+}
+// Imported from ESBMC regression/bitwuzla/get_array_elem
+// RUN: --solver bitwuzla
+// MODE: THOROUGH
+// EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// MODE: FUTURE

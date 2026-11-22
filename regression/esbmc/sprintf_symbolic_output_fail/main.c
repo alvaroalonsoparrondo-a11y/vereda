@@ -1,0 +1,15 @@
+#include <stdio.h>
+
+unsigned nondet_uint(void);
+
+int main(void)
+{
+  char b[4];
+  sprintf(b, "%x", nondet_uint());
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/sprintf_symbolic_output_fail
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: ^\s*FAILED\s+\[main\.array-bounds-violated\.1\]\s+line 8\s+dereference failure: array bounds violated$
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// MODE: FUTURE

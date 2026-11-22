@@ -1,0 +1,22 @@
+// #7907: the vector member is not packed straight after the int before it.
+#include <assert.h>
+#include <stddef.h>
+
+typedef int v4i __attribute__((__vector_size__(16)));
+
+struct S
+{
+  int x;
+  v4i v;
+};
+
+int main(void)
+{
+  assert(offsetof(struct S, v) == 4);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_7907_layout_fail
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: ^.*assertion offsetof\(struct S, v\) == 4$
+// Vereda: unmet EXPECT: ^.*assertion offsetof\(struct S, v\) == 4$
+// MODE: FUTURE

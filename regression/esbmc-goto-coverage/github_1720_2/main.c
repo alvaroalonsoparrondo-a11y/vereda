@@ -1,0 +1,20 @@
+#include <assert.h>
+#include <stdbool.h>
+
+int main()
+{
+  int a = 1;
+  int b = 2;
+  if (a == 1 && (b == 2 || a == b) && 1.1)
+  {
+    assert(1);
+  }
+  else
+    assert(0);
+}
+// Imported from ESBMC regression/goto-coverage/github_1720_2
+// Needs: --condition-coverage-claims --no-cov-asserts
+// RUN: --condition-coverage-claims --no-cov-asserts
+// MODE: FUTURE
+// EXPECT: ^Condition Coverage: 37.5%
+// EXPECT: ^COVERAGE ANALYSIS COMPLETE$

@@ -1,0 +1,12 @@
+// --interval-analysis simplifies the unused libm models <math.h> pulls in,
+// whose remainder() call must not become a floating-point-only node.
+#include <math.h>
+int main()
+{
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_10774_interval_fixedbv
+// Needs: --interval-analysis --fixedbv
+// RUN: --interval-analysis --fixedbv --no-div-by-zero-check
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION SUCCESSFUL$

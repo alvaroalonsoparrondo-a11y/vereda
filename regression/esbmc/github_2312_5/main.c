@@ -1,0 +1,14 @@
+#include <assert.h>
+
+int main(int argc, char *argv[]) 
+{
+  if (argc > 1) 
+     assert(argv[1]);
+  return 0;
+}
+
+// Imported from ESBMC regression/esbmc/github_2312_5
+// RUN: --solver z3
+// EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

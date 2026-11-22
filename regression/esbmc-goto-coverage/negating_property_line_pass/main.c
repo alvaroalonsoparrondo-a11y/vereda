@@ -1,0 +1,14 @@
+#include <assert.h>
+int nondet_int(void);
+int main(void)
+{
+  int value = nondet_int();
+  __ESBMC_assume(value == 1);
+  assert(value == 0);
+  assert(value == 1);
+}
+// Imported from ESBMC regression/goto-coverage/negating_property_line_pass
+// Needs: --negating-property main:7
+// RUN: --negating-property main:7
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION SUCCESSFUL$

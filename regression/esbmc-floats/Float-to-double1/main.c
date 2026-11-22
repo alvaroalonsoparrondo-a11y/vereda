@@ -1,0 +1,18 @@
+#include <assert.h>
+#include <math.h>
+
+float nondet_float();
+
+int main()
+{
+  float f=nondet_float();
+
+  double d = (double)f;
+  float ff = (float)d;
+
+  assert((f == ff) || (isnan(f) && isnan(ff)));
+}
+// Imported from ESBMC regression/floats/Float-to-double1
+// EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

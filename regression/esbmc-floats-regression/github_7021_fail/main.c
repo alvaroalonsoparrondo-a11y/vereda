@@ -1,0 +1,19 @@
+// Negative counterpart of github_7021: the NaN's sign comes from -2.0, so
+// signbit is nonzero and this assertion must be refuted rather than held
+// vacuously by an unconstrained sign.
+#include <assert.h>
+#include <math.h>
+
+int main(void)
+{
+  double s = copysign(NAN, -2.0);
+  assert(isnan(s));
+  assert(!signbit(s));
+  return 0;
+}
+// Imported from ESBMC regression/floats-regression/github_7021_fail
+// RUN: --solver z3 --multi-property
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: ^  FAILED +\[main\.assertion\.\d+\] +line +11 +assertion !signbit\(s\)$
+// Vereda: unmet EXPECT: ^  FAILED +\[main\.assertion\.\d+\] +line +11 +assertion !signbit\(s\)$
+// MODE: FUTURE

@@ -1,0 +1,16 @@
+int main()
+{
+  int idx_vfy;
+
+  idx_vfy = 17;
+
+  __ESBMC_assert(
+    __ESBMC_forall(&idx_vfy, !(0 <= idx_vfy && idx_vfy < 10) || idx_vfy == 13),
+    "forall eq");
+}
+// Imported from ESBMC regression/z3/github_7024
+// RUN: --solver z3
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: ^\[Counterexample\]$
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// MODE: FUTURE

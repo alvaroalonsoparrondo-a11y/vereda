@@ -1,0 +1,20 @@
+#include <assert.h>
+int main()
+{
+  unsigned n = nondet_uint();
+  unsigned x = 0;
+  __ESBMC_assume(n < 5);
+  for (unsigned i = 0; i < n; ++i)
+    ++x;
+  __ESBMC_assume(x > 100);
+  assert(x == 7);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/multi_property_kinduction_vacuous
+// Needs: --k-induction --check-vacuity
+// RUN: --k-induction --multi-property --check-vacuity --max-k-step 8
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION UNKNOWN$
+// EXPECT: ^\s+UNKNOWN\s+\[main\.assertion\.1\]\s+line\s+10\s+assertion x == 7 \(vacuous discharge: path assumptions are unsatisfiable;
+// EXPECT: ^\*\* 0 of 1 properties failed, 1 unknown$
+// EXPECT: \A(?![\s\S]*VERIFICATION SUCCESSFUL)[\s\S]*\Z

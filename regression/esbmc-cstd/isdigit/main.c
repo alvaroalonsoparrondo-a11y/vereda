@@ -1,0 +1,17 @@
+#include <assert.h>
+#include <ctype.h>
+
+int main ()
+{
+  char str[]="1776ad";
+
+  int i = 0;
+  while (i < 4)
+    assert(isdigit(str[i++]));
+
+  return 0;
+}
+// Imported from ESBMC regression/cstd/isdigit
+// EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

@@ -1,0 +1,19 @@
+#include <assert.h>
+
+/* Counterpart of polymorphic_builtin_prefix_arity: declining the call leaves
+ * the body-less declaration, so the result is nondet and the assertion must be
+ * free to fail rather than being folded away. */
+int __builtin_add_overflow_mine(int *p);
+
+int main(void)
+{
+  int x = 0;
+  int a = __builtin_add_overflow_mine(&x);
+  assert(a == 42);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/polymorphic_builtin_prefix_arity_fail
+// EXPECT: ^\s*FAILED\s+\[main\.assertion\.1\]\s+line 12\s+assertion a == 42$
+// EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^\s*FAILED\s+\[main\.assertion\.1\]\s+line 12\s+assertion a == 42$
+// MODE: FUTURE

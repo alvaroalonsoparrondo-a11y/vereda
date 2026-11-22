@@ -1,0 +1,43 @@
+#include <pthread.h>
+#include <assert.h>
+
+int g = 0;
+
+struct Inner
+{
+  int *p;
+};
+
+union U
+{
+  struct Inner in;
+  long l;
+};
+
+union U u = {{&g}};
+
+// R29, struct inside a union: the constant-union case passed its suffix on
+// unconsumed, so ".in.p" was looked up in struct Inner, which has no member
+// named "in". The initialised member's component is consumed first.
+void *writer(void *arg)
+{
+  (void)arg;
+  *(u.in.p) = 1;
+  return 0;
+}
+
+int main(void)
+{
+  pthread_t t;
+  pthread_create(&t, 0, writer, 0);
+  g = 2;
+  int seen = g;
+  pthread_join(t, 0);
+  assert(seen == 2);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc-unix/mpor_aggregate_ptr_race_union_struct
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: ^  assertion seen == 2$
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// MODE: FUTURE

@@ -1,0 +1,15 @@
+// https://github.com/esbmc/esbmc/issues/9181
+#include <assert.h>
+
+void h(void) {}
+
+int main(void)
+{
+  assert(__builtin_constant_p(h()));
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_9181_fail
+// EXPECT: ^  assertion __builtin_constant_p\(h\(\)\)$
+// EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  assertion __builtin_constant_p\(h\(\)\)$
+// MODE: FUTURE

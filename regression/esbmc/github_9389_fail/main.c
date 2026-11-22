@@ -1,0 +1,17 @@
+// #9389: read() returns 0 at end-of-file.
+#include <assert.h>
+#include <unistd.h>
+
+int main(void)
+{
+  char b[8];
+  ssize_t n = read(0, b, 8);
+  assert(n != 0);
+  return 0;
+}
+// Imported from ESBMC regression/esbmc/github_9389_fail
+// RUN: --unwind 9
+// EXPECT: ^VERIFICATION FAILED$
+// EXPECT: assertion n != 0
+// Vereda: unmet EXPECT: assertion n != 0
+// MODE: FUTURE

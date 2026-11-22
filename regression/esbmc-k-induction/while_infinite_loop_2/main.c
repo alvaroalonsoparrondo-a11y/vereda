@@ -1,0 +1,18 @@
+
+int nondet_int();
+
+int main() {
+  int x=0;
+
+  while(1)
+  {
+    assert(x==0);    
+  }
+
+  assert(x==0);
+}
+// Imported from ESBMC regression/k-induction/while_infinite_loop_2
+// Needs: --k-induction
+// RUN: --k-induction -Wno-error=implicit-function-declaration
+// MODE: FUTURE
+// EXPECT: ^VERIFICATION SUCCESSFUL$
