@@ -2,6 +2,8 @@
 
 #include <llvm/ADT/SmallString.h>
 #include <llvm/IR/Constants.h>
+#include <llvm/IR/GlobalVariable.h>
+#include <llvm/IR/Module.h>
 #include <llvm/IR/InstrTypes.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/IR/Intrinsics.h>
@@ -47,6 +49,8 @@ static unsigned packedWidth(Type *ty) {
 SMTSortRef Encoder::sort(Type *ty) {
   if (ty->isIntegerTy(1))
     return s.mkBoolSort();
+  if (ty->isPointerTy())
+    return mem.pointerSort();
   if (unsigned width = packedWidth(ty))
     return s.mkBVSort(width);
   throw Unsupported("type " + describe(ty));
@@ -56,22 +60,93 @@ SMTExprRef Encoder::fresh(Type *ty, const std::string &name) {
   return s.mkSymbol(name + "#" + std::to_string(freshCount++), sort(ty));
 }
 
+SMTExprRef Encoder::constant(const APInt &v) {
+  SmallString<128> bits;
+  v.toString(bits, 2, /*Signed=*/false);
+  std::string padded(v.getBitWidth() - bits.size(), '0');
+  padded += bits;
+  return s.mkBVFromBin(padded, v.getBitWidth());
+}
+
 SMTExprRef Encoder::value(const Value *v) {
   if (auto it = env.find(v); it != env.end())
     return it->second;
-  if (auto *ci = dyn_cast<ConstantInt>(v)) {
-    unsigned width = ci->getBitWidth();
-    if (width == 1)
-      return s.mkBool(ci->isOne());
-    SmallString<128> bits;
-    ci->getValue().toString(bits, 2, /*Signed=*/false);
-    std::string padded(width - bits.size(), '0');
-    padded += bits;
-    return s.mkBVFromBin(padded, width);
-  }
+  if (auto *ci = dyn_cast<ConstantInt>(v))
+    return ci->getBitWidth() == 1 ? s.mkBool(ci->isOne()) : constant(ci->getValue());
   if (isa<UndefValue>(v)) // also poison
     return fresh(v->getType(), "undef");
+  if (isa<ConstantPointerNull>(v))
+    return mem.null();
+  if (auto *g = dyn_cast<GlobalVariable>(v))
+    return mem.global(g);
+  if (auto *ce = dyn_cast<ConstantExpr>(v)) {
+    if (auto *g = dyn_cast<GEPOperator>(ce))
+      return gep(*g);
+    if (ce->isCast())
+      return castTo(ce->getOpcode(), ce->getOperand(0), ce->getType());
+    if (Instruction::isBinaryOp(ce->getOpcode()))
+      return binary(ce->getOpcode(), ce->getOperand(0), ce->getOperand(1));
+  }
+  if (isa<Function>(v))
+    throw Unsupported("function pointer " + v->getName().str());
   throw Unsupported("value " + describe(v));
+}
+
+SMTExprRef Encoder::resize(SMTExprRef v, unsigned width, bool isSigned) {
+  if (v->isBoolSort())
+    v = fromBool(v, 1);
+  unsigned from = v->getWidth();
+  if (from < width)
+    return isSigned ? s.mkBVSignExt(v, width - from) : s.mkBVZeroExt(v, width - from);
+  return from > width ? s.mkBVExtract(width - 1, 0, v) : v;
+}
+
+SMTExprRef Encoder::gep(const GEPOperator &g) {
+  unsigned bits = mem.pointerBits();
+  APInt offset(bits, 0);
+  SmallMapVector<Value *, APInt, 4> variable;
+  if (g.getType()->isVectorTy() ||
+      !g.collectOffset(mem.layout(), bits, variable, offset))
+    throw Unsupported("getelementptr " + describe(&g));
+  SMTExprRef delta = constant(offset);
+  for (auto &[index, scale] : variable)
+    delta = s.mkBVAdd(delta, s.mkBVMul(resize(value(index), bits, true), constant(scale)));
+  return mem.advance(value(g.getPointerOperand()), delta);
+}
+
+SMTExprRef Encoder::castTo(unsigned opcode, const Value *op, Type *dst) {
+  Type *src = op->getType();
+  SMTExprRef a = value(op);
+  switch (opcode) {
+  case Instruction::PtrToInt:
+    return dst->isIntegerTy(1) ? toBool(resize(mem.address(a), 1, false))
+                               : resize(mem.address(a), dst->getIntegerBitWidth(), false);
+  case Instruction::IntToPtr:
+    return mem.fromAddress(resize(a, mem.pointerBits(), false));
+  case Instruction::BitCast:
+    if (src->isPointerTy() && dst->isPointerTy())
+      return a;
+    break;
+  default:
+    break;
+  }
+  if (!src->isIntegerTy() || !dst->isIntegerTy())
+    throw Unsupported("cast " + std::string(Instruction::getOpcodeName(opcode)) + " from " +
+                      describe(op));
+  unsigned from = src->getIntegerBitWidth(), to = dst->getIntegerBitWidth();
+  switch (opcode) {
+  case Instruction::ZExt:
+    return from == 1 ? fromBool(a, to) : s.mkBVZeroExt(a, to - from);
+  case Instruction::SExt:
+    return from == 1 ? s.mkIte(a, s.mkBVNot(s.mkBVFromDec(0, to)), s.mkBVFromDec(0, to))
+                     : s.mkBVSignExt(a, to - from);
+  case Instruction::Trunc: {
+    SMTExprRef r = s.mkBVExtract(to - 1, 0, a);
+    return to == 1 ? s.mkEqual(r, s.mkBVFromDec(1, 1)) : r;
+  }
+  default:
+    throw Unsupported("cast " + std::string(Instruction::getOpcodeName(opcode)));
+  }
 }
 
 SMTExprRef Encoder::toBool(SMTExprRef bv) {
@@ -87,39 +162,48 @@ SMTExprRef Encoder::isTrue(const Value *v) {
   return v->getType()->isIntegerTy(1) ? t : toBool(t);
 }
 
+SMTExprRef Encoder::binary(unsigned opcode, const Value *lhs, const Value *rhs) {
+  bool isBool = lhs->getType()->isIntegerTy(1);
+  SMTExprRef a = value(lhs), b = value(rhs);
+  switch (opcode) {
+  case Instruction::And: return isBool ? s.mkAnd(a, b) : s.mkBVAnd(a, b);
+  case Instruction::Or:  return isBool ? s.mkOr(a, b) : s.mkBVOr(a, b);
+  case Instruction::Xor: return isBool ? s.mkXor(a, b) : s.mkBVXor(a, b);
+  default: break;
+  }
+  if (isBool) { // arithmetic on i1: compute in BV1
+    a = fromBool(a, 1);
+    b = fromBool(b, 1);
+  }
+  SMTExprRef r;
+  switch (opcode) {
+  case Instruction::Add:  r = s.mkBVAdd(a, b); break;
+  case Instruction::Sub:  r = s.mkBVSub(a, b); break;
+  case Instruction::Mul:  r = s.mkBVMul(a, b); break;
+  case Instruction::UDiv: r = s.mkBVUDiv(a, b); break;
+  case Instruction::SDiv: r = s.mkBVSDiv(a, b); break;
+  case Instruction::URem: r = s.mkBVURem(a, b); break;
+  case Instruction::SRem: r = s.mkBVSRem(a, b); break;
+  case Instruction::Shl:  r = s.mkBVShl(a, b); break;
+  case Instruction::LShr: r = s.mkBVLshr(a, b); break;
+  case Instruction::AShr: r = s.mkBVAshr(a, b); break;
+  default: throw Unsupported(std::string("instruction ") + Instruction::getOpcodeName(opcode));
+  }
+  return isBool ? toBool(r) : r;
+}
+
 void Encoder::encode(Instruction &inst) {
   SMTExprRef r;
-  if (auto *bo = dyn_cast<BinaryOperator>(&inst)) {
-    bool isBool = inst.getType()->isIntegerTy(1);
-    SMTExprRef a = value(bo->getOperand(0)), b = value(bo->getOperand(1));
-    switch (bo->getOpcode()) {
-    case Instruction::And: r = isBool ? s.mkAnd(a, b) : s.mkBVAnd(a, b); break;
-    case Instruction::Or:  r = isBool ? s.mkOr(a, b) : s.mkBVOr(a, b); break;
-    case Instruction::Xor: r = isBool ? s.mkXor(a, b) : s.mkBVXor(a, b); break;
-    default: {
-      if (isBool) { // arithmetic on i1: compute in BV1
-        a = fromBool(a, 1);
-        b = fromBool(b, 1);
-      }
-      switch (bo->getOpcode()) {
-      case Instruction::Add:  r = s.mkBVAdd(a, b); break;
-      case Instruction::Sub:  r = s.mkBVSub(a, b); break;
-      case Instruction::Mul:  r = s.mkBVMul(a, b); break;
-      case Instruction::UDiv: r = s.mkBVUDiv(a, b); break;
-      case Instruction::SDiv: r = s.mkBVSDiv(a, b); break;
-      case Instruction::URem: r = s.mkBVURem(a, b); break;
-      case Instruction::SRem: r = s.mkBVSRem(a, b); break;
-      case Instruction::Shl:  r = s.mkBVShl(a, b); break;
-      case Instruction::LShr: r = s.mkBVLshr(a, b); break;
-      case Instruction::AShr: r = s.mkBVAshr(a, b); break;
-      default: throw Unsupported(std::string("instruction ") + inst.getOpcodeName());
-      }
-      if (isBool)
-        r = toBool(r);
-    }
-    }
+  if (isa<BinaryOperator>(inst)) {
+    r = binary(inst.getOpcode(), inst.getOperand(0), inst.getOperand(1));
   } else if (auto *cmp = dyn_cast<ICmpInst>(&inst)) {
     SMTExprRef a = value(cmp->getOperand(0)), b = value(cmp->getOperand(1));
+    // Pointers are equal when object and offset are; ordered comparison
+    // compares addresses.
+    if (cmp->getOperand(0)->getType()->isPointerTy() && !cmp->isEquality()) {
+      a = mem.address(a);
+      b = mem.address(b);
+    }
     bool isBool = cmp->getOperand(0)->getType()->isIntegerTy(1);
     if (isBool && !cmp->isEquality()) {
       a = fromBool(a, 1);
@@ -141,27 +225,10 @@ void Encoder::encode(Instruction &inst) {
   } else if (auto *sel = dyn_cast<SelectInst>(&inst)) {
     r = s.mkIte(value(sel->getCondition()), value(sel->getTrueValue()),
                 value(sel->getFalseValue()));
-  } else if (auto *cast = dyn_cast<CastInst>(&inst)) {
-    Type *src = cast->getSrcTy(), *dst = cast->getDestTy();
-    if (!src->isIntegerTy() || !dst->isIntegerTy())
-      throw Unsupported("cast " + describe(&inst));
-    unsigned from = src->getIntegerBitWidth(), to = dst->getIntegerBitWidth();
-    SMTExprRef a = value(cast->getOperand(0));
-    switch (cast->getOpcode()) {
-    case Instruction::ZExt:
-      r = from == 1 ? fromBool(a, to) : s.mkBVZeroExt(a, to - from);
-      break;
-    case Instruction::SExt:
-      r = from == 1 ? s.mkIte(a, s.mkBVNot(s.mkBVFromDec(0, to)), s.mkBVFromDec(0, to))
-                    : s.mkBVSignExt(a, to - from);
-      break;
-    case Instruction::Trunc:
-      r = s.mkBVExtract(to - 1, 0, a);
-      if (to == 1)
-        r = s.mkEqual(r, s.mkBVFromDec(1, 1));
-      break;
-    default: throw Unsupported("cast " + describe(&inst));
-    }
+  } else if (auto *c = dyn_cast<CastInst>(&inst)) {
+    r = castTo(c->getOpcode(), c->getOperand(0), c->getDestTy());
+  } else if (auto *g = dyn_cast<GetElementPtrInst>(&inst)) {
+    r = gep(*llvm::cast<GEPOperator>(g));
   } else if (isa<FreezeInst>(inst)) {
     r = value(inst.getOperand(0));
   } else if (auto *ev = dyn_cast<ExtractValueInst>(&inst)) {

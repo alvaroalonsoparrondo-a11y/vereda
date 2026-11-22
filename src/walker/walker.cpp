@@ -19,7 +19,7 @@
 
 using namespace llvm;
 using camada::SMTExprRef;
-using vereda::encode::Unsupported;
+using vereda::Unsupported;
 
 namespace vereda::walker {
 
@@ -54,22 +54,33 @@ struct FunctionInfo {
 struct Arrival {
   SMTExprRef guard;
   SmallVector<SMTExprRef, 2> phiValues;
+  memory::State mem;
+};
+
+struct Return {
+  SMTExprRef guard, value;
+  memory::State mem;
 };
 
 struct Frame {
   DenseMap<const BasicBlock *, SmallVector<Arrival, 2>> arrivals;
-  SmallVector<std::pair<SMTExprRef, SMTExprRef>, 2> returns; // guard, value
+  SmallVector<Return, 2> returns;
 };
 
 class Walk {
 public:
-  Walk(const Options &opts, encode::Encoder &enc, checks::Checks &checks, Trace &trace)
-      : opts(opts), enc(enc), s(enc.solver()), checks(checks), trace(trace) {}
+  Walk(const Options &opts, encode::Encoder &enc, memory::Memory &mem, checks::Checks &checks,
+       Trace &trace)
+      : opts(opts), enc(enc), mem(mem), s(enc.solver()), checks(checks), trace(trace) {}
 
   void entry(Function &f) {
     for (Argument &arg : f.args())
       enc.bind(&arg, enc.fresh(arg.getType(), "arg_" + arg.getName().str()));
-    function(f, s.mkBool(true));
+    const Module &m = *f.getParent();
+    mem.allocateGlobals(m);
+    memory::State st = mem.initial();
+    mem.initialise(st, m, [this](const Constant *c) { return enc.value(c); });
+    function(f, s.mkBool(true), st);
   }
 
 private:
@@ -80,11 +91,11 @@ private:
     return *fi;
   }
 
-  // Walks f's body from a call guarded by guard. Returns the frame's return
-  // arrivals.
-  Frame function(Function &f, SMTExprRef guard) {
+  // Walks f's body from a call guarded by guard with memory st. Returns the
+  // frame's return arrivals.
+  Frame function(Function &f, SMTExprRef guard, const memory::State &st) {
     Frame frame;
-    frame.arrivals[&f.getEntryBlock()].push_back({guard, {}});
+    frame.arrivals[&f.getEntryBlock()].push_back({guard, {}, st});
     stack.push_back(&f);
     region(frame, info(f), nullptr);
     stack.pop_back();
@@ -169,6 +180,9 @@ private:
     if (arrivals.empty()) // no edge into bb was taken in this pass
       return;
     SMTExprRef guard = anyGuard(arrivals);
+    memory::State st = arrivals[0].mem;
+    for (unsigned i = 1; i < arrivals.size(); ++i)
+      st = mem.ite(arrivals[i].guard, arrivals[i].mem, st);
 
     unsigned p = 0;
     for (PHINode &phi : bb.phis()) {
@@ -187,10 +201,10 @@ private:
       if (isa<PHINode>(inst))
         continue;
       if (inst.isTerminator())
-        terminator(frame, inst, guard);
+        terminator(frame, inst, guard, st);
       else if (auto *c = dyn_cast<CallBase>(&inst))
-        guard = call(*c, guard);
-      else
+        guard = call(*c, guard, st);
+      else if (!memoryAccess(inst, guard, st))
         enc.encode(inst);
     }
   }
@@ -206,23 +220,24 @@ private:
     return isa<Constant>(v) ? enc.value(v) : SMTExprRef();
   }
 
-  void arrive(Frame &frame, BasicBlock *pred, BasicBlock *succ, SMTExprRef guard) {
-    Arrival a{guard, {}};
+  void arrive(Frame &frame, BasicBlock *pred, BasicBlock *succ, SMTExprRef guard,
+              const memory::State &st) {
+    Arrival a{guard, {}, st};
     for (PHINode &phi : succ->phis())
       a.phiValues.push_back(enc.value(phi.getIncomingValueForBlock(pred)));
     frame.arrivals[succ].push_back(std::move(a));
   }
 
-  void terminator(Frame &frame, Instruction &term, SMTExprRef guard) {
+  void terminator(Frame &frame, Instruction &term, SMTExprRef guard, const memory::State &st) {
     BasicBlock *bb = term.getParent();
     if (auto *br = dyn_cast<BranchInst>(&term)) {
       if (br->isUnconditional() || br->getSuccessor(0) == br->getSuccessor(1)) {
-        arrive(frame, bb, br->getSuccessor(0), guard);
+        arrive(frame, bb, br->getSuccessor(0), guard, st);
         return;
       }
       SMTExprRef c = enc.value(br->getCondition());
-      arrive(frame, bb, br->getSuccessor(0), s.mkAnd(guard, c));
-      arrive(frame, bb, br->getSuccessor(1), s.mkAnd(guard, s.mkNot(c)));
+      arrive(frame, bb, br->getSuccessor(0), s.mkAnd(guard, c), st);
+      arrive(frame, bb, br->getSuccessor(1), s.mkAnd(guard, s.mkNot(c)), st);
     } else if (auto *sw = dyn_cast<SwitchInst>(&term)) {
       SMTExprRef cond = enc.value(sw->getCondition());
       SMTExprRef anyCase = s.mkBool(false);
@@ -236,10 +251,10 @@ private:
       SMTExprRef &d = taken[sw->getDefaultDest()];
       d = d ? s.mkOr(d, s.mkNot(anyCase)) : s.mkNot(anyCase);
       for (auto &[succ, t] : taken)
-        arrive(frame, bb, succ, s.mkAnd(guard, t));
+        arrive(frame, bb, succ, s.mkAnd(guard, t), st);
     } else if (auto *ret = dyn_cast<ReturnInst>(&term)) {
       Value *v = ret->getReturnValue();
-      frame.returns.push_back({guard, v ? enc.value(v) : SMTExprRef()});
+      frame.returns.push_back({guard, v ? enc.value(v) : SMTExprRef(), st});
     } else if (isa<UnreachableInst>(term)) {
       // Clang ends a block with unreachable after a call that never returns:
       // the path ends there. Anywhere else it is __builtin_unreachable,
@@ -254,7 +269,7 @@ private:
 
   // Returns the path condition after the call: unchanged, strengthened by an
   // assume, or false when the callee does not return.
-  SMTExprRef call(CallBase &c, SMTExprRef guard) {
+  SMTExprRef call(CallBase &c, SMTExprRef guard, memory::State &st) {
     // getCalledFunction() is null for an indirect call, and also for a direct
     // one whose type disagrees with the function (K&R, or across files). A
     // bodyless callee is still handled by name, as SV-COMP tasks often
@@ -272,7 +287,7 @@ private:
     std::string tag = name.str() + "@" + ir::location(c).str();
 
     if (callee->isIntrinsic()) {
-      if (enc.intrinsic(c))
+      if (enc.intrinsic(c) || memoryFunction(c, name, st))
         return guard;
       if (name.starts_with("llvm.lifetime") || name.starts_with("llvm.dbg") ||
           name == "llvm.assume")
@@ -287,7 +302,13 @@ private:
       throw Unsupported("intrinsic " + name.str());
     }
     if (!callee->isDeclaration())
-      return enter(c, *callee, guard);
+      return enter(c, *callee, guard, st);
+    if (name == "malloc" || name == "calloc") {
+      allocateHeap(c, name, guard, st);
+      return guard;
+    }
+    if (memoryFunction(c, name, st))
+      return guard;
 
     // Bodyless verifier functions, as ESBMC treats them by default: a defined
     // one is an ordinary call. An unreachability-intrinsic flag that skips
@@ -321,7 +342,7 @@ private:
   }
 
   // Walks a defined callee in a new frame.
-  SMTExprRef enter(CallBase &c, Function &callee, SMTExprRef guard) {
+  SMTExprRef enter(CallBase &c, Function &callee, SMTExprRef guard, memory::State &st) {
     if (callee.isVarArg())
       throw Unsupported("variadic function " + callee.getName().str());
     unsigned depth = std::count(stack.begin(), stack.end(), &callee);
@@ -359,12 +380,14 @@ private:
     for (Argument &arg : callee.args())
       enc.bind(&arg, actuals[arg.getArgNo()]);
 
-    Frame frame = function(callee, guard);
+    Frame frame = function(callee, guard, st);
 
     SMTExprRef after = s.mkBool(false), result;
-    for (auto &[g, v] : frame.returns) {
-      after = frame.returns.size() == 1 ? g : s.mkOr(after, g);
-      result = result ? s.mkIte(g, v, result) : v;
+    for (unsigned i = 0; i < frame.returns.size(); ++i) {
+      Return &r = frame.returns[i];
+      after = frame.returns.size() == 1 ? r.guard : s.mkOr(after, r.guard);
+      result = result ? s.mkIte(r.guard, r.value, result) : r.value;
+      st = i ? mem.ite(r.guard, r.mem, st) : r.mem;
     }
     for (auto &[v, t] : saved)
       enc.bind(v, t);
@@ -396,8 +419,100 @@ private:
     checks.push_back({property, loc, std::move(comment), std::move(expr), index, violated});
   }
 
+  // Size operand of a memory function, which must be a constant for now.
+  static uint64_t constantSize(const Value *v, StringRef what) {
+    if (auto *ci = dyn_cast<ConstantInt>(v))
+      return ci->getZExtValue();
+    // ponytail: symbolic sizes need a loop or a quantifier; none of the
+    // spike tasks have one.
+    throw Unsupported(what.str() + " with a symbolic size");
+  }
+
+  // alloca, load and store. Returns false for any other instruction.
+  bool memoryAccess(Instruction &inst, SMTExprRef guard, memory::State &st) {
+    if (auto *a = dyn_cast<AllocaInst>(&inst)) {
+      const DataLayout &dl = a->getDataLayout();
+      unsigned bits = mem.pointerBits();
+      SMTExprRef count = enc.resize(enc.value(a->getArraySize()), bits, false);
+      SMTExprRef elem = s.mkBVFromDec(dl.getTypeAllocSize(a->getAllocatedType()), bits);
+      // A stack object that does not fit is a stack overflow, which the
+      // verifier assumes away: the path ends, like ESBMC.
+      SMTExprRef ok = s.mkAnd(s.mkNot(s.mkBVUMulOverflow(count, elem)),
+                              mem.fits(s.mkBVMul(count, elem)));
+      enc.bind(a, mem.allocate(s.mkBVMul(count, elem), a->getAlign().value(), guard));
+      s.addConstraint(s.mkImplies(guard, ok));
+      return true;
+    }
+    if (auto *l = dyn_cast<LoadInst>(&inst)) {
+      if (l->isAtomic())
+        throw Unsupported("atomic load");
+      enc.bind(l, mem.load(st, enc.value(l->getPointerOperand()), l->getType()));
+      return true;
+    }
+    if (auto *w = dyn_cast<StoreInst>(&inst)) {
+      if (w->isAtomic())
+        throw Unsupported("atomic store");
+      mem.store(st, enc.value(w->getPointerOperand()), enc.value(w->getValueOperand()),
+                w->getValueOperand()->getType());
+      return true;
+    }
+    return false;
+  }
+
+  // memcpy, memmove and memset, as intrinsics or library calls, and free.
+  // Returns false for any other function.
+  bool memoryFunction(CallBase &c, StringRef name, memory::State &st) {
+    if (name.starts_with("llvm.memcpy") || name.starts_with("llvm.memmove") ||
+        name == "memcpy" || name == "memmove") {
+      mem.copy(st, enc.value(c.getArgOperand(0)), enc.value(c.getArgOperand(1)),
+               constantSize(c.getArgOperand(2), name));
+    } else if (name.starts_with("llvm.memset") || name == "memset") {
+      mem.set(st, enc.value(c.getArgOperand(0)),
+              enc.resize(enc.value(c.getArgOperand(1)), 8, false),
+              constantSize(c.getArgOperand(2), name));
+    } else if (name == "free" || name.starts_with("llvm.stackrestore")) {
+      // ponytail: free changes nothing until memory safety tracks liveness.
+    } else if (name.starts_with("llvm.stacksave")) {
+      enc.bind(&c, enc.fresh(c.getType(), "stacksave"));
+      return true;
+    } else {
+      return false;
+    }
+    // memcpy, memmove and memset return their destination.
+    if (!c.getType()->isVoidTy())
+      enc.bind(&c, enc.value(c.getArgOperand(0)));
+    return true;
+  }
+
+  // malloc and calloc return null when the object does not fit in the
+  // address space, or calloc's size overflows (C23 7.24.3.2). Like ESBMC by
+  // default, malloc may also fail anyway unless --force-malloc-success.
+  void allocateHeap(CallBase &c, StringRef name, SMTExprRef guard, memory::State &st) {
+    unsigned bits = mem.pointerBits();
+    bool isCalloc = name == "calloc";
+    SMTExprRef size = enc.resize(enc.value(c.getArgOperand(0)), bits, false);
+    SMTExprRef ok = s.mkBool(true);
+    if (isCalloc) {
+      SMTExprRef count = size;
+      size = enc.resize(enc.value(c.getArgOperand(1)), bits, false);
+      ok = s.mkNot(s.mkBVUMulOverflow(count, size));
+      size = s.mkBVMul(count, size);
+    }
+    ok = s.mkAnd(ok, mem.fits(size));
+    if (!opts.forceMallocSuccess)
+      ok = s.mkAnd(ok, enc.fresh(Type::getInt1Ty(c.getContext()), "malloc_succeeds"));
+    SMTExprRef p = mem.allocate(size, 16, s.mkAnd(guard, ok));
+    if (isCalloc) {
+      uint64_t n = constantSize(c.getArgOperand(0), "calloc") *
+                   constantSize(c.getArgOperand(1), "calloc");
+      mem.set(st, p, s.mkBVFromDec(0, 8), n);
+    }
+    enc.bind(&c, s.mkIte(ok, p, mem.null()));
+  }
+
   const Options &opts;
   encode::Encoder &enc;
+  memory::Memory &mem;
   camada::SMTSolver &s;
   checks::Checks &checks;
   Trace &trace;
@@ -413,10 +528,10 @@ private:
 
 } // namespace
 
-Error walk(Function &entry, const Options &opts, encode::Encoder &enc, checks::Checks &checks,
-           Trace &trace) {
+Error walk(Function &entry, const Options &opts, encode::Encoder &enc, memory::Memory &mem,
+           checks::Checks &checks, Trace &trace) {
   try {
-    Walk(opts, enc, checks, trace).entry(entry);
+    Walk(opts, enc, mem, checks, trace).entry(entry);
   } catch (const Unsupported &e) {
     return createStringError(inconvertibleErrorCode(), "unsupported: %s", e.what());
   }

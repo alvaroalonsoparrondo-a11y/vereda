@@ -25,6 +25,8 @@ static cl::opt<unsigned> unwind("unwind",
                                 cl::init(0));
 static cl::opt<bool> noUnwindingAssertions(
     "no-unwinding-assertions", cl::desc("Assume the unwinding bound instead of checking it"));
+static cl::opt<bool> forceMallocSuccess("force-malloc-success",
+                                        cl::desc("malloc never returns null"));
 static cl::opt<std::string> solverName("solver", cl::desc("SMT solver: bitwuzla, z3, cvc5"),
                                        cl::init("bitwuzla"));
 
@@ -72,11 +74,17 @@ int main(int argc, char **argv) {
 
   progress("Walking " + entry);
   vereda::util::Stopwatch walkTime;
-  vereda::encode::Encoder enc(**solver);
+  std::unique_ptr<vereda::memory::Memory> memory;
+  try {
+    memory = std::make_unique<vereda::memory::Memory>(**solver, (*module)->getDataLayout());
+  } catch (const vereda::Unsupported &e) {
+    return unknown(Twine("unsupported: ") + e.what());
+  }
+  vereda::encode::Encoder enc(**solver, *memory);
   vereda::checks::Checks checks;
   vereda::walker::Trace trace;
-  vereda::walker::Options walkOpts{unwind, !noUnwindingAssertions};
-  if (Error e = vereda::walker::walk(*fn, walkOpts, enc, checks, trace))
+  vereda::walker::Options walkOpts{unwind, !noUnwindingAssertions, forceMallocSuccess};
+  if (Error e = vereda::walker::walk(*fn, walkOpts, enc, *memory, checks, trace))
     return unknown(toString(std::move(e)));
   outs() << "Walk time: " << walkTime.elapsed() << " (" << checks.size() << " checks, "
          << enc.symbolCount() << " symbols)\n";
