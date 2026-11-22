@@ -1,12 +1,12 @@
 /* RTZ (truncate toward 0): x in (1,2) -> 1 */
 #include <math.h>
 
-extern int __ESBMC_rounding_mode;
+#include <fenv.h>
 extern double __VERIFIER_nondet_double(void);
 
 int main(void)
 {
-  __ESBMC_rounding_mode = 4; /* ROUND_TO_ZERO */
+  fesetround(FE_TOWARDZERO); /* ROUND_TO_ZERO */
   double x = __VERIFIER_nondet_double();
   __VERIFIER_assume(x > 1.0 && x < 2.0);
   double y = nearbyint(x);

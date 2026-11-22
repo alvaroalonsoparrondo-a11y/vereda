@@ -1,12 +1,12 @@
 #include <float.h>
 #include <math.h>
 
-extern int __ESBMC_rounding_mode;
+#include <fenv.h>
 extern double __VERIFIER_nondet_double(void);
 
 int main(void)
 {
-  __ESBMC_rounding_mode = 0; /* ROUND_TO_EVEN */
+  fesetround(FE_TONEAREST); /* ROUND_TO_EVEN */
   double z = __VERIFIER_nondet_double();
   /* fma(DBL_MAX, 2.0, -inf): both factors are finite, so the intermediate
    * product is an exact finite real in the FMA model even though it would

@@ -1,12 +1,12 @@
 /* Already-integral input: nearbyint(3.0) == 3.0 under any rounding mode */
 #include <math.h>
 
-extern int __ESBMC_rounding_mode;
+#include <fenv.h>
 extern double __VERIFIER_nondet_double(void);
 
 int main(void)
 {
-  __ESBMC_rounding_mode = 0; /* ROUND_TO_EVEN */
+  fesetround(FE_TONEAREST); /* ROUND_TO_EVEN */
   double x = __VERIFIER_nondet_double();
   __VERIFIER_assume(x == 3.0);
   double y = nearbyint(x);

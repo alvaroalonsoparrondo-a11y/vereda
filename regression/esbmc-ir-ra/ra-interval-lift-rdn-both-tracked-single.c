@@ -27,12 +27,12 @@
  */
 #include <assert.h>
 
-extern int __ESBMC_rounding_mode;
+#include <fenv.h>
 extern float __VERIFIER_nondet_float(void);
 
 int main(void)
 {
-  __ESBMC_rounding_mode = 3; /* ROUND_TO_MINUS_INF */
+  fesetround(FE_DOWNWARD); /* ROUND_TO_MINUS_INF */
   float x = __VERIFIER_nondet_float();
   float y = __VERIFIER_nondet_float();
   float z = x + y;   /* first RDN add: both fresh -> point fallback; stored */

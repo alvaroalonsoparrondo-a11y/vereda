@@ -4,11 +4,11 @@
  * The violation is a NaN operand, for which the equality is false. */
 #include <assert.h>
 
-extern int __ESBMC_rounding_mode;
+#include <fenv.h>
 
 int main(void)
 {
-  __ESBMC_rounding_mode = 2; /* ROUND_TO_PLUS_INF */
+  fesetround(FE_UPWARD); /* ROUND_TO_PLUS_INF */
   float x = nondet_float();
   float y = nondet_float();
   float z = x * y;

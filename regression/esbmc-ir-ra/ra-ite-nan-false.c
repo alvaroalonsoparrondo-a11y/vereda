@@ -1,12 +1,12 @@
 #include <math.h>
 
-extern int __ESBMC_rounding_mode;
+#include <fenv.h>
 extern double __VERIFIER_nondet_double(void);
 extern int __VERIFIER_nondet_int(void);
 
 int main(void)
 {
-  __ESBMC_rounding_mode = 0;
+  fesetround(FE_TONEAREST);
   double x = __VERIFIER_nondet_double();
   __VERIFIER_assume(x == -1.0);
   double y = sqrt(x);

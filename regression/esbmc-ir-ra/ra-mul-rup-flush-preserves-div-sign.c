@@ -1,9 +1,9 @@
-extern int __ESBMC_rounding_mode;
+#include <fenv.h>
 extern double __VERIFIER_nondet_double(void);
 
 int main(void)
 {
-  __ESBMC_rounding_mode = 2; /* ROUND_TO_PLUS_INF: negative tiny denom flushes to 0 */
+  fesetround(FE_UPWARD); /* ROUND_TO_PLUS_INF: negative tiny denom flushes to 0 */
   double a = __VERIFIER_nondet_double();
   __VERIFIER_assume(a > 0.0 && a < 1e-162);
   double denom = (-a) * a; /* flushes to zero under RUP; the true IEEE 754

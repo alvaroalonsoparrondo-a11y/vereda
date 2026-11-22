@@ -1,12 +1,12 @@
 /* RTN (round toward -inf): x in (1,2) -> 1 */
 #include <math.h>
 
-extern int __ESBMC_rounding_mode;
+#include <fenv.h>
 extern double __VERIFIER_nondet_double(void);
 
 int main(void)
 {
-  __ESBMC_rounding_mode = 3; /* ROUND_TO_MINUS_INF */
+  fesetround(FE_DOWNWARD); /* ROUND_TO_MINUS_INF */
   double x = __VERIFIER_nondet_double();
   __VERIFIER_assume(x > 1.0 && x < 2.0);
   double y = nearbyint(x);

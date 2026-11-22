@@ -1,12 +1,12 @@
 /* NaN propagation: nearbyint(sqrt(-1)) must be NaN */
 #include <math.h>
 
-extern int __ESBMC_rounding_mode;
+#include <fenv.h>
 extern double __VERIFIER_nondet_double(void);
 
 int main(void)
 {
-  __ESBMC_rounding_mode = 0; /* ROUND_TO_EVEN */
+  fesetround(FE_TONEAREST); /* ROUND_TO_EVEN */
   double x = __VERIFIER_nondet_double();
   __VERIFIER_assume(x == -1.0);
   double y = nearbyint(sqrt(x));

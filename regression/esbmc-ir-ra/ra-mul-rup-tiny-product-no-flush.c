@@ -1,9 +1,9 @@
-extern int __ESBMC_rounding_mode;
+#include <fenv.h>
 extern double __VERIFIER_nondet_double(void);
 
 int main(void)
 {
-  __ESBMC_rounding_mode = 2; /* ROUND_TO_PLUS_INF */
+  fesetround(FE_UPWARD); /* ROUND_TO_PLUS_INF */
   double x = __VERIFIER_nondet_double();
   __VERIFIER_assume(x > 0.0 && x < 1e-162);
   double y = x * x; /* exact product is strictly positive and strictly

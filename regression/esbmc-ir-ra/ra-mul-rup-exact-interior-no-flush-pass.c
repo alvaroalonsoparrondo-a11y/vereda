@@ -1,9 +1,9 @@
-extern int __ESBMC_rounding_mode;
+#include <fenv.h>
 extern double __VERIFIER_nondet_double(void);
 
 int main(void)
 {
-  __ESBMC_rounding_mode = 2; /* ROUND_TO_PLUS_INF */
+  fesetround(FE_UPWARD); /* ROUND_TO_PLUS_INF */
   double a = __VERIFIER_nondet_double();
   double b = __VERIFIER_nondet_double();
   /* a*b == 2^-1075, exactly -- strictly between 0 and min_subnormal

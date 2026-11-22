@@ -26,12 +26,12 @@
  */
 #include <assert.h>
 
-extern int __ESBMC_rounding_mode;
+#include <fenv.h>
 extern double __VERIFIER_nondet_double(void);
 
 int main(void)
 {
-  __ESBMC_rounding_mode = 2; /* ROUND_TO_PLUS_INF */
+  fesetround(FE_UPWARD); /* ROUND_TO_PLUS_INF */
   double x = __VERIFIER_nondet_double();
   double y = __VERIFIER_nondet_double();
   double z = x - y; /* RUP sub: both fresh -> point fallback */

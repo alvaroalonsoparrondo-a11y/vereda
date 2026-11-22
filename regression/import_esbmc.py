@@ -13,14 +13,15 @@ output still hold. A rerun replaces earlier copies.
 __ESBMC_assert, __ESBMC_assume, __ESBMC_memset and __ESBMC_memcpy become
 __VERIFIER_assert, __VERIFIER_assume, memset and memcpy in the copied
 sources, and __ESBMC_unreachable becomes reach_error in tests run with
---enable-unreachability-intrinsic, a flag then dropped. ESBMC flags with
-a Vereda equivalent are translated. Flags that only turn off a check
-Vereda does not have are dropped. A test that needs any other flag keeps
-its ESBMC flags and becomes FUTURE, with the missing flags named in a
-"// Needs:" line; Vereda then rejects the flags, so the test passes
-until Vereda learns them and the script runs again. ESBMC's REQUIRES,
-CHECK_JSON, CHECK_FILE and SEED_FILE lines make a test FUTURE the same
-way, as run.py has none of them.
+--enable-unreachability-intrinsic, a flag then dropped. Setting
+__ESBMC_rounding_mode becomes fesetround() where that covers every use
+of it. ESBMC flags with a Vereda equivalent are translated. Flags that
+only turn off a check Vereda does not have are dropped. A test that
+needs any other flag keeps its ESBMC flags and becomes FUTURE, with the
+missing flags named in a "// Needs:" line; Vereda then rejects the
+flags, so the test passes until Vereda learns them and the script runs
+again. ESBMC's REQUIRES, CHECK_JSON, CHECK_FILE and SEED_FILE lines make
+a test FUTURE the same way, as run.py has none of them.
 
 Tests that read files outside their own directory are skipped, and so is
 ESBMC's "disabled" suite unless named. So are tests of features only
@@ -261,6 +262,48 @@ def rewrite_asserts(text, unreachable=False):
     return rename("".join(out), unreachable)
 
 
+# ESBMC's rounding mode is a variable its fenv.h model reads; each value it
+# can be set to, and the C rounding mode for it. 1, ties away from zero, has
+# none.
+ROUNDING_MODES = {"0": "FE_TONEAREST", "2": "FE_UPWARD", "3": "FE_DOWNWARD",
+                  "4": "FE_TOWARDZERO"}
+ROUNDING_DECL = re.compile(r"^extern int __ESBMC_rounding_mode;[ \t]*$", re.M)
+ROUNDING_SET = re.compile(r"\b__ESBMC_rounding_mode\s*=\s*([0-4])\s*;")
+
+
+def rewrite_rounding(text):
+    """Turns __ESBMC_rounding_mode = <mode>; into fesetround(FE_<mode>);
+    and the variable's declaration line into #include <fenv.h>, keeping the
+    line count. Only when that covers every use outside comments and
+    strings: a file that sets mode 1 or reads the variable is unchanged."""
+    if "__ESBMC_rounding_mode" not in text:
+        return text
+    def replace(m):
+        mode = ROUNDING_MODES.get(m.group(1))
+        return None if mode is None else f"fesetround({mode});" + "\n" * m.group(0).count("\n")
+    out, i, uses = [], 0, 0
+    while i < len(text):
+        past = skip_literal(text, i)
+        if past is not None:
+            out.append(text[i:past])
+            i = past
+            continue
+        decl = ROUNDING_DECL.match(text, i) if text[i] == "e" and (i == 0 or text[i - 1] == "\n") \
+            else None
+        assign = ROUNDING_SET.match(text, i) if text[i] == "_" else None
+        if decl:
+            out.append("#include <fenv.h>")
+            i = decl.end()
+        elif assign and replace(assign):
+            out.append(replace(assign))
+            i = assign.end()
+        else:
+            uses += text.startswith("__ESBMC_rounding_mode", i)
+            out.append(text[i])
+            i += 1
+    return text if uses else "".join(out)
+
+
 def rename_builtins(path, unreachable):
     """Renames ESBMC builtins to what Vereda models in the C files at path,
     a file or a directory; see rewrite_asserts and rename."""
@@ -270,7 +313,7 @@ def rename_builtins(path, unreachable):
     for name in files:
         with open(name, encoding="latin-1") as f:  # any bytes round-trip
             text = f.read()
-        renamed = rewrite_asserts(text, unreachable)
+        renamed = rewrite_rounding(rewrite_asserts(text, unreachable))
         if renamed != text:
             with open(name, "w", encoding="latin-1", newline="") as f:
                 f.write(renamed)

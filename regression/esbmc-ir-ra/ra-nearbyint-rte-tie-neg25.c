@@ -1,12 +1,12 @@
 /* RTE tie at -2.5: floor=-3 (odd) so round up to -2 */
 #include <math.h>
 
-extern int __ESBMC_rounding_mode;
+#include <fenv.h>
 extern double __VERIFIER_nondet_double(void);
 
 int main(void)
 {
-  __ESBMC_rounding_mode = 0; /* ROUND_TO_EVEN */
+  fesetround(FE_TONEAREST); /* ROUND_TO_EVEN */
   double x = __VERIFIER_nondet_double();
   __VERIFIER_assume(x == -2.5);
   double y = nearbyint(x);

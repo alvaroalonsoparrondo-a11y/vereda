@@ -1,6 +1,6 @@
 extern double __VERIFIER_nondet_double(void);
 extern int __VERIFIER_nondet_int(void);
-extern int __ESBMC_rounding_mode;
+#include <fenv.h>
 
 int main(void)
 {
@@ -17,7 +17,7 @@ int main(void)
    * -0.0 as interchangeable, per IEEE 754 ==, and arbitrarily keeps one
    * branch's identity -- reordering the ternary's branches flips the
    * result. Neither form is a soundly-handled merge.) */
-  __ESBMC_rounding_mode = 0; /* ROUND_TO_EVEN, concrete */
+  fesetround(FE_TONEAREST); /* ROUND_TO_EVEN, concrete */
   double x = __VERIFIER_nondet_double();
   __VERIFIER_assume(x > 0.0);
   int c = __VERIFIER_nondet_int();
