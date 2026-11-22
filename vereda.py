@@ -19,8 +19,14 @@ CLANG_FLAGS = [
     # C11 lets the compiler assume loops without side effects terminate;
     # clang would mark them mustprogress and the binary rejects that.
     "-fno-finite-loops",
-    # Old-style C calls undeclared functions; clang 16+ makes that an error.
+    # Old C, as SV-COMP's CIL and kernel sources are: clang 15 and later make
+    # these hard errors. ESBMC relaxes the same set (clang_c_language.cpp).
     "-Wno-error=implicit-function-declaration",
+    "-Wno-int-conversion",
+    "-Wno-incompatible-pointer-types",
+    "-Wno-incompatible-function-pointer-types",
+    "-Wno-unknown-attributes",
+    "-fbracket-depth=1024",
     # ponytail: no -fsanitize checks until the overflow and bounds properties
     # (plan section 7.2) are encoded.
 ]

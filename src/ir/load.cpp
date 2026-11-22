@@ -111,7 +111,10 @@ Expected<std::unique_ptr<Module>> load(StringRef path, LLVMContext &ctx) {
     return std::move(e);
   // ponytail: plain instcombine; the plan wants a "careful" one that folds
   // nothing on undefined behaviour. Revisit when a folded check shows up.
-  if (Error e = runPipeline(*module, "function(instcombine,loop-simplify,lcssa)"))
+  // no-verify-fixpoint, as LLVM's own pipelines run it: a textual pipeline
+  // otherwise aborts when InstCombine needs more than one iteration.
+  if (Error e = runPipeline(*module,
+                            "function(instcombine<no-verify-fixpoint>,loop-simplify,lcssa)"))
     return std::move(e);
   stripUBAssumptions(*module);
   return module;
