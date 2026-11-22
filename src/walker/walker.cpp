@@ -134,7 +134,7 @@ private:
           it->second.clear();
           return;
         }
-        // ponytail: one solver call per iteration without --unwind; term
+        // One solver call per iteration without --unwind; term
         // folding will settle most of these without the solver.
         if (!opts.unwind && s.checkSatAssuming({reached}) == camada::CheckResult::UNSAT) {
           it->second.clear();
@@ -337,7 +337,7 @@ private:
     }
     if (name == "abort" || name == "exit" || name == "_Exit")
       return t.boolean(false);
-    // ponytail: an unknown external returns an unconstrained value. Sound
+    // An unknown external returns an unconstrained value. Sound
     // while nothing has memory; revisit with the memory model.
     if (warned.insert(callee).second)
       util::warning("no body for function " + name);
@@ -427,7 +427,7 @@ private:
   // Size operand of a memory function. A symbolic size is accepted when it
   // has one value on the path, which the solver checks; folding terms as
   // they are built will settle most of these without it.
-  // ponytail: a size with several values needs a loop or a quantifier.
+  // A size with several values needs a loop or a quantifier.
   uint64_t constantSize(const Value *v, SMTExprRef guard, StringRef what) {
     if (auto *ci = dyn_cast<ConstantInt>(v))
       return ci->getZExtValue();
@@ -495,7 +495,7 @@ private:
               enc.resize(enc.value(c.getArgOperand(1)), 8, false),
               constantSize(c.getArgOperand(2), guard, name));
     } else if (name == "free" || name.starts_with("llvm.stackrestore")) {
-      // ponytail: free changes nothing until memory safety tracks liveness.
+      // Free changes nothing until memory safety tracks liveness.
     } else if (name.starts_with("llvm.stacksave")) {
       enc.bind(&c, enc.fresh(c.getType(), "stacksave"));
       return true;

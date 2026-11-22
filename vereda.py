@@ -27,7 +27,7 @@ CLANG_FLAGS = [
     "-Wno-incompatible-function-pointer-types",
     "-Wno-unknown-attributes",
     "-fbracket-depth=1024",
-    # ponytail: no -fsanitize checks until the overflow and bounds properties
+    # No -fsanitize checks until the overflow and bounds properties
     # (plan section 7.2) are encoded.
 ]
 

@@ -6,7 +6,7 @@ extern int __VERIFIER_nondet_int(void);
 int main(void) {
   int x = __VERIFIER_nondet_int();
   if (x == 5)
-    // ponytail: keep the call on line 10; the EXPECT above names it.
+    // Keep the call on line 10; the EXPECT above names it.
     __builtin_unreachable();
   return 0;
 }

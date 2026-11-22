@@ -41,7 +41,7 @@ void printCounterexample(camada::SMTSolver &s, const walker::Trace &trace,
   unsigned n = 0;
   // Merge points (loop heads, joins) repeat a variable's value under their
   // own debug record; print a variable only when its value changes.
-  // ponytail: this also hides a source assignment of the same value.
+  // This also hides a source assignment of the same value.
   std::map<std::string, std::string> last;
   for (const walker::Step &step : trace) {
     if (step.kind == walker::Step::Check && step.check != violated)

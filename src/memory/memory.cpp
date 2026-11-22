@@ -47,7 +47,7 @@ SMTExprRef Memory::base(SMTExprRef obj) {
 }
 
 SMTExprRef Memory::fits(SMTExprRef size) {
-  // ponytail: several objects near PTRDIFF_MAX on one path cannot all be
+  // Several objects near PTRDIFF_MAX on one path cannot all be
   // laid out, which ends that path; a real allocator would return null.
   return t.ule(size, t.lshr(t.bvnot(t.bv(0, ptrBits)),
                                     t.bv(1, ptrBits)));
@@ -92,7 +92,7 @@ SMTExprRef Memory::address(SMTExprRef p) { return t.add(base(object(p)), offset(
 
 SMTExprRef Memory::fromAddress(SMTExprRef a) {
   // The object whose range holds a, or null with offset a.
-  // ponytail: one comparison per object created so far; the static
+  // One comparison per object created so far; the static
   // points-to analysis will narrow this.
   SMTExprRef r = ptr(t.bv(0, ObjBits), a);
   for (unsigned id = 1; id < objects.size(); ++id) {
@@ -111,7 +111,7 @@ State Memory::initial() {
           t.symbol("provenance#" + n, s.mkArraySort(index, s.mkBVSort(ObjBits)))};
 }
 
-// ponytail: past this many known bytes in a state, all go to the arrays,
+// Past this many known bytes in a state, all go to the arrays,
 // which bounds the copy on write; a persistent map would lift it.
 static const size_t MaxKnown = 4096;
 
@@ -286,7 +286,7 @@ SMTExprRef Memory::load(State &st, SMTExprRef p, Type *ty) {
   for (unsigned i = 1; i < n; ++i)
     bits = t.concat(readByte(st, bytePtr(p, i)).data, bits);
   if (ty->isPointerTy()) {
-    // ponytail: the provenance of the first byte stands for the pointer.
+    // The provenance of the first byte stands for the pointer.
     SMTExprRef obj = first.prov;
     SMTExprRef isInt = t.eq(obj, t.bv(IntProvenance, ObjBits));
     return t.ite(isInt, fromAddress(bits), ptr(obj, t.sub(bits, base(obj))));
@@ -297,7 +297,7 @@ SMTExprRef Memory::load(State &st, SMTExprRef p, Type *ty) {
   return width < bits->getWidth() ? t.extract(bits, width - 1, 0) : bits;
 }
 
-// ponytail: one array store per byte, so a large zeroed global or memset is
+// One array store per byte, so a large zeroed global or memset is
 // a long store chain. A range store or a constant base would fix it.
 void Memory::set(State &st, SMTExprRef p, SMTExprRef byte, uint64_t n) {
   prepare(st, p);

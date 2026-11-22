@@ -7,7 +7,7 @@ if(NOT DOWNLOAD_DEPENDENCIES)
   return()
 endif()
 
-# ponytail: only the Linux x86_64 archives are pinned; add a URL and hash per
+# Only the Linux x86_64 archives are pinned; add a URL and hash per
 # platform when someone builds elsewhere.
 cmake_host_system_information(RESULT host_os QUERY OS_NAME)
 cmake_host_system_information(RESULT host_cpu QUERY OS_PLATFORM)

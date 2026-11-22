@@ -59,7 +59,7 @@ bool Terms::entails(const Ref &guard, const Ref &lit, unsigned depth) {
   if (guard.get() == lit.get() || isTrue(lit) || isFalse(guard))
     return true;
   const Node *n = node(guard);
-  // ponytail: deep guards give up, which only loses a fold.
+  // Deep guards give up, which only loses a fold.
   if (!n || (n->op != Op::And && n->op != Op::Or) || depth > 1000)
     return false;
   auto [it, fresh] = implied.try_emplace({guard.get(), lit.get()}, false);
@@ -268,7 +268,7 @@ Ref Terms::concat(const Ref &hi, const Ref &lo) {
   // merged global reads as ite(c, v, w), not as four byte-wise ites.
   // The result is remembered: a merged global's ite chain grows by one
   // level per join, and every load would otherwise walk all of it.
-  // ponytail: past 1000 levels the join stops, which only loses a fold and
+  // Past 1000 levels the join stops, which only loses a fold and
   // keeps the recursion off the end of the stack.
   if (nh && nl && nh->op == Op::Ite && nl->op == Op::Ite && nh->a.get() == nl->a.get() &&
       joinDepth < 1000) {
@@ -458,7 +458,7 @@ Ref Terms::smulo(const Ref &a, const Ref &b) {
 
 Ref Terms::select(const Ref &array, const Ref &index) {
   // Skip stores at other constant indices; stop at anything else.
-  // ponytail: the walk is capped, so a read past many stores stays a select.
+  // The walk is capped, so a read past many stores stays a select.
   Ref arr = array;
   if (const APInt *ci = constant(index)) {
     for (unsigned steps = 0; steps < 64; ++steps) {
