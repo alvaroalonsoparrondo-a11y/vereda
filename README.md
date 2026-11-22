@@ -30,8 +30,9 @@ planned (`docs/plan.md`, section 9).
 
 ## Build
 
-Requires CMake 3.24 or later and the zlib, libxml2 and zstd development
-packages (on Debian/Ubuntu: `zlib1g-dev libxml2-dev libzstd-dev`).
+Requires CMake 3.24 or later and the development packages for zlib, libxml2
+and zstd (for LLVM) and GMP and MPFR (for camada's solvers); on Debian/Ubuntu:
+`zlib1g-dev libxml2-dev libzstd-dev libgmp-dev libmpfr-dev`.
 
 ```sh
 cmake -S . -B build -G Ninja -DDOWNLOAD_DEPENDENCIES=ON

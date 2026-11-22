@@ -17,7 +17,7 @@ jobs:
         run: sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
 
       - name: Install packages
-        run: sudo apt-get update && sudo apt-get install -y ninja-build zlib1g-dev libxml2-dev libzstd-dev
+        run: sudo apt-get update && sudo apt-get install -y ninja-build zlib1g-dev libxml2-dev libzstd-dev libgmp-dev libmpfr-dev
 
       - name: Configure
         run: cmake -S . -B build -G Ninja -DDOWNLOAD_DEPENDENCIES=ON
