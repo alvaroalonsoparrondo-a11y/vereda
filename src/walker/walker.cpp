@@ -256,13 +256,17 @@ private:
   // assume, or false when the callee does not return.
   SMTExprRef call(CallBase &c, SMTExprRef guard) {
     // getCalledFunction() is null for an indirect call, and also for a direct
-    // one whose type disagrees with the definition (K&R, or across files).
+    // one whose type disagrees with the function (K&R, or across files). A
+    // bodyless callee is still handled by name, as SV-COMP tasks often
+    // declare __VERIFIER_nondet_int() without a prototype.
     Function *callee = c.getCalledFunction();
     if (!callee) {
-      if (auto *f = dyn_cast<Function>(c.getCalledOperand()->stripPointerCasts()))
-        throw Unsupported("call to " + f->getName().str() + " with a mismatched signature at " +
-                          ir::location(c).str());
-      throw Unsupported("indirect call at " + ir::location(c).str());
+      callee = dyn_cast<Function>(c.getCalledOperand()->stripPointerCasts());
+      if (!callee)
+        throw Unsupported("indirect call at " + ir::location(c).str());
+      if (!callee->isDeclaration())
+        throw Unsupported("call to " + callee->getName().str() +
+                          " with a mismatched signature at " + ir::location(c).str());
     }
     StringRef name = callee->getName();
     std::string tag = name.str() + "@" + ir::location(c).str();
