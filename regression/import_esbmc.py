@@ -18,13 +18,24 @@ CHECK_JSON, CHECK_FILE and SEED_FILE lines make a test FUTURE the same way,
 as run.py has none of them.
 
 Tests that read files outside their own directory are skipped, and so is
-ESBMC's "disabled" suite unless named."""
+ESBMC's "disabled" suite unless named.
+
+With --mark, each copied test then runs through run.py, and one that does
+not behave as its mode says gets the other mode: a failing CORE or THOROUGH
+test becomes FUTURE, and a FUTURE or KNOWNBUG test Vereda passes becomes
+CORE. A "// Vereda:" line says why. The suite then passes as Vereda is now,
+and a later Vereda that fixes a FUTURE test fails it until it is promoted."""
 import argparse
+import concurrent.futures
 import os
 import re
 import shlex
 import shutil
+import subprocess
 import sys
+
+sys.dont_write_bytecode = True  # no __pycache__ next to the tests
+import run  # pylint: disable=wrong-import-position
 
 # ESBMC flag -> Vereda flags; a value, if the flag takes one, follows.
 SAME = {"--no-unwinding-assertions", "--incremental-bmc", "--multi-property",
@@ -103,8 +114,9 @@ def outside(test_dir, path):
     return os.path.commonpath([real, os.path.realpath(test_dir)]) != os.path.realpath(test_dir)
 
 
-def import_test(src, dest, origin):
-    """Copies one test from src to dest. Returns "copied", or why not."""
+def import_test(src, dest, origin, tracked):
+    """Copies one test from src to dest. Returns "copied", or why not. When
+    tracked is a set of paths, files outside it are left behind."""
     with open(os.path.join(src, "test.desc"), encoding="utf-8", errors="replace") as f:
         lines = f.read().split("\n")
     if len(lines) < 3 or not lines[1].strip().endswith(".c"):
@@ -116,15 +128,26 @@ def import_test(src, dest, origin):
         return "unreadable flags"
     if any(outside(src, p) for p in paths):
         return "files outside the test"
+    if source != "main.c" and os.path.exists(os.path.join(src, "main.c")):
+        return "a main.c besides the source"
     regexes = [r.strip() for r in lines[3:] if r.strip()]
 
+    def other_tests(directory, names):
+        # A test's directory can hold other tests; each is copied on its own.
+        def untracked(p):
+            return tracked is not None and os.path.isfile(p) and os.path.realpath(p) not in tracked
+        paths = {n: os.path.join(directory, n) for n in names}
+        return {n for n, p in paths.items() if n == "test.desc" or untracked(p)
+                or os.path.exists(os.path.join(p, "test.desc"))}
+
     shutil.rmtree(dest, ignore_errors=True)
-    shutil.copytree(src, dest, ignore=shutil.ignore_patterns("test.desc"))
+    shutil.copytree(src, dest, ignore=other_tests)
     entry = os.path.join(dest, "main.c")
     if source != "main.c":
         os.replace(os.path.join(dest, source), entry)
         # The output names the source file, so the expectations follow it.
-        old = re.compile("".join(r"\\?\." if c == "." else re.escape(c) for c in source))
+        old = re.compile(r"(?<![\w-])" + "".join(r"\\?\." if c == "." else re.escape(c)
+                                                 for c in source))
         regexes = [old.sub("main.c", r) for r in regexes]
 
     with open(entry, "rb") as f:
@@ -132,6 +155,28 @@ def import_test(src, dest, origin):
     with open(entry, "ab") as f:
         f.write(newline + ("\n".join(header(origin, mode, args, regexes, src)) + "\n").encode())
     return "copied"
+
+
+def mark(tests, runner):
+    """Runs each test with runner, the run.py command line without the test,
+    and flips the mode of those that do not behave as their mode says.
+    Returns how many were flipped."""
+    def check(test):
+        return test, subprocess.run(runner + [test], stdout=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT, text=True, check=False)
+
+    flipped = 0
+    with concurrent.futures.ThreadPoolExecutor(os.cpu_count()) as pool:
+        for test, proc in pool.map(check, tests):
+            if proc.returncode == 0:
+                continue
+            mode = "CORE" if run.parse(test)["MODE"] in run.FAIL_MODES else "FUTURE"
+            lines = proc.stdout.splitlines()
+            why = ([l for l in lines if l.startswith(("unmet", "TIMEOUT"))] or lines[-1:])[:1]
+            with open(test, "a", encoding="utf-8") as f:
+                f.write("".join(f"// Vereda: {w[:150]}\n" for w in why) + f"// MODE: {mode}\n")
+            flipped += 1
+    return flipped
 
 
 def main():
@@ -142,25 +187,62 @@ def main():
     parser.add_argument("esbmc", help="ESBMC's regression directory")
     parser.add_argument("suites", nargs="*", help="suites to import (default: all but disabled)")
     parser.add_argument("--out", default=here, help="where suites go (default: regression/)")
+    parser.add_argument("--mark", action="store_true", help="run each test and flip its mode "
+                        "when Vereda disagrees; needs --bin and --clang")
+    parser.add_argument("--bin", help="the vereda binary, for --mark")
+    parser.add_argument("--clang", help="clang matching the binary, for --mark")
+    parser.add_argument("--timeout", default="60", help="seconds per test, for --mark")
     args = parser.parse_args()
+    if args.mark and not (args.bin and args.clang):
+        parser.error("--mark needs --bin and --clang")
 
+    copied_tests = import_suites(args)
+    if args.mark:
+        runner = [sys.executable, os.path.join(here, "run.py"),
+                  "--vereda", os.path.join(os.path.dirname(here), "vereda.py"),
+                  "--bin", os.path.abspath(args.bin), "--clang", os.path.abspath(args.clang),
+                  "--timeout", args.timeout]
+        print(f"{mark(copied_tests, runner)} of {len(copied_tests)} tests changed mode")
+    return 0
+
+
+def tracked_files(esbmc):
+    """The real paths of the files git tracks under esbmc, or None when it is
+    not a checkout. A working tree also has what earlier runs wrote."""
+    git = subprocess.run(["git", "-C", esbmc, "ls-files", "-z", "--full-name"],
+                         stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False)
+    if git.returncode != 0:
+        return None
+    top = subprocess.run(["git", "-C", esbmc, "rev-parse", "--show-toplevel"],
+                         stdout=subprocess.PIPE, text=True, check=True).stdout.strip()
+    return {os.path.realpath(os.path.join(top, p.decode())) for p in git.stdout.split(b"\0") if p}
+
+
+def import_suites(args):
+    """Copies the suites args names, printing a line per suite. Returns the
+    main.c of each copied test."""
     suites = args.suites or sorted(d for d in os.listdir(args.esbmc) if d != "disabled"
                                    and os.path.isdir(os.path.join(args.esbmc, d)))
+    tracked = tracked_files(args.esbmc)
+    copied_tests = []
     for suite in suites:
         counts = {}
         for root, _, names in os.walk(os.path.join(args.esbmc, suite)):
             if "test.desc" not in names:
                 continue
             rel = os.path.relpath(root, os.path.join(args.esbmc, suite))
-            dest = os.path.join(args.out, suite_name(suite), rel.replace(os.sep, "__"))
-            result = import_test(root, dest, os.path.join(suite, rel))
+            name = "root" if rel == "." else rel.replace(os.sep, "__")
+            dest = os.path.join(args.out, suite_name(suite), name)
+            result = import_test(root, dest, os.path.join(suite, rel), tracked)
             counts[result] = counts.get(result, 0) + 1
+            if result == "copied":
+                copied_tests.append(os.path.join(dest, "main.c"))
         copied = counts.pop("copied", 0)
         counts.pop("not C", None)
         if copied or counts:
             skipped = "".join(f", {n} skipped: {why}" for why, n in sorted(counts.items()))
             print(f"{suite}: {copied} copied to {suite_name(suite)}{skipped}")
-    return 0
+    return copied_tests
 
 
 if __name__ == "__main__":
