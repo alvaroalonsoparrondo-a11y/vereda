@@ -18,6 +18,9 @@ using vereda::util::progress;
 static cl::opt<std::string> inputFile(cl::Positional, cl::desc("<file.bc|file.ll>"),
                                       cl::Required);
 static cl::opt<bool> dumpIR("dump-ir", cl::desc("Print the IR after the pass list and exit"));
+static cl::opt<bool> dumpSMT("dump-smt",
+                             cl::desc("Print the formula as SMT-LIB after the walk and exit; "
+                                      "it is satisfiable exactly when some check fails"));
 static cl::opt<std::string> entry("entry", cl::desc("Entry function"), cl::init("main"));
 static cl::opt<unsigned> unwind("unwind",
                                 cl::desc("Loop iterations and recursion depth (default: "
@@ -81,6 +84,19 @@ static int bmc(Function &fn, unsigned bound) {
          << enc.symbolCount() << " symbols, peak memory " << vereda::util::peakMemory()
          << ")\n";
   outs().flush(); // solving may run until a timeout kills the process
+
+  if (dumpSMT) {
+    // The checks are assumptions in decide(); here their disjunction is
+    // asserted, so the script stands alone.
+    camada::SMTExprRef anyViolated = terms.boolean(false);
+    for (const vereda::checks::Check &c : checks)
+      anyViolated = terms.lor(anyViolated, c.violated);
+    solver.addConstraint(anyViolated);
+    std::string formula;
+    solver.dump(formula);
+    outs() << formula;
+    return 0;
+  }
 
   progress("Solving with " + solver.getSolverNameAndVersion());
   vereda::util::Stopwatch solveTime;
@@ -160,6 +176,10 @@ int main(int argc, char **argv) {
       return 1;
     }
     return bmc(*fn, unwind);
+  }
+  if (dumpSMT) {
+    errs() << argv[0] << ": --dump-smt prints one bound; use --unwind\n";
+    return 1;
   }
   if (unwind || noUnwindingAssertions) {
     errs() << argv[0] << ": --incremental-bmc chooses the bound and checks it\n";
