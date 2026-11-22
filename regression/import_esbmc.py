@@ -23,8 +23,8 @@ CHECK_JSON, CHECK_FILE and SEED_FILE lines make a test FUTURE the same
 way, as run.py has none of them.
 
 Tests that read files outside their own directory are skipped, and so is
-ESBMC's "disabled" suite unless named. So are tests of function contracts
-(__ESBMC_requires, __ESBMC_ensures and the rest, or the contract flags),
+ESBMC's "disabled" suite unless named. So are tests of features only
+ESBMC's users need, function contracts and LTL monitors (ESBMC_ONLY),
 which Vereda does not plan to support; a rerun deletes earlier copies.
 
 With --mark, each copied test then runs through run.py, and one that does
@@ -276,27 +276,38 @@ def rename_builtins(path, unreachable):
                 f.write(renamed)
 
 
-# Function contracts: ESBMC has them for annotated code; SV-COMP never
-# uses them, so Vereda leaves them to ESBMC.
-CONTRACT_FLAGS = re.compile(r"--(enforce-contract|replace-call-with-contract"
-                            r"|enforce-all-contracts|replace-all-contracts)\b")
-CONTRACT_BUILTINS = re.compile(rb"\b__ESBMC_(requires|ensures|assigns|old|old_raw|return_value"
-                               rb"|is_fresh|contract)\b")
+# Features ESBMC has for its own users that SV-COMP never uses, so Vereda
+# leaves them to ESBMC: (reason, flags, builtins). A test that names any of
+# them is not imported.
+ESBMC_ONLY = [
+    ("function contracts",
+     re.compile(r"--(enforce-contract|replace-call-with-contract"
+                r"|enforce-all-contracts|replace-all-contracts)\b"),
+     re.compile(rb"\b__ESBMC_(requires|ensures|assigns|old|old_raw|return_value"
+                rb"|is_fresh|contract)\b")),
+    ("LTL monitors",
+     re.compile(r"--ltl\b"),
+     re.compile(rb"\b__ESBMC_(register_monitor|switch_to_monitor|switch_from_monitor"
+                rb"|kill_monitor|ltl_sample|property__ltl2ba\w*|really_atomic_\w+)\b")),
+]
 
 
-def uses_contracts(src, args):
-    """Whether the test in src, run with args, uses function contracts.
+def esbmc_only(src, args):
+    """The ESBMC-only feature the test in src, run with args, uses, or None.
     Directories of other tests inside src are not looked at."""
-    if CONTRACT_FLAGS.search(args):
-        return True
+    for reason, flags, _ in ESBMC_ONLY:
+        if flags.search(args):
+            return reason
     for root, dirs, names in os.walk(src):
         dirs[:] = [d for d in dirs if not os.path.exists(os.path.join(root, d, "test.desc"))]
         for n in names:
             if n.endswith((".c", ".h", ".i")):
                 with open(os.path.join(root, n), "rb") as f:
-                    if CONTRACT_BUILTINS.search(f.read()):
-                        return True
-    return False
+                    text = f.read()
+                for reason, _, builtins in ESBMC_ONLY:
+                    if builtins.search(text):
+                        return reason
+    return None
 
 
 def import_test(src, dest, origin, tracked):
@@ -314,11 +325,12 @@ def import_test(src, dest, origin, tracked):
         return "unreadable flags"
     if any(outside(src, p) for p in paths):
         return "files outside the test"
-    if uses_contracts(src, args):
+    reason = esbmc_only(src, args)
+    if reason:
         shutil.rmtree(dest, ignore_errors=True)  # an earlier copy
         if os.path.exists(dest + ".c"):
             os.remove(dest + ".c")
-        return "function contracts"
+        return reason
     regexes = [r.strip() for r in lines[3:] if r.strip()]
 
     entry = copy_files(src, dest, source, tracked)
