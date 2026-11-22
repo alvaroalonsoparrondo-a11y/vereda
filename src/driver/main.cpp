@@ -9,6 +9,8 @@
 
 #include <llvm/Config/llvm-config.h>
 #include <llvm/Support/CommandLine.h>
+#include <llvm/Support/FileSystem.h>
+#include <llvm/Support/Path.h>
 #include <llvm/Support/WithColor.h>
 #include <llvm/Support/raw_ostream.h>
 
@@ -24,6 +26,9 @@ static cl::opt<bool> dumpSMTOnly("dump-smt-only",
                                           "it is satisfiable exactly when some check fails"));
 static cl::opt<bool> dumpSMTToo("dump-smt-too",
                                 cl::desc("Print the formula as SMT-LIB after the walk, then solve"));
+static cl::opt<std::string> dumpDir("dump-dir",
+                                    cl::desc("Write the --dump-* output to files in this directory "
+                                             "(ir.ll, formula.smt2) instead of printing it"));
 static cl::opt<std::string> entry("entry", cl::desc("Entry function"), cl::init("main"));
 static cl::opt<unsigned> unwind("unwind",
                                 cl::desc("Loop iterations and recursion depth (default: "
@@ -44,6 +49,29 @@ static cl::opt<std::string> solverName("solver", cl::desc("SMT solver: bitwuzla,
 static void printVersion(raw_ostream &os) {
   os << "Vereda " VEREDA_VERSION " (LLVM " LLVM_VERSION_STRING ", camada " VEREDA_CAMADA_VERSION
         ")\n";
+}
+
+// Prints a dump, or writes it to name in --dump-dir. Returns false on a
+// write error, already reported.
+static bool dump(StringRef name, function_ref<void(raw_ostream &)> write) {
+  if (dumpDir.empty()) {
+    write(outs());
+    return true;
+  }
+  SmallString<128> path(dumpDir);
+  sys::path::append(path, name);
+  std::error_code ec = sys::fs::create_directories(dumpDir);
+  if (!ec) {
+    raw_fd_ostream os(path, ec);
+    if (!ec)
+      write(os);
+  }
+  if (ec) {
+    errs() << "vereda: cannot write " << path << ": " << ec.message() << "\n";
+    return false;
+  }
+  outs() << "Wrote " << path << "\n";
+  return true;
 }
 
 static int unknown(const Twine &reason) {
@@ -99,7 +127,9 @@ static int bmc(Function &fn, unsigned bound) {
     std::string formula;
     solver.dump(formula);
     solver.pop();
-    outs() << formula;
+    std::string name = incrementalBMC ? "formula-k" + std::to_string(bound) + ".smt2" : "formula.smt2";
+    if (!dump(name, [&](raw_ostream &os) { os << formula; }))
+      return 1;
     if (dumpSMTOnly)
       return 0;
   }
@@ -153,6 +183,10 @@ static int bmc(Function &fn, unsigned bound) {
 int main(int argc, char **argv) {
   cl::SetVersionPrinter(printVersion);
   cl::ParseCommandLineOptions(argc, argv, "Vereda: LLVM-IR verifier\n");
+  if (dumpDir.getNumOccurrences() && !dumpIROnly && !dumpIRToo && !dumpSMTOnly && !dumpSMTToo) {
+    errs() << argv[0] << ": --dump-dir needs a --dump-* flag\n";
+    return 1;
+  }
 
   progress("Loading " + inputFile);
   vereda::util::Stopwatch loadTime;
@@ -167,7 +201,8 @@ int main(int argc, char **argv) {
          << (*module)->getTargetTriple().str() << "\n";
   outs() << "IR preparation time: " << loadTime.elapsed() << "\n";
   if (dumpIROnly || dumpIRToo) {
-    (*module)->print(outs(), nullptr);
+    if (!dump("ir.ll", [&](raw_ostream &os) { (*module)->print(os, nullptr); }))
+      return 1;
     if (dumpIROnly)
       return 0;
   }
