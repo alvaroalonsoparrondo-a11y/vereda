@@ -19,7 +19,8 @@ vereda/
 │   │                    incremental BMC
 │   ├── memory/          (object, offset) pointers, object table, byte arrays per
 │   │                    partition, load/store encoding
-│   ├── encode/          instruction → camada terms, folding, nondet tagging
+│   ├── encode/          instruction → camada terms, folding (terms.h, which
+│   │                    memory also builds with), nondet tagging
 │   ├── checks/          property checks: reachability, deref, free, overflow,
 │   │                    memcleanup, termination. Each check tagged with property
 │   │                    and location.

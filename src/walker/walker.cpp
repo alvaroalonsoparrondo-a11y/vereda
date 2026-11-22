@@ -71,7 +71,7 @@ class Walk {
 public:
   Walk(const Options &opts, encode::Encoder &enc, memory::Memory &mem, checks::Checks &checks,
        Trace &trace)
-      : opts(opts), enc(enc), mem(mem), s(enc.solver()), checks(checks), trace(trace) {}
+      : opts(opts), enc(enc), mem(mem), t(enc.terms()), s(enc.solver()), checks(checks), trace(trace) {}
 
   void entry(Function &f) {
     for (Argument &arg : f.args())
@@ -80,7 +80,7 @@ public:
     mem.allocateGlobals(m);
     memory::State st = mem.initial();
     mem.initialise(st, m, [this](const Constant *c) { return enc.value(c); });
-    function(f, s.mkBool(true), st);
+    function(f, t.boolean(true), st);
   }
 
 private:
@@ -170,7 +170,7 @@ private:
   SMTExprRef anyGuard(const SmallVectorImpl<Arrival> &arrivals) {
     SMTExprRef g = arrivals[0].guard;
     for (unsigned i = 1; i < arrivals.size(); ++i)
-      g = s.mkOr(g, arrivals[i].guard);
+      g = t.lor(g, arrivals[i].guard);
     return g;
   }
 
@@ -188,11 +188,12 @@ private:
     for (PHINode &phi : bb.phis()) {
       SMTExprRef r = arrivals[0].phiValues[p];
       for (unsigned i = 1; i < arrivals.size(); ++i)
-        r = s.mkIte(arrivals[i].guard, arrivals[i].phiValues[p], r);
+        r = t.ite(arrivals[i].guard, arrivals[i].phiValues[p], r);
       enc.bind(&phi, r);
       ++p;
     }
 
+    mem.setContext(guard);
     for (Instruction &inst : bb) {
       for (const DbgRecord &rec : inst.getDbgRecordRange())
         if (std::optional<ir::DbgAssign> a = ir::dbgAssign(rec))
@@ -202,8 +203,10 @@ private:
         continue;
       if (inst.isTerminator())
         terminator(frame, inst, guard, st);
-      else if (auto *c = dyn_cast<CallBase>(&inst))
+      else if (auto *c = dyn_cast<CallBase>(&inst)) {
         guard = call(*c, guard, st);
+        mem.setContext(guard); // the callee's blocks set their own
+      }
       else if (!memoryAccess(inst, guard, st))
         enc.encode(inst);
     }
@@ -222,6 +225,8 @@ private:
 
   void arrive(Frame &frame, BasicBlock *pred, BasicBlock *succ, SMTExprRef guard,
               const memory::State &st) {
+    if (t.isFalse(guard)) // an edge folded away is not walked
+      return;
     Arrival a{guard, {}, st};
     for (PHINode &phi : succ->phis())
       a.phiValues.push_back(enc.value(phi.getIncomingValueForBlock(pred)));
@@ -236,22 +241,22 @@ private:
         return;
       }
       SMTExprRef c = enc.value(br->getCondition());
-      arrive(frame, bb, br->getSuccessor(0), s.mkAnd(guard, c), st);
-      arrive(frame, bb, br->getSuccessor(1), s.mkAnd(guard, s.mkNot(c)), st);
+      arrive(frame, bb, br->getSuccessor(0), t.land(guard, c), st);
+      arrive(frame, bb, br->getSuccessor(1), t.land(guard, t.lnot(c)), st);
     } else if (auto *sw = dyn_cast<SwitchInst>(&term)) {
       SMTExprRef cond = enc.value(sw->getCondition());
-      SMTExprRef anyCase = s.mkBool(false);
+      SMTExprRef anyCase = t.boolean(false);
       MapVector<BasicBlock *, SMTExprRef> taken; // in case order, for a stable formula
       for (const auto &c : sw->cases()) {
-        SMTExprRef eq = s.mkEqual(cond, enc.value(c.getCaseValue()));
-        anyCase = s.mkOr(anyCase, eq);
-        SMTExprRef &t = taken[c.getCaseSuccessor()];
-        t = t ? s.mkOr(t, eq) : eq;
+        SMTExprRef eq = t.eq(cond, enc.value(c.getCaseValue()));
+        anyCase = t.lor(anyCase, eq);
+        SMTExprRef &to = taken[c.getCaseSuccessor()];
+        to = to ? t.lor(to, eq) : eq;
       }
       SMTExprRef &d = taken[sw->getDefaultDest()];
-      d = d ? s.mkOr(d, s.mkNot(anyCase)) : s.mkNot(anyCase);
-      for (auto &[succ, t] : taken)
-        arrive(frame, bb, succ, s.mkAnd(guard, t), st);
+      d = d ? t.lor(d, t.lnot(anyCase)) : t.lnot(anyCase);
+      for (auto &[succ, to] : taken)
+        arrive(frame, bb, succ, t.land(guard, to), st);
     } else if (auto *ret = dyn_cast<ReturnInst>(&term)) {
       Value *v = ret->getReturnValue();
       frame.returns.push_back({guard, v ? enc.value(v) : SMTExprRef(), st});
@@ -293,11 +298,11 @@ private:
           name == "llvm.assume")
         return guard;
       if (name == "llvm.trap") // __builtin_trap: an abnormal end, not an error, as in ESBMC
-        return s.mkBool(false);
+        return t.boolean(false);
       if (name == "llvm.ubsantrap") { // a clang sanitizer check failed
         auto *code = cast<ConstantInt>(c.getArgOperand(0));
         assertion(c, guard, ir::sanitizerCheck(code->getZExtValue()), "");
-        return s.mkBool(false);
+        return t.boolean(false);
       }
       throw Unsupported("intrinsic " + name.str());
     }
@@ -319,19 +324,19 @@ private:
     }
     if (name == "__VERIFIER_assume") {
       trace.push_back({Step::Assumption, guard, ir::location(c), ir::callArgumentText(c), {}});
-      return s.mkAnd(guard, enc.isTrue(c.getArgOperand(0)));
+      return t.land(guard, enc.isTrue(c.getArgOperand(0)));
     }
     if (name == "__assert_fail" || name == "reach_error" || name == "__VERIFIER_error") {
       assertion(c, guard, name.str(), "");
-      return s.mkBool(false);
+      return t.boolean(false);
     }
     if (name == "__VERIFIER_assert") {
-      assertion(c, s.mkAnd(guard, s.mkNot(enc.isTrue(c.getArgOperand(0)))), name.str(),
+      assertion(c, t.land(guard, t.lnot(enc.isTrue(c.getArgOperand(0)))), name.str(),
                 ir::callArgumentText(c));
       return guard;
     }
     if (name == "abort" || name == "exit" || name == "_Exit")
-      return s.mkBool(false);
+      return t.boolean(false);
     // ponytail: an unknown external returns an unconstrained value. Sound
     // while nothing has memory; revisit with the memory model.
     if (warned.insert(callee).second)
@@ -360,7 +365,7 @@ private:
       if (cut) { // no path continues; the result only has to be bound
         if (!c.getType()->isVoidTy())
           enc.bind(&c, enc.fresh(c.getType(), "unwound"));
-        return s.mkBool(false);
+        return t.boolean(false);
       }
     }
 
@@ -371,26 +376,26 @@ private:
     SmallVector<std::pair<const Value *, SMTExprRef>, 0> saved;
     if (depth > 0) {
       for (Argument &arg : callee.args())
-        if (SMTExprRef t = enc.bound(&arg))
-          saved.push_back({&arg, t});
+        if (SMTExprRef term = enc.bound(&arg))
+          saved.push_back({&arg, term});
       for (Instruction &inst : instructions(callee))
-        if (SMTExprRef t = enc.bound(&inst))
-          saved.push_back({&inst, t});
+        if (SMTExprRef term = enc.bound(&inst))
+          saved.push_back({&inst, term});
     }
     for (Argument &arg : callee.args())
       enc.bind(&arg, actuals[arg.getArgNo()]);
 
     Frame frame = function(callee, guard, st);
 
-    SMTExprRef after = s.mkBool(false), result;
+    SMTExprRef after = t.boolean(false), result;
     for (unsigned i = 0; i < frame.returns.size(); ++i) {
       Return &r = frame.returns[i];
-      after = frame.returns.size() == 1 ? r.guard : s.mkOr(after, r.guard);
-      result = result ? s.mkIte(r.guard, r.value, result) : r.value;
+      after = frame.returns.size() == 1 ? r.guard : t.lor(after, r.guard);
+      result = result ? t.ite(r.guard, r.value, result) : r.value;
       st = i ? mem.ite(r.guard, r.mem, st) : r.mem;
     }
-    for (auto &[v, t] : saved)
-      enc.bind(v, t);
+    for (auto &[v, term] : saved)
+      enc.bind(v, term);
     if (!c.getType()->isVoidTy())
       enc.bind(&c, result ? result : enc.fresh(c.getType(), "noreturn"));
     return after;
@@ -413,7 +418,7 @@ private:
     auto [it, inserted] = claims.try_emplace(key, checks.size());
     trace.push_back({Step::Check, violated, loc, "", {}, false, it->second});
     if (!inserted) {
-      checks[it->second].violated = s.mkOr(checks[it->second].violated, violated);
+      checks[it->second].violated = t.lor(checks[it->second].violated, violated);
       return;
     }
     checks.push_back({property, loc, std::move(comment), std::move(expr), index, violated});
@@ -427,13 +432,18 @@ private:
     if (auto *ci = dyn_cast<ConstantInt>(v))
       return ci->getZExtValue();
     SMTExprRef size = enc.value(v);
+    if (const APInt *c = t.constant(size)) {
+      if (c->ugt(MaxBytes))
+        throw Unsupported(what.str() + " of " + std::to_string(c->getLimitedValue()) + " bytes");
+      return c->getZExtValue();
+    }
     if (s.checkSatAssuming({guard}) != camada::CheckResult::SAT)
       return 0; // the path is infeasible: no bytes to write
     auto model = s.getBVUnsigned(size);
     if (!model)
       throw Unsupported(what.str() + " with a symbolic size");
     uint64_t value = model.value();
-    SMTExprRef other = s.mkNot(s.mkEqual(size, s.mkBVFromDec(value, size->getWidth())));
+    SMTExprRef other = t.lnot(t.eq(size, t.bv(value, size->getWidth())));
     if (s.checkSatAssuming({guard, other}) != camada::CheckResult::UNSAT)
       throw Unsupported(what.str() + " with a symbolic size");
     if (value > MaxBytes)
@@ -448,13 +458,13 @@ private:
       const DataLayout &dl = a->getDataLayout();
       unsigned bits = mem.pointerBits();
       SMTExprRef count = enc.resize(enc.value(a->getArraySize()), bits, false);
-      SMTExprRef elem = s.mkBVFromDec(dl.getTypeAllocSize(a->getAllocatedType()), bits);
+      SMTExprRef elem = t.bv(dl.getTypeAllocSize(a->getAllocatedType()), bits);
       // A stack object that does not fit is a stack overflow, which the
       // verifier assumes away: the path ends, like ESBMC.
-      SMTExprRef ok = s.mkAnd(s.mkNot(s.mkBVUMulOverflow(count, elem)),
-                              mem.fits(s.mkBVMul(count, elem)));
-      enc.bind(a, mem.allocate(s.mkBVMul(count, elem), a->getAlign().value(), guard));
-      s.addConstraint(s.mkImplies(guard, ok));
+      SMTExprRef ok = t.land(t.lnot(t.umulo(count, elem)),
+                              mem.fits(t.mul(count, elem)));
+      enc.bind(a, mem.allocate(t.mul(count, elem), a->getAlign().value(), guard));
+      s.addConstraint(t.implies(guard, ok));
       return true;
     }
     if (auto *l = dyn_cast<LoadInst>(&inst)) {
@@ -505,28 +515,29 @@ private:
     unsigned bits = mem.pointerBits();
     bool isCalloc = name == "calloc";
     SMTExprRef size = enc.resize(enc.value(c.getArgOperand(0)), bits, false);
-    SMTExprRef ok = s.mkBool(true);
+    SMTExprRef ok = t.boolean(true);
     if (isCalloc) {
       SMTExprRef count = size;
       size = enc.resize(enc.value(c.getArgOperand(1)), bits, false);
-      ok = s.mkNot(s.mkBVUMulOverflow(count, size));
-      size = s.mkBVMul(count, size);
+      ok = t.lnot(t.umulo(count, size));
+      size = t.mul(count, size);
     }
-    ok = s.mkAnd(ok, mem.fits(size));
+    ok = t.land(ok, mem.fits(size));
     if (!opts.forceMallocSuccess)
-      ok = s.mkAnd(ok, enc.fresh(Type::getInt1Ty(c.getContext()), "malloc_succeeds"));
-    SMTExprRef p = mem.allocate(size, 16, s.mkAnd(guard, ok));
+      ok = t.land(ok, enc.fresh(Type::getInt1Ty(c.getContext()), "malloc_succeeds"));
+    SMTExprRef p = mem.allocate(size, 16, t.land(guard, ok));
     if (isCalloc) {
       uint64_t n = constantSize(c.getArgOperand(0), guard, "calloc") *
                    constantSize(c.getArgOperand(1), guard, "calloc");
-      mem.set(st, p, s.mkBVFromDec(0, 8), n);
+      mem.set(st, p, t.bv(0, 8), n);
     }
-    enc.bind(&c, s.mkIte(ok, p, mem.null()));
+    enc.bind(&c, t.ite(ok, p, mem.null()));
   }
 
   const Options &opts;
   encode::Encoder &enc;
   memory::Memory &mem;
+  encode::Terms &t;
   camada::SMTSolver &s;
   checks::Checks &checks;
   Trace &trace;

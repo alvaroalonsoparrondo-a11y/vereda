@@ -3,6 +3,7 @@
 // integers is one bitvector with its fields packed from the low bits up.
 // Pointers are the memory stage's (object, offset) bitvectors.
 #pragma once
+#include "encode/terms.h"
 #include "memory/memory.h"
 #include "util/unsupported.h"
 #include <camada/camada.h>
@@ -21,8 +22,9 @@ using vereda::Unsupported;
 
 class Encoder {
 public:
-  Encoder(camada::SMTSolver &solver, memory::Memory &mem) : s(solver), mem(mem) {}
+  Encoder(Terms &t, memory::Memory &mem) : t(t), s(t.solver()), mem(mem) {}
   camada::SMTSolver &solver() { return s; }
+  Terms &terms() { return t; }
   unsigned symbolCount() const { return freshCount; }
 
   camada::SMTSortRef sort(llvm::Type *ty);
@@ -48,11 +50,11 @@ public:
 private:
   camada::SMTExprRef toBool(camada::SMTExprRef bv);
   camada::SMTExprRef fromBool(camada::SMTExprRef b, unsigned width);
-  camada::SMTExprRef constant(const llvm::APInt &v);
   camada::SMTExprRef binary(unsigned opcode, const llvm::Value *lhs, const llvm::Value *rhs);
   camada::SMTExprRef castTo(unsigned opcode, const llvm::Value *op, llvm::Type *dst);
   camada::SMTExprRef gep(const llvm::GEPOperator &g);
 
+  Terms &t;
   camada::SMTSolver &s;
   memory::Memory &mem;
   llvm::DenseMap<const llvm::Value *, camada::SMTExprRef> env;

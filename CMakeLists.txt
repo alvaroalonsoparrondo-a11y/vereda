@@ -32,6 +32,7 @@ add_library(libvereda STATIC
   src/ir/load.cpp
   src/ir/source.cpp
   src/encode/encoder.cpp
+  src/encode/terms.cpp
   src/memory/memory.cpp
   src/walker/walker.cpp
   src/solver/solver.cpp

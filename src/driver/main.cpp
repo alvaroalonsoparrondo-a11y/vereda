@@ -74,13 +74,14 @@ int main(int argc, char **argv) {
 
   progress("Walking " + entry);
   vereda::util::Stopwatch walkTime;
+  vereda::encode::Terms terms(**solver);
   std::unique_ptr<vereda::memory::Memory> memory;
   try {
-    memory = std::make_unique<vereda::memory::Memory>(**solver, (*module)->getDataLayout());
+    memory = std::make_unique<vereda::memory::Memory>(terms, (*module)->getDataLayout());
   } catch (const vereda::Unsupported &e) {
     return unknown(Twine("unsupported: ") + e.what());
   }
-  vereda::encode::Encoder enc(**solver, *memory);
+  vereda::encode::Encoder enc(terms, *memory);
   vereda::checks::Checks checks;
   vereda::walker::Trace trace;
   vereda::walker::Options walkOpts{unwind, !noUnwindingAssertions, forceMallocSuccess};
@@ -91,6 +92,7 @@ int main(int argc, char **argv) {
   outs() << "Walk time: " << walkTime.elapsed() << " (" << checks.size() << " checks, "
          << enc.symbolCount() << " symbols, peak memory " << vereda::util::peakMemory()
          << ")\n";
+  outs().flush(); // solving may run until a timeout kills the process
 
   progress("Solving with " + (*solver)->getSolverNameAndVersion());
   vereda::util::Stopwatch solveTime;
