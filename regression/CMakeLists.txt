@@ -35,6 +35,8 @@ foreach(suite IN LISTS suites)
     # run.py stops the run itself, so that a timeout can be an expected
     # failure; ctest's limit is only a backstop.
     math(EXPR backstop "${timeout} + 60")
-    set_tests_properties("${suite}/${name}" PROPERTIES LABELS "${suite}" TIMEOUT "${backstop}")
+    # run.py exits 77 for a KNOWNBUG or FUTURE test that fails as expected.
+    set_tests_properties("${suite}/${name}" PROPERTIES LABELS "${suite}" TIMEOUT "${backstop}"
+                         SKIP_RETURN_CODE 77)
   endforeach()
 endforeach()

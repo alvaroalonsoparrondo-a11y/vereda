@@ -9,7 +9,8 @@ describes it:
     // FILES: a.c b.c                        extra sources, relative to the test
 
 IR files use ';' instead of '//'. KNOWNBUG and FUTURE tests are expected to
-fail; the run then passes exactly when some expectation does not hold. A run
+fail; the run then passes, with exit code 77 so that ctest calls it skipped,
+exactly when some expectation does not hold. A run
 past --timeout counts as output that meets no expectation.
 The tool runs in a fresh temporary directory, so output files never land in
 the source tree."""
@@ -23,6 +24,9 @@ import tempfile
 
 HEADER = re.compile(r"^\s*(?://|;)\s*(RUN|EXPECT|EXPECT-NOT|MODE|FILES):\s*(.*?)\s*$")
 FAIL_MODES = ("KNOWNBUG", "FUTURE")
+# Exit code of a KNOWNBUG or FUTURE test that fails as expected; ctest
+# reports it as skipped (SKIP_RETURN_CODE in CMakeLists.txt).
+SKIPPED = 77
 
 
 def parse(path):
@@ -84,7 +88,9 @@ def main():
             print(f"{desc['MODE']} test passed unexpectedly; promote it to CORE")
         for u in unmet:
             print("unmet", u)
-    return 0 if ok else 1
+    if not ok:
+        return 1
+    return SKIPPED if expected_to_fail else 0
 
 
 if __name__ == "__main__":

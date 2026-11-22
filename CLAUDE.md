@@ -48,7 +48,7 @@ drives `regression/run.py`:
 // FILES: helper.c                 extra sources next to the test
 ```
 
-KNOWNBUG and FUTURE tests pass only while some expectation fails; when one starts
+KNOWNBUG and FUTURE tests show as skipped while some expectation fails; when one starts
 passing, promote it to CORE. New test files need a cmake re-configure to be picked up
 (the glob uses CONFIGURE_DEPENDS, so `cmake --build` usually handles it).
 `regression/import_esbmc.py <esbmc>/regression [suite ...]` imports ESBMC's C tests,

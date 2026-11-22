@@ -190,7 +190,7 @@ def mark(tests, runner):
     flipped = 0
     with concurrent.futures.ThreadPoolExecutor(os.cpu_count()) as pool:
         for test, proc in pool.map(check, tests):
-            if proc.returncode == 0:
+            if proc.returncode in (0, run.SKIPPED):
                 continue
             mode = "CORE" if run.parse(test)["MODE"] in run.FAIL_MODES else "FUTURE"
             lines = proc.stdout.splitlines()
