@@ -80,8 +80,8 @@ hardware task that also needs fshl and the two irreducible ones.
 - **altera_jtaguart** (833 instructions): memory, plus two inline asm MMIO
   accessors (`movl` memory to register, and register to memory: a 32-bit
   load and store) and a call to `printk`, a variadic function defined in the
-  task. No C library calls beyond malloc and free. The best driver
-  candidate.
+  task. No C library calls beyond malloc and free. Out of the spike, since
+  inline asm is not supported (decided 2026-11-21).
 - **fuzzle 30x30 and 40x40**: pure integer recursion, so Vereda runs them
   today. ESBMC solved both in 2026; they regressed only in the 2027 run.
 - **sfc and amdgpu** (66k and 135k instructions): need everything above,
@@ -89,7 +89,7 @@ hardware task that also needs fshl and the two irreducible ones.
 
 ## Proposed spike set
 
-Tasks that need memory and nothing else, plus altera:
+Tasks that need memory and nothing else:
 
 | Task | Category | Instructions |
 |---|---|---|
@@ -99,7 +99,6 @@ Tasks that need memory and nothing else, plus altera:
 | SpamAssassin-loop.i.v+cfa-reducer | Loops | 133 |
 | uthash_JEN_nondet_test1-1 | uthash | 618 |
 | pals_floodmax.3.1.ufo.BOUNDED-6 | Sequentialized | 751 |
-| altera_jtaguart | named driver | 833 |
 | tdh_sys_config (cover_entry_havoc_object) | Intel TDX | 5,299 |
 | Problem14 | ECA | 328,520 |
 | Problem08_label00, Problem102_label00 | ECA | 936,032 |
@@ -112,11 +111,7 @@ size test: close to a million instructions after the pass list.
 - (object, offset) pointers, one byte array, globals with initialisers,
   alloca, malloc and free, load, store, GEP, memcpy, memset, memmove,
   ptrtoint and inttoptr.
-- Two inline asm forms: the `movl` MMIO load and store. Any other asm
-  havocs the memory its operands point to and returns a nondet value, which
-  over-approximates.
-- A call to a defined variadic function whose body never calls va_start:
-  drop the extra arguments.
 
-Left for later: indirect calls, floats, irreducible control flow, atomics,
-wide integers, the bit intrinsics, and the C library models.
+Not supported: inline asm, so a task that uses it stays UNKNOWN. Left for
+later: variadic functions, indirect calls, floats, irreducible control flow,
+atomics, wide integers, the bit intrinsics, and the C library models.
