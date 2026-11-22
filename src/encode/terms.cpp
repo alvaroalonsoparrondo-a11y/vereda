@@ -476,6 +476,47 @@ Ref Terms::select(const Ref &array, const Ref &index) {
   return make({Op::Select, arr, index});
 }
 
+bool Terms::arithmetic(const Ref &e) {
+  // Iterative, as an ite chain can be deeper than the stack. A read from an
+  // array is a leaf: what was stored there is the solver's business only
+  // when the read needs it.
+  auto inner = [this](const camada::SMTExpr *p) -> const Node * {
+    auto it = nodes.find(p);
+    return it == nodes.end() || it->second.op == Op::Select ? nullptr : &it->second;
+  };
+  auto own = [](Op op) {
+    return op == Op::Mul || op == Op::UDiv || op == Op::SDiv || op == Op::URem || op == Op::SRem;
+  };
+  auto known = [&](const camada::SMTExpr *p) { return !inner(p) || arith.count(p); };
+  auto value = [&](const camada::SMTExpr *p) { return inner(p) && arith.at(p); };
+  std::vector<const camada::SMTExpr *> stack{e.get()};
+  while (!stack.empty()) {
+    const camada::SMTExpr *p = stack.back();
+    if (known(p)) {
+      stack.pop_back();
+      continue;
+    }
+    const Node &n = *inner(p);
+    auto raw = [](const Ref &r) { return r ? r.get() : nullptr; };
+    const camada::SMTExpr *kids[] = {raw(n.a), raw(n.b), raw(n.c)};
+    bool ready = true;
+    if (!own(n.op))
+      for (const camada::SMTExpr *k : kids)
+        if (k && !known(k)) {
+          stack.push_back(k);
+          ready = false;
+        }
+    if (!ready)
+      continue;
+    stack.pop_back();
+    bool r = own(n.op);
+    for (const camada::SMTExpr *k : kids)
+      r = r || (k && value(k));
+    arith.emplace(p, r);
+  }
+  return value(e.get());
+}
+
 Ref Terms::store(const Ref &array, const Ref &index, const Ref &value) {
   return make({Op::Store, array, index, value});
 }

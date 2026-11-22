@@ -2,6 +2,7 @@
 
 #include "util/unsupported.h"
 #include <llvm/IR/GlobalVariable.h>
+#include <set>
 
 using namespace llvm;
 using camada::SMTExprRef;
@@ -210,30 +211,39 @@ void Memory::writeByte(State &st, SMTExprRef at, const State::Cell &c) {
     flush(st);
 }
 
-State Memory::ite(SMTExprRef c, const State &a, const State &b) {
-  State r{t.ite(c, a.data, b.data), t.ite(c, a.prov, b.prov), a.known};
-  if (a.known == b.known)
-    return r;
-  // A byte known on one side only reads the other side's arrays.
-  static const State::Known none;
-  const auto &ka = a.known ? *a.known : none, &kb = b.known ? *b.known : none;
+State Memory::ite(SMTExprRef c, const State &a0, const State &b0) {
+  if (a0.known == b0.known)
+    return {t.ite(c, a0.data, b0.data), t.ite(c, a0.prov, b0.prov), a0.known};
+  // An object whose bytes would become a choice between two values that
+  // multiply or divide goes to the arrays on both sides instead. There the
+  // solver bit-blasts a stored value only where a read needs it; as a choice,
+  // all of them up front (RERS Problem14 ran out of memory).
+  State a = a0, b = b0;
+  std::map<Key, std::pair<State::Cell, State::Cell>> sides;
+  std::set<uint64_t> moved;
+  for (const State *st : {&a, &b})
+    if (st->known)
+      for (const auto &e : *st->known) {
+        auto [it, added] = sides.try_emplace(e.first);
+        if (!added)
+          continue;
+        // A byte known on one side only reads the other side's arrays,
+        // which the flushes below change only at other objects.
+        it->second = {readByte(a, ptr(e.first)), readByte(b, ptr(e.first))};
+        const SMTExprRef &x = it->second.first.data, &y = it->second.second.data;
+        if (x.get() != y.get() && (t.arithmetic(x) || t.arithmetic(y)))
+          moved.insert(e.first.first);
+      }
+  for (uint64_t object : moved) {
+    flush(a, object);
+    flush(b, object);
+  }
   auto known = std::make_shared<State::Known>();
-  auto byteOf = [&](const State &st, const State::Known &k, const Key &key) {
-    auto it = k.find(key);
-    return it != k.end() ? it->second
-                         : readByte(st, ptr(key));
-  };
-  auto merge = [&](const Key &key) {
-    if (known->count(key))
-      return;
-    State::Cell x = byteOf(a, ka, key), y = byteOf(b, kb, key);
-    known->emplace(key, State::Cell{t.ite(c, x.data, y.data), t.ite(c, x.prov, y.prov)});
-  };
-  for (const auto &e : ka)
-    merge(e.first);
-  for (const auto &e : kb)
-    merge(e.first);
-  r.known = std::move(known);
+  for (const auto &[key, xy] : sides)
+    if (!moved.count(key.first))
+      known->emplace(key, State::Cell{t.ite(c, xy.first.data, xy.second.data),
+                                      t.ite(c, xy.first.prov, xy.second.prov)});
+  State r{t.ite(c, a.data, b.data), t.ite(c, a.prov, b.prov), std::move(known)};
   if (r.known->size() > MaxKnown)
     flush(r);
   return r;

@@ -84,6 +84,8 @@ public:
   bool entails(const Ref &guard, const Ref &lit);
   // e as ite(c, x, y) with constant x and y.
   bool split(const Ref &e, Ref &c, Ref &x, Ref &y) const;
+  // Whether e multiplies, divides or takes a remainder, outside of arrays.
+  bool arithmetic(const Ref &e);
 
 private:
   enum class Op : uint8_t {
@@ -134,6 +136,7 @@ private:
   std::unordered_map<std::pair<const camada::SMTExpr *, const camada::SMTExpr *>, bool, PairHash>
       implied;
   bool entails(const Ref &guard, const Ref &lit, unsigned depth);
+  std::unordered_map<const camada::SMTExpr *, bool> arith;
 };
 
 } // namespace vereda::encode

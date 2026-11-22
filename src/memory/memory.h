@@ -11,6 +11,9 @@
 // bytes and reaches the arrays only when an access at a pointer that may
 // alias it needs them (plan, section 4.2: a load from a known store). Most
 // scalar globals and locals at a fixed address then never touch the arrays.
+// At a join, an object whose two sides hold different values that multiply,
+// divide or take a remainder goes to the arrays, so that the solver works on
+// that arithmetic only where a read needs it.
 #pragma once
 #include "encode/terms.h"
 #include <camada/camada.h>
