@@ -24,19 +24,24 @@ Expected<camada::SMTSolverRef> create(const std::string &name) {
 }
 
 Verdict decide(camada::SMTSolver &s, const checks::Checks &checks) {
+  // Assertions first, then unwinding assertions, as ESBMC's incremental BMC:
+  // a bug within the bound is reported even where a loop is not unwound.
   unsigned checked = 0;
-  for (const checks::Check &check : checks) {
-    ++checked;
-    switch (s.checkSatAssuming({check.violated})) {
-    case camada::CheckResult::SAT:
-      return {Verdict::Violated, &check, "", checked};
-    case camada::CheckResult::UNSAT:
-      break;
-    case camada::CheckResult::UNKNOWN:
-      return {Verdict::Unknown, &check, "solver answered unknown: " + s.reasonUnknownDetail(),
-              checked};
+  for (bool unwinding : {false, true})
+    for (const checks::Check &check : checks) {
+      if ((check.property != checks::Property::Assertion) != unwinding)
+        continue;
+      ++checked;
+      switch (s.checkSatAssuming({check.violated})) {
+      case camada::CheckResult::SAT:
+        return {Verdict::Violated, &check, "", checked};
+      case camada::CheckResult::UNSAT:
+        break;
+      case camada::CheckResult::UNKNOWN:
+        return {Verdict::Unknown, &check, "solver answered unknown: " + s.reasonUnknownDetail(),
+                checked};
+      }
     }
-  }
   return {Verdict::Safe, nullptr, "", checked};
 }
 

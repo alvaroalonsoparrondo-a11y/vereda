@@ -17,8 +17,9 @@ struct Verdict {
   unsigned checked = 0;                 // checks decided before stopping
 };
 
-// Asks the solver about each check in order under its own assumption and
-// stops at the first satisfiable one, whose model stays available.
+// Asks the solver about each check under its own assumption, assertions
+// before unwinding assertions, and stops at the first satisfiable one,
+// whose model stays available.
 Verdict decide(camada::SMTSolver &s, const checks::Checks &checks);
 
 } // namespace vereda::solver

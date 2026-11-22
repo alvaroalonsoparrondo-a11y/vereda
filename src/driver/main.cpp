@@ -86,13 +86,17 @@ int main(int argc, char **argv) {
   vereda::walker::Options walkOpts{unwind, !noUnwindingAssertions, forceMallocSuccess};
   if (Error e = vereda::walker::walk(*fn, walkOpts, enc, *memory, checks, trace))
     return unknown(toString(std::move(e)));
+  // Peak memory after the walk covers the walker and the terms it built;
+  // the growth during solving is the solver's search.
   outs() << "Walk time: " << walkTime.elapsed() << " (" << checks.size() << " checks, "
-         << enc.symbolCount() << " symbols)\n";
+         << enc.symbolCount() << " symbols, peak memory " << vereda::util::peakMemory()
+         << ")\n";
 
   progress("Solving with " + (*solver)->getSolverNameAndVersion());
   vereda::util::Stopwatch solveTime;
   vereda::solver::Verdict verdict = vereda::solver::decide(**solver, checks);
-  outs() << "Solving time: " << solveTime.elapsed() << "\n";
+  outs() << "Solving time: " << solveTime.elapsed() << " (peak memory "
+         << vereda::util::peakMemory() << ")\n";
 
   if (verdict.kind == vereda::solver::Verdict::Unknown)
     return unknown(verdict.detail);

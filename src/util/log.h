@@ -1,10 +1,12 @@
 // Stage util: progress and warning lines, and a stopwatch for stage timings.
 #pragma once
 #include <llvm/ADT/Twine.h>
+#include <string>
 #include <llvm/Support/Format.h>
 #include <llvm/Support/WithColor.h>
 #include <llvm/Support/raw_ostream.h>
 #include <chrono>
+#include <sys/resource.h>
 
 namespace vereda::util {
 
@@ -29,5 +31,12 @@ public:
 private:
   std::chrono::steady_clock::time_point start;
 };
+
+// Peak resident memory of the process so far, formatted like "123 MB".
+inline std::string peakMemory() {
+  rusage usage;
+  getrusage(RUSAGE_SELF, &usage);
+  return std::to_string(usage.ru_maxrss / 1024) + " MB"; // ru_maxrss is in KB on Linux
+}
 
 } // namespace vereda::util

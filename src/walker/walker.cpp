@@ -287,7 +287,7 @@ private:
     std::string tag = name.str() + "@" + ir::location(c).str();
 
     if (callee->isIntrinsic()) {
-      if (enc.intrinsic(c) || memoryFunction(c, name, st))
+      if (enc.intrinsic(c) || memoryFunction(c, name, guard, st))
         return guard;
       if (name.starts_with("llvm.lifetime") || name.starts_with("llvm.dbg") ||
           name == "llvm.assume")
@@ -307,7 +307,7 @@ private:
       allocateHeap(c, name, guard, st);
       return guard;
     }
-    if (memoryFunction(c, name, st))
+    if (memoryFunction(c, name, guard, st))
       return guard;
 
     // Bodyless verifier functions, as ESBMC treats them by default: a defined
@@ -419,14 +419,28 @@ private:
     checks.push_back({property, loc, std::move(comment), std::move(expr), index, violated});
   }
 
-  // Size operand of a memory function, which must be a constant for now.
-  static uint64_t constantSize(const Value *v, StringRef what) {
+  // Size operand of a memory function. A symbolic size is accepted when it
+  // has one value on the path, which the solver checks; folding terms as
+  // they are built will settle most of these without it.
+  // ponytail: a size with several values needs a loop or a quantifier.
+  uint64_t constantSize(const Value *v, SMTExprRef guard, StringRef what) {
     if (auto *ci = dyn_cast<ConstantInt>(v))
       return ci->getZExtValue();
-    // ponytail: symbolic sizes need a loop or a quantifier; none of the
-    // spike tasks have one.
-    throw Unsupported(what.str() + " with a symbolic size");
+    SMTExprRef size = enc.value(v);
+    if (s.checkSatAssuming({guard}) != camada::CheckResult::SAT)
+      return 0; // the path is infeasible: no bytes to write
+    auto model = s.getBVUnsigned(size);
+    if (!model)
+      throw Unsupported(what.str() + " with a symbolic size");
+    uint64_t value = model.value();
+    SMTExprRef other = s.mkNot(s.mkEqual(size, s.mkBVFromDec(value, size->getWidth())));
+    if (s.checkSatAssuming({guard, other}) != camada::CheckResult::UNSAT)
+      throw Unsupported(what.str() + " with a symbolic size");
+    if (value > MaxBytes)
+      throw Unsupported(what.str() + " of " + std::to_string(value) + " bytes");
+    return value;
   }
+  static constexpr uint64_t MaxBytes = 1 << 20; // one store per byte
 
   // alloca, load and store. Returns false for any other instruction.
   bool memoryAccess(Instruction &inst, SMTExprRef guard, memory::State &st) {
@@ -461,15 +475,15 @@ private:
 
   // memcpy, memmove and memset, as intrinsics or library calls, and free.
   // Returns false for any other function.
-  bool memoryFunction(CallBase &c, StringRef name, memory::State &st) {
+  bool memoryFunction(CallBase &c, StringRef name, SMTExprRef guard, memory::State &st) {
     if (name.starts_with("llvm.memcpy") || name.starts_with("llvm.memmove") ||
         name == "memcpy" || name == "memmove") {
       mem.copy(st, enc.value(c.getArgOperand(0)), enc.value(c.getArgOperand(1)),
-               constantSize(c.getArgOperand(2), name));
+               constantSize(c.getArgOperand(2), guard, name));
     } else if (name.starts_with("llvm.memset") || name == "memset") {
       mem.set(st, enc.value(c.getArgOperand(0)),
               enc.resize(enc.value(c.getArgOperand(1)), 8, false),
-              constantSize(c.getArgOperand(2), name));
+              constantSize(c.getArgOperand(2), guard, name));
     } else if (name == "free" || name.starts_with("llvm.stackrestore")) {
       // ponytail: free changes nothing until memory safety tracks liveness.
     } else if (name.starts_with("llvm.stacksave")) {
@@ -503,8 +517,8 @@ private:
       ok = s.mkAnd(ok, enc.fresh(Type::getInt1Ty(c.getContext()), "malloc_succeeds"));
     SMTExprRef p = mem.allocate(size, 16, s.mkAnd(guard, ok));
     if (isCalloc) {
-      uint64_t n = constantSize(c.getArgOperand(0), "calloc") *
-                   constantSize(c.getArgOperand(1), "calloc");
+      uint64_t n = constantSize(c.getArgOperand(0), guard, "calloc") *
+                   constantSize(c.getArgOperand(1), guard, "calloc");
       mem.set(st, p, s.mkBVFromDec(0, 8), n);
     }
     enc.bind(&c, s.mkIte(ok, p, mem.null()));
