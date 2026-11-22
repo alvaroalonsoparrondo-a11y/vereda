@@ -181,8 +181,10 @@ static int bmc(Function &fn, unsigned bound) {
       if (unit != lastUnit)
         outs() << (lastUnit.empty() ? "" : "\n") << unit << "\n";
       lastUnit = unit;
-      outs() << (fails ? "  FAILED       [" : "  SUCCESS      [") << c.id() << "]  line "
-             << c.loc.line << "  " << c.comment << "\n";
+      outs() << "  ";
+      WithColor(outs(), fails ? raw_ostream::RED : raw_ostream::GREEN, /*Bold=*/true)
+          << (fails ? "FAILED" : "SUCCESS");
+      outs() << (fails ? "       [" : "      [") << c.id() << "]  line " << c.loc.line << "  " << c.comment << "\n";
     }
     outs() << "\n** " << failed << " of " << checked << " properties failed\n";
   }
