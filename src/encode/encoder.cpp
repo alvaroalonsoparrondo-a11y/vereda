@@ -4,6 +4,7 @@
 #include <llvm/IR/Constants.h>
 #include <llvm/IR/InstrTypes.h>
 #include <llvm/IR/Instructions.h>
+#include <llvm/IR/Intrinsics.h>
 #include <llvm/Support/raw_ostream.h>
 
 using namespace llvm;
@@ -26,11 +27,28 @@ static std::string describe(const Type *ty) {
   return str;
 }
 
+// Width of an integer, or of a struct of integers packed into one bitvector;
+// 0 for anything else.
+static unsigned packedWidth(Type *ty) {
+  if (ty->isIntegerTy())
+    return ty->getIntegerBitWidth();
+  auto *st = dyn_cast<StructType>(ty);
+  if (!st)
+    return 0;
+  unsigned width = 0;
+  for (Type *field : st->elements()) {
+    if (!field->isIntegerTy())
+      return 0;
+    width += field->getIntegerBitWidth();
+  }
+  return width;
+}
+
 SMTSortRef Encoder::sort(Type *ty) {
   if (ty->isIntegerTy(1))
     return s.mkBoolSort();
-  if (ty->isIntegerTy())
-    return s.mkBVSort(ty->getIntegerBitWidth());
+  if (unsigned width = packedWidth(ty))
+    return s.mkBVSort(width);
   throw Unsupported("type " + describe(ty));
 }
 
@@ -146,10 +164,40 @@ void Encoder::encode(Instruction &inst) {
     }
   } else if (isa<FreezeInst>(inst)) {
     r = value(inst.getOperand(0));
+  } else if (auto *ev = dyn_cast<ExtractValueInst>(&inst)) {
+    auto *st = dyn_cast<StructType>(ev->getAggregateOperand()->getType());
+    if (!st || !packedWidth(st) || ev->getNumIndices() != 1)
+      throw Unsupported("extractvalue " + describe(&inst));
+    unsigned field = ev->getIndices()[0], low = 0;
+    for (unsigned i = 0; i < field; ++i)
+      low += st->getElementType(i)->getIntegerBitWidth();
+    unsigned width = st->getElementType(field)->getIntegerBitWidth();
+    r = s.mkBVExtract(low + width - 1, low, value(ev->getAggregateOperand()));
+    if (width == 1)
+      r = s.mkEqual(r, s.mkBVFromDec(1, 1));
   } else {
     throw Unsupported(std::string("instruction ") + inst.getOpcodeName());
   }
   bind(&inst, r);
+}
+
+bool Encoder::intrinsic(CallBase &c) {
+  Function *f = c.getCalledFunction();
+  SMTExprRef (camada::SMTSolver::*op)(const SMTExprRef &, const SMTExprRef &) = nullptr;
+  SMTExprRef (camada::SMTSolver::*overflow)(const SMTExprRef &, const SMTExprRef &) = nullptr;
+  switch (f->getIntrinsicID()) {
+  case Intrinsic::sadd_with_overflow: op = &camada::SMTSolver::mkBVAdd; overflow = &camada::SMTSolver::mkBVSAddOverflow; break;
+  case Intrinsic::uadd_with_overflow: op = &camada::SMTSolver::mkBVAdd; overflow = &camada::SMTSolver::mkBVUAddOverflow; break;
+  case Intrinsic::ssub_with_overflow: op = &camada::SMTSolver::mkBVSub; overflow = &camada::SMTSolver::mkBVSSubOverflow; break;
+  case Intrinsic::usub_with_overflow: op = &camada::SMTSolver::mkBVSub; overflow = &camada::SMTSolver::mkBVUSubOverflow; break;
+  case Intrinsic::smul_with_overflow: op = &camada::SMTSolver::mkBVMul; overflow = &camada::SMTSolver::mkBVSMulOverflow; break;
+  case Intrinsic::umul_with_overflow: op = &camada::SMTSolver::mkBVMul; overflow = &camada::SMTSolver::mkBVUMulOverflow; break;
+  default: return false;
+  }
+  SMTExprRef a = value(c.getArgOperand(0)), b = value(c.getArgOperand(1));
+  // {result, overflow bit}: the overflow bit packs above the result.
+  bind(&c, s.mkBVConcat(fromBool((s.*overflow)(a, b), 1), (s.*op)(a, b)));
+  return true;
 }
 
 } // namespace vereda::encode

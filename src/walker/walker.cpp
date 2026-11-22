@@ -1,6 +1,7 @@
 #include "walker/walker.h"
 
 #include "ir/debug.h"
+#include "ir/sanitizer.h"
 #include "ir/source.h"
 #include "util/log.h"
 #include <llvm/ADT/DenseMap.h>
@@ -239,7 +240,14 @@ private:
     } else if (auto *ret = dyn_cast<ReturnInst>(&term)) {
       Value *v = ret->getReturnValue();
       frame.returns.push_back({guard, v ? enc.value(v) : SMTExprRef()});
-    } else if (!isa<UnreachableInst>(term)) {
+    } else if (isa<UnreachableInst>(term)) {
+      // Clang ends a block with unreachable after a call that never returns:
+      // the path ends there. Anywhere else it is __builtin_unreachable,
+      // which ESBMC checks by default.
+      auto *prev = dyn_cast_or_null<CallBase>(term.getPrevNode());
+      if (!prev || !prev->doesNotReturn())
+        assertion(term, guard, "__builtin_unreachable", "");
+    } else {
       throw Unsupported(std::string("terminator ") + term.getOpcodeName());
     }
   }
@@ -260,11 +268,18 @@ private:
     std::string tag = name.str() + "@" + ir::location(c).str();
 
     if (callee->isIntrinsic()) {
+      if (enc.intrinsic(c))
+        return guard;
       if (name.starts_with("llvm.lifetime") || name.starts_with("llvm.dbg") ||
           name == "llvm.assume")
         return guard;
-      if (name == "llvm.trap" || name == "llvm.ubsantrap")
+      if (name == "llvm.trap") // __builtin_trap: an abnormal end, not an error, as in ESBMC
         return s.mkBool(false);
+      if (name == "llvm.ubsantrap") { // a clang sanitizer check failed
+        auto *code = cast<ConstantInt>(c.getArgOperand(0));
+        assertion(c, guard, ir::sanitizerCheck(code->getZExtValue()), "");
+        return s.mkBool(false);
+      }
       throw Unsupported("intrinsic " + name.str());
     }
     if (!callee->isDeclaration())
@@ -281,13 +296,12 @@ private:
       trace.push_back({Step::Assumption, guard, ir::location(c), ir::callArgumentText(c), {}});
       return s.mkAnd(guard, enc.isTrue(c.getArgOperand(0)));
     }
-    if (name == "__assert_fail" || name == "reach_error" || name == "__VERIFIER_error" ||
-        name == "__builtin_unreachable") {
-      assertion(c, guard, "");
+    if (name == "__assert_fail" || name == "reach_error" || name == "__VERIFIER_error") {
+      assertion(c, guard, name.str(), "");
       return s.mkBool(false);
     }
     if (name == "__VERIFIER_assert") {
-      assertion(c, s.mkAnd(guard, s.mkNot(enc.isTrue(c.getArgOperand(0)))),
+      assertion(c, s.mkAnd(guard, s.mkNot(enc.isTrue(c.getArgOperand(0)))), name.str(),
                 ir::callArgumentText(c));
       return guard;
     }
@@ -355,12 +369,14 @@ private:
     return after;
   }
 
-  void assertion(const CallBase &c, SMTExprRef violated, std::string expr) {
-    unsigned &index = assertionNumber[&c];
+  // A check at inst, violated when violated holds; comment names it.
+  void assertion(const Instruction &inst, SMTExprRef violated, std::string comment,
+                 std::string expr) {
+    unsigned &index = assertionNumber[&inst];
     if (!index)
-      index = ++assertionsIn[c.getFunction()];
-    claim(checks::Property::Assertion, ir::location(c), c.getCalledFunction()->getName().str(),
-          std::move(expr), index, violated, &c);
+      index = ++assertionsIn[inst.getFunction()];
+    claim(checks::Property::Assertion, ir::location(inst), std::move(comment), std::move(expr),
+          index, violated, &inst);
   }
 
   // One claim per source construct, keyed by its instruction or loop:
@@ -384,7 +400,7 @@ private:
   DenseMap<const Function *, std::unique_ptr<FunctionInfo>> infos;
   SmallVector<const Function *, 8> stack;
   DenseMap<const void *, unsigned> claims; // source construct -> index in checks
-  DenseMap<const CallBase *, unsigned> assertionNumber;
+  DenseMap<const Instruction *, unsigned> assertionNumber;
   DenseMap<const Function *, unsigned> assertionsIn;
   DenseMap<const CallBase *, unsigned> recursionNumber;
   DenseMap<const Function *, unsigned> recursionsIn;

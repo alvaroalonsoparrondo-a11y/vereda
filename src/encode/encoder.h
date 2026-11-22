@@ -1,8 +1,10 @@
 // Stage encode: LLVM values and instructions to camada terms. i1 values are
-// Bool terms; every other integer is a bitvector of its width.
+// Bool terms; every other integer is a bitvector of its width. A struct of
+// integers is one bitvector with its fields packed from the low bits up.
 #pragma once
 #include <camada/camada.h>
 #include <llvm/ADT/DenseMap.h>
+#include <llvm/IR/InstrTypes.h>
 #include <llvm/IR/Instruction.h>
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Value.h>
@@ -30,8 +32,12 @@ public:
   camada::SMTExprRef bound(const llvm::Value *v) const { return env.lookup(v); }
   // A fresh unconstrained term of v's type, named after its origin (nondet calls, arguments).
   camada::SMTExprRef fresh(llvm::Type *ty, const std::string &name);
-  // Encodes arithmetic, comparison, cast, select and freeze, binding the result.
+  // Encodes arithmetic, comparison, cast, select, freeze and extractvalue,
+  // binding the result.
   void encode(llvm::Instruction &inst);
+  // Encodes the arithmetic intrinsics (llvm.*.with.overflow), binding the
+  // result. Returns false for any other intrinsic.
+  bool intrinsic(llvm::CallBase &c);
   // v != 0 as a Bool term, for assume and assert arguments and branch conditions.
   camada::SMTExprRef isTrue(const llvm::Value *v);
 
