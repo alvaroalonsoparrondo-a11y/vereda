@@ -19,19 +19,24 @@ endif()
 set(LLVM_RELEASE_NAME "LLVM-21.1.8-Linux-X64")
 set(LLVM_URL "https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.8/${LLVM_RELEASE_NAME}.tar.xz")
 set(LLVM_SHA256 "b3b7f2801d15d50736acea3c73982994d025b01c2f035b91ae3b49d1b575732b")
-set(CAMADA_URL "https://github.com/mikhailramalho/camada/releases/download/v0.23/camada-linux-x64.tar.gz")
-set(CAMADA_SHA256 "f3d45dc34a6f10476707ef228136b19bc4cfefbd696ca59d7c45de5b2597a3e9")
+set(CAMADA_URL "https://github.com/mikhailramalho/camada/releases/download/v0.24/camada-linux-x64.tar.gz")
+set(CAMADA_SHA256 "1640bf1dc576d0bd7106943a428de7bd667dd24d7db96f53be8b86207d3ed395")
 
 set(DEPS_DIR "${CMAKE_BINARY_DIR}/deps")
 
 # Downloads and extracts one archive into ${DEPS_DIR}/<name>. <marker> is a
-# path under it that exists only after a complete extraction, so a rerun is
-# free. The archive is kept: file(DOWNLOAD) skips a download whose file
-# already matches the hash.
+# path under it that exists only after a complete extraction. A stamp holds
+# the extracted archive's hash, so a rerun is free and a new pin re-extracts.
+# The archive is kept: file(DOWNLOAD) skips a download whose file already
+# matches the hash.
 function(download_dep name url sha256 marker)
   set(prefix "${DEPS_DIR}/${name}")
-  if(EXISTS "${prefix}/${marker}")
-    return()
+  set(stamp "${DEPS_DIR}/${name}.sha256")
+  if(EXISTS "${prefix}/${marker}" AND EXISTS "${stamp}")
+    file(READ "${stamp}" extracted)
+    if(extracted STREQUAL sha256)
+      return()
+    endif()
   endif()
   get_filename_component(archive_name "${url}" NAME)
   set(archive "${DEPS_DIR}/${archive_name}")
@@ -49,6 +54,7 @@ function(download_dep name url sha256 marker)
   if(NOT EXISTS "${prefix}/${marker}")
     message(FATAL_ERROR "${archive_name} has no ${marker}")
   endif()
+  file(WRITE "${stamp}" "${sha256}")
 endfunction()
 
 download_dep(llvm "${LLVM_URL}" "${LLVM_SHA256}"
