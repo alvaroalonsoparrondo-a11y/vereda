@@ -15,5 +15,3 @@ int main(void)
 }
 // Imported from ESBMC regression/esbmc/function_address_signal_sentinels
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

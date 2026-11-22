@@ -16,5 +16,5 @@ int main(void)
 // Imported from ESBMC regression/esbmc/function_address_signal_sentinels_fail
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^  assertion f != \(void \(\*\)\(int\)\)4096$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  assertion f != \(void \(\*\)\(int\)\)4096$
 // MODE: FUTURE

@@ -29,5 +29,3 @@ int main(void)
 }
 // Imported from ESBMC regression/cbmc/01_cbmc_Function_Pointer7
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

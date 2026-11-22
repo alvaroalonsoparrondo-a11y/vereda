@@ -63,5 +63,3 @@ int main(void)
 // Imported from ESBMC regression/esbmc/github_5296_fail
 // RUN: -m64 --incremental-bmc --force-malloc-success
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

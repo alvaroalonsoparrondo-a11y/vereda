@@ -62,7 +62,8 @@ public:
   // holds; its layout constraints bind only then. Returns its start.
   camada::SMTExprRef allocate(camada::SMTExprRef size, uint64_t align,
                               camada::SMTExprRef exists);
-  // Allocates every global of m; their initialisers go in with initialise().
+  // Allocates every global of m, and every function whose address is taken;
+  // the globals' initialisers go in with initialise().
   void allocateGlobals(const llvm::Module &m);
   camada::SMTExprRef global(const llvm::GlobalValue *g) const;
   // Writes every global's initialiser into st; valueOf encodes constants

@@ -20,5 +20,3 @@ int main(void)
 }
 // Imported from ESBMC regression/esbmc/github_8653_memset
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

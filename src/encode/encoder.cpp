@@ -78,8 +78,8 @@ SMTExprRef Encoder::value(const Value *v) {
     if (Instruction::isBinaryOp(ce->getOpcode()))
       return binary(ce->getOpcode(), ce->getOperand(0), ce->getOperand(1));
   }
-  if (isa<Function>(v))
-    throw Unsupported("function pointer " + v->getName().str());
+  if (auto *f = dyn_cast<Function>(v))
+    return mem.global(f);
   throw Unsupported("value " + describe(v));
 }
 

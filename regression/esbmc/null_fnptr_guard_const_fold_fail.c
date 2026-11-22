@@ -39,5 +39,3 @@ int main(void)
 // RUN: --unwind 4
 // EXPECT: ^.*a null entry must keep its miss path.*$
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

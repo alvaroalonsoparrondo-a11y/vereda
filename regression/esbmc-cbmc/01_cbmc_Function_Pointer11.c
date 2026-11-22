@@ -19,5 +19,3 @@ int main(int argc, char **argv)
 } 
 // Imported from ESBMC regression/cbmc/01_cbmc_Function_Pointer11
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

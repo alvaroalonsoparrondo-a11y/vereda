@@ -17,5 +17,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/03_nondet
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

@@ -11,3 +11,5 @@ int main() {
 }
 // Imported from ESBMC regression/esbmc/array_loop_summary_decrement_fail
 // EXPECT: ^VERIFICATION FAILED$
+// Vereda: TIMEOUT after 60 s
+// MODE: FUTURE

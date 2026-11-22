@@ -20,5 +20,3 @@ int main()
 // Imported from ESBMC regression/esbmc/github_8097_fnptr_recursion_bound
 // RUN: --unwind 1 --no-unwinding-assertions
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

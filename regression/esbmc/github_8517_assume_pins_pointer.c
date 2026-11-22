@@ -36,5 +36,3 @@ int main(void)
 // Imported from ESBMC regression/esbmc/github_8517_assume_pins_pointer
 // RUN: --unwind 2
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

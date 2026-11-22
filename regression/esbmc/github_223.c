@@ -1623,5 +1623,3 @@ void main(void) {
 // RUN: --force-malloc-success --unwind 1 --no-unwinding-assertions
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

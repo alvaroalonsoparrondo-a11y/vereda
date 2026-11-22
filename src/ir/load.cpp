@@ -2,6 +2,7 @@
 
 #include <llvm/IR/AttributeMask.h>
 #include <llvm/IR/Attributes.h>
+#include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/InstIterator.h>
 #include <llvm/IR/InstrTypes.h>
 #include <llvm/IR/Instructions.h>
@@ -57,6 +58,153 @@ static void stripUBAssumptions(Module &m) {
   }
 }
 
+// Whether a value of type from can stand for one of type to, as in CBMC's
+// function_is_type_compatible: integers and pointers of any width for each
+// other, other types of the same size bit for bit.
+static bool convertible(Type *from, Type *to, const DataLayout &dl) {
+  auto scalar = [](Type *ty) { return ty->isIntegerTy() || ty->isPointerTy(); };
+  if (from == to || (scalar(from) && scalar(to)))
+    return true;
+  return from->isSized() && to->isSized() && !from->isAggregateType() &&
+         !to->isAggregateType() && dl.getTypeSizeInBits(from) == dl.getTypeSizeInBits(to);
+}
+
+static Value *convert(IRBuilder<> &b, Value *v, Type *to, const DataLayout &dl) {
+  if (v->getType() == to)
+    return v;
+  // Through an integer: a pointer by its address, anything else by its bits.
+  if (v->getType()->isPointerTy())
+    v = b.CreatePtrToInt(v, dl.getIntPtrType(v->getType()));
+  else if (!v->getType()->isIntegerTy())
+    v = b.CreateBitCast(v, b.getIntNTy(dl.getTypeSizeInBits(v->getType())));
+  if (to->isPointerTy())
+    return b.CreateIntToPtr(v, to);
+  if (to->isIntegerTy())
+    return b.CreateZExtOrTrunc(v, to);
+  return b.CreateBitCast(b.CreateZExtOrTrunc(v, b.getIntNTy(dl.getTypeSizeInBits(to))), to);
+}
+
+// Whether call c may run f: the same type, the same number of parameters
+// each convertible, or no parameters at all, as a definition without a
+// prototype has. The result must convert too unless unused. A variadic call
+// is taken as typed by its arguments, as CBMC does: through a pointer
+// without a prototype, clang calls with type (...).
+static bool compatible(const CallInst &c, const Function &f, const DataLayout &dl) {
+  FunctionType *call = c.getFunctionType(), *ft = f.getFunctionType();
+  if (call == ft)
+    return true;
+  if (f.isIntrinsic() || ft->isVarArg())
+    return false;
+  if (!call->getReturnType()->isVoidTy() && !c.use_empty() &&
+      (ft->getReturnType()->isVoidTy() ||
+       !convertible(ft->getReturnType(), call->getReturnType(), dl)))
+    return false;
+  if (ft->getNumParams() == 0)
+    return true;
+  if (ft->getNumParams() != c.arg_size() ||
+      (!call->isVarArg() && call->getNumParams() != c.arg_size()))
+    return false;
+  for (unsigned i = 0; i < ft->getNumParams(); ++i)
+    if (!convertible(c.getArgOperand(i)->getType(), ft->getParamType(i), dl))
+      return false;
+  return true;
+}
+
+// A call to f with c's arguments, converted to f's parameters, and its
+// result converted to c's type, null when void, unused or never returned.
+// A call that does not return stays last before its block's end, where the
+// walker looks for it.
+static std::pair<CallInst *, Value *> callAs(IRBuilder<> &b, CallInst &c, Function &f,
+                                             const DataLayout &dl) {
+  CallInst *direct;
+  if (c.getFunctionType() == f.getFunctionType()) {
+    direct = cast<CallInst>(c.clone());
+    direct->setCalledOperand(&f);
+    direct->setTailCallKind(CallInst::TCK_None); // no longer before its ret
+    b.Insert(direct);
+  } else {
+    SmallVector<Value *, 4> args;
+    for (unsigned i = 0; i < f.arg_size(); ++i) // extra arguments are dropped
+      args.push_back(convert(b, c.getArgOperand(i), f.getArg(i)->getType(), dl));
+    direct = b.CreateCall(&f, args);
+  }
+  if (c.doesNotReturn() || f.doesNotReturn()) {
+    direct->setDoesNotReturn();
+    return {direct, nullptr};
+  }
+  if (c.getType()->isVoidTy() || f.getReturnType()->isVoidTy())
+    return {direct, nullptr};
+  return {direct, convert(b, direct, c.getType(), dl)};
+}
+
+// Indirect calls become direct ones, as CBMC's remove_function_pointers
+// pass: p(args) becomes a chain of p == @f tests, one per address-taken
+// function the call may run (see compatible), each calling f directly, and a
+// phi for the result. A p that is none of them is a function this program
+// does not define, as ESBMC's open world has it: the call goes to a function
+// without a body, so its result is unconstrained. The walker folds the
+// tests: a pointer known to be one of a few functions walks only those.
+// A direct call to a defined function of another type is converted the same
+// way.
+static void lowerCalls(Module &m) {
+  const DataLayout &dl = m.getDataLayout();
+  DenseMap<FunctionType *, Function *> unknown; // one per type, so one warning
+  SmallVector<CallInst *, 8> calls;
+  for (Function &f : m)
+    for (Instruction &inst : instructions(f))
+      if (auto *c = dyn_cast<CallInst>(&inst))
+        if (!c->isInlineAsm() && !c->getCalledFunction())
+          calls.push_back(c);
+  for (CallInst *c : calls) {
+    IRBuilder<> b(c);
+    if (auto *f = dyn_cast<Function>(c->getCalledOperand()->stripPointerCasts())) {
+      if (f->isDeclaration() || !compatible(*c, *f, dl))
+        continue; // bodyless ones go by name; the walker rejects the others
+      Value *r = callAs(b, *c, *f, dl).second;
+      if (!c->use_empty())
+        c->replaceAllUsesWith(r ? r : PoisonValue::get(c->getType()));
+      c->eraseFromParent();
+      continue;
+    }
+    BasicBlock *head = c->getParent();
+    BasicBlock *tail = head->splitBasicBlock(c, head->getName() + ".called");
+    head->getTerminator()->eraseFromParent();
+    b.SetInsertPoint(head);
+    PHINode *result = nullptr;
+    if (!c->getType()->isVoidTy())
+      result = PHINode::Create(c->getType(), 0, "", tail->begin());
+    auto branch = [&](Function &f, BasicBlock *from) {
+      b.SetInsertPoint(from);
+      auto [direct, r] = callAs(b, *c, f, dl);
+      if (direct->doesNotReturn()) {
+        b.CreateUnreachable();
+        return;
+      }
+      b.CreateBr(tail);
+      if (result)
+        result->addIncoming(r ? r : PoisonValue::get(c->getType()), b.GetInsertBlock());
+    };
+    LLVMContext &ctx = m.getContext();
+    for (Function &f : m) {
+      if (!f.hasAddressTaken(nullptr, false, true, false, false, /*IgnoreCastedDirectCall=*/true) || !compatible(*c, f, dl))
+        continue;
+      BasicBlock *call = BasicBlock::Create(ctx, "call." + f.getName(), head->getParent(), tail);
+      BasicBlock *next = BasicBlock::Create(ctx, "", head->getParent(), tail);
+      b.CreateCondBr(b.CreateICmpEQ(c->getCalledOperand(), &f), call, next);
+      branch(f, call);
+      b.SetInsertPoint(next);
+    }
+    Function *&none = unknown[c->getFunctionType()];
+    if (!none)
+      none = Function::Create(c->getFunctionType(), GlobalValue::ExternalLinkage,
+                              "__vereda_unknown_target", m);
+    branch(*none, b.GetInsertBlock());
+    if (result)
+      c->replaceAllUsesWith(result);
+    c->eraseFromParent();
+  }
+}
+
 // -fno-finite-loops should have kept these out; any left would let LoopInfo
 // and SCEV assume termination.
 static bool hasMustProgress(const Module &m) {
@@ -109,6 +257,7 @@ Expected<std::unique_ptr<Module>> load(StringRef path, LLVMContext &ctx) {
   stripUBAssumptions(*module);
   if (Error e = runPipeline(*module, "function(mem2reg,sroa)"))
     return std::move(e);
+  lowerCalls(*module); // before InstCombine, which folds tests of constants
   // Plain instcombine; the plan wants a "careful" one that folds
   // nothing on undefined behaviour. Revisit when a folded check shows up.
   // no-verify-fixpoint, as LLVM's own pipelines run it: a textual pipeline

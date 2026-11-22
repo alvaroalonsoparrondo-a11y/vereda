@@ -79,6 +79,11 @@ void Memory::allocateGlobals(const Module &m) {
     globals[&g] = allocate(t.bv(size, ptrBits), g.getPointerAlignment(dl).value(),
                            t.boolean(true));
   }
+  // A function whose address is taken is an object of one byte, so that a
+  // pointer to it is an ordinary pointer: stored, compared and called.
+  for (const Function &f : m)
+    if (f.hasAddressTaken(nullptr, false, true, false, false, /*IgnoreCastedDirectCall=*/true))
+      globals[&f] = allocate(t.bv(1, ptrBits), 1, t.boolean(true));
 }
 
 SMTExprRef Memory::global(const GlobalValue *g) const {

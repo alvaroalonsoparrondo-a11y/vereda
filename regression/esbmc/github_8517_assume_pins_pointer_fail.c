@@ -37,5 +37,5 @@ int main(void)
 // RUN: --unwind 2
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: assertion unpack\(d\) == 2
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: assertion unpack\(d\) == 2
 // MODE: FUTURE
