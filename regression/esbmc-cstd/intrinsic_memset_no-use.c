@@ -7,7 +7,7 @@
 int main()
 {
   test_type arr[array_size];
-  __ESBMC_memset(arr, 1, type_size * array_size);
+  memset(arr, 1, type_size * array_size);
   for(int i = 0; i < array_size; i++)
   {
     unsigned char *p = (unsigned char *)&arr[i];
@@ -17,5 +17,3 @@ int main()
 }
 // Imported from ESBMC regression/cstd/intrinsic_memset_no-use
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

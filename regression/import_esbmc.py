@@ -10,15 +10,17 @@ unless it already starts with "esbmc". The test.desc goes into a comment
 header at the end of the C file, so that line numbers in the expected
 output still hold. A rerun replaces earlier copies.
 
-__ESBMC_assert and __ESBMC_assume become __VERIFIER_assert and
-__VERIFIER_assume in the copied sources. ESBMC flags with a Vereda
-equivalent are translated. Flags that only turn off a check Vereda does
-not have are dropped. A test that needs any other flag keeps its ESBMC
-flags and becomes FUTURE, with the missing flags named in a "// Needs:"
-line; Vereda then rejects the flags, so the test passes until Vereda
-learns them and the script runs again. ESBMC's REQUIRES, CHECK_JSON,
-CHECK_FILE and SEED_FILE lines make a test FUTURE the same way, as
-run.py has none of them.
+__ESBMC_assert, __ESBMC_assume, __ESBMC_memset and __ESBMC_memcpy become
+__VERIFIER_assert, __VERIFIER_assume, memset and memcpy in the copied
+sources, and __ESBMC_unreachable becomes reach_error in tests run with
+--enable-unreachability-intrinsic, a flag then dropped. ESBMC flags with
+a Vereda equivalent are translated. Flags that only turn off a check
+Vereda does not have are dropped. A test that needs any other flag keeps
+its ESBMC flags and becomes FUTURE, with the missing flags named in a
+"// Needs:" line; Vereda then rejects the flags, so the test passes
+until Vereda learns them and the script runs again. ESBMC's REQUIRES,
+CHECK_JSON, CHECK_FILE and SEED_FILE lines make a test FUTURE the same
+way, as run.py has none of them.
 
 Tests that read files outside their own directory are skipped, and so is
 ESBMC's "disabled" suite unless named.
@@ -147,9 +149,20 @@ def copy_files(src, dest, source, tracked):
     return os.path.join(dest, "main.c")
 
 
-# ESBMC builtins with an SV-COMP equivalent that Vereda models. The others
+# ESBMC builtins with an equivalent that Vereda models. The others
 # (contracts, quantifiers, atomics, ...) have none and keep their names.
-BUILTINS = re.compile(r"\b__ESBMC_(assert|assume)\b")
+RENAMES = {"__ESBMC_assert": "__VERIFIER_assert", "__ESBMC_assume": "__VERIFIER_assume",
+           "__ESBMC_memset": "memset", "__ESBMC_memcpy": "memcpy"}
+# __ESBMC_unreachable() is a no-op unless this flag makes reaching it a
+# violation, as reach_error() always is in Vereda.
+UNREACHABLE_FLAG = "--enable-unreachability-intrinsic"
+
+
+def rename(text, unreachable):
+    """Renames the builtins in text; __ESBMC_unreachable too when
+    unreachable says the test runs with UNREACHABLE_FLAG."""
+    names = dict(RENAMES, **({"__ESBMC_unreachable": "reach_error"} if unreachable else {}))
+    return re.sub(r"\b(" + "|".join(names) + r")\b", lambda m: names[m.group(1)], text)
 ASSERT = re.compile(r"\b__ESBMC_assert\s*\(")
 LITERAL = re.compile(r'"((?:[^"\\\n]|\\.)*)"')
 
@@ -204,12 +217,13 @@ def message_comment(message):
     return " ".join(text.split()).replace("*/", "* /").rstrip("\\ ")
 
 
-def rewrite_asserts(text):
+def rewrite_asserts(text, unreachable=False):
     """Turns __ESBMC_assert(cond, message) into __VERIFIER_assert(cond) with
     the message as a comment: '// message' at the end of the line the call
     ends on, or '/* message */' right after the call when the rest of that
     line continues a macro or holds a comment or literal. Line numbers stay
-    as they were. In comments and strings the name changes and nothing else."""
+    as they were. In comments and strings the name changes and nothing else.
+    The other builtins are renamed as rename() says."""
     out, pending, i = [], [], 0
     while i < len(text):
         past = skip_literal(text, i)
@@ -242,20 +256,19 @@ def rewrite_asserts(text):
                 pending.append(message)
     if pending:
         out.append(" // " + "; ".join(pending))
-    return BUILTINS.sub(r"__VERIFIER_\1", "".join(out))
+    return rename("".join(out), unreachable)
 
 
-def rename_builtins(path):
-    """Renames __ESBMC_assert and __ESBMC_assume to their __VERIFIER_
-    equivalents in the C files at path, a file or a directory; see
-    rewrite_asserts for __ESBMC_assert's message."""
+def rename_builtins(path, unreachable):
+    """Renames ESBMC builtins to what Vereda models in the C files at path,
+    a file or a directory; see rewrite_asserts and rename."""
     files = [path] if os.path.isfile(path) else [
         os.path.join(root, n) for root, _, names in os.walk(path) for n in names
         if n.endswith((".c", ".h", ".i"))]
     for name in files:
         with open(name, encoding="latin-1") as f:  # any bytes round-trip
             text = f.read()
-        renamed = rewrite_asserts(text)
+        renamed = rewrite_asserts(text, unreachable)
         if renamed != text:
             with open(name, "w", encoding="latin-1", newline="") as f:
                 f.write(renamed)
@@ -281,8 +294,12 @@ def import_test(src, dest, origin, tracked):
     entry = copy_files(src, dest, source, tracked)
     if not entry:
         return "a main.c besides the source"
-    rename_builtins(entry if entry == dest + ".c" else dest)
-    args = BUILTINS.sub(r"__VERIFIER_\1", args)  # e.g. -Dldv_assume=__ESBMC_assume
+    flag = re.compile(r"(?<!\S)" + UNREACHABLE_FLAG + r"(?!\S)\s*")
+    unreachable = bool(flag.search(args))
+    rename_builtins(entry if entry == dest + ".c" else dest, unreachable)
+    # The flag's work is done in the source; -Dldv_assume=__ESBMC_assume and
+    # the like name builtins too.
+    args = rename(flag.sub("", args).strip(), unreachable)
     name = os.path.basename(entry)
     if source != name:
         # The output names the source file, so the expectations follow it.

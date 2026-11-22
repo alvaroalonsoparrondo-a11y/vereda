@@ -27,7 +27,7 @@
  *
  * Stubs (G4): none needed — harness is self-contained.
  *
- * G5 (sanity variant): replace the __ESBMC_unreachable() call with
+ * G5 (sanity variant): replace the reach_error() call with
  *   __VERIFIER_assert(0, "sanity") and confirm VERIFICATION FAILED.
  */
 
@@ -39,7 +39,7 @@ unsigned short int num_running;        /* num_threads_running             */
 unsigned short int blocked;            /* blocked_threads_count           */
 
 /* The __pyt_join logic, inlined from pthread_lib.c:1009-1025,
- * with __ESBMC_unreachable() inserted inside the `if (!ended)` body
+ * with reach_error() inserted inside the `if (!ended)` body
  * to prove C-Live. */
 static void pyt_join_inlined(unsigned int thread)
 {
@@ -47,7 +47,7 @@ static void pyt_join_inlined(unsigned int thread)
   if (!ended)
   {
     /* C-Live instrumentation: if we reach here, the branch is reachable. */
-    __ESBMC_unreachable();
+    reach_error();
 
     blocked++;
     /* Deadlock check (production assertion) */
@@ -78,8 +78,8 @@ int main(void)
   return 0;
 }
 // Imported from ESBMC regression/esbmc/pyt_join_branch_live
-// Needs: --enable-unreachability-intrinsic
-// RUN: --incremental-bmc --enable-unreachability-intrinsic --unwind 4
-// MODE: FUTURE
+// RUN: --incremental-bmc --unwind 4
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: reachability: unreachable code reached
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// MODE: FUTURE

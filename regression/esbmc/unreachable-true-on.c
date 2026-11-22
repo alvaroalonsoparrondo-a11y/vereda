@@ -2,11 +2,10 @@
 int main()
 {
 	if(nondet_bool())
-		__ESBMC_unreachable();
+		reach_error();
 }
 // Imported from ESBMC regression/esbmc/unreachable-true-on
-// Needs: --enable-unreachability-intrinsic
-// RUN: --enable-unreachability-intrinsic
-// MODE: FUTURE
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: \breachability: unreachable code reached\b
+// Vereda: unmet EXPECT: \breachability: unreachable code reached\b
+// MODE: FUTURE

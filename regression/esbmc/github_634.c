@@ -11,7 +11,7 @@ typedef struct
 
 void *zero_mem(void *buffer, unsigned int length)
 {
-  return __ESBMC_memset(buffer, 0, length);
+  return memset(buffer, 0, length);
   //return memset(buffer, 0, length);
 }
 
@@ -32,5 +32,3 @@ int main()
 // Imported from ESBMC regression/esbmc/github_634
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE
