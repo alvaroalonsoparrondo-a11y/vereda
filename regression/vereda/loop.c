@@ -1,4 +1,4 @@
-// RUN: --dump-ir
+// RUN: --dump-ir-only
 // EXPECT: phi i32
 // EXPECT-NOT: mustprogress|nsw|nuw|inbounds|optnone|noundef
 // A loop with a non-constant condition and no side effects: C11 6.8.5p6 lets

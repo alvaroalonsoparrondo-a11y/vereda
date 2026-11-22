@@ -1,6 +1,6 @@
-// --dump-smt prints the walk's formula with the checks' disjunction asserted
-// and stops before solving.
-// RUN: --dump-smt --unwind 2
+// --dump-smt-only prints the walk's formula with the checks' disjunction
+// asserted and stops before solving.
+// RUN: --dump-smt-only --unwind 2
 // EXPECT: ^\(declare-const \|nondet@
 // EXPECT: ^\(assert
 // EXPECT: ^\(check-sat\)

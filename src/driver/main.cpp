@@ -17,10 +17,13 @@ using vereda::util::progress;
 
 static cl::opt<std::string> inputFile(cl::Positional, cl::desc("<file.bc|file.ll>"),
                                       cl::Required);
-static cl::opt<bool> dumpIR("dump-ir", cl::desc("Print the IR after the pass list and exit"));
-static cl::opt<bool> dumpSMT("dump-smt",
-                             cl::desc("Print the formula as SMT-LIB after the walk and exit; "
-                                      "it is satisfiable exactly when some check fails"));
+static cl::opt<bool> dumpIROnly("dump-ir-only", cl::desc("Print the IR after the pass list and exit"));
+static cl::opt<bool> dumpIRToo("dump-ir-too", cl::desc("Print the IR after the pass list, then verify"));
+static cl::opt<bool> dumpSMTOnly("dump-smt-only",
+                                 cl::desc("Print the formula as SMT-LIB after the walk and exit; "
+                                          "it is satisfiable exactly when some check fails"));
+static cl::opt<bool> dumpSMTToo("dump-smt-too",
+                                cl::desc("Print the formula as SMT-LIB after the walk, then solve"));
 static cl::opt<std::string> entry("entry", cl::desc("Entry function"), cl::init("main"));
 static cl::opt<unsigned> unwind("unwind",
                                 cl::desc("Loop iterations and recursion depth (default: "
@@ -85,17 +88,20 @@ static int bmc(Function &fn, unsigned bound) {
          << ")\n";
   outs().flush(); // solving may run until a timeout kills the process
 
-  if (dumpSMT) {
+  if (dumpSMTOnly || dumpSMTToo) {
     // The checks are assumptions in decide(); here their disjunction is
-    // asserted, so the script stands alone.
+    // asserted, in a scope of its own, so the script stands alone.
     camada::SMTExprRef anyViolated = terms.boolean(false);
     for (const vereda::checks::Check &c : checks)
       anyViolated = terms.lor(anyViolated, c.violated);
+    solver.push();
     solver.addConstraint(anyViolated);
     std::string formula;
     solver.dump(formula);
+    solver.pop();
     outs() << formula;
-    return 0;
+    if (dumpSMTOnly)
+      return 0;
   }
 
   progress("Solving with " + solver.getSolverNameAndVersion());
@@ -160,9 +166,10 @@ int main(int argc, char **argv) {
          << ((*module)->getDataLayout().isLittleEndian() ? "little" : "big") << "-endian "
          << (*module)->getTargetTriple().str() << "\n";
   outs() << "IR preparation time: " << loadTime.elapsed() << "\n";
-  if (dumpIR) {
+  if (dumpIROnly || dumpIRToo) {
     (*module)->print(outs(), nullptr);
-    return 0;
+    if (dumpIROnly)
+      return 0;
   }
   Function *fn = (*module)->getFunction(entry);
   if (!fn || fn->isDeclaration()) {
@@ -177,8 +184,8 @@ int main(int argc, char **argv) {
     }
     return bmc(*fn, unwind);
   }
-  if (dumpSMT) {
-    errs() << argv[0] << ": --dump-smt prints one bound; use --unwind\n";
+  if (dumpSMTOnly) {
+    errs() << argv[0] << ": --dump-smt-only stops before the solver picks the bound; use --unwind\n";
     return 1;
   }
   if (unwind || noUnwindingAssertions) {

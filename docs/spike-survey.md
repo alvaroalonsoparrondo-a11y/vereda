@@ -13,7 +13,7 @@ the memory stage, find which IR features the candidate tasks use.
   fuzzle tasks, the two DeviceDriversLinux64Large tasks that timed out), plus
   out-of-memory tasks, one per sub-directory, at most 3 per category (6 for
   drivers). Concurrency is left out; the spike is single-threaded.
-- Each task went through `vereda.py --dump-ir` (front end and pass list).
+- Each task went through `vereda.py --dump-ir-only` (front end and pass list).
   A scanner listed the IR features beyond what the walker handles, and a run
   of the walker on each task recorded where it gives up.
 
