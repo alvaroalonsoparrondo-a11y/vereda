@@ -45,6 +45,19 @@ def parse(path):
     return desc
 
 
+# Lines of a failing run's output shown from each end; a long unwinding or
+# counterexample would otherwise fill the CI log.
+CLIP = 100
+
+
+def clip(out):
+    """out, with all but its first and last CLIP lines replaced by a count."""
+    lines = out.splitlines()
+    if len(lines) <= 2 * CLIP + 1:
+        return out
+    return "\n".join(lines[:CLIP] + [f"[... {len(lines) - 2 * CLIP} lines ...]"] + lines[-CLIP:])
+
+
 def main():
     """Runs the test and returns 0 when it behaves as its MODE says."""
     parser = argparse.ArgumentParser(description=__doc__)
@@ -83,7 +96,7 @@ def main():
     ok = (not unmet) != expected_to_fail
     if not ok:
         print("+", " ".join(cmd))
-        print(out)
+        print(clip(out))
         if expected_to_fail:
             print(f"{desc['MODE']} test passed unexpectedly; promote it to CORE")
         for u in unmet:
