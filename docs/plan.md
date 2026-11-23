@@ -16,8 +16,8 @@ works on LLVM IR. It is a new tool next to ESBMC, not a replacement:
 
 Long-term scope: reachability, memory safety (including memory tracking),
 overflow, termination, k-induction, correctness and violation witnesses,
-witness validation, precise concurrency, and C++. Test-Comp test generation is
-optional.
+witness validation and precise concurrency for SV-COMP; once that work is
+done, Test-Comp test generation and then C++.
 
 ## 2. Why a new tool
 
@@ -406,11 +406,10 @@ those large tasks, with no wrong verdicts. If it does not, the core bet
 
 ### After the gate
 
-Ship early inside ESBMC's SV-COMP entry: once the new engine beats ESBMC on
-some kind of program, the wrapper calls it for those. That earns points a
-year or two sooner and answers the bus-factor risk (§12). The choice may use
-only the property file and program features, never the category name, which
-the SV-COMP rules forbid as a tuning input.
+Vereda does not ship early inside ESBMC's SV-COMP entry: there is a year
+before the next SV-COMP to build it as its own tool (decided 2026-11-23).
+Stages 1 to 5 cover the SV-COMP categories; Test-Comp and C++ follow once
+that work is done.
 
 1. Memory safety and overflow.
 2. k-induction and correctness witnesses.
@@ -421,8 +420,8 @@ the SV-COMP rules forbid as a tuning input.
    and UNKNOWN otherwise, as ESBMC's Python wrapper does. Moved out of
    milestone 1 on 2026-11-23.
 5. Concurrency.
-6. C++.
-7. Optional: Test-Comp test generation.
+6. Test-Comp test generation.
+7. C++.
 
 ## 10. Estimates
 
