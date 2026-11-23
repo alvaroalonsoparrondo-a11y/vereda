@@ -459,6 +459,7 @@ Ref Terms::smulo(const Ref &a, const Ref &b) {
 Ref Terms::select(const Ref &array, const Ref &index) {
   // Skip stores at other constant indices; stop at anything else.
   // The walk is capped, so a read past many stores stays a select.
+  // A read of a constant array is its value, at any index.
   Ref arr = array;
   if (const APInt *ci = constant(index)) {
     for (unsigned steps = 0; steps < 64; ++steps) {
@@ -473,6 +474,8 @@ Ref Terms::select(const Ref &array, const Ref &index) {
       arr = n->a;
     }
   }
+  if (auto it = filled.find(arr.get()); it != filled.end())
+    return it->second.second;
   return make({Op::Select, arr, index});
 }
 
@@ -519,6 +522,12 @@ bool Terms::arithmetic(const Ref &e) {
 
 Ref Terms::store(const Ref &array, const Ref &index, const Ref &value) {
   return make({Op::Store, array, index, value});
+}
+
+Ref Terms::constArray(const camada::SMTSortRef &index, const Ref &value) {
+  Ref r = s.mkArrayConst(index, value);
+  filled.emplace(r.get(), std::make_pair(r, value));
+  return r;
 }
 
 } // namespace vereda::encode

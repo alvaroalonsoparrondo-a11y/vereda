@@ -427,16 +427,14 @@ private:
   // Size operand of a memory function. A symbolic size is accepted when it
   // has one value on the path, which the solver checks; folding terms as
   // they are built will settle most of these without it.
-  // A size with several values needs a loop or a quantifier.
+  // A size with several values needs a loop or a quantifier. Memory
+  // limits how many bytes go one at a time.
   uint64_t constantSize(const Value *v, SMTExprRef guard, StringRef what) {
     if (auto *ci = dyn_cast<ConstantInt>(v))
-      return ci->getZExtValue();
+      return ci->getLimitedValue();
     SMTExprRef size = enc.value(v);
-    if (const APInt *c = t.constant(size)) {
-      if (c->ugt(MaxBytes))
-        throw Unsupported(what.str() + " of " + std::to_string(c->getLimitedValue()) + " bytes");
-      return c->getZExtValue();
-    }
+    if (const APInt *c = t.constant(size))
+      return c->getLimitedValue();
     if (s.checkSatAssuming({guard}) != camada::CheckResult::SAT)
       return 0; // the path is infeasible: no bytes to write
     auto model = s.getBVUnsigned(size);
@@ -446,11 +444,8 @@ private:
     SMTExprRef other = t.lnot(t.eq(size, t.bv(value, size->getWidth())));
     if (s.checkSatAssuming({guard, other}) != camada::CheckResult::UNSAT)
       throw Unsupported(what.str() + " with a symbolic size");
-    if (value > MaxBytes)
-      throw Unsupported(what.str() + " of " + std::to_string(value) + " bytes");
     return value;
   }
-  static constexpr uint64_t MaxBytes = 1 << 20; // one store per byte
 
   // alloca, load and store. Returns false for any other instruction.
   bool memoryAccess(Instruction &inst, SMTExprRef guard, memory::State &st) {

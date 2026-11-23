@@ -157,10 +157,64 @@ void Memory::flush(State &st, std::optional<uint64_t> object) {
   }
   for (auto it = lo; it != hi; ++it) {
     SMTExprRef at = ptr(it->first);
-    st.data = t.store(st.data, at, it->second.data);
-    st.prov = t.store(st.prov, at, it->second.prov);
+    auto [data, prov] = arraysOf(st, it->first.first);
+    data = t.store(data, at, it->second.data);
+    prov = t.store(prov, at, it->second.prov);
   }
   st.known->erase(lo, hi);
+}
+
+State::Separate &Memory::ownSeparate(State &st) {
+  if (!st.separate)
+    st.separate = std::make_shared<State::Separate>();
+  else if (st.separate.use_count() > 1)
+    st.separate = std::make_shared<State::Separate>(*st.separate);
+  return *st.separate;
+}
+
+std::pair<SMTExprRef &, SMTExprRef &> Memory::arraysOf(State &st, uint64_t object) {
+  if (st.separate && st.separate->count(object)) {
+    State::Cell &own = ownSeparate(st)[object];
+    return {own.data, own.prov};
+  }
+  return {st.data, st.prov};
+}
+
+State::Cell Memory::readArrays(const State &st, SMTExprRef at) {
+  const APInt *obj = t.constant(object(at));
+  if (st.separate && obj)
+    if (auto it = st.separate->find(obj->getZExtValue()); it != st.separate->end())
+      return {t.select(it->second.data, at), t.select(it->second.prov, at)};
+  State::Cell r{t.select(st.data, at), t.select(st.prov, at)};
+  if (st.separate && !obj)
+    for (const auto &[o, own] : *st.separate) {
+      SMTExprRef is = t.eq(object(at), t.bv(o, ObjBits));
+      r = {t.ite(is, t.select(own.data, at), r.data), t.ite(is, t.select(own.prov, at), r.prov)};
+    }
+  return r;
+}
+
+std::shared_ptr<State::Separate> Memory::mergeSeparate(SMTExprRef c, const State &a,
+                                                       const State &b) {
+  if (a.separate == b.separate)
+    return a.separate;
+  // An object separate on one side only reads the other side's shared
+  // arrays, which hold its bytes there under the same index.
+  auto arrays = [](const State &st, uint64_t o) {
+    if (st.separate)
+      if (auto it = st.separate->find(o); it != st.separate->end())
+        return it->second;
+    return State::Cell{st.data, st.prov};
+  };
+  auto r = std::make_shared<State::Separate>();
+  for (const State *st : {&a, &b})
+    if (st->separate)
+      for (const auto &e : *st->separate)
+        if (!r->count(e.first)) {
+          State::Cell x = arrays(a, e.first), y = arrays(b, e.first);
+          (*r)[e.first] = {t.ite(c, x.data, y.data), t.ite(c, x.prov, y.prov)};
+        }
+  return r;
 }
 
 void Memory::prepare(State &st, SMTExprRef p) {
@@ -190,7 +244,7 @@ State::Cell Memory::readByte(const State &st, SMTExprRef at) {
   if (std::optional<Key> k = key(at); k && st.known)
     if (auto it = st.known->find(*k); it != st.known->end())
       return it->second;
-  return {t.select(st.data, at), t.select(st.prov, at)};
+  return readArrays(st, at);
 }
 
 void Memory::writeByte(State &st, SMTExprRef at, const State::Cell &c) {
@@ -207,8 +261,23 @@ void Memory::writeByte(State &st, SMTExprRef at, const State::Cell &c) {
   }
   std::optional<Key> k = key(at);
   if (!k) {
-    st.data = t.store(st.data, at, c.data);
-    st.prov = t.store(st.prov, at, c.prov);
+    // The shared arrays take every write that may miss the separate
+    // objects; reads of a separate object never look there.
+    const APInt *obj = t.constant(object(at));
+    bool shared = true;
+    if (st.separate)
+      for (auto &[o, own] : ownSeparate(st)) {
+        if (obj && obj->getZExtValue() != o)
+          continue;
+        SMTExprRef is = obj ? t.boolean(true) : t.eq(object(at), t.bv(o, ObjBits));
+        own.data = t.ite(is, t.store(own.data, at, c.data), own.data);
+        own.prov = t.ite(is, t.store(own.prov, at, c.prov), own.prov);
+        shared = !obj;
+      }
+    if (shared) {
+      st.data = t.store(st.data, at, c.data);
+      st.prov = t.store(st.prov, at, c.prov);
+    }
     return;
   }
   own(st)[*k] = c;
@@ -218,7 +287,8 @@ void Memory::writeByte(State &st, SMTExprRef at, const State::Cell &c) {
 
 State Memory::ite(SMTExprRef c, const State &a0, const State &b0) {
   if (a0.known == b0.known)
-    return {t.ite(c, a0.data, b0.data), t.ite(c, a0.prov, b0.prov), a0.known};
+    return {t.ite(c, a0.data, b0.data), t.ite(c, a0.prov, b0.prov), a0.known,
+            mergeSeparate(c, a0, b0)};
   // An object whose bytes would become a choice between two values that
   // multiply or divide goes to the arrays on both sides instead. There the
   // solver bit-blasts a stored value only where a read needs it; as a choice,
@@ -248,7 +318,8 @@ State Memory::ite(SMTExprRef c, const State &a0, const State &b0) {
     if (!moved.count(key.first))
       known->emplace(key, State::Cell{t.ite(c, xy.first.data, xy.second.data),
                                       t.ite(c, xy.first.prov, xy.second.prov)});
-  State r{t.ite(c, a.data, b.data), t.ite(c, a.prov, b.prov), std::move(known)};
+  State r{t.ite(c, a.data, b.data), t.ite(c, a.prov, b.prov), std::move(known),
+          mergeSeparate(c, a, b)};
   if (r.known->size() > MaxKnown)
     flush(r);
   return r;
@@ -304,7 +375,39 @@ SMTExprRef Memory::load(State &st, SMTExprRef p, Type *ty) {
 
 // One array store per byte, so a large zeroed global or memset is
 // a long store chain. A range store or a constant base would fix it.
+bool Memory::fillObject(State &st, SMTExprRef p, SMTExprRef byte, uint64_t n) {
+  SMTExprRef c, x, y;
+  if (t.split(p, c, x, y)) { // a malloc result: the context may pick a side
+    int pick = side(c);
+    if (pick < 0)
+      return false;
+    p = pick ? x : y;
+  }
+  std::optional<Key> k = key(p);
+  if (n < MinSeparate || !k || k->first == 0 || k->first >= objects.size() || k->second != 0)
+    return false;
+  const APInt *size = t.constant(objects[k->first].size);
+  if (!size || *size != n)
+    return false;
+  uint64_t o = k->first;
+  if (st.known) { // every byte is overwritten, so its known bytes are stale
+    State::Known &known = own(st);
+    known.erase(known.lower_bound({o, 0}), known.lower_bound({o + 1, 0}));
+  }
+  ownSeparate(st)[o] = {t.constArray(pointerSort(), byte),
+                        t.constArray(pointerSort(), t.bv(IntProvenance, ObjBits))};
+  return true;
+}
+
 void Memory::set(State &st, SMTExprRef p, SMTExprRef byte, uint64_t n) {
+  if (fillObject(st, p, byte, n))
+    return;
+  if (n > MaxBytes)
+    throw Unsupported("a fill of " + std::to_string(n) + " bytes, not of a whole object");
+  setBytes(st, p, byte, n);
+}
+
+void Memory::setBytes(State &st, SMTExprRef p, SMTExprRef byte, uint64_t n) {
   prepare(st, p);
   SMTExprRef prov = t.bv(IntProvenance, ObjBits);
   for (uint64_t i = 0; i < n; ++i)
@@ -312,6 +415,8 @@ void Memory::set(State &st, SMTExprRef p, SMTExprRef byte, uint64_t n) {
 }
 
 void Memory::copy(State &st, SMTExprRef dst, SMTExprRef src, uint64_t n) {
+  if (n > MaxBytes)
+    throw Unsupported("a copy of " + std::to_string(n) + " bytes");
   // Read everything first, so overlapping ranges copy as memmove does.
   prepare(st, src);
   prepare(st, dst);
@@ -330,7 +435,7 @@ void Memory::initialise(State &st, const Module &m,
     const Constant *init = g.getInitializer();
     // Static storage zeroes padding, which storeConstant does not write.
     if (hasPadding(init->getType()) && !init->isNullValue())
-      set(st, globals.lookup(&g), t.bv(0, 8),
+      fillOrSet(st, globals.lookup(&g), t.bv(0, 8),
           dl.getTypeAllocSize(init->getType()).getFixedValue());
     storeConstant(st, globals.lookup(&g), init, valueOf);
   }
@@ -352,7 +457,7 @@ void Memory::storeConstant(State &st, SMTExprRef p, const Constant *c,
   if (isa<UndefValue>(c)) // also poison: leave the contents nondet
     return;
   if (c->isNullValue()) {
-    set(st, p, t.bv(0, 8), dl.getTypeStoreSize(ty).getFixedValue());
+    fillOrSet(st, p, t.bv(0, 8), dl.getTypeStoreSize(ty).getFixedValue());
     return;
   }
   if (ty->isIntegerTy() || ty->isPointerTy() || ty->isFloatingPointTy()) {

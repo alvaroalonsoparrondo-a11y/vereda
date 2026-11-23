@@ -14,6 +14,12 @@
 // At a join, an object whose two sides hold different values that multiply,
 // divide or take a remainder goes to the arrays, so that the solver works on
 // that arithmetic only where a read needs it.
+//
+// A fill that covers a whole object of at least MinSeparate bytes (memset,
+// calloc, a zeroed global) gives the object arrays of its own, constant
+// arrays of the fill byte, indexed like the shared ones (plan, section 4.4:
+// one array per partition, here per object). A read or write at a pointer
+// whose object is not constant chooses among them by object id.
 #pragma once
 #include "encode/terms.h"
 #include <camada/camada.h>
@@ -39,6 +45,10 @@ struct State {
   // between copies of the state and copied on the first write.
   using Known = std::map<std::pair<uint64_t, uint64_t>, Cell>;
   std::shared_ptr<Known> known;
+  // Objects with arrays of their own: object id -> its data and provenance
+  // arrays. Shared between copies of the state like known.
+  using Separate = std::map<uint64_t, Cell>;
+  std::shared_ptr<Separate> separate;
 };
 
 class Memory {
@@ -83,8 +93,13 @@ public:
   // Loads and stores of integers (i1 as a byte) and pointers.
   camada::SMTExprRef load(State &st, camada::SMTExprRef p, llvm::Type *ty);
   void store(State &st, camada::SMTExprRef p, camada::SMTExprRef v, llvm::Type *ty);
+  // Writes byte to the n bytes at p. A fill of a whole object of at least
+  // MinSeparate bytes is one constant array; anything else goes byte by
+  // byte, which past MaxBytes is unsupported.
   void set(State &st, camada::SMTExprRef p, camada::SMTExprRef byte, uint64_t n);
   void copy(State &st, camada::SMTExprRef dst, camada::SMTExprRef src, uint64_t n);
+  static constexpr uint64_t MaxBytes = 1 << 20;
+  static constexpr uint64_t MinSeparate = 1024;
 
 private:
   camada::SMTExprRef ptr(camada::SMTExprRef obj, camada::SMTExprRef off);
@@ -102,6 +117,21 @@ private:
   // Moves the known bytes of object, or all known bytes, into the arrays.
   void flush(State &st, std::optional<uint64_t> object = std::nullopt);
   State::Cell readByte(const State &st, camada::SMTExprRef at);
+  // The arrays' bytes at a pointer that is not a known byte.
+  State::Cell readArrays(const State &st, camada::SMTExprRef at);
+  // The arrays that hold object's bytes in st: its own or the shared ones.
+  std::pair<camada::SMTExprRef &, camada::SMTExprRef &> arraysOf(State &st, uint64_t object);
+  State::Separate &ownSeparate(State &st);
+  std::shared_ptr<State::Separate> mergeSeparate(camada::SMTExprRef c, const State &a,
+                                                 const State &b);
+  // A fill of the whole object at p, if p is one: true when done.
+  bool fillObject(State &st, camada::SMTExprRef p, camada::SMTExprRef byte, uint64_t n);
+  void setBytes(State &st, camada::SMTExprRef p, camada::SMTExprRef byte, uint64_t n);
+  // set for initialisers: no limit, as they were written byte by byte before.
+  void fillOrSet(State &st, camada::SMTExprRef p, camada::SMTExprRef byte, uint64_t n) {
+    if (!fillObject(st, p, byte, n))
+      setBytes(st, p, byte, n);
+  }
   void writeByte(State &st, camada::SMTExprRef at, const State::Cell &c);
   void storeBytes(State &st, camada::SMTExprRef p, camada::SMTExprRef bits,
                   camada::SMTExprRef prov);

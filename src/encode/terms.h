@@ -78,6 +78,8 @@ public:
 
   Ref select(const Ref &array, const Ref &index);
   Ref store(const Ref &array, const Ref &index, const Ref &value);
+  // An array holding value at every index of the sort; a read of it folds.
+  Ref constArray(const camada::SMTSortRef &index, const Ref &value);
 
   // Whether guard entails lit by its and/or structure alone: lit is a
   // conjunct of guard, or implied by both sides of a disjunction.
@@ -137,6 +139,9 @@ private:
       implied;
   bool entails(const Ref &guard, const Ref &lit, unsigned depth);
   std::unordered_map<const camada::SMTExpr *, bool> arith;
+  // Constant arrays built here (kept alive, so the key stays theirs) and
+  // the value each holds.
+  std::unordered_map<const camada::SMTExpr *, std::pair<Ref, Ref>> filled;
 };
 
 } // namespace vereda::encode
