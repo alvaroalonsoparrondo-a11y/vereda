@@ -372,6 +372,15 @@ void Memory::storeConstant(State &st, SMTExprRef p, const Constant *c,
       storeConstant(st, bytePtr(p, i * stride), c->getAggregateElement(i), valueOf);
     return;
   }
+  // A vector's elements go where the scalarizer's element pointers read
+  // them, one alloc size apart; vectors of i1 pack bits and are not handled.
+  if (auto *vt = dyn_cast<FixedVectorType>(ty);
+      vt && dl.getTypeSizeInBits(vt->getElementType()) % 8 == 0) {
+    uint64_t stride = dl.getTypeAllocSize(vt->getElementType());
+    for (unsigned i = 0; i < vt->getNumElements(); ++i)
+      storeConstant(st, bytePtr(p, i * stride), c->getAggregateElement(i), valueOf);
+    return;
+  }
   throw Unsupported("global initialiser of this type");
 }
 

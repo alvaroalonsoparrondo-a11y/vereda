@@ -16,5 +16,3 @@ int main() {
 }
 // Imported from ESBMC regression/extensions/vector_gcc_literal_operator_int_add_2_false
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

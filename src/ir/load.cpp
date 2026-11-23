@@ -295,7 +295,8 @@ Expected<std::unique_ptr<Module>> load(StringRef path, LLVMContext &ctx) {
   // no-verify-fixpoint, as LLVM's own pipelines run it: a textual pipeline
   // otherwise aborts when InstCombine needs more than one iteration.
   if (Error e = runPipeline(*module,
-                            "function(instcombine<no-verify-fixpoint>,loop-simplify,lcssa)"))
+                            "function(instcombine<no-verify-fixpoint>,"
+                            "scalarizer<load-store;variable-insert-extract>,loop-simplify,lcssa)"))
     return std::move(e);
   stripUBAssumptions(*module);
   return module;

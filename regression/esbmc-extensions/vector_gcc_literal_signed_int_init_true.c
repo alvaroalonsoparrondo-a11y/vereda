@@ -15,5 +15,3 @@ int main() {
 }
 // Imported from ESBMC regression/extensions/vector_gcc_literal_signed_int_init_true
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

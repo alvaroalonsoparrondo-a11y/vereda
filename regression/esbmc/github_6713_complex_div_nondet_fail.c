@@ -17,5 +17,3 @@ int main(void)
 // Imported from ESBMC regression/esbmc/github_6713_complex_div_nondet_fail
 // RUN: --incremental-bmc
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

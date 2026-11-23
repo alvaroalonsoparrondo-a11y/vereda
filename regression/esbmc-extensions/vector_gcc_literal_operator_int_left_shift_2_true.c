@@ -16,5 +16,3 @@ int main() {
 }
 // Imported from ESBMC regression/extensions/vector_gcc_literal_operator_int_left_shift_2_true
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

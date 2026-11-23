@@ -16,5 +16,3 @@ int main(void)
 }
 // Imported from ESBMC regression/esbmc/array_of_vector_symbolic
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

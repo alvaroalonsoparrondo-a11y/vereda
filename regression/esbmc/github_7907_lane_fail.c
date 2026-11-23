@@ -18,5 +18,5 @@ int main(void)
 // Imported from ESBMC regression/esbmc/github_7907_lane_fail
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^.*assertion s\[1\] == 2$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^.*assertion s\[1\] == 2$
 // MODE: FUTURE

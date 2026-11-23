@@ -9,5 +9,3 @@ int main(void) {
 }
 // Imported from ESBMC regression/esbmc/array_of_vector_store
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

@@ -4,7 +4,9 @@
 // Pointers are the memory stage's (object, offset) bitvectors. A float in an
 // IEEE format is the bitvector of its bits; an operation views it as
 // camada's bit-vector encoded floating point (FPEncoding::BV), rounding to
-// nearest, ties to even, as C does by default.
+// nearest, ties to even, as C does by default. A vector of integers or
+// floats is one bitvector with element 0 in the low bits, as memory lays it
+// out; the scalarizer leaves vectors only where they cross calls.
 #pragma once
 #include "encode/terms.h"
 #include "memory/memory.h"

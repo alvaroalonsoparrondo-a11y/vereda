@@ -28,5 +28,3 @@ int main(void)
 // Imported from ESBMC regression/esbmc/array_of_vector_ops
 // RUN: --unwind 5
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

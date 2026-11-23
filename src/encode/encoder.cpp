@@ -53,11 +53,25 @@ static const fltSemantics *ieee(Type *ty) {
   return &ty->getFltSemantics();
 }
 
+// The element width of a vector of integers (not i1) or IEEE floats; 0 for
+// anything else.
+static unsigned vectorElementWidth(Type *ty) {
+  auto *vt = dyn_cast<FixedVectorType>(ty);
+  if (!vt)
+    return 0;
+  Type *e = vt->getElementType();
+  if ((e->isIntegerTy() && !e->isIntegerTy(1)) || ieee(e))
+    return e->getPrimitiveSizeInBits();
+  return 0;
+}
+
 SMTSortRef Encoder::sort(Type *ty) {
   if (ty->isIntegerTy(1))
     return s.mkBoolSort();
   if (ieee(ty))
     return s.mkBVSort(ty->getPrimitiveSizeInBits());
+  if (unsigned w = vectorElementWidth(ty))
+    return s.mkBVSort(w * cast<FixedVectorType>(ty)->getNumElements());
   if (ty->isPointerTy())
     return mem.pointerSort();
   if (unsigned width = packedWidth(ty))
@@ -80,6 +94,20 @@ SMTExprRef Encoder::value(const Value *v) {
     return mem.null();
   if (auto *cf = dyn_cast<ConstantFP>(v); cf && ieee(cf->getType()))
     return t.bv(cf->getValueAPF().bitcastToAPInt());
+  if (vectorElementWidth(v->getType()) && isa<Constant>(v)) {
+    auto *c = cast<Constant>(v);
+    unsigned n = cast<FixedVectorType>(v->getType())->getNumElements();
+    auto element = [&](unsigned i) {
+      Constant *e = c->getAggregateElement(i); // null for some constant expressions
+      if (!e)
+        throw Unsupported("value " + describe(v));
+      return value(e);
+    };
+    SMTExprRef r = element(n - 1);
+    for (unsigned i = n - 1; i-- > 0;)
+      r = t.concat(r, element(i));
+    return r;
+  }
   if (auto *g = dyn_cast<GlobalVariable>(v))
     return mem.global(g);
   if (auto *ce = dyn_cast<ConstantExpr>(v)) {
@@ -344,6 +372,25 @@ void Encoder::encode(Instruction &inst) {
     r = gep(*llvm::cast<GEPOperator>(g));
   } else if (isa<FreezeInst>(inst)) {
     r = value(inst.getOperand(0));
+  } else if (isa<ExtractElementInst>(inst) || isa<InsertElementInst>(inst)) {
+    // Constant indexes only: the scalarizer turns variable ones into selects.
+    Value *vec = inst.getOperand(0);
+    unsigned w = vectorElementWidth(vec->getType());
+    auto *index = dyn_cast<ConstantInt>(inst.getOperand(isa<ExtractElementInst>(inst) ? 1 : 2));
+    unsigned n = w ? cast<FixedVectorType>(vec->getType())->getNumElements() : 0;
+    if (!w || !index || index->getZExtValue() >= n)
+      throw Unsupported("instruction " + describe(&inst));
+    unsigned low = w * index->getZExtValue(), all = w * n;
+    SMTExprRef v = value(vec);
+    if (isa<ExtractElementInst>(inst)) {
+      r = t.extract(v, low + w - 1, low);
+    } else {
+      r = value(inst.getOperand(1));
+      if (low + w < all)
+        r = t.concat(t.extract(v, all - 1, low + w), r);
+      if (low > 0)
+        r = t.concat(r, t.extract(v, low - 1, 0));
+    }
   } else if (auto *ev = dyn_cast<ExtractValueInst>(&inst)) {
     auto *st = dyn_cast<StructType>(ev->getAggregateOperand()->getType());
     if (!st || !packedWidth(st) || ev->getNumIndices() != 1)

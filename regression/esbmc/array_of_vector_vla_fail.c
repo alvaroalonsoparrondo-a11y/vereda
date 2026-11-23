@@ -15,5 +15,3 @@ int main(void)
 }
 // Imported from ESBMC regression/esbmc/array_of_vector_vla_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

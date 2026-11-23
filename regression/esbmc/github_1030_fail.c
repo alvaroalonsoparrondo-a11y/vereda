@@ -32,5 +32,5 @@ int main()
 // RUN: --unwind 9
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^.*assertion result\[i\] == arr1\[i\] \+ arr2\[i\]$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^.*assertion result\[i\] == arr1\[i\] \+ arr2\[i\]$
 // MODE: FUTURE

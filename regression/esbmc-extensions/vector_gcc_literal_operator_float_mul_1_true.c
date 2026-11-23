@@ -15,5 +15,3 @@ int main() {
 }
 // Imported from ESBMC regression/extensions/vector_gcc_literal_operator_float_mul_1_true
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

@@ -16,5 +16,3 @@ int main() {
 }
 // Imported from ESBMC regression/extensions/vector_gcc_literal_shufflevector_3_true
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE
