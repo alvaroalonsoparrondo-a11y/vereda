@@ -23,5 +23,3 @@ int main()
 // RUN: --solver z3 --incremental-bmc
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

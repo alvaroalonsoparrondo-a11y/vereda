@@ -16,5 +16,3 @@ int main()
 // Imported from ESBMC regression/esbmc/cprover_uninterpreted_distinct_fail
 // RUN: --incremental-bmc
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

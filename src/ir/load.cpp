@@ -2,6 +2,7 @@
 
 #include <llvm/IR/AttributeMask.h>
 #include <llvm/IR/Attributes.h>
+#include <llvm/IR/DebugInfo.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/InstIterator.h>
 #include <llvm/IR/InstrTypes.h>
@@ -239,6 +240,81 @@ static void libmToIntrinsics(Module &m) {
     }
 }
 
+// An uninitialised local is one nondet value (plan, section 4.5), as in
+// ESBMC. mem2reg would turn each read of it into undef, a new value at
+// every use, so each scalar local, and each scalar field of a struct local,
+// first gets a call to a bodyless __VERIFIER_nondet_ function, which the
+// walker reads as one fresh value. A call, not freeze poison: InstCombine
+// may replace that by any constant. Arrays stay in memory, whose initial
+// bytes are nondet already. Each call is tagged with the variable it stands
+// for, so that dropUninitialisedRecords can remove the assignment of it
+// that mem2reg would put in the trace.
+static const char *UninitialisedMD = "vereda.uninitialised";
+
+static void nondetLocals(Module &m) {
+  DenseMap<Type *, FunctionCallee> nondet;
+  // The types the encoder gives a value of their own: not long double
+  // (x86_fp80) or bfloat, which a local only stores and loads as bits.
+  auto scalar = [](Type *ty) {
+    return (ty->isIntegerTy() && !ty->isIntegerTy(1)) || ty->isPointerTy() || ty->isHalfTy() ||
+           ty->isFloatTy() || ty->isDoubleTy() || ty->isFP128Ty();
+  };
+  for (Function &f : m) {
+    if (f.isDeclaration())
+      continue;
+    SmallVector<AllocaInst *, 8> locals;
+    for (Instruction &inst : f.getEntryBlock())
+      if (auto *a = dyn_cast<AllocaInst>(&inst); a && a->isStaticAlloca())
+        locals.push_back(a);
+    for (AllocaInst *a : locals) {
+      IRBuilder<> b(a->getNextNode());
+      TinyPtrVector<DbgVariableRecord *> declares = findDVRDeclares(a);
+      MDNode *variable = declares.empty() ? nullptr : declares.front()->getVariable();
+      // The scalar leaves of the local, with their index paths.
+      std::function<void(Type *, SmallVector<Value *, 4> &)> leaves =
+          [&](Type *ty, SmallVector<Value *, 4> &path) {
+            if (auto *st = dyn_cast<StructType>(ty)) {
+              for (unsigned i = 0; i < st->getNumElements(); ++i) {
+                path.push_back(b.getInt32(i));
+                leaves(st->getElementType(i), path);
+                path.pop_back();
+              }
+              return;
+            }
+            if (!scalar(ty))
+              return;
+            FunctionCallee &fn = nondet[ty];
+            if (!fn) {
+              std::string name;
+              raw_string_ostream(name) << "__VERIFIER_nondet_uninitialised." << *ty;
+              fn = m.getOrInsertFunction(name, FunctionType::get(ty, false));
+            }
+            Value *at = path.size() == 1 ? a : b.CreateInBoundsGEP(a->getAllocatedType(), a, path);
+            CallInst *value = b.CreateCall(fn);
+            if (variable)
+              value->setMetadata(UninitialisedMD, MDNode::get(m.getContext(), {variable}));
+            b.CreateStore(value, at);
+          };
+      SmallVector<Value *, 4> path{b.getInt32(0)};
+      leaves(a->getAllocatedType(), path);
+    }
+  }
+}
+
+// Removes the debug records that assign a local its own uninitialised
+// value: a declaration is no assignment, and ESBMC shows none. A record that
+// copies it into another variable stays.
+static void dropUninitialisedRecords(Module &m) {
+  for (Function &f : m)
+    for (Instruction &inst : instructions(f))
+      for (DbgVariableRecord &rec : make_early_inc_range(filterDbgVars(inst.getDbgRecordRange())))
+        if (rec.getNumVariableLocationOps() == 1)
+          if (auto *c = dyn_cast_or_null<CallInst>(rec.getVariableLocationOp(0)))
+            if (MDNode *md = c->getMetadata(UninitialisedMD))
+              if (md->getOperand(0) == rec.getVariable())
+                rec.eraseFromParent();
+}
+
 // -fno-finite-loops should have kept these out; any left would let LoopInfo
 // and SCEV assume termination.
 static bool hasMustProgress(const Module &m) {
@@ -312,6 +388,7 @@ Expected<std::unique_ptr<Module>> load(StringRef path, LLVMContext &ctx, StringR
                              path + " carries mustprogress; compile with -fno-finite-loops");
 
   stripUBAssumptions(*module);
+  nondetLocals(*module);
   if (Error e = runPipeline(*module, "function(mem2reg,sroa)"))
     return std::move(e);
   lowerCalls(*module); // before InstCombine, which folds tests of constants
@@ -325,6 +402,7 @@ Expected<std::unique_ptr<Module>> load(StringRef path, LLVMContext &ctx, StringR
                             "scalarizer<load-store;variable-insert-extract>,loop-simplify,lcssa)"))
     return std::move(e);
   stripUBAssumptions(*module);
+  dropUninitialisedRecords(*module);
   if (Error e = linkModels(*module, models))
     return std::move(e);
   return module;

@@ -15,5 +15,3 @@ int main()
 // Imported from ESBMC regression/esbmc/interval_symex_guard_dowhile
 // RUN: --unwind 3
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

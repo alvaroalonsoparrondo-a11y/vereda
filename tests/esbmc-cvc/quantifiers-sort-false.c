@@ -23,3 +23,5 @@ int main()
 // RUN: --solver cvc5 --incremental-bmc
 // MODE: KNOWNBUG
 // EXPECT: ^VERIFICATION FAILED$
+// Vereda: KNOWNBUG test passed unexpectedly; promote it to CORE
+// MODE: CORE

@@ -13,5 +13,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/scanf_symbolic_index_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

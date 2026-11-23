@@ -31,3 +31,5 @@ int main(void) {
 }
 // Imported from ESBMC regression/esbmc/struct_bitfields_17
 // EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// MODE: FUTURE

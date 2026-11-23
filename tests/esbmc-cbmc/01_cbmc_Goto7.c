@@ -45,5 +45,3 @@ int main()
 // Imported from ESBMC regression/cbmc/01_cbmc_Goto7
 // RUN: --unwind 2
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

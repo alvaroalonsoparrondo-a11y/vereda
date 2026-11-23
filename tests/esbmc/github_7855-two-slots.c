@@ -25,5 +25,3 @@ int main(void)
 // Imported from ESBMC regression/esbmc/github_7855-two-slots
 // RUN: -m64 --incremental-bmc
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

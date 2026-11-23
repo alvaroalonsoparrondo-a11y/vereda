@@ -511,6 +511,19 @@ bool Encoder::intrinsic(CallBase &c) {
   Function *f = c.getCalledFunction();
   if (fpIntrinsic(c))
     return true;
+  // What InstCombine could not fold, the back end lowers to "unknown", as
+  // LowerConstantIntrinsics does: objectsize -1 (0 for its minimum), and
+  // is.constant false.
+  if (f->getIntrinsicID() == Intrinsic::objectsize) {
+    bool min = cast<ConstantInt>(c.getArgOperand(1))->isOne();
+    unsigned w = c.getType()->getIntegerBitWidth();
+    bind(&c, min ? t.bv(0, w) : t.bvnot(t.bv(0, w)));
+    return true;
+  }
+  if (f->getIntrinsicID() == Intrinsic::is_constant) {
+    bind(&c, t.boolean(false));
+    return true;
+  }
   SMTExprRef (Terms::*op)(const SMTExprRef &, const SMTExprRef &) = nullptr;
   SMTExprRef (Terms::*overflow)(const SMTExprRef &, const SMTExprRef &) = nullptr;
   switch (f->getIntrinsicID()) {

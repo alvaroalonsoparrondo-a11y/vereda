@@ -8,5 +8,3 @@ int main() {
 } 
 // Imported from ESBMC regression/clang_builtins/constant_p_1_false
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

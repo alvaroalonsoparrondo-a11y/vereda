@@ -8,5 +8,3 @@ int main() {
 }
 // Imported from ESBMC regression/esbmc/128_signed_false
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

@@ -12,5 +12,3 @@ int main() {
 
 // Imported from ESBMC regression/extensions/builtin_object_size14
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

@@ -16,3 +16,5 @@ int main(void)
 // RUN: -m64 --incremental-bmc
 // MODE: KNOWNBUG
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: KNOWNBUG test passed unexpectedly; promote it to CORE
+// MODE: CORE

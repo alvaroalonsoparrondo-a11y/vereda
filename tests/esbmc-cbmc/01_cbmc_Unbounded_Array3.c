@@ -13,5 +13,3 @@ int main()
 }
 // Imported from ESBMC regression/cbmc/01_cbmc_Unbounded_Array3
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

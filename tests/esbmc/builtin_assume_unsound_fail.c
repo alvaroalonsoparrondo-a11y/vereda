@@ -10,5 +10,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/builtin_assume_unsound_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

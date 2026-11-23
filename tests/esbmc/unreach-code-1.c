@@ -20,5 +20,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/unreach-code-1
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

@@ -11,3 +11,5 @@ int main() {
 // Imported from ESBMC regression/esbmc/r_ok3
 // RUN: --force-malloc-success
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

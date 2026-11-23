@@ -8,5 +8,3 @@ int main(void) {
 }
 // Imported from ESBMC regression/esbmc/no_pointer_check_4_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

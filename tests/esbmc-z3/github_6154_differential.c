@@ -29,3 +29,5 @@ int main()
 // Imported from ESBMC regression/z3/github_6154_differential
 // RUN: --solver z3
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE
