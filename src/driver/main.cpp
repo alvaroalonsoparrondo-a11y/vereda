@@ -146,17 +146,28 @@ static int bmc(Function &fn, unsigned bound) {
   auto isAssertion = [](const vereda::checks::Check &c) {
     return c.property == vereda::checks::Property::Assertion;
   };
+  // The time so far goes before each error trace, which is not solving
+  // time, and after solving when there is no trace.
+  bool traced = false;
+  auto solvingTime = [&] {
+    std::string msg;
+    raw_string_ostream(msg) << "Solving time: " << solveTime.elapsed() << " (peak memory "
+                            << vereda::util::peakMemory() << ")";
+    progress(msg);
+  };
   vereda::solver::Verdict verdict =
       vereda::solver::decide(solver, checks, multiProperty, [&](const vereda::checks::Check &c) {
         // Under --incremental-bmc an unwound loop asks for a larger bound;
         // it is not a bug to show.
         if (incrementalBMC && !isAssertion(c))
           return;
+        solvingTime();
+        traced = true;
         progress("Building error trace");
         vereda::witness::printCounterexample(solver, trace, checks, &c - checks.data(), outs());
       });
-  outs() << "Solving time: " << solveTime.elapsed() << " (peak memory "
-         << vereda::util::peakMemory() << ")\n";
+  if (!traced)
+    solvingTime();
 
   if (verdict.kind == vereda::solver::Verdict::Unknown)
     return unknown(verdict.detail);
