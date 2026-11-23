@@ -10,5 +10,3 @@ int main ()
 // Imported from ESBMC regression/cstd/memmove_bug
 // RUN: --unwind 33
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

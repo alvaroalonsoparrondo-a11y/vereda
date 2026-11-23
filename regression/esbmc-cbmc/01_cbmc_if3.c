@@ -11,5 +11,3 @@ ERROR:
 }
 // Imported from ESBMC regression/cbmc/01_cbmc_if3
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

@@ -30,5 +30,3 @@ main()
 }
 // Imported from ESBMC regression/esbmc/39_bitfields2
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

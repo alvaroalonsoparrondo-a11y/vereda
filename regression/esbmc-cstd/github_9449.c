@@ -22,5 +22,3 @@ int main(void)
 // Imported from ESBMC regression/cstd/github_9449
 // RUN: --unwind 20
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

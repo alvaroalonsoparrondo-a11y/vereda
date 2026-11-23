@@ -84,5 +84,3 @@ int main(int argc, char **argv)
 }
 // Imported from ESBMC regression/esbmc-unix/01_malloc_10
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

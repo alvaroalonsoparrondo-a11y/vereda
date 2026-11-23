@@ -10,5 +10,3 @@ int main ()
 // Imported from ESBMC regression/cstd/strlen_bug
 // RUN: --unwind 13
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

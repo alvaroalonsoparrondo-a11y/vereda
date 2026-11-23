@@ -18,5 +18,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/strnlen_model
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

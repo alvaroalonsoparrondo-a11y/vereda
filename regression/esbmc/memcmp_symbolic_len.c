@@ -12,5 +12,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/memcmp_symbolic_len
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

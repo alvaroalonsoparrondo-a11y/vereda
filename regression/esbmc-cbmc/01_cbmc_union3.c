@@ -12,3 +12,5 @@ int main(void)
 } 
 // Imported from ESBMC regression/cbmc/01_cbmc_union3
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

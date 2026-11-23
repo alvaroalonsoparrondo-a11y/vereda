@@ -15,5 +15,3 @@ int main(void)
 // Imported from ESBMC regression/esbmc/github_9356
 // EXPECT: ^  dereference failure: array bounds violated$
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^  dereference failure: array bounds violated$
-// MODE: FUTURE

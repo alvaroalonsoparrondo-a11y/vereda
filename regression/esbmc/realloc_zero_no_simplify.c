@@ -13,5 +13,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/realloc_zero_no_simplify
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

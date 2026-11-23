@@ -26,5 +26,3 @@ int main ()
 // Imported from ESBMC regression/cstd/memcpy_bug
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

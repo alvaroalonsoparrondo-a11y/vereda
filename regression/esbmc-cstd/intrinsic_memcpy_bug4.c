@@ -14,5 +14,3 @@ int main()
 }
 // Imported from ESBMC regression/cstd/intrinsic_memcpy_bug4
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

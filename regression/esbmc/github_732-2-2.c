@@ -17,5 +17,3 @@ int main()
 // Imported from ESBMC regression/esbmc/github_732-2-2
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

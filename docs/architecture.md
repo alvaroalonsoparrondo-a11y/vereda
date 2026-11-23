@@ -6,8 +6,8 @@ stage is started.
 
 ```
 vereda/
-├── vereda.py            front-end driver: clang, llvm-link of models, lli replay
-├── models/              C operational models (ported from ESBMC), built to .bc by clang
+├── vereda.py            front-end driver: clang, lli replay
+├── models/              C library models, built to .bc; ir links what a program calls
 ├── src/
 │   ├── ir/              load bitcode, pass list, strip UB flags, reject mustprogress
 │   │                    and irreducible CFGs, debug-info maps. The only place that

@@ -8,5 +8,3 @@ int main()
 }
 // Imported from ESBMC regression/floats/nan_double
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

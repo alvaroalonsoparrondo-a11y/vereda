@@ -31,5 +31,3 @@ int main(void)
 // Imported from ESBMC regression/esbmc/builtin_mem_rewrites
 // RUN: --unwind 12
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

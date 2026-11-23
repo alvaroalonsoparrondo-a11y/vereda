@@ -30,5 +30,3 @@ void foo(void)
 // Imported from ESBMC regression/esbmc/github_300_failed
 // RUN: --entry foo
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

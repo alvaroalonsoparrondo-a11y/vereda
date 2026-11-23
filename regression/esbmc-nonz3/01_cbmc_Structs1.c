@@ -28,5 +28,3 @@ int main()
 }
 // Imported from ESBMC regression/nonz3/01_cbmc_Structs1
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

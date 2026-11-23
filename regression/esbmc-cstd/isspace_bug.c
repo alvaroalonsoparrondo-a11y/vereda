@@ -12,5 +12,3 @@ int main(void)
 }
 // Imported from ESBMC regression/cstd/isspace_bug
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

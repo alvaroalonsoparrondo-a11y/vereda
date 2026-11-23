@@ -18,5 +18,3 @@ int main(void)
 // Imported from ESBMC regression/esbmc/github_2797_fseeko_fail
 // RUN: --incremental-bmc
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

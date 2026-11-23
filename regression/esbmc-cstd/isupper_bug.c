@@ -11,5 +11,3 @@ int main ()
 }
 // Imported from ESBMC regression/cstd/isupper_bug
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

@@ -13,5 +13,3 @@ int main()
 
 // Imported from ESBMC regression/esbmc/00_bitshift_01
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

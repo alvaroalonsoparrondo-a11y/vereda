@@ -213,7 +213,10 @@ int main(int argc, char **argv) {
   progress("Loading " + inputFile);
   vereda::util::Stopwatch loadTime;
   LLVMContext ctx;
-  Expected<std::unique_ptr<Module>> module = vereda::ir::load(inputFile, ctx);
+  // The library models sit next to the binary.
+  std::string self = sys::fs::getMainExecutable(argv[0], reinterpret_cast<void *>(&printVersion));
+  Expected<std::unique_ptr<Module>> module =
+      vereda::ir::load(inputFile, ctx, sys::path::parent_path(self));
   if (!module) {
     errs() << argv[0] << ": " << toString(module.takeError()) << "\n";
     return 1;

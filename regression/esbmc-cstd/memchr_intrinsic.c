@@ -31,5 +31,3 @@ int main()
 }
 // Imported from ESBMC regression/cstd/memchr_intrinsic
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

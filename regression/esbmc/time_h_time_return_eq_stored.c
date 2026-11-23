@@ -10,5 +10,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/time_h_time_return_eq_stored
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

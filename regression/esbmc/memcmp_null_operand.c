@@ -16,5 +16,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/memcmp_null_operand
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

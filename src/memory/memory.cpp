@@ -46,6 +46,18 @@ SMTExprRef Memory::base(SMTExprRef obj) {
   return t.select(bases, obj);
 }
 
+SMTExprRef Memory::size(SMTExprRef obj) {
+  SMTExprRef c, x, y;
+  if (t.split(obj, c, x, y))
+    return t.ite(c, size(x), size(y));
+  if (const APInt *id = t.constant(obj); id && id->ult(objects.size()))
+    return objects[id->getZExtValue()].size;
+  SMTExprRef r = t.bv(0, ptrBits);
+  for (unsigned id = 1; id < objects.size(); ++id)
+    r = t.ite(t.eq(obj, t.bv(id, ObjBits)), objects[id].size, r);
+  return r;
+}
+
 SMTExprRef Memory::fits(SMTExprRef size) {
   // Several objects near PTRDIFF_MAX on one path cannot all be
   // laid out, which ends that path; a real allocator would return null.

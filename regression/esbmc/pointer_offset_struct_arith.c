@@ -42,5 +42,3 @@ int main(void)
 // Imported from ESBMC regression/esbmc/pointer_offset_struct_arith
 // RUN: --unwind 16
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

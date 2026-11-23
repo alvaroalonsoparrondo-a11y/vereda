@@ -70,6 +70,8 @@ pointers, byte arrays, known-byte map) and `checks` per instruction.
 - `ir`: loads bitcode, runs the pass list, rejects `mustprogress` and irreducible CFGs,
   lowers indirect calls to tests and direct calls (as CBMC's remove_function_pointers),
   turns bodyless libm calls (sqrt, floor, ...) into LLVM intrinsics, scalarizes vectors,
+  then links the C library models (`models/*.c`, built to `build/models-{32,64}.bc`)
+  for the functions the program still calls without defining,
   builds debug-info maps. The only place that tracks LLVM API churn.
 - `encode/terms.*`: the term builder that hash-conses and folds as terms are built;
   `memory` builds through it too. A guard that folds to false prunes the branch.

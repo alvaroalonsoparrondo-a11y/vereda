@@ -321,6 +321,11 @@ SMTExprRef Encoder::fromBool(SMTExprRef b, unsigned width) {
 }
 
 SMTExprRef Encoder::isTrue(const Value *v) {
+  if (ieee(v->getType())) { // nonzero, as C reads a scalar: NaN is true
+    SMTExprRef zero = fromBits(t.bv(0, v->getType()->getPrimitiveSizeInBits()), v->getType());
+    return t.lnot(native() ? s.mkFPEqual(fp(v), zero)
+                           : s.mkFPEqual(fp(v), s.mkBVToIEEEFP(zero, fpSort(v->getType()))));
+  }
   SMTExprRef t = value(v);
   return v->getType()->isIntegerTy(1) ? t : toBool(t);
 }

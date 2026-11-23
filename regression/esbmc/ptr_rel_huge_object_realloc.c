@@ -27,5 +27,3 @@ int main(void)
 }
 // Imported from ESBMC regression/esbmc/ptr_rel_huge_object_realloc
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

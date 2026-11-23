@@ -21,5 +21,3 @@ int main()
 }
 // Imported from ESBMC regression/llvm/arr2
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

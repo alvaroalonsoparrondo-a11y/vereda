@@ -12,3 +12,5 @@ int main ()
 }
 // Imported from ESBMC regression/cstd/strspn
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

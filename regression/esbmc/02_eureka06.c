@@ -16,5 +16,3 @@ int main(){
 // Imported from ESBMC regression/esbmc/02_eureka06
 // RUN: --unwind 20
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

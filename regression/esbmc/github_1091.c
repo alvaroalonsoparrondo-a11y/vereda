@@ -99,5 +99,5 @@ int main() {
 // RUN: --unwind 5 --force-malloc-success --multi-property
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^.*array bounds violated.*$
-// Vereda: unmet EXPECT: ^.*array bounds violated.*$
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
 // MODE: FUTURE

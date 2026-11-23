@@ -10,6 +10,9 @@
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Operator.h>
 #include <llvm/IRReader/IRReader.h>
+#include <llvm/Linker/Linker.h>
+#include <llvm/Support/FileSystem.h>
+#include <llvm/Support/Path.h>
 #include <llvm/Passes/PassBuilder.h>
 #include <llvm/Support/SourceMgr.h>
 
@@ -272,7 +275,30 @@ static Error runPipeline(Module &m, StringRef pipeline) {
   return Error::success();
 }
 
-Expected<std::unique_ptr<Module>> load(StringRef path, LLVMContext &ctx) {
+// Links the models a module calls without defining, after its passes, so
+// that calls the passes created (bcmp from memcmp) find theirs too. The
+// models went through the same passes when built; calls into them whose
+// type differs from the definition are converted as lowerCalls does.
+static Error linkModels(Module &m, StringRef dir) {
+  SmallString<128> path(dir);
+  sys::path::append(path, "models-" + std::to_string(m.getDataLayout().getPointerSizeInBits()) +
+                              ".bc");
+  if (dir.empty() || !sys::fs::exists(path))
+    return Error::success();
+  SMDiagnostic diag;
+  std::unique_ptr<Module> models = parseIRFile(path, diag, m.getContext());
+  if (!models)
+    return createStringError(inconvertibleErrorCode(), "cannot read " + path);
+  models->setTargetTriple(m.getTargetTriple());
+  models->setDataLayout(m.getDataLayout());
+  if (Linker::linkModules(m, std::move(models), Linker::Flags::LinkOnlyNeeded))
+    return createStringError(inconvertibleErrorCode(), "cannot link " + path);
+  lowerCalls(m);
+  stripUBAssumptions(m);
+  return Error::success();
+}
+
+Expected<std::unique_ptr<Module>> load(StringRef path, LLVMContext &ctx, StringRef models) {
   SMDiagnostic diag;
   std::unique_ptr<Module> module = parseIRFile(path, diag, ctx);
   if (!module) {
@@ -299,6 +325,8 @@ Expected<std::unique_ptr<Module>> load(StringRef path, LLVMContext &ctx) {
                             "scalarizer<load-store;variable-insert-extract>,loop-simplify,lcssa)"))
     return std::move(e);
   stripUBAssumptions(*module);
+  if (Error e = linkModels(*module, models))
+    return std::move(e);
   return module;
 }
 

@@ -11,5 +11,3 @@ int main(void)
 }
 // Imported from ESBMC regression/cstd/isxdigit_bug
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

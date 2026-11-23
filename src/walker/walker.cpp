@@ -330,9 +330,17 @@ private:
       assertion(c, guard, name.str(), "");
       return t.boolean(false);
     }
-    if (name == "__VERIFIER_assert") {
+    if (name == "__VERIFIER_assert" || (name == "assert" && c.arg_size() == 1)) {
+      // assert without <assert.h> is an implicitly declared function; ESBMC's
+      // front end treats it as the assertion it was meant to be.
       assertion(c, t.land(guard, t.lnot(enc.isTrue(c.getArgOperand(0)))), name.str(),
                 ir::callArgumentText(c));
+      return guard;
+    }
+    if (name == "__vereda_object_size") { // for the realloc model
+      SMTExprRef p = enc.value(c.getArgOperand(0));
+      enc.bind(&c, enc.resize(t.sub(mem.size(mem.object(p)), mem.offset(p)),
+                              c.getType()->getIntegerBitWidth(), false));
       return guard;
     }
     if (name == "abort" || name == "exit" || name == "_Exit")

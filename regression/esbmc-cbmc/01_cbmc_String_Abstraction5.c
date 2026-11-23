@@ -23,3 +23,5 @@ int main()
 // Imported from ESBMC regression/cbmc/01_cbmc_String_Abstraction5
 // RUN: --unwind 102
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

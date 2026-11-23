@@ -22,5 +22,3 @@ int main(void)
 }
 // Imported from ESBMC regression/esbmc/realloc_above_ptrdiff_max
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

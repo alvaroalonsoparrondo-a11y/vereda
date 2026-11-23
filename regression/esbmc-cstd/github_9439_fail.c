@@ -9,5 +9,5 @@ int main(void)
 // RUN: -m64 --unwind 20
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: dereference failure on memchr: reading memory segment of size 4 with 64 bytes$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: dereference failure on memchr: reading memory segment of size 4 with 64 bytes$
 // MODE: FUTURE

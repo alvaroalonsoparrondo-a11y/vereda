@@ -33,5 +33,3 @@ int main(void) {
 }
 // Imported from ESBMC regression/esbmc/02_eureka20
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

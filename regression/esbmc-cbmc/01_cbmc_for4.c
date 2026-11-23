@@ -27,5 +27,3 @@ return 0;
 // Imported from ESBMC regression/cbmc/01_cbmc_for4
 // RUN: --unwind 1 --no-unwinding-assertions
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

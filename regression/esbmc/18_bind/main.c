@@ -14,5 +14,3 @@ int dn_expand(const u_char *msg, const u_char *eomorig,
 // RUN: --entry dn_expand --unwind 1
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

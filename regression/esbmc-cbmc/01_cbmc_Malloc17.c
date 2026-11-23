@@ -42,5 +42,3 @@ int main(void) {
 // Imported from ESBMC regression/cbmc/01_cbmc_Malloc17
 // RUN: --unwind 3
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

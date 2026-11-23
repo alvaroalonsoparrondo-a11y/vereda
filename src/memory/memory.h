@@ -81,6 +81,8 @@ public:
   void initialise(State &st, const llvm::Module &m,
                   const std::function<camada::SMTExprRef(const llvm::Constant *)> &valueOf);
 
+  // The size in bytes of the object with id obj, a pointer-width term.
+  camada::SMTExprRef size(camada::SMTExprRef obj);
   camada::SMTExprRef address(camada::SMTExprRef p);   // ptrtoint
   camada::SMTExprRef fromAddress(camada::SMTExprRef a); // inttoptr
 

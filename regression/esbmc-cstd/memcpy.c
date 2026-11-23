@@ -26,5 +26,3 @@ int main ()
 // Imported from ESBMC regression/cstd/memcpy
 // RUN: --incremental-bmc
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

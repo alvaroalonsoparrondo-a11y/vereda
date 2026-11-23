@@ -21,5 +21,3 @@ int main(void)
 // Imported from ESBMC regression/cstd/strxfrm_bug
 // RUN: --unwind 50
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

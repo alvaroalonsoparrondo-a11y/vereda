@@ -25,7 +25,7 @@ message(STATUS "Using LLVM ${LLVM_PACKAGE_VERSION} from ${LLVM_DIR}")
 find_package(camada CONFIG REQUIRED)
 message(STATUS "Using camada from ${camada_DIR}")
 
-llvm_map_components_to_libnames(llvm_libs core irreader support passes)
+llvm_map_components_to_libnames(llvm_libs core irreader support passes linker)
 
 # One static library for every stage; the driver and the unit tests link it.
 add_library(libvereda STATIC
@@ -50,6 +50,32 @@ target_link_libraries(libvereda PUBLIC ${llvm_libs} camada::camada)
 
 add_executable(vereda src/driver/main.cpp)
 target_link_libraries(vereda PRIVATE libvereda)
+
+# The C library models (models/*.c) as one bitcode file per pointer width,
+# next to the binary, already through the pass list ir runs; ir links in
+# the functions a program still calls after its own passes. -fno-builtin
+# keeps InstCombine from rewriting calls inside the models.
+file(GLOB model_sources CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/models/*.c")
+file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/models")
+foreach(bits 32 64)
+  set(model_bcs)
+  foreach(src IN LISTS model_sources)
+    get_filename_component(name "${src}" NAME_WE)
+    set(bc "${CMAKE_BINARY_DIR}/models/${name}-${bits}.bc")
+    add_custom_command(OUTPUT "${bc}"
+      COMMAND "${LLVM_TOOLS_BINARY_DIR}/clang" -O0 -Xclang -disable-O0-optnone -emit-llvm -c -fno-builtin
+              -fno-finite-loops -m${bits} "${src}" -o "${bc}.raw"
+      COMMAND "${LLVM_TOOLS_BINARY_DIR}/opt" "${bc}.raw" -o "${bc}"
+              "-passes=function(mem2reg,sroa,instcombine<no-verify-fixpoint>,scalarizer<load-store;variable-insert-extract>,loop-simplify,lcssa)"
+      DEPENDS "${src}" VERBATIM)
+    list(APPEND model_bcs "${bc}")
+  endforeach()
+  add_custom_command(OUTPUT "${CMAKE_BINARY_DIR}/models-${bits}.bc"
+    COMMAND "${LLVM_TOOLS_BINARY_DIR}/llvm-link" ${model_bcs} -o "${CMAKE_BINARY_DIR}/models-${bits}.bc"
+    DEPENDS ${model_bcs} VERBATIM)
+  list(APPEND model_libs "${CMAKE_BINARY_DIR}/models-${bits}.bc")
+endforeach()
+add_custom_target(models ALL DEPENDS ${model_libs})
 
 enable_testing()
 add_subdirectory(regression)

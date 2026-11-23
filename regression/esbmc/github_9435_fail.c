@@ -15,5 +15,5 @@ int main(void)
 // RUN: -m64 --unwind 20
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: assertion !\(r == -1 && errno == EAGAIN\)$
-// Vereda: unmet EXPECT: assertion !\(r == -1 && errno == EAGAIN\)$
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
 // MODE: FUTURE

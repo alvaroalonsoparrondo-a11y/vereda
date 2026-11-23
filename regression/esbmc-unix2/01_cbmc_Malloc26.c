@@ -44,5 +44,3 @@ int main()
 // Imported from ESBMC regression/esbmc-unix2/01_cbmc_Malloc26
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

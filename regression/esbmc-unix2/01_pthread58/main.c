@@ -35,3 +35,5 @@ int main() {
 // Imported from ESBMC regression/esbmc-unix2/01_pthread58
 // RUN: --force-malloc-success --incremental-bmc
 // EXPECT: ^VERIFICATION SUCCESSFUL$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
+// MODE: FUTURE

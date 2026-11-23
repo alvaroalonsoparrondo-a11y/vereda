@@ -13,5 +13,3 @@ int main ()
 }
 // Imported from ESBMC regression/cstd/isdigit
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

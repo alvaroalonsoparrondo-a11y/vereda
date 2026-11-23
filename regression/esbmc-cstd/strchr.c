@@ -17,5 +17,3 @@ int main ()
 // Imported from ESBMC regression/cstd/strchr
 // RUN: --unwind 7
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

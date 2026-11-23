@@ -42,5 +42,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc-unix2/01_pthread8
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE
