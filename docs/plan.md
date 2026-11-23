@@ -204,15 +204,11 @@ walk(region, ctx):                      # ctx = call stack + iteration numbers
    recurrent-state check had a bug where any failed check counted.)
 6. Every nondet value is tagged with the source call that made it, for
    witnesses and test generation.
-7. Counterexample replay: run the IR on the trace's nondet values with `lli`
-   or the JIT; a mismatch is an encoder bug. The tool reports FALSE only when
-   the replay reaches the failing check, and UNKNOWN otherwise, as ESBMC's
-   Python wrapper does. Encoder bugs then cost unknowns, not wrong FALSEs.
-8. An ABI rule: clang packs small by-value structs into `i64` arguments, which
+7. An ABI rule: clang packs small by-value structs into `i64` arguments, which
    looks like a pointer-to-integer cast to points-to, so pointers inside such
    structs would point anywhere. Undo the coercion, or make the analysis see
    through it. Build `-m32` and `-m64` for SV-COMP's ILP32 and LP64 tasks.
-9. Pin one LLVM version, upgrade on purpose about once a year, and keep the
+8. Pin one LLVM version, upgrade on purpose about once a year, and keep the
    code that touches LLVM's API thin. LLVM's C++ API changes every six months;
    LLBMC stalled on an old LLVM, and ESBMC carries support for LLVM 11–21.
 
@@ -419,7 +415,11 @@ the SV-COMP rules forbid as a tuning input.
 1. Memory safety and overflow.
 2. k-induction and correctness witnesses.
 3. Termination.
-4. Validation.
+4. Validation, and counterexample replay: run the IR on the trace's
+   nondet values with `lli` or the JIT; a mismatch is an encoder bug. The
+   tool then reports FALSE only when the replay reaches the failing check,
+   and UNKNOWN otherwise, as ESBMC's Python wrapper does. Moved out of
+   milestone 1 on 2026-11-23.
 5. Concurrency.
 6. C++.
 7. Optional: Test-Comp test generation.
@@ -457,7 +457,7 @@ Perhaps 15–25k lines of C++.
 | Memory safety and overflow | 3–5 |
 | k-induction and correctness witnesses (incl. 1–2 for Crab) | 3–5 |
 | Termination | 2–3 |
-| Validation | 2–4 |
+| Validation and counterexample replay | 2–4 |
 | Concurrency (research: §8.1 design 2 is unmeasured) | 6–12 |
 | C++ (library models, exceptions) | 6–12 |
 
