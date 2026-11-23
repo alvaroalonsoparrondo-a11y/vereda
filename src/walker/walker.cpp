@@ -447,7 +447,8 @@ private:
     return value;
   }
 
-  // alloca, load and store. Returns false for any other instruction.
+  // alloca, load and store, and the atomics. Returns false for any other
+  // instruction.
   bool memoryAccess(Instruction &inst, SMTExprRef guard, memory::State &st) {
     if (auto *a = dyn_cast<AllocaInst>(&inst)) {
       const DataLayout &dl = a->getDataLayout();
@@ -462,22 +463,75 @@ private:
       s.addConstraint(t.implies(guard, ok));
       return true;
     }
+    // Atomics: one thread, so each is a plain load and store and a fence
+    // orders nothing.
     if (auto *l = dyn_cast<LoadInst>(&inst)) {
-      if (l->isAtomic())
-        throw Unsupported("atomic load");
       enc.bind(l, enc.fromBits(mem.load(st, enc.value(l->getPointerOperand()), l->getType()),
                                l->getType()));
       return true;
     }
     if (auto *w = dyn_cast<StoreInst>(&inst)) {
-      if (w->isAtomic())
-        throw Unsupported("atomic store");
       Value *v = w->getValueOperand();
       mem.store(st, enc.value(w->getPointerOperand()), enc.toBits(enc.value(v), v->getType()),
                 v->getType());
       return true;
     }
-    return false;
+    if (auto *rmw = dyn_cast<AtomicRMWInst>(&inst)) {
+      atomicRMW(*rmw, st);
+      return true;
+    }
+    if (auto *cx = dyn_cast<AtomicCmpXchgInst>(&inst)) {
+      Type *ty = cx->getNewValOperand()->getType();
+      if (!ty->isIntegerTy() || ty->isIntegerTy(1))
+        throw Unsupported("instruction " + encode::describe(&inst));
+      SMTExprRef p = enc.value(cx->getPointerOperand());
+      SMTExprRef old = mem.load(st, p, ty);
+      SMTExprRef ok = t.eq(old, enc.value(cx->getCompareOperand()));
+      if (cx->isWeak()) // may fail even when equal
+        ok = t.land(ok, enc.fresh(Type::getInt1Ty(inst.getContext()), "cmpxchg_weak"));
+      mem.store(st, p, t.ite(ok, enc.value(cx->getNewValOperand()), old), ty);
+      // {old, success}: a struct of integers packs field 0 into the low bits.
+      enc.bind(cx, t.concat(t.ite(ok, t.bv(1, 1), t.bv(0, 1)), old));
+      return true;
+    }
+    return isa<FenceInst>(inst);
+  }
+
+  // Loads the old value, stores the operation's result and binds the old
+  // value, as one thread sees an atomic read-modify-write.
+  void atomicRMW(AtomicRMWInst &rmw, memory::State &st) {
+    Type *ty = rmw.getType();
+    AtomicRMWInst::BinOp op = rmw.getOperation();
+    if (!(ty->isIntegerTy() && !ty->isIntegerTy(1)) &&
+        !(ty->isPointerTy() && op == AtomicRMWInst::Xchg))
+      throw Unsupported("instruction " + encode::describe(&rmw));
+    SMTExprRef p = enc.value(rmw.getPointerOperand());
+    SMTExprRef old = mem.load(st, p, ty), v = enc.value(rmw.getValOperand());
+    unsigned w = ty->isIntegerTy() ? ty->getIntegerBitWidth() : 0;
+    auto one = [&] { return t.bv(1, w); };
+    SMTExprRef r;
+    switch (op) {
+    case AtomicRMWInst::Xchg: r = v; break;
+    case AtomicRMWInst::Add: r = t.add(old, v); break;
+    case AtomicRMWInst::Sub: r = t.sub(old, v); break;
+    case AtomicRMWInst::And: r = t.bvand(old, v); break;
+    case AtomicRMWInst::Nand: r = t.bvnot(t.bvand(old, v)); break;
+    case AtomicRMWInst::Or: r = t.bvor(old, v); break;
+    case AtomicRMWInst::Xor: r = t.bvxor(old, v); break;
+    case AtomicRMWInst::Max: r = t.ite(t.sgt(old, v), old, v); break;
+    case AtomicRMWInst::Min: r = t.ite(t.slt(old, v), old, v); break;
+    case AtomicRMWInst::UMax: r = t.ite(t.ugt(old, v), old, v); break;
+    case AtomicRMWInst::UMin: r = t.ite(t.ult(old, v), old, v); break;
+    case AtomicRMWInst::UIncWrap: r = t.ite(t.uge(old, v), t.bv(0, w), t.add(old, one())); break;
+    case AtomicRMWInst::UDecWrap:
+      r = t.ite(t.lor(t.eq(old, t.bv(0, w)), t.ugt(old, v)), v, t.sub(old, one()));
+      break;
+    case AtomicRMWInst::USubCond: r = t.ite(t.uge(old, v), t.sub(old, v), old); break;
+    case AtomicRMWInst::USubSat: r = t.ite(t.uge(old, v), t.sub(old, v), t.bv(0, w)); break;
+    default: throw Unsupported("instruction " + encode::describe(&rmw));
+    }
+    mem.store(st, p, r, ty);
+    enc.bind(&rmw, old);
   }
 
   // memcpy, memmove and memset, as intrinsics or library calls, and free.

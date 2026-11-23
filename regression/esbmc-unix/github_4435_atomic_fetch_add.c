@@ -48,5 +48,3 @@ int main(void)
 }
 // Imported from ESBMC regression/esbmc-unix/github_4435_atomic_fetch_add
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

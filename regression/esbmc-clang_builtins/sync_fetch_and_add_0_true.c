@@ -9,5 +9,3 @@ int main() {
 }
 // Imported from ESBMC regression/clang_builtins/sync_fetch_and_add_0_true
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

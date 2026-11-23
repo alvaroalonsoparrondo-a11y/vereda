@@ -17,5 +17,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/atomic_flag_void_pointer
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

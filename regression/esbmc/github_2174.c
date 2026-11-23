@@ -43,5 +43,3 @@ int main(void)
 }
 // Imported from ESBMC regression/esbmc/github_2174
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

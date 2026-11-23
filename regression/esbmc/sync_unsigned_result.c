@@ -12,5 +12,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/sync_unsigned_result
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

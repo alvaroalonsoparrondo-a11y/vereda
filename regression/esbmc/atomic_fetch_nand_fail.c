@@ -10,5 +10,5 @@ int main()
 // Imported from ESBMC regression/esbmc/atomic_fetch_nand_fail
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: assertion i == 2
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: assertion i == 2
 // MODE: FUTURE

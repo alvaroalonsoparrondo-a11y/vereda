@@ -10,5 +10,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/atomic_fetch_nand
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE
