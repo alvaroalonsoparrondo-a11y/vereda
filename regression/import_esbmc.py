@@ -28,8 +28,9 @@ way, as run.py has none of them.
 
 Tests that read files outside their own directory are skipped, and so is
 ESBMC's "disabled" suite unless named. So are tests of features only
-ESBMC's users need, function contracts and LTL monitors (ESBMC_ONLY),
-which Vereda does not plan to support; a rerun deletes earlier copies.
+ESBMC's users need, function contracts, integer/real arithmetic and LTL
+monitors (ESBMC_ONLY), which Vereda does not plan to support, and the
+tests in SKIPPED_TESTS; a rerun deletes earlier copies.
 
 With --mark, each copied test then runs through run.py, and one that does
 not behave as its mode says gets the other mode: a failing CORE or THOROUGH
@@ -377,11 +378,21 @@ ESBMC_ONLY = [
                 r"|enforce-all-contracts|replace-all-contracts)\b"),
      re.compile(rb"\b__ESBMC_(requires|ensures|assigns|old|old_raw|return_value"
                 rb"|is_fresh|contract)\b")),
+    ("integer/real arithmetic",
+     re.compile(r"(?<!\S)--ir(-ieee)?(?!\S)"),
+     None),
     ("LTL monitors",
      re.compile(r"--ltl\b"),
      re.compile(rb"\b__ESBMC_(register_monitor|switch_to_monitor|switch_from_monitor"
                 rb"|kill_monitor|ltl_sample|property__ltl2ba\w*|really_atomic_\w+)\b")),
 ]
+
+
+# Single tests left out, by ESBMC path, with the reason.
+SKIPPED_TESTS = {
+    "z3/github_10316": "rounds ties away from zero, which C cannot set",
+    "z3/github_10316_fail": "rounds ties away from zero, which C cannot set",
+}
 
 
 def esbmc_only(src, args):
@@ -390,14 +401,15 @@ def esbmc_only(src, args):
     for reason, flags, _ in ESBMC_ONLY:
         if flags.search(args):
             return reason
+    builtins = [(reason, b) for reason, _, b in ESBMC_ONLY if b]
     for root, dirs, names in os.walk(src):
         dirs[:] = [d for d in dirs if not os.path.exists(os.path.join(root, d, "test.desc"))]
         for n in names:
             if n.endswith((".c", ".h", ".i")):
                 with open(os.path.join(root, n), "rb") as f:
                     text = f.read()
-                for reason, _, builtins in ESBMC_ONLY:
-                    if builtins.search(text):
+                for reason, pattern in builtins:
+                    if pattern.search(text):
                         return reason
     return None
 
@@ -417,7 +429,7 @@ def import_test(src, dest, origin, tracked):
         return "unreadable flags"
     if any(outside(src, p) for p in paths):
         return "files outside the test"
-    reason = esbmc_only(src, args)
+    reason = SKIPPED_TESTS.get(origin) or esbmc_only(src, args)
     if reason:
         shutil.rmtree(dest, ignore_errors=True)  # an earlier copy
         if os.path.exists(dest + ".c"):
