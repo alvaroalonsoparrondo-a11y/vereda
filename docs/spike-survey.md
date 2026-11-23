@@ -738,3 +738,88 @@ argument of `__VERIFIER_assert`, true for `reach_error`). It cannot be
 faithful where the walker's model differs from libc: malloc failing,
 unknown externals with side effects, `__vereda_object_size`, and pointer
 values.
+
+## SV-COMP property files (2026-11-23)
+
+`vereda.py --property-file f.prp` reads the property, as SV-COMP and
+benchexec pass it, and the binary's `--property` counts only that
+property's failures. A failure that does not count ends its path, as the
+abort it is, and the run prints ESBMC's wrapper verdict (`TRUE`,
+`FALSE_REACH`, `FALSE_OVERFLOW`, `UNKNOWN`) after its own.
+
+- unreach-call (`G ! call(reach_error())`): a call to reach_error is the
+  violation and its body is not walked, as ESBMC's
+  `--enable-unreachability-intrinsic` does. assert, `__assert_fail`,
+  `__VERIFIER_error` and `__builtin_unreachable` are not violations; a
+  failed assert assumes its
+  condition. Only reach_error is accepted, the name current tasks use.
+- no-overflow (`G ! overflow`): clang compiles with
+  `-fsanitize=signed-integer-overflow` and `-fsanitize-trap`, and only its
+  checks count. SV-COMP's overflow is a signed result out of range; clang's
+  shift checks would also flag a negative left operand, so they are left
+  out. An .ll or .bc input is refused: its checks would have to be
+  compiled in already.
+- Anything else, valid-memsafety among them, is refused with an error:
+  Vereda has no memory-safety checks yet (plan section 7.2), and a
+  run that ignored them would answer TRUE without looking.
+
+A failed unwinding assertion gives `UNKNOWN`, never a FALSE. The parser
+takes one CHECK line; the memory-safety file has three and is refused
+anyway. run.py replaces `%S` in RUN lines with the test's directory, so
+the tests can name the property files in `tests/vereda/properties/`.
+
+## BenchExec tool-info (2026-11-23)
+
+`contrib/benchexec/vereda.py` is the module BenchExec needs to run Vereda
+in SV-COMP; it goes into `benchexec/tools/` there. It runs vereda.py with
+the task's property file, `-m32` or `-m64` from its data model and every
+input file, reads the version from `vereda.py --version` and the verdict
+from the last `TRUE`, `FALSE_REACH`, `FALSE_OVERFLOW` or `UNKNOWN` line;
+no such line is an error. Checked with `python3 -m benchexec.test_tool_info`
+(BenchExec 3.20) and on the output of the property tests. Left for the
+release archive: clang next to the binary, and the program files list.
+
+## Clang's sanitizer checks (2026-11-23)
+
+Vereda encodes no undefined-behaviour check of its own; the walker already
+took a clang `-fsanitize=... -fsanitize-trap=...` check, `llvm.ubsantrap`,
+as a failed assertion. Each check was probed with a buggy and a guarded
+program: signed and unsigned overflow, shift exponent and base, division
+by zero, array bounds, float-to-int overflow, null, VLA bound, pointer
+overflow, alignment, implicit truncation and bool loads all give FAILED on
+the bug, with the right message, and SUCCESSFUL on the guard. Nothing to
+replace, then; the question is which checks to turn on.
+
+- On request: `vereda.py --overflow-check`, `--unsigned-overflow-check` and
+  `--ub-shift-check` take ESBMC's names and compile in
+  signed-integer-overflow, unsigned-integer-overflow and shift. The
+  importer translates them, so the 282 imported tests that were FUTURE only
+  for want of one of them now run: 129 pass (116 CORE, 6 THOROUGH, 6
+  FUTURE and 1 KNOWNBUG that pass outright), the rest stay FUTURE or
+  KNOWNBUG with a "// Vereda:" reason. 16 more spell the flag
+  `--overflow`, a prefix ESBMC's option parser accepts; the importer
+  renames it, and 3 of them pass, while 12 still need other flags.
+  Most of the failures are other gaps:
+  missing models (rand, atoi, strerror, asprintf), variadic functions,
+  llvm.ctpop, ESBMC's typecast and floating-point overflow checks and its
+  message texts. One is a disagreement: github_9436 shifts `0xffff << 16`
+  after promotion to int, undefined in C11 6.5.7p4, which clang flags and
+  ESBMC does not. The overflow messages now use ESBMC's words ("arithmetic
+  overflow on add", not "on +").
+- By default, as ESBMC checks division by zero and array bounds unless
+  told not to: measured over all 6612 tests, without switching. Division
+  by zero puts a check in 368 tests; 4 FUTURE tests pass, 1 CORE test
+  fails because Vereda has no rand model, so rand() + 1 can be 0, and 1
+  times out. Array bounds puts a check in 1381: 10 FUTURE tests pass, 9
+  CORE tests fail and 3 KNOWNBUG tests time out. Among the failures, one
+  needs `--no-bounds-check` translated; two of those read form a pointer
+  outside its array without dereferencing it, `(a-1)[2]` or `arr + 100`, undefined
+  in C (6.5.6p8), which clang flags and ESBMC and CBMC accept; and in
+  array_loop_summary_unroll Vereda walks the loop body under the imported
+  `#pragma unroll 3` with j = 3 and writes a[3], one iteration more than
+  ESBMC's `__ESBMC_unroll(2)`. Neither is on by
+  default: the gain is small, and a default needs `--no-div-by-zero-check`
+  and `--no-bounds-check` to turn it off again, which the importer now
+  drops as checks Vereda lacks.
+- SV-COMP no-overflow takes signed-integer-overflow only (see the property
+  files section above).

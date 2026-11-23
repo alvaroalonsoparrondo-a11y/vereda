@@ -5,6 +5,7 @@ argument is forwarded to the binary unchanged, so each flag lives in one
 place. Inputs are recognised by extension (.c .i .ll .bc)."""
 import argparse
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -27,9 +28,35 @@ CLANG_FLAGS = [
     "-Wno-incompatible-function-pointer-types",
     "-Wno-unknown-attributes",
     "-fbracket-depth=1024",
-    # No -fsanitize checks until the overflow and bounds properties
-    # (plan section 7.2) are encoded.
 ]
+
+# ESBMC's flags for the checks clang's sanitizers insert. They trap into
+# llvm.ubsantrap, which the binary takes as a failed check.
+SANITIZERS = {
+    "--overflow-check": "signed-integer-overflow",
+    "--unsigned-overflow-check": "unsigned-integer-overflow",
+    "--ub-shift-check": "shift",
+}
+# SV-COMP property formula -> (the binary's --property, sanitizers). Only
+# signed overflow: SV-COMP's no-overflow is a signed result out of range,
+# and clang's shift checks also flag negative operands, which are not.
+PROPERTIES = {
+    "G ! call(reach_error())": ("unreach-call", []),
+    "G ! overflow": ("no-overflow", ["signed-integer-overflow"]),
+}
+CHECK = re.compile(r"CHECK\(\s*init\((\w+)\(\)\)\s*,\s*LTL\((.*)\)\s*\)")
+
+
+def read_property(path):
+    """(entry function, the binary's --property, sanitizers) for an SV-COMP
+    property file. Exits on a property the binary cannot check."""
+    with open(path, encoding="utf-8") as f:
+        checks = [CHECK.fullmatch(line.strip()) for line in f if line.strip()]
+    formula = " ".join(checks[0].group(2).split()) if len(checks) == 1 and checks[0] else None
+    if formula not in PROPERTIES:
+        sys.exit(f"vereda.py: unsupported property in {path}; "
+                 "supported: unreach-call, no-overflow")
+    return (checks[0].group(1),) + PROPERTIES[formula]
 
 
 def find_binary():
@@ -41,7 +68,7 @@ def find_binary():
     sys.exit("vereda.py: verifier binary not found; pass --bin")
 
 
-def compile_and_link(args, arch, inputs, tmp, run):
+def compile_and_link(args, flags, inputs, tmp, run):
     """Compiles each C input with clang and links several modules with
     llvm-link. Returns the IR file to verify, or None on failure."""
     tag = "\033[36m[PROGRESS]\033[0m" if sys.stdout.isatty() else "[PROGRESS]"
@@ -54,7 +81,7 @@ def compile_and_link(args, arch, inputs, tmp, run):
             continue
         print(tag, "Compiling", source)
         ir = os.path.join(tmp, os.path.basename(source) + ext)
-        cmd = ([args.clang] + CLANG_FLAGS + arch + ["-I" + d for d in args.I]
+        cmd = ([args.clang] + CLANG_FLAGS + flags + ["-I" + d for d in args.I]
                + ["-D" + d for d in args.D] + textual + [source, "-o", ir])
         if run(cmd) != 0:
             return None
@@ -70,7 +97,8 @@ def compile_and_link(args, arch, inputs, tmp, run):
 
 
 def main():
-    parser = argparse.ArgumentParser(add_help=False, description=__doc__)
+    # No abbreviations: --property, the binary's, is not --property-file.
+    parser = argparse.ArgumentParser(add_help=False, description=__doc__, allow_abbrev=False)
     parser.add_argument("-h", "--help", action="store_true")
     parser.add_argument("--bin", help="verifier binary (default: next to this script or build/)")
     parser.add_argument("--clang", default=os.environ.get("CLANG", "clang"),
@@ -81,9 +109,21 @@ def main():
     parser.add_argument("-D", action="append", default=[], help="macro definition for clang")
     parser.add_argument("--keep-ir", action="store_true",
                         help="write the IR handed to the binary next to the input as <input>.ll")
+    parser.add_argument("--property-file",
+                        help="SV-COMP property file: unreach-call or no-overflow")
+    for flag, check in SANITIZERS.items():
+        parser.add_argument(flag, dest="sanitize", action="append_const", const=check,
+                            default=[], help=f"check with clang's -fsanitize={check}")
     parser.add_argument("-v", "--verbose", action="store_true", help="echo every command run")
     args, rest = parser.parse_known_args()
-    arch = ["-m32"] * args.m32 + ["-m64"] * args.m64
+    flags = ["-m32"] * args.m32 + ["-m64"] * args.m64
+    if args.property_file:
+        entry, prop, sanitize = read_property(args.property_file)
+        args.sanitize += sanitize
+        rest += ["--entry", entry, "--property", prop]
+    if args.sanitize:
+        flags += [f + ",".join(sorted(set(args.sanitize)))
+                  for f in ("-fsanitize=", "-fsanitize-trap=")]
 
     binary = args.bin or find_binary()
     if args.help:
@@ -94,8 +134,13 @@ def main():
 
     inputs = [a for a in rest if a.endswith(SOURCE_EXTS + IR_EXTS)]
     forwarded = [a for a in rest if a not in inputs]
+    if not inputs and "--version" in forwarded:
+        return subprocess.call([binary, "--version"])
     if not inputs:
         sys.exit("vereda.py: no input file (.c .i .ll .bc)")
+    if any(f.startswith("-fsanitize=") for f in flags) and any(i.endswith(IR_EXTS) for i in inputs):
+        sys.exit("vereda.py: clang compiles the overflow checks in, so they need C inputs, "
+                 "not .ll or .bc")
 
     def run(cmd):
         if args.verbose:
@@ -105,7 +150,7 @@ def main():
 
     run([binary, "--version"])
     with tempfile.TemporaryDirectory() as tmp:
-        ir = compile_and_link(args, arch, inputs, tmp, run)
+        ir = compile_and_link(args, flags, inputs, tmp, run)
         if ir is None:
             return 1
         if args.keep_ir:
