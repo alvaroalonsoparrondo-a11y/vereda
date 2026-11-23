@@ -54,7 +54,10 @@ target_link_libraries(vereda PRIVATE libvereda)
 # The C library models (models/*.c) as one bitcode file per pointer width,
 # next to the binary, already through the pass list ir runs; ir links in
 # the functions a program still calls after its own passes. -fno-builtin
-# keeps InstCombine from rewriting calls inside the models.
+# keeps InstCombine from rewriting calls inside the models. No -g: without
+# debug records a model's assignments stay out of counterexamples, as
+# ESBMC's __ESBMC_HIDE label keeps its library's out (tests/vereda/
+# lib_hidden.c).
 file(GLOB model_sources CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/models/*.c")
 file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/models")
 foreach(bits 32 64)
