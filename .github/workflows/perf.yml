@@ -1,7 +1,7 @@
 # Catches performance changes across the whole regression suite. It takes
-# the base's numbers from the Tests run on main (tests.yml records each
-# test's time and memory) and the head's from the pull request's own Tests
-# run, and screens them for tests whose numbers differ. Those are measured
+# the head's numbers from the pull request's own Tests run (tests.yml
+# records each test's time and memory), then the base's from the Tests run
+# on main, and screens them for tests whose numbers differ. Those are measured
 # again side by side on this runner with both binaries (tests/bench.py),
 # since two suite runs on different machines are too noisy to compare
 # alone. Only then does it build: with no candidate, it builds nothing. When
@@ -43,8 +43,29 @@ jobs:
           # History to walk back past docs-only commits to numbers on main.
           fetch-depth: 50
 
-      # From the Tests run of the base commit's push to main, waiting for it
-      # if it is still running. A commit without a run is skipped only if it
+      # The pull request's own Tests run first: it is the one this job
+      # depends on most, and main's run for the base is usually done by the
+      # time it is.
+      - name: Wait for the pull request's tests
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          for _ in $(seq 60); do
+            id=$(gh run list -R "$GITHUB_REPOSITORY" --workflow tests.yml --commit "$HEAD" \
+                   --event pull_request --json databaseId -q '.[0].databaseId')
+            [ -n "$id" ] && break
+            sleep 30
+          done
+          [ -n "$id" ] || { echo "no Tests run for $HEAD"; exit 1; }
+          gh run watch "$id" -R "$GITHUB_REPOSITORY" --interval 60 > /dev/null || true
+          gh run download "$id" -R "$GITHUB_REPOSITORY" -n regress-stats -D head-stats
+          ls head-stats | wc -l
+
+      # After the pull request's own tests, so main's run for the base has
+      # most likely finished too; from the Tests run of the base commit's
+      # push to main, waiting for it if it is still running. A commit without a run is skipped only if it
       # touched docs alone (tests.yml skips those, and the binary is the
       # same); a code commit without numbers, or a run that failed before
       # uploading them or whose numbers expired, leaves found unset.
@@ -75,23 +96,6 @@ jobs:
             fi
             break
           done
-
-      - name: Wait for the pull request's tests
-        if: github.event_name == 'pull_request'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          HEAD: ${{ github.event.pull_request.head.sha }}
-        run: |
-          for _ in $(seq 60); do
-            id=$(gh run list -R "$GITHUB_REPOSITORY" --workflow tests.yml --commit "$HEAD" \
-                   --event pull_request --json databaseId -q '.[0].databaseId')
-            [ -n "$id" ] && break
-            sleep 30
-          done
-          [ -n "$id" ] || { echo "no Tests run for $HEAD"; exit 1; }
-          gh run watch "$id" -R "$GITHUB_REPOSITORY" --interval 60 > /dev/null || true
-          gh run download "$id" -R "$GITHUB_REPOSITORY" -n regress-stats -D head-stats
-          ls head-stats | wc -l
 
       # Python only: no build unless the screen finds a test whose numbers
       # differ, or main had no numbers for the base.
