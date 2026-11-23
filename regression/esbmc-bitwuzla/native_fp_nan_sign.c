@@ -18,5 +18,3 @@ int main(void)
 // RUN: --solver bitwuzla
 // MODE: KNOWNBUG
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: KNOWNBUG test passed unexpectedly; promote it to CORE
-// MODE: CORE

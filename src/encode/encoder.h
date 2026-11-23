@@ -2,11 +2,12 @@
 // Bool terms; every other integer is a bitvector of its width. A struct of
 // integers is one bitvector with its fields packed from the low bits up.
 // Pointers are the memory stage's (object, offset) bitvectors. A float in an
-// IEEE format is the bitvector of its bits; an operation views it as a
-// float of the solver's floating-point theory, or of camada's bit-vector
-// encoding with fp2bv, rounding to nearest, ties to even, as C does by
-// default. Under the solver's theory a NaN result's bits are some NaN;
-// camada's encoding propagates payloads as hardware does. A vector of integers or
+// IEEE format is a term of the solver's floating-point theory, which becomes
+// its bits only where bits are needed: memory, bitcasts, vector elements and
+// sign tests; a NaN's bits there are some NaN. With fp2bv a float is the
+// bitvector of its bits everywhere, and an operation views it as camada's
+// bit-vector encoded float, which propagates NaN payloads as hardware does.
+// Operations round to nearest, ties to even, as C does by default. A vector of integers or
 // floats is one bitvector with element 0 in the low bits, as memory lays it
 // out; the scalarizer leaves vectors only where they cross calls.
 #pragma once
@@ -42,6 +43,10 @@ public:
   void bind(const llvm::Value *v, camada::SMTExprRef term) { env[v] = std::move(term); }
   // The term bound to v, or a null term.
   camada::SMTExprRef bound(const llvm::Value *v) const { return env.lookup(v); }
+  // A value of type ty as the bits memory holds, and back: the identity
+  // except for floats in the solver's theory.
+  camada::SMTExprRef toBits(camada::SMTExprRef v, llvm::Type *ty);
+  camada::SMTExprRef fromBits(camada::SMTExprRef bits, llvm::Type *ty);
   // A fresh unconstrained term of v's type, named after its origin (nondet calls, arguments).
   camada::SMTExprRef fresh(llvm::Type *ty, const std::string &name);
   // Encodes arithmetic, comparison, cast, select, freeze, extractvalue and
@@ -63,8 +68,10 @@ private:
   camada::SMTExprRef castTo(unsigned opcode, const llvm::Value *op, llvm::Type *dst);
   camada::SMTExprRef gep(const llvm::GEPOperator &g);
   camada::SMTSortRef fpSort(llvm::Type *ty);
-  camada::SMTExprRef fp(const llvm::Value *v); // v's bits as a float
-  camada::SMTExprRef bits(const camada::SMTExprRef &fp);
+  camada::SMTExprRef fp(const llvm::Value *v); // v as a float of the theory or encoding
+  camada::SMTExprRef bits(const camada::SMTExprRef &fp); // an operation's result as a value
+  bool native() const { return fpEncoding == camada::FPEncoding::Native; }
+  camada::SMTExprRef signBit(const llvm::Value *v); // true when v's sign bit is set
   camada::SMTExprRef rm(camada::RM mode);
   camada::SMTExprRef fcmp(llvm::CmpInst::Predicate p, const llvm::Value *a,
                           const llvm::Value *b);

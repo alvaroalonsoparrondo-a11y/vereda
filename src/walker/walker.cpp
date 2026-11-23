@@ -465,14 +465,16 @@ private:
     if (auto *l = dyn_cast<LoadInst>(&inst)) {
       if (l->isAtomic())
         throw Unsupported("atomic load");
-      enc.bind(l, mem.load(st, enc.value(l->getPointerOperand()), l->getType()));
+      enc.bind(l, enc.fromBits(mem.load(st, enc.value(l->getPointerOperand()), l->getType()),
+                               l->getType()));
       return true;
     }
     if (auto *w = dyn_cast<StoreInst>(&inst)) {
       if (w->isAtomic())
         throw Unsupported("atomic store");
-      mem.store(st, enc.value(w->getPointerOperand()), enc.value(w->getValueOperand()),
-                w->getValueOperand()->getType());
+      Value *v = w->getValueOperand();
+      mem.store(st, enc.value(w->getPointerOperand()), enc.toBits(enc.value(v), v->getType()),
+                v->getType());
       return true;
     }
     return false;

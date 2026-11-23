@@ -422,6 +422,29 @@ float tests give the same verdicts both ways and on Z3 and cvc5; Bitwuzla
 is fastest, Z3 slowest (20 s against 0.5 s on float_intrinsics). With
 `--fp2bv` translated by import_esbmc.py, 10 more imported tests pass.
 
+Keeping floats as bits under the solver's theory turned out slow: SMT-LIB
+has no float-to-bits operation, and camada emulates mkIEEEFPToBV on
+Bitwuzla and cvc5 with an uninterpreted function tied by
+`to_fp(fn(x)) == x`, so every FP result added a function application and
+a constraint. 10_fir_new (`--unwind 34`) took 0.48 s to walk and did not
+finish solving in 10 minutes. In native mode a float is now an FP term,
+converted to bits only at memory, bitcasts, vector elements and
+copysign's sign test; fneg and fabs are FP operations, and is.fpclass
+uses the theory's class tests (one NaN, so either NaN class means any
+NaN). x86_fp80 stays bits, with neg and fabs as bit operations.
+
+| Build | Walk | Solve | Peak memory |
+|---|---|---|---|
+| 1266dcdf (fp2bv only) | 8.6 s | 12.8 s | 3.1 GB |
+| native, floats as bits | 0.48 s | over 10 min | |
+| native, floats as FP terms | 0.42 s | 0.20 s | 107 MB |
+| `--fp2bv`, same build | 13.6 s | 20.8 s | 3.1 GB |
+
+The float tests keep their verdicts and run faster native than with
+`--fp2bv` (float_intrinsics 0.03 s against 0.08 s). One imported test,
+native_fp_nan_sign, goes back to KNOWNBUG: it reads a NaN's sign bit,
+which the theory does not fix.
+
 Clang keeps sqrt and fma as library calls while errno is on, so a pass in
 ir turns calls to bodyless libm functions with an LLVM intrinsic (sqrt,
 fabs, floor, ceil, trunc, round, rint, nearbyint, roundeven, fmin, fmax,

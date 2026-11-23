@@ -460,7 +460,11 @@ void Memory::storeConstant(State &st, SMTExprRef p, const Constant *c,
     fillOrSet(st, p, t.bv(0, 8), dl.getTypeStoreSize(ty).getFixedValue());
     return;
   }
-  if (ty->isIntegerTy() || ty->isPointerTy() || ty->isFloatingPointTy()) {
+  if (auto *cf = dyn_cast<ConstantFP>(c)) { // memory holds a float's bits
+    store(st, p, t.bv(cf->getValueAPF().bitcastToAPInt()), ty);
+    return;
+  }
+  if (ty->isIntegerTy() || ty->isPointerTy()) {
     store(st, p, valueOf(c), ty);
     return;
   }

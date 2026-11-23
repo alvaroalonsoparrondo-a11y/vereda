@@ -69,7 +69,7 @@ SMTSortRef Encoder::sort(Type *ty) {
   if (ty->isIntegerTy(1))
     return s.mkBoolSort();
   if (ieee(ty))
-    return s.mkBVSort(ty->getPrimitiveSizeInBits());
+    return native() ? fpSort(ty) : s.mkBVSort(ty->getPrimitiveSizeInBits());
   if (unsigned w = vectorElementWidth(ty))
     return s.mkBVSort(w * cast<FixedVectorType>(ty)->getNumElements());
   if (ty->isPointerTy())
@@ -93,7 +93,7 @@ SMTExprRef Encoder::value(const Value *v) {
   if (isa<ConstantPointerNull>(v))
     return mem.null();
   if (auto *cf = dyn_cast<ConstantFP>(v); cf && ieee(cf->getType()))
-    return t.bv(cf->getValueAPF().bitcastToAPInt());
+    return fromBits(t.bv(cf->getValueAPF().bitcastToAPInt()), cf->getType());
   if (vectorElementWidth(v->getType()) && isa<Constant>(v)) {
     auto *c = cast<Constant>(v);
     unsigned n = cast<FixedVectorType>(v->getType())->getNumElements();
@@ -101,7 +101,7 @@ SMTExprRef Encoder::value(const Value *v) {
       Constant *e = c->getAggregateElement(i); // null for some constant expressions
       if (!e)
         throw Unsupported("value " + describe(v));
-      return value(e);
+      return toBits(value(e), e->getType());
     };
     SMTExprRef r = element(n - 1);
     for (unsigned i = n - 1; i-- > 0;)
@@ -154,15 +154,53 @@ SMTSortRef Encoder::fpSort(Type *ty) {
                     fpEncoding);
 }
 
-SMTExprRef Encoder::fp(const Value *v) { return s.mkBVToIEEEFP(value(v), fpSort(v->getType())); }
+SMTExprRef Encoder::fp(const Value *v) {
+  SMTSortRef sort = fpSort(v->getType()); // throws for x86_fp80, held as bits
+  return native() ? value(v) : s.mkBVToIEEEFP(value(v), sort);
+}
 
-SMTExprRef Encoder::bits(const SMTExprRef &f) { return s.mkIEEEFPToBV(f); }
+SMTExprRef Encoder::bits(const SMTExprRef &f) { return native() ? f : s.mkIEEEFPToBV(f); }
+
+SMTExprRef Encoder::toBits(SMTExprRef v, Type *ty) {
+  return native() && ieee(ty) ? s.mkIEEEFPToBV(v) : v;
+}
+
+SMTExprRef Encoder::fromBits(SMTExprRef b, Type *ty) {
+  return native() && ieee(ty) ? s.mkBVToIEEEFP(b, fpSort(ty)) : b;
+}
+
+SMTExprRef Encoder::signBit(const Value *v) {
+  SMTExprRef b = toBits(value(v), v->getType());
+  unsigned w = b->getWidth();
+  return t.eq(t.extract(b, w - 1, w - 1), t.bv(1, 1));
+}
 
 SMTExprRef Encoder::rm(camada::RM mode) { return s.mkRM(mode, fpEncoding); }
 
 SMTExprRef Encoder::fpClass(const SMTExprRef &x, Type *ty, unsigned mask) {
   if (!ieee(ty))
     throw Unsupported("type " + describe(ty));
+  if (native()) {
+    // The theory has one NaN, so either NaN class means any NaN; the sign
+    // of a zero is told by structural equality, which -0 and +0 fail.
+    const fltSemantics &sem = *ieee(ty);
+    SMTExprRef zero = fromBits(t.bv(APFloat::getZero(sem).bitcastToAPInt()), ty);
+    SMTExprRef negZero = fromBits(t.bv(APFloat::getZero(sem, true).bitcastToAPInt()), ty);
+    SMTExprRef neg = s.mkFPLt(x, zero), pos = s.mkFPGt(x, zero);
+    SMTExprRef inf = s.mkFPIsInfinite(x), normal = s.mkFPIsNormal(x);
+    SMTExprRef sub = s.mkFPIsSubnormal(x);
+    const std::pair<unsigned, SMTExprRef> classes[] = {
+        {fcNan, s.mkFPIsNaN(x)},           {fcNegInf, t.land(neg, inf)},
+        {fcNegNormal, t.land(neg, normal)}, {fcNegSubnormal, t.land(neg, sub)},
+        {fcNegZero, t.eq(x, negZero)},      {fcPosZero, t.eq(x, zero)},
+        {fcPosSubnormal, t.land(pos, sub)}, {fcPosNormal, t.land(pos, normal)},
+        {fcPosInf, t.land(pos, inf)}};
+    SMTExprRef r = t.boolean(false);
+    for (auto &[bit, in] : classes)
+      if (mask & bit)
+        r = t.lor(r, in);
+    return r;
+  }
   const fltSemantics &sem = *ieee(ty);
   unsigned w = x->getWidth(), sig = APFloat::semanticsPrecision(sem) - 1;
   SMTExprRef exp = t.extract(x, w - 2, sig), mant = t.extract(x, sig - 1, 0);
@@ -236,12 +274,12 @@ SMTExprRef Encoder::castTo(unsigned opcode, const Value *op, Type *dst) {
   default:
     break;
   }
-  // A float is its bits, so a bitcast between a float and an integer of the
-  // same width keeps them.
+  // A bitcast between a float and an integer, or another float, of the same
+  // width keeps the bits.
   if (opcode == Instruction::BitCast && !src->isPointerTy() &&
       (ieee(src) || ieee(dst)) && src->getPrimitiveSizeInBits() == dst->getPrimitiveSizeInBits() &&
       (ieee(src) || src->isIntegerTy()) && (ieee(dst) || dst->isIntegerTy()))
-    return a;
+    return fromBits(toBits(a, src), dst);
   switch (opcode) {
   case Instruction::PtrToInt:
     return dst->isIntegerTy(1) ? toBool(resize(mem.address(a), 1, false))
@@ -334,7 +372,8 @@ void Encoder::encode(Instruction &inst) {
     r = binary(inst.getOpcode(), inst.getOperand(0), inst.getOperand(1));
   } else if (inst.getOpcode() == Instruction::FNeg) { // flips the sign bit, NaN or not
     SMTExprRef a = value(inst.getOperand(0));
-    r = t.bvxor(a, t.bv(APInt::getSignMask(a->getWidth())));
+    r = native() && ieee(inst.getType()) ? s.mkFPNeg(a)
+                                         : t.bvxor(a, t.bv(APInt::getSignMask(a->getWidth())));
   } else if (auto *fc = dyn_cast<FCmpInst>(&inst)) {
     r = fcmp(fc->getPredicate(), fc->getOperand(0), fc->getOperand(1));
   } else if (auto *cmp = dyn_cast<ICmpInst>(&inst)) {
@@ -382,10 +421,11 @@ void Encoder::encode(Instruction &inst) {
       throw Unsupported("instruction " + describe(&inst));
     unsigned low = w * index->getZExtValue(), all = w * n;
     SMTExprRef v = value(vec);
+    Type *elem = cast<FixedVectorType>(vec->getType())->getElementType();
     if (isa<ExtractElementInst>(inst)) {
-      r = t.extract(v, low + w - 1, low);
+      r = fromBits(t.extract(v, low + w - 1, low), elem);
     } else {
-      r = value(inst.getOperand(1));
+      r = toBits(value(inst.getOperand(1)), elem);
       if (low + w < all)
         r = t.concat(t.extract(v, all - 1, low + w), r);
       if (low > 0)
@@ -417,8 +457,15 @@ bool Encoder::fpIntrinsic(CallBase &c) {
   SMTExprRef r;
   switch (id) {
   case Intrinsic::fabs:
-  case Intrinsic::copysign: { // bit operations on the sign, NaN or not
-    SMTExprRef a = value(arg(0)), sign = t.bv(APInt::getSignMask(a->getWidth()));
+  case Intrinsic::copysign: { // operations on the sign, NaN or not
+    SMTExprRef a = value(arg(0));
+    if (native() && ieee(arg(0)->getType())) { // x86_fp80 stays bits
+      r = s.mkFPAbs(a);
+      if (id == Intrinsic::copysign)
+        r = t.ite(signBit(arg(1)), s.mkFPNeg(r), r);
+      break;
+    }
+    SMTExprRef sign = t.bv(APInt::getSignMask(a->getWidth()));
     r = t.bvand(a, t.bvnot(sign));
     if (id == Intrinsic::copysign)
       r = t.bvor(r, t.bvand(value(arg(1)), sign));
