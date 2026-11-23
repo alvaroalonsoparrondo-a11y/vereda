@@ -13,24 +13,29 @@ output still hold. A rerun replaces earlier copies.
 __ESBMC_assert, __ESBMC_assume, __ESBMC_atomic_begin,
 __ESBMC_atomic_end, __ESBMC_memset and __ESBMC_memcpy become
 __VERIFIER_assert, __VERIFIER_assume, __VERIFIER_atomic_begin,
-__VERIFIER_atomic_end, memset and memcpy in the copied sources, and
-__ESBMC_unreachable becomes reach_error in tests run with
---enable-unreachability-intrinsic, a flag then dropped. Setting
-__ESBMC_rounding_mode becomes fesetround() where that covers every use
-of it, and nondet_X becomes __VERIFIER_nondet_X. ESBMC flags with a
-Vereda equivalent are translated. Flags that only turn off a check
-Vereda does not have are dropped. A test that needs any other flag keeps
-its ESBMC flags and becomes FUTURE, with the missing flags named in a
-"// Needs:" line; Vereda then rejects the flags, so the test passes
-until Vereda learns them and the script runs again. ESBMC's REQUIRES,
-CHECK_JSON, CHECK_FILE and SEED_FILE lines make a test FUTURE the same
-way, as run.py has none of them.
+__VERIFIER_atomic_end, memset and memcpy in the copied sources,
+__ESBMC_builtin_object_size and __ESBMC_alloca become clang's
+__builtin_object_size and __builtin_alloca, __ESBMC_bitcast(tgt, src)
+becomes __builtin_memcpy(tgt, src, sizeof *(tgt)), __ESBMC_unroll(N)
+right before a loop becomes #pragma unroll N+1, the bound ESBMC gives
+it, and --enable-unreachability-intrinsic is dropped: reach_error() is
+always an error in Vereda. Setting __ESBMC_rounding_mode becomes
+fesetround() where that covers every use of it, and nondet_X becomes
+__VERIFIER_nondet_X. ESBMC flags with a Vereda equivalent are
+translated. Flags that only turn off a check Vereda does not have are
+dropped. A test that needs any other flag keeps its ESBMC flags and
+becomes FUTURE, with the missing flags named in a "// Needs:" line;
+Vereda then rejects the flags, so the test passes until Vereda learns
+them and the script runs again. ESBMC's REQUIRES, CHECK_JSON, CHECK_FILE
+and SEED_FILE lines make a test FUTURE the same way, as run.py has none
+of them.
 
 Tests that read files outside their own directory are skipped, and so is
 ESBMC's "disabled" suite unless named. So are tests of features only
-ESBMC's users need, function contracts, integer/real arithmetic and LTL
-monitors (ESBMC_ONLY), which Vereda does not plan to support, and the
-tests in SKIPPED_TESTS; a rerun deletes earlier copies.
+ESBMC's users need, function contracts, integer/real arithmetic, LTL
+monitors and the unreachability intrinsic (ESBMC_ONLY), which Vereda
+does not plan to support, and the tests in SKIPPED_TESTS; a rerun
+deletes earlier copies.
 
 With --mark, each copied test then runs through run.py, and one that
 does not behave as its mode says gets the other mode: a failing CORE or
@@ -162,17 +167,21 @@ def copy_files(src, dest, source, tracked):
 RENAMES = {"__ESBMC_assert": "__VERIFIER_assert", "__ESBMC_assume": "__VERIFIER_assume",
            "__ESBMC_memset": "memset", "__ESBMC_memcpy": "memcpy",
            "__ESBMC_atomic_begin": "__VERIFIER_atomic_begin",
-           "__ESBMC_atomic_end": "__VERIFIER_atomic_end"}
-# __ESBMC_unreachable() is a no-op unless this flag makes reaching it a
-# violation, as reach_error() always is in Vereda.
-UNREACHABLE_FLAG = "--enable-unreachability-intrinsic"
+           "__ESBMC_atomic_end": "__VERIFIER_atomic_end",
+           # ESBMC defines __builtin_object_size as its own and handles
+           # __builtin_alloca like __ESBMC_alloca, so clang's builtins match.
+           "__ESBMC_builtin_object_size": "__builtin_object_size",
+           "__ESBMC_alloca": "__builtin_alloca"}
+# Besides turning __ESBMC_unreachable() into a violation, which Vereda does
+# not support, this flag makes reach_error() and __VERIFIER_error() errors,
+# as they always are in Vereda; so it is dropped, and a test that uses the
+# intrinsic with it is skipped (ESBMC_ONLY).
+UNREACHABLE_FLAG = re.compile(r"(?<!\S)--enable-unreachability-intrinsic(?!\S)\s*")
 
 
-def rename(text, unreachable):
-    """Renames the builtins in text; __ESBMC_unreachable too when
-    unreachable says the test runs with UNREACHABLE_FLAG."""
-    names = dict(RENAMES, **({"__ESBMC_unreachable": "reach_error"} if unreachable else {}))
-    return re.sub(r"\b(" + "|".join(names) + r")\b", lambda m: names[m.group(1)], text)
+def rename(text):
+    """Renames the builtins in text."""
+    return re.sub(r"\b(" + "|".join(RENAMES) + r")\b", lambda m: RENAMES[m.group(1)], text)
 ASSERT = re.compile(r"\b__ESBMC_assert\s*\(")
 LITERAL = re.compile(r'"((?:[^"\\\n]|\\.)*)"')
 
@@ -227,7 +236,7 @@ def message_comment(message):
     return " ".join(text.split()).replace("*/", "* /").rstrip("\\ ")
 
 
-def rewrite_asserts(text, unreachable=False):
+def rewrite_asserts(text):
     """Turns __ESBMC_assert(cond, message) into __VERIFIER_assert(cond) with
     the message as a comment: '// message' at the end of the line the call
     ends on, or '/* message */' right after the call when the rest of that
@@ -266,7 +275,61 @@ def rewrite_asserts(text, unreachable=False):
                 pending.append(message)
     if pending:
         out.append(" // " + "; ".join(pending))
-    return rename("".join(out), unreachable)
+    return rename("".join(out))
+
+
+BITCAST = re.compile(r"\b__ESBMC_bitcast\s*\(")
+
+
+def rewrite_bitcasts(text):
+    """Turns __ESBMC_bitcast(tgt, src), which copies *src's bits into *tgt,
+    into __builtin_memcpy(tgt, src, sizeof *(tgt)). Calls in comments and
+    strings, and ones that do not take two arguments, are left alone."""
+    out, i = [], 0
+    while i < len(text):
+        past = skip_literal(text, i)
+        if past is not None:
+            out.append(text[i:past])
+            i = past
+            continue
+        m = BITCAST.match(text, i) if text[i] == "_" else None
+        parsed = m and call_arguments(text, m.end() - 1)
+        if not parsed or len(parsed[0]) != 2:
+            out.append(text[i])
+            i += 1
+            continue
+        (tgt_start, tgt_end), (_, close) = parsed[0][0], (None, parsed[1])
+        tgt = text[tgt_start:tgt_end]
+        out.append("__builtin_memcpy(" + text[tgt_start:close]
+                   + f", sizeof *({' '.join(tgt.split())}))")
+        i = close + 1
+    return "".join(out)
+
+
+UNROLL = re.compile(r"^([ \t]*)__ESBMC_unroll\s*\(([^;\n]*)\)\s*;[ \t]*$", re.M)
+LOOP_START = re.compile(r"\s*(for|while|do)\b")
+
+
+def rewrite_unroll(text):
+    """Turns a line holding only __ESBMC_unroll(N); into #pragma unroll N+1
+    when the next code is a loop, as the pragma must be; a call anywhere
+    else is left alone. ESBMC reads clang's #pragma unroll M as the loop's
+    unwinding bound and implements __ESBMC_unroll(N) as that bound with
+    M = N + 1 (loop_unroll.cpp), so the two mean the same to it."""
+    # Comments and literals blanked out, newlines kept, so offsets match.
+    code = "".join(c if is_code else re.sub(r"[^\n]", " ", c) for is_code, c in segments(text))
+    out, i = [], 0
+    for m in UNROLL.finditer(code):
+        if not LOOP_START.match(code, m.end()):
+            continue
+        n = m.group(2).strip()
+        after = code.index(";", m.end(2)) + 1  # a comment after the call stays
+        out.append(text[i:m.start()] + m.group(1) + "#pragma unroll "
+                   + (str(int(n) + 1) if n.isdigit() else f"(({n}) + 1)")
+                   + text[after:m.end()].rstrip())
+        i = m.end()
+    out.append(text[i:])
+    return "".join(out)
 
 
 # ESBMC's rounding mode is a variable its fenv.h model reads; each value it
@@ -347,7 +410,7 @@ def nondets_to_rename(texts):
     return names - (verifier & defined)
 
 
-def rename_builtins(path, unreachable):
+def rename_builtins(path):
     """Renames ESBMC builtins to what Vereda models in the C files at path,
     a file or a directory; see rewrite_asserts, rename, rewrite_rounding and
     nondets_to_rename. Returns the nondet_ names renamed."""
@@ -360,7 +423,8 @@ def rename_builtins(path, unreachable):
             texts[name] = f.read()
     nondets = nondets_to_rename(texts.values())
     for name, text in texts.items():
-        renamed = rewrite_rounding(rewrite_asserts(text, unreachable))
+        renamed = rewrite_unroll(rewrite_bitcasts(rewrite_rounding(
+            rewrite_asserts(text))))
         if nondets:
             renamed = code_sub(NONDET, lambda m: "__VERIFIER_" + m.group(0)
                                if m.group(0) in nondets else m.group(0), renamed)
@@ -371,21 +435,23 @@ def rename_builtins(path, unreachable):
 
 
 # Features ESBMC has for its own users that SV-COMP never uses, so Vereda
-# leaves them to ESBMC: (reason, flags, builtins). A test that names any of
-# them is not imported.
+# leaves them to ESBMC: (reason, flags, builtins, both). A test that names
+# any of them, or with both a flag and a builtin when both is set, is not
+# imported.
 ESBMC_ONLY = [
     ("function contracts",
      re.compile(r"--(enforce-contract|replace-call-with-contract"
                 r"|enforce-all-contracts|replace-all-contracts)\b"),
      re.compile(rb"\b__ESBMC_(requires|ensures|assigns|old|old_raw|return_value"
-                rb"|is_fresh|contract)\b")),
+                rb"|is_fresh|contract)\b"), False),
     ("integer/real arithmetic",
      re.compile(r"(?<!\S)--ir(-ieee)?(?!\S)"),
-     None),
+     None, False),
     ("LTL monitors",
      re.compile(r"--ltl\b"),
      re.compile(rb"\b__ESBMC_(register_monitor|switch_to_monitor|switch_from_monitor"
-                rb"|kill_monitor|ltl_sample|property__ltl2ba\w*|really_atomic_\w+)\b")),
+                rb"|kill_monitor|ltl_sample|property__ltl2ba\w*|really_atomic_\w+)\b"), False),
+    ("unreachability intrinsic", UNREACHABLE_FLAG, re.compile(rb"\b__ESBMC_unreachable\b"), True),
 ]
 
 
@@ -396,22 +462,42 @@ SKIPPED_TESTS = {
 }
 
 
+# Tests Vereda gets wrong in a way to fix, by ESBMC path: they are imported
+# as KNOWNBUG, with the reason.
+KNOWN_BUGS = {
+    "esbmc/array_loop_summary_counter": "out of memory, over 16 GB",
+    "esbmc/array_loop_summary_decrement": "out of memory, over 16 GB",
+    "esbmc/array_loop_summary_store": "out of memory, over 16 GB",
+    "esbmc/array_loop_summary_store_fail": "out of memory, over 16 GB",
+    "esbmc/array_loop_summary_stride": "over 300 s",
+    "esbmc/array_loop_summary_stride_fail": "over 300 s",
+    "esbmc/github_9785_int_base_stores": "out of memory, needs 9.5 GB",
+    "esbmc-unix2/23_picosat-846_01": "over 300 s",
+    "esbmc/github_123": "over 300 s in CI",
+    "esbmc/github_2602_1": "over 300 s in CI",
+    "esbmc/github_9356": "over 300 s in CI",
+    "esbmc/github_9356_success": "over 300 s in CI",
+    "esbmc/struct_array_ite_new_index": "over 300 s in CI",
+    "z3/github_6100_assume_noninline": "over 300 s in CI",
+    "z3/github_6100_noninline": "over 300 s in CI",
+}
+
+
 def esbmc_only(src, args):
     """The ESBMC-only feature the test in src, run with args, uses, or None.
     Directories of other tests inside src are not looked at."""
-    for reason, flags, _ in ESBMC_ONLY:
-        if flags.search(args):
-            return reason
-    builtins = [(reason, b) for reason, _, b in ESBMC_ONLY if b]
+    texts = []
     for root, dirs, names in os.walk(src):
         dirs[:] = [d for d in dirs if not os.path.exists(os.path.join(root, d, "test.desc"))]
         for n in names:
             if n.endswith((".c", ".h", ".i")):
                 with open(os.path.join(root, n), "rb") as f:
-                    text = f.read()
-                for reason, pattern in builtins:
-                    if pattern.search(text):
-                        return reason
+                    texts.append(f.read())
+    for reason, flags, builtins, both in ESBMC_ONLY:
+        flag = bool(flags.search(args))
+        builtin = bool(builtins) and any(builtins.search(t) for t in texts)
+        if (flag and builtin) if both else (flag or builtin):
+            return reason
     return None
 
 
@@ -441,12 +527,9 @@ def import_test(src, dest, origin, tracked):
     entry = copy_files(src, dest, source, tracked)
     if not entry:
         return "a main.c besides the source"
-    flag = re.compile(r"(?<!\S)" + UNREACHABLE_FLAG + r"(?!\S)\s*")
-    unreachable = bool(flag.search(args))
-    nondets = rename_builtins(entry if entry == dest + ".c" else dest, unreachable)
-    # The flag's work is done in the source; -Dldv_assume=__ESBMC_assume and
-    # the like name builtins too.
-    args = rename(flag.sub("", args).strip(), unreachable)
+    nondets = rename_builtins(entry if entry == dest + ".c" else dest)
+    # -Dldv_assume=__ESBMC_assume and the like name builtins too.
+    args = rename(UNREACHABLE_FLAG.sub("", args).strip())
     for nondet in nondets:  # e.g. an assertion's text in the results list
         regexes = [re.sub(r"(?<!\w)" + nondet + r"\b", "__VERIFIER_" + nondet, r) for r in regexes]
     name = os.path.basename(entry)
@@ -459,14 +542,18 @@ def import_test(src, dest, origin, tracked):
     with open(entry, "rb") as f:
         newline = b"" if f.read().endswith(b"\n") else b"\n"
     with open(entry, "ab") as f:
-        f.write(newline + ("\n".join(header(origin, mode, args, regexes, src)) + "\n").encode())
+        lines = header(origin, mode, args, regexes, src)
+        if origin in KNOWN_BUGS:
+            lines += [f"// Vereda: {KNOWN_BUGS[origin]}", "// MODE: KNOWNBUG"]
+        f.write(newline + ("\n".join(lines) + "\n").encode())
     return entry
 
 
 def mark(tests, runner):
     """Runs each test with runner, the run.py command line without the test,
-    and flips the mode of those that do not behave as their mode says.
-    Returns how many were flipped."""
+    and flips the mode of those that do not behave as their mode says; one
+    that runs out of memory is listed instead. Returns how many were
+    flipped."""
     def check(test):
         return test, subprocess.run(runner + [test], stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT, text=True, check=False)
@@ -475,6 +562,9 @@ def mark(tests, runner):
     with concurrent.futures.ThreadPoolExecutor(os.cpu_count()) as pool:
         for test, proc in pool.map(check, tests):
             if proc.returncode in (0, run.SKIPPED):
+                continue
+            if proc.returncode == run.OUT_OF_MEMORY:  # a failure to fix, not a mode
+                print(f"out of memory: {test}")
                 continue
             mode = "CORE" if run.parse(test)["MODE"] in run.FAIL_MODES else "FUTURE"
             lines = proc.stdout.splitlines()
@@ -497,7 +587,8 @@ def main():
                         "when Vereda disagrees; needs --bin and --clang")
     parser.add_argument("--bin", help="the vereda binary, for --mark")
     parser.add_argument("--clang", help="clang matching the binary, for --mark")
-    parser.add_argument("--timeout", default="60", help="seconds per test, for --mark")
+    parser.add_argument("--timeout", default="300", help="seconds per test, for --mark")
+    parser.add_argument("--memory-limit", default="4096", help="MB per test, for --mark")
     args = parser.parse_args()
     if args.mark and not (args.bin and args.clang):
         parser.error("--mark needs --bin and --clang")
@@ -507,7 +598,7 @@ def main():
         runner = [sys.executable, os.path.join(here, "run.py"),
                   "--vereda", os.path.join(os.path.dirname(here), "vereda.py"),
                   "--bin", os.path.abspath(args.bin), "--clang", os.path.abspath(args.clang),
-                  "--timeout", args.timeout]
+                  "--timeout", args.timeout, "--memory-limit", args.memory_limit]
         print(f"{mark(copied_tests, runner)} of {len(copied_tests)} tests changed mode")
     return 0
 
