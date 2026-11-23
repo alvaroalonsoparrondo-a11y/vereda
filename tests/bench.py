@@ -13,12 +13,24 @@ once more and counts only if it regresses again, since shared CI machines
 are noisy. Head's time limit is max(SLOWDOWN times base's wall time,
 MIN_LIMIT seconds). A test missing from the base tree is skipped.
 
+A test improves by the same margins the other way, or when base timed out or
+was killed and head was not; an improvement is also measured twice.
+
 Prints a Markdown table, also appended to $GITHUB_STEP_SUMMARY when set, and
-exits 1 when some test regressed."""
+exits 1 when some test regressed. --changes FILE writes a table of only the
+tests that regressed or improved, and nothing when none did.
+
+--stats BASE HEAD picks the tests instead of --list: each directory holds the
+numbers run.py records under $REGRESS_STATS for a whole suite run, and the
+tests whose numbers regress or improve between the two by the margins above
+are measured again here, side by side, at most MAX_CANDIDATES of them,
+largest change first. Two suite runs on different machines and loads are
+too noisy to report on their own; the side-by-side run decides."""
 import argparse
 import contextlib
+import glob
+import json
 import os
-import re
 import signal
 import subprocess
 import sys
@@ -33,12 +45,9 @@ MIN_SECONDS = 2.0
 MIN_MB = 200
 SLOWDOWN = 10
 MIN_LIMIT = 120
+MAX_CANDIDATES = 40
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VERDICT = re.compile(r"^VERIFICATION (SUCCESSFUL|FAILED|UNKNOWN)\b", re.MULTILINE)
-WALK = re.compile(r"^Walk time: ([\d.]+)s .*peak memory (\d+) MB", re.MULTILINE)
-SOLVE = re.compile(r"^(?:\[PROGRESS\] )?Solving time: ([\d.]+)s \(peak memory (\d+) MB",
-                   re.MULTILINE)
 TIMEOUT = "TIMEOUT"
 # A run killed by a signal it did not send itself; on Linux that is the
 # kernel's OOM killer, so the run is out of memory, as a timeout is out of
@@ -115,17 +124,12 @@ def finish(started_run, deadline):
     out.seek(0)
     text = out.read()
     if verdict is None:
-        verdicts = VERDICT.findall(text)
+        verdicts = run.VERDICT.findall(text)
         if verdicts:
             verdict = verdicts[-1]
         else:
             verdict = KILLED if proc.returncode in KILLED_STATUS else f"ERROR {proc.returncode}"
-    walks = [(float(t), int(m)) for t, m in WALK.findall(text)]
-    solves = [(float(t), int(m)) for t, m in SOLVE.findall(text)]
-    # --incremental-bmc walks and solves once per bound.
-    return (wall, sum(t for t, _ in walks) if walks else None,
-            sum(t for t, _ in solves) if solves else None,
-            max((m for _, m in walks + solves), default=None), verdict)
+    return (wall, *run.numbers(text), verdict)
 
 
 def measure(args, base_test, head_test):
@@ -161,6 +165,46 @@ def regressions(b, h):
     return why
 
 
+def improvements(b, h):
+    """Why the head result h is better than the base result b, or []."""
+    if b[4] in STOPPED:
+        return [] if h[4] in STOPPED or h[4].startswith("ERROR") else [f"base {STOPPED[b[4]][5:]}"]
+    if h[4] in STOPPED or h[4].startswith("ERROR") or b[4] != h[4]:
+        return []
+    why = []
+    if b[0] > RATIO * h[0] and b[0] - h[0] >= MIN_SECONDS:
+        why.append(f"wall time x{h[0] / b[0]:.2f}")
+    if b[3] and h[3] and b[3] > RATIO * h[3] and b[3] - h[3] >= MIN_MB:
+        why.append(f"memory x{h[3] / b[3]:.2f}")
+    return why
+
+
+def candidates(base_dir, head_dir):
+    """The tests whose recorded numbers changed between two suite runs,
+    largest relative change in wall time or memory first, at most
+    MAX_CANDIDATES of them."""
+    def load(d):
+        runs = {}
+        for path in glob.glob(os.path.join(d, "*.json")):
+            with open(path, encoding="utf-8") as f:
+                r = json.load(f)
+            runs[r["test"]] = (r["wall"], r["walk"], r["solve"], r["peak"],
+                               KILLED if r["verdict"] == "MEMOUT" else r["verdict"])
+        return runs
+    base, head = load(base_dir), load(head_dir)
+    found = []
+    for name in base.keys() & head.keys():
+        b, h = base[name], head[name]
+        if b[4] == h[4] and not b[4].startswith(("SUCCESSFUL", "FAILED", "UNKNOWN")) \
+                and b[4] not in STOPPED:
+            continue  # no verdict on either side: a test of an error, not of speed
+        if regressions(b, h) or improvements(b, h):
+            pairs = ((h[0], b[0]), (b[0], h[0]), (h[3], b[3]), (b[3], h[3]))
+            ratio = max(((x or 0) + 0.1) / ((y or 0) + 0.1) for x, y in pairs)
+            found.append((ratio, name))
+    return [name for _, name in sorted(found, reverse=True)[:MAX_CANDIDATES]]
+
+
 def cell(b, h, fmt):
     """A base -> head table cell; a missing number shows as '-'."""
     def show(x):
@@ -176,24 +220,32 @@ def main():
     parser.add_argument("--base-root", default=ROOT,
                         help="source tree whose vereda.py and tests the base binary runs "
                         "(default: this one); a test missing there is skipped")
-    parser.add_argument("--list", default=os.path.join(ROOT, "tests", "bench.txt"),
-                        help="tests, one suite/name per line; # starts a comment")
+    parser.add_argument("--list", help="tests, one suite/name per line; # starts a comment")
+    parser.add_argument("--stats", nargs=2, metavar=("BASE", "HEAD"),
+                        help="pick the tests from two suite runs' $REGRESS_STATS directories")
     parser.add_argument("--timeout", type=float, default=180,
                         help="seconds before a base run is stopped (default %(default)s)")
+    parser.add_argument("--changes", metavar="FILE",
+                        help="write a table of only the tests that regressed or improved")
     parser.add_argument("base", help="base vereda binary")
     parser.add_argument("head", help="head vereda binary")
     args = parser.parse_args()
+    if not args.list and not args.stats:
+        parser.error("give --list or --stats")
     # vereda.py runs in a temporary directory.
     args.base_root, args.base, args.head, args.clang = map(
         os.path.abspath, (args.base_root, args.base, args.head, args.clang))
-    with open(args.list, encoding="utf-8") as f:
-        names = [line.split("#")[0].strip() for line in f]
-    names = [n for n in names if n]
+    if args.stats:
+        names = candidates(*args.stats)
+        print(f"{len(names)} tests changed between the suite runs", flush=True)
+    else:
+        with open(args.list, encoding="utf-8") as f:
+            names = [n for n in (line.split("#")[0].strip() for line in f) if n]
 
-    lines = ["| test | walk s | solve s | wall s | peak MB | verdict | regression |",
+    lines = ["| test | walk s | solve s | wall s | peak MB | verdict | change |",
              "|---|---|---|---|---|---|---|"]
     print("\n".join(lines), flush=True)
-    failed = []
+    failed, changed = [], []
     for name in names:
         head_test = test_files(ROOT, name)
         if head_test is None:
@@ -204,26 +256,37 @@ def main():
             print(lines[-1], flush=True)
             continue
         b, h = measure(args, base_test, head_test)
-        why = regressions(b, h)
-        if why and b[4] == h[4] and not h[4].startswith("ERROR"):
+        why, better = regressions(b, h), improvements(b, h)
+        if (why or better) and b[4] == h[4] and not h[4].startswith("ERROR"):
             b, h = measure(args, base_test, head_test)
-            why = regressions(b, h)
+            why, better = regressions(b, h), improvements(b, h)
         if why:
             failed.append(name)
-        verdict = b[4] if b[4] == h[4] else f"{b[4]} → {h[4]}"
         row = (f"| {name} | {cell(b[1], h[1], '{:.2f}')} | {cell(b[2], h[2], '{:.2f}')} "
-               f"| {cell(b[0], h[0], '{:.2f}')} | {cell(b[3], h[3], '{}')} | {verdict} "
-               f"| {'**' + ', '.join(why) + '**' if why else ''} |")
+               f"| {cell(b[0], h[0], '{:.2f}')} | {cell(b[3], h[3], '{}')} "
+               f"| {b[4] if b[4] == h[4] else f'{b[4]} → {h[4]}'} "
+               f"| {'**' + ', '.join(why) + '**' if why else ', '.join(better)} |")
+        if why or better:
+            changed.append(row)
         lines.append(row)
         print(row, flush=True)
+    report(lines, failed, changed, args.changes)
+    return 1 if failed else 0
+
+
+def report(lines, failed, changed, changes):
+    """Ends the table with the regressed tests, writes the step summary, and
+    writes the changed rows to the file changes when some test changed."""
     lines.append("")
     lines.append(f"Regressed: {', '.join(failed)}" if failed else "No regressions.")
     print(lines[-1])
+    if changes and changed:
+        with open(changes, "w", encoding="utf-8") as f:
+            f.write("\n".join(lines[:2] + changed) + "\n")
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary:
         with open(summary, "a", encoding="utf-8") as f:
             f.write("## Performance: base → head\n\n" + "\n".join(lines) + "\n")
-    return 1 if failed else 0
 
 
 if __name__ == "__main__":
