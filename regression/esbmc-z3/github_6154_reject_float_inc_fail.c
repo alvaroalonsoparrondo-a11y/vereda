@@ -18,5 +18,3 @@ int main()
 // Imported from ESBMC regression/z3/github_6154_reject_float_inc_fail
 // RUN: --solver z3
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

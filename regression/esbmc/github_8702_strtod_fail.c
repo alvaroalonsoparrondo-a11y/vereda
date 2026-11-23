@@ -11,5 +11,3 @@ int main(void)
 // RUN: --multi-property
 // EXPECT: ^\s+FAILED\s+\[main\.assertion\.1\]\s+line\s+7
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^\s+FAILED\s+\[main\.assertion\.1\]\s+line\s+7
-// MODE: FUTURE

@@ -144,5 +144,3 @@ int ludcmp(int nmax, int n, double eps)
 
 // Imported from ESBMC regression/esbmc/13_ludcmp_new
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

@@ -37,5 +37,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/simplifier13
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

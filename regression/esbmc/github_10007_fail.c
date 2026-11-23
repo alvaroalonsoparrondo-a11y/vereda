@@ -13,5 +13,5 @@ int main(void)
 // Imported from ESBMC regression/esbmc/github_10007_fail
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^  assertion fma\(2\.0, 3\.0\) == 5\.0 && nearbyint\(\) == 0\.0
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  assertion fma\(2\.0, 3\.0\) == 5\.0 && nearbyint\(\) == 0\.0
 // MODE: FUTURE

@@ -45,9 +45,19 @@ static unsigned packedWidth(Type *ty) {
   return width;
 }
 
+// The format of a floating-point type that is an IEEE interchange format;
+// null for x86_fp80 and ppc_fp128, which are not.
+static const fltSemantics *ieee(Type *ty) {
+  if (!ty->isFloatingPointTy() || ty->isX86_FP80Ty() || ty->isPPC_FP128Ty())
+    return nullptr;
+  return &ty->getFltSemantics();
+}
+
 SMTSortRef Encoder::sort(Type *ty) {
   if (ty->isIntegerTy(1))
     return s.mkBoolSort();
+  if (ieee(ty))
+    return s.mkBVSort(ty->getPrimitiveSizeInBits());
   if (ty->isPointerTy())
     return mem.pointerSort();
   if (unsigned width = packedWidth(ty))
@@ -68,6 +78,8 @@ SMTExprRef Encoder::value(const Value *v) {
     return fresh(v->getType(), "undef");
   if (isa<ConstantPointerNull>(v))
     return mem.null();
+  if (auto *cf = dyn_cast<ConstantFP>(v); cf && ieee(cf->getType()))
+    return t.bv(cf->getValueAPF().bitcastToAPInt());
   if (auto *g = dyn_cast<GlobalVariable>(v))
     return mem.global(g);
   if (auto *ce = dyn_cast<ConstantExpr>(v)) {
@@ -105,9 +117,103 @@ SMTExprRef Encoder::gep(const GEPOperator &g) {
   return mem.advance(value(g.getPointerOperand()), delta);
 }
 
+SMTSortRef Encoder::fpSort(Type *ty) {
+  const fltSemantics *sem = ieee(ty);
+  if (!sem)
+    throw Unsupported("type " + describe(ty));
+  unsigned precision = APFloat::semanticsPrecision(*sem); // with the hidden bit
+  return s.mkFPSort(APFloat::semanticsSizeInBits(*sem) - precision, precision - 1,
+                    camada::FPEncoding::BV);
+}
+
+SMTExprRef Encoder::fp(const Value *v) { return s.mkBVToIEEEFP(value(v), fpSort(v->getType())); }
+
+SMTExprRef Encoder::bits(const SMTExprRef &f) { return s.mkIEEEFPToBV(f); }
+
+SMTExprRef Encoder::rm(camada::RM mode) { return s.mkRM(mode, camada::FPEncoding::BV); }
+
+SMTExprRef Encoder::fpClass(const SMTExprRef &x, Type *ty, unsigned mask) {
+  if (!ieee(ty))
+    throw Unsupported("type " + describe(ty));
+  const fltSemantics &sem = *ieee(ty);
+  unsigned w = x->getWidth(), sig = APFloat::semanticsPrecision(sem) - 1;
+  SMTExprRef exp = t.extract(x, w - 2, sig), mant = t.extract(x, sig - 1, 0);
+  SMTExprRef neg = t.eq(t.extract(x, w - 1, w - 1), t.bv(1, 1));
+  SMTExprRef top = t.eq(exp, t.bvnot(t.bv(0, w - 1 - sig)));
+  SMTExprRef low = t.eq(exp, t.bv(0, w - 1 - sig));
+  SMTExprRef noMant = t.eq(mant, t.bv(0, sig));
+  SMTExprRef nan = t.land(top, t.lnot(noMant));
+  SMTExprRef quiet = t.eq(t.extract(x, sig - 1, sig - 1), t.bv(1, 1));
+  SMTExprRef inf = t.land(top, noMant), zero = t.land(low, noMant);
+  SMTExprRef sub = t.land(low, t.lnot(noMant));
+  SMTExprRef normal = t.lnot(t.lor(top, low));
+  SMTExprRef pos = t.lnot(neg);
+  const std::pair<unsigned, SMTExprRef> classes[] = {
+      {fcSNan, t.land(nan, t.lnot(quiet))}, {fcQNan, t.land(nan, quiet)},
+      {fcNegInf, t.land(neg, inf)},         {fcNegNormal, t.land(neg, normal)},
+      {fcNegSubnormal, t.land(neg, sub)},   {fcNegZero, t.land(neg, zero)},
+      {fcPosZero, t.land(pos, zero)},       {fcPosSubnormal, t.land(pos, sub)},
+      {fcPosNormal, t.land(pos, normal)},   {fcPosInf, t.land(pos, inf)}};
+  SMTExprRef r = t.boolean(false);
+  for (auto &[bit, in] : classes)
+    if (mask & bit)
+      r = t.lor(r, in);
+  return r;
+}
+
+SMTExprRef Encoder::fcmp(CmpInst::Predicate p, const Value *lhs, const Value *rhs) {
+  if (p == CmpInst::FCMP_FALSE || p == CmpInst::FCMP_TRUE)
+    return t.boolean(p == CmpInst::FCMP_TRUE);
+  SMTExprRef a = fp(lhs), b = fp(rhs);
+  SMTExprRef unordered = t.lor(s.mkFPIsNaN(a), s.mkFPIsNaN(b));
+  if (p == CmpInst::FCMP_UNO || p == CmpInst::FCMP_ORD)
+    return p == CmpInst::FCMP_UNO ? unordered : t.lnot(unordered);
+  SMTExprRef r;
+  switch (CmpInst::getOrderedPredicate(p)) {
+  case CmpInst::FCMP_OEQ: r = s.mkFPEqual(a, b); break;
+  case CmpInst::FCMP_ONE: r = t.lnot(s.mkFPEqual(a, b)); break;
+  case CmpInst::FCMP_OGT: r = s.mkFPGt(a, b); break;
+  case CmpInst::FCMP_OGE: r = s.mkFPGe(a, b); break;
+  case CmpInst::FCMP_OLT: r = s.mkFPLt(a, b); break;
+  case CmpInst::FCMP_OLE: r = s.mkFPLe(a, b); break;
+  default: throw Unsupported("predicate " + std::string(CmpInst::getPredicateName(p)));
+  }
+  // Ordered: false on a NaN; unordered: true on one.
+  return CmpInst::isOrdered(p) ? t.land(t.lnot(unordered), r) : t.lor(unordered, r);
+}
+
 SMTExprRef Encoder::castTo(unsigned opcode, const Value *op, Type *dst) {
   Type *src = op->getType();
   SMTExprRef a = value(op);
+  switch (opcode) {
+  case Instruction::FPToSI:
+  case Instruction::FPToUI: { // toward zero, as C converts
+    if (!dst->isIntegerTy())
+      throw Unsupported("cast " + describe(dst));
+    unsigned to = dst->getIntegerBitWidth();
+    SMTExprRef r = opcode == Instruction::FPToSI ? s.mkFPToSBV(fp(op), to)
+                                                 : s.mkFPToUBV(fp(op), to);
+    return to == 1 ? t.eq(r, t.bv(1, 1)) : r;
+  }
+  case Instruction::SIToFP:
+  case Instruction::UIToFP: {
+    if (src->isIntegerTy(1))
+      a = opcode == Instruction::SIToFP ? t.ite(a, t.bv(-1, 1), t.bv(0, 1)) : fromBool(a, 1);
+    return bits(opcode == Instruction::SIToFP ? s.mkSBVToFP(a, fpSort(dst), rm(camada::RM::ROUND_TO_EVEN))
+                                              : s.mkUBVToFP(a, fpSort(dst), rm(camada::RM::ROUND_TO_EVEN)));
+  }
+  case Instruction::FPExt:
+  case Instruction::FPTrunc:
+    return bits(s.mkFPToFP(fp(op), fpSort(dst), rm(camada::RM::ROUND_TO_EVEN)));
+  default:
+    break;
+  }
+  // A float is its bits, so a bitcast between a float and an integer of the
+  // same width keeps them.
+  if (opcode == Instruction::BitCast && !src->isPointerTy() &&
+      (ieee(src) || ieee(dst)) && src->getPrimitiveSizeInBits() == dst->getPrimitiveSizeInBits() &&
+      (ieee(src) || src->isIntegerTy()) && (ieee(dst) || dst->isIntegerTy()))
+    return a;
   switch (opcode) {
   case Instruction::PtrToInt:
     return dst->isIntegerTy(1) ? toBool(resize(mem.address(a), 1, false))
@@ -154,6 +260,17 @@ SMTExprRef Encoder::isTrue(const Value *v) {
 }
 
 SMTExprRef Encoder::binary(unsigned opcode, const Value *lhs, const Value *rhs) {
+  if (lhs->getType()->isFloatingPointTy()) {
+    SMTExprRef a = fp(lhs), b = fp(rhs), even = rm(camada::RM::ROUND_TO_EVEN);
+    switch (opcode) {
+    case Instruction::FAdd: return bits(s.mkFPAdd(a, b, even));
+    case Instruction::FSub: return bits(s.mkFPSub(a, b, even));
+    case Instruction::FMul: return bits(s.mkFPMul(a, b, even));
+    case Instruction::FDiv: return bits(s.mkFPDiv(a, b, even));
+    default: // frem is C's fmod, which truncates; SMT's fp.rem rounds to nearest
+      throw Unsupported(std::string("instruction ") + Instruction::getOpcodeName(opcode));
+    }
+  }
   bool isBool = lhs->getType()->isIntegerTy(1);
   SMTExprRef a = value(lhs), b = value(rhs);
   switch (opcode) {
@@ -187,6 +304,11 @@ void Encoder::encode(Instruction &inst) {
   SMTExprRef r;
   if (isa<BinaryOperator>(inst)) {
     r = binary(inst.getOpcode(), inst.getOperand(0), inst.getOperand(1));
+  } else if (inst.getOpcode() == Instruction::FNeg) { // flips the sign bit, NaN or not
+    SMTExprRef a = value(inst.getOperand(0));
+    r = t.bvxor(a, t.bv(APInt::getSignMask(a->getWidth())));
+  } else if (auto *fc = dyn_cast<FCmpInst>(&inst)) {
+    r = fcmp(fc->getPredicate(), fc->getOperand(0), fc->getOperand(1));
   } else if (auto *cmp = dyn_cast<ICmpInst>(&inst)) {
     SMTExprRef a = value(cmp->getOperand(0)), b = value(cmp->getOperand(1));
     // Pointers are equal when object and offset are; ordered comparison
@@ -239,8 +361,57 @@ void Encoder::encode(Instruction &inst) {
   bind(&inst, r);
 }
 
+bool Encoder::fpIntrinsic(CallBase &c) {
+  Intrinsic::ID id = c.getCalledFunction()->getIntrinsicID();
+  auto arg = [&](unsigned i) { return c.getArgOperand(i); };
+  auto integral = [&](camada::RM mode) {
+    return bits(s.mkFPToIntegral(fp(arg(0)), rm(mode)));
+  };
+  SMTExprRef r;
+  switch (id) {
+  case Intrinsic::fabs:
+  case Intrinsic::copysign: { // bit operations on the sign, NaN or not
+    SMTExprRef a = value(arg(0)), sign = t.bv(APInt::getSignMask(a->getWidth()));
+    r = t.bvand(a, t.bvnot(sign));
+    if (id == Intrinsic::copysign)
+      r = t.bvor(r, t.bvand(value(arg(1)), sign));
+    break;
+  }
+  case Intrinsic::sqrt: r = bits(s.mkFPSqrt(fp(arg(0)), rm(camada::RM::ROUND_TO_EVEN))); break;
+  case Intrinsic::fma:
+  case Intrinsic::fmuladd: // fused: one rounding, which fmuladd allows
+    r = bits(s.mkFPFMA(fp(arg(0)), fp(arg(1)), fp(arg(2)), rm(camada::RM::ROUND_TO_EVEN)));
+    break;
+  case Intrinsic::floor: r = integral(camada::RM::ROUND_TO_MINUS_INF); break;
+  case Intrinsic::ceil: r = integral(camada::RM::ROUND_TO_PLUS_INF); break;
+  case Intrinsic::trunc: r = integral(camada::RM::ROUND_TO_ZERO); break;
+  case Intrinsic::round: r = integral(camada::RM::ROUND_TO_AWAY); break;
+  case Intrinsic::rint:
+  case Intrinsic::nearbyint:
+  case Intrinsic::roundeven: r = integral(camada::RM::ROUND_TO_EVEN); break;
+  case Intrinsic::minnum:
+  case Intrinsic::maxnum: { // a NaN operand gives the other; a signed zero either
+    SMTExprRef a = fp(arg(0)), b = fp(arg(1));
+    SMTExprRef first = id == Intrinsic::minnum ? s.mkFPLe(a, b) : s.mkFPGe(a, b);
+    r = t.ite(s.mkFPIsNaN(a), value(arg(1)),
+              t.ite(t.lor(s.mkFPIsNaN(b), first), value(arg(0)), value(arg(1))));
+    break;
+  }
+  case Intrinsic::is_fpclass:
+    r = fpClass(value(arg(0)), arg(0)->getType(),
+                cast<ConstantInt>(arg(1))->getZExtValue());
+    break;
+  default:
+    return false;
+  }
+  bind(&c, r);
+  return true;
+}
+
 bool Encoder::intrinsic(CallBase &c) {
   Function *f = c.getCalledFunction();
+  if (fpIntrinsic(c))
+    return true;
   SMTExprRef (Terms::*op)(const SMTExprRef &, const SMTExprRef &) = nullptr;
   SMTExprRef (Terms::*overflow)(const SMTExprRef &, const SMTExprRef &) = nullptr;
   switch (f->getIntrinsicID()) {

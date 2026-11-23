@@ -9,5 +9,3 @@ int main()
 }
 // Imported from ESBMC regression/floats/pow_fractional_exponent_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

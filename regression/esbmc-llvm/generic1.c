@@ -18,5 +18,3 @@ int main()
 }
 // Imported from ESBMC regression/llvm/generic1
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

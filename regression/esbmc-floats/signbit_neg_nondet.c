@@ -14,5 +14,3 @@ int main(void)
 }
 // Imported from ESBMC regression/floats/signbit_neg_nondet
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

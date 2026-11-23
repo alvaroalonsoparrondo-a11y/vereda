@@ -14,5 +14,5 @@ int main()
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^\*\* 1 of 2 properties failed, 1 passed$
 // EXPECT: FAILED\s+\[main.assertion.2\].*isinf\(r\)
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^\*\* 1 of 2 properties failed, 1 passed$
 // MODE: FUTURE

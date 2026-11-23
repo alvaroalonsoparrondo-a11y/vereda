@@ -11,5 +11,3 @@ int main(void)
 }
 // Imported from ESBMC regression/floats/github_7896_nondet
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

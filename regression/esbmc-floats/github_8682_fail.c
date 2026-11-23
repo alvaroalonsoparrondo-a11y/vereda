@@ -18,5 +18,5 @@ int main(void)
 // EXPECT: ^\s+FAILED\s+\[main\.assertion\.4\]\s+line\s+9\s
 // EXPECT: ^\s+FAILED\s+\[main\.assertion\.5\]\s+line\s+10\s
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^\s+FAILED\s+\[main\.assertion\.1\]\s+line\s+6\s
+// Vereda: unmet EXPECT: ^\s+FAILED\s+\[main\.assertion\.2\]\s+line\s+7\s
 // MODE: FUTURE

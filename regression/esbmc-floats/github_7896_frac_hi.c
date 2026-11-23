@@ -16,5 +16,3 @@ int main(void)
 }
 // Imported from ESBMC regression/floats/github_7896_frac_hi
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

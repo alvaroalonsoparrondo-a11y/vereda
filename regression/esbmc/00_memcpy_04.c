@@ -13,5 +13,3 @@ int main() {
 // Imported from ESBMC regression/esbmc/00_memcpy_04
 // RUN: --force-malloc-success
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

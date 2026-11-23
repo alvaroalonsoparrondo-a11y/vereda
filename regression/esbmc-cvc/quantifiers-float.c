@@ -23,5 +23,3 @@ int main() {
 // RUN: --solver cvc5
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

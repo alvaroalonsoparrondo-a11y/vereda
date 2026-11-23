@@ -11,5 +11,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/time_h_difftime_nonzero_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

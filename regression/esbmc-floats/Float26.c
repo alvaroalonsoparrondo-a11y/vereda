@@ -28,5 +28,3 @@ int main() {
 // RUN: --unwind 5 --multi-property
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

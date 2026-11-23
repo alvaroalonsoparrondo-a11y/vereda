@@ -12,5 +12,3 @@ int main()
 }
 // Imported from ESBMC regression/floats/float_mul_zero_absorber_fail
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

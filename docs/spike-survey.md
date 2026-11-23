@@ -395,3 +395,37 @@ a call to an unknown function changes no memory, as for every bodyless
 function; ESBMC's own `__ESBMC_assume` and an undeclared `assert` are not
 modelled; a `byval` argument is not copied, so a callee that writes its
 by-value struct parameter changes the caller's.
+
+## Floating point (2026-11-22)
+
+A float is the bit-vector of its IEEE bits everywhere: in the value map,
+in memory, in phis and selects, and for nondet values, so loads, stores,
+unions and int<->float bitcasts need nothing new. An FP instruction views
+its operands as camada's bit-vector encoded floating point
+(FPEncoding::BV, through mkBVToIEEEFP and back with mkIEEEFPToBV), which
+camada bit-blasts itself with hardware NaN payloads; the native FP sort
+was not used, as its single abstract NaN makes the bits of a NaN written
+to memory unspecified. Rounding is to nearest, ties to even; fesetround is
+not modelled. fneg, fabs, copysign and llvm.is.fpclass are bit operations
+in the term builder, so they fold. fptosi and fptoui truncate (camada's
+mkFPToSBV; float_arith checks it). frem stays unsupported: it is C's fmod,
+which truncates, and SMT-LIB's fp.rem rounds to nearest. x86_fp80 (long
+double) is not an IEEE interchange format and stays unsupported.
+
+Clang keeps sqrt and fma as library calls while errno is on, so a pass in
+ir turns calls to bodyless libm functions with an LLVM intrinsic (sqrt,
+fabs, floor, ceil, trunc, round, rint, nearbyint, roundeven, fmin, fmax,
+fma, copysign, and the f and l variants) into that intrinsic; errno is not
+set, as in ESBMC's models.
+
+Imported ESBMC tests: 84 now pass (83 FUTURE, 1 KNOWNBUG), none regress.
+Of the unsupported reasons, floating point is gone except x86_fp80 (12
+tests); the largest left are vector global initialisers (110), atomicrmw
+and cmpxchg (17), vector instructions and values, and variadic functions.
+The verdict check's 188 tasks give one new correct SUCCESSFUL
+(bary_diverge, UNKNOWN before) and no other change. Some promoted tests
+(10_fir_new, about 38 s alone) come close to the 60 s limit for imported
+tests and can time out under a full parallel run. Not yet done: printing
+float values in the counterexample, constant folding of FP operations in
+the term builder, fmod, and the rounding mode.
+

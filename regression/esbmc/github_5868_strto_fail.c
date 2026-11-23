@@ -13,5 +13,3 @@ int main()
 // Imported from ESBMC regression/esbmc/github_5868_strto_fail
 // RUN: --incremental-bmc
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

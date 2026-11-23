@@ -20,5 +20,5 @@ int main()
 // RUN: --solver z3
 // EXPECT: ^Unwinding loop .* function f$
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^Unwinding loop .* function f$
+// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
 // MODE: FUTURE

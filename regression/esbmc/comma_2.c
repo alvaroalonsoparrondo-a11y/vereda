@@ -22,5 +22,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/comma_2
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

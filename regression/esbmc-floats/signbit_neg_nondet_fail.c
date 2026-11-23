@@ -13,5 +13,5 @@ int main(void)
 // Imported from ESBMC regression/floats/signbit_neg_nondet_fail
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: ^  assertion signbit\(-d\) == 0$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: ^  assertion signbit\(-d\) == 0$
 // MODE: FUTURE

@@ -53,5 +53,3 @@ float main()
 // Imported from ESBMC regression/llvm/scopes
 // RUN: --no-unwinding-assertions --unwind 10
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

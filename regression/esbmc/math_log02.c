@@ -224,5 +224,3 @@ int main() {
 
 // Imported from ESBMC regression/esbmc/math_log02
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

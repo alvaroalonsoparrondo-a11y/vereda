@@ -272,7 +272,7 @@ void Memory::store(State &st, SMTExprRef p, SMTExprRef v, Type *ty) {
     storeBytes(st, p, address(v), object(v));
     return;
   }
-  if (!ty->isIntegerTy())
+  if (!ty->isIntegerTy() && !ty->isFloatingPointTy()) // a float is its bits
     throw Unsupported("store of a non-integer value");
   if (ty->isIntegerTy(1))
     v = t.ite(v, t.bv(1, 8), t.bv(0, 8));
@@ -282,7 +282,7 @@ void Memory::store(State &st, SMTExprRef p, SMTExprRef v, Type *ty) {
 }
 
 SMTExprRef Memory::load(State &st, SMTExprRef p, Type *ty) {
-  if (!ty->isIntegerTy() && !ty->isPointerTy())
+  if (!ty->isIntegerTy() && !ty->isPointerTy() && !ty->isFloatingPointTy())
     throw Unsupported("load of a non-integer value");
   prepare(st, p);
   unsigned n = storeBits(dl, ty) / 8;
@@ -298,7 +298,7 @@ SMTExprRef Memory::load(State &st, SMTExprRef p, Type *ty) {
   }
   if (ty->isIntegerTy(1))
     return t.eq(t.extract(bits, 0, 0), t.bv(1, 1));
-  unsigned width = ty->getIntegerBitWidth();
+  unsigned width = ty->getPrimitiveSizeInBits();
   return width < bits->getWidth() ? t.extract(bits, width - 1, 0) : bits;
 }
 
@@ -355,7 +355,7 @@ void Memory::storeConstant(State &st, SMTExprRef p, const Constant *c,
     set(st, p, t.bv(0, 8), dl.getTypeStoreSize(ty).getFixedValue());
     return;
   }
-  if (ty->isIntegerTy() || ty->isPointerTy()) {
+  if (ty->isIntegerTy() || ty->isPointerTy() || ty->isFloatingPointTy()) {
     store(st, p, valueOf(c), ty);
     return;
   }

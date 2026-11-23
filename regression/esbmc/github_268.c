@@ -1889,5 +1889,3 @@ int main(){
 // RUN: --unwind 1
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

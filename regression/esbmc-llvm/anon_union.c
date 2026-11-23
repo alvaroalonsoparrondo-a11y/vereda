@@ -27,5 +27,3 @@ int main()
 
 // Imported from ESBMC regression/llvm/anon_union
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

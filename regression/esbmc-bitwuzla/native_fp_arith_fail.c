@@ -21,5 +21,3 @@ int main(void)
 // Imported from ESBMC regression/bitwuzla/native_fp_arith_fail
 // RUN: --solver bitwuzla
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

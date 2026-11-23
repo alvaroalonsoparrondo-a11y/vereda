@@ -12,5 +12,3 @@ int main()
 // Imported from ESBMC regression/esbmc/hex_power
 // RUN: --unwind 1
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

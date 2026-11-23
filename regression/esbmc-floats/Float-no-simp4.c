@@ -38,5 +38,3 @@ int main()
 // Imported from ESBMC regression/floats/Float-no-simp4
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

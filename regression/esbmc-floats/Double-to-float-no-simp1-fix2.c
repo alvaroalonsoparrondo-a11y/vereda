@@ -27,5 +27,3 @@ int main (void)
 }
 // Imported from ESBMC regression/floats/Double-to-float-no-simp1-fix2
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

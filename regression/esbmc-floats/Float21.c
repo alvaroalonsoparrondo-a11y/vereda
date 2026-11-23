@@ -66,5 +66,3 @@ int main (void)
 }
 // Imported from ESBMC regression/floats/Float21
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

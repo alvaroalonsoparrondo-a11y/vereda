@@ -17,5 +17,3 @@ int main(void)
 }
 // Imported from ESBMC regression/floats/github_7896_frac_lo
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

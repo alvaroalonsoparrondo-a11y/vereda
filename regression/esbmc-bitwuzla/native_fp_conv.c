@@ -17,5 +17,3 @@ int main(void)
 // Imported from ESBMC regression/bitwuzla/native_fp_conv
 // RUN: --solver bitwuzla
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

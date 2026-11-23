@@ -11,5 +11,5 @@ int main(void)
 // RUN: -m64
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: assertion asinh\(-big\) == -INFINITY$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// Vereda: unmet EXPECT: assertion asinh\(-big\) == -INFINITY$
 // MODE: FUTURE

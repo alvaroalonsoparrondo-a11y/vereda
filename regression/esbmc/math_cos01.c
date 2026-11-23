@@ -27,5 +27,3 @@ int main() {
 
 // Imported from ESBMC regression/esbmc/math_cos01
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

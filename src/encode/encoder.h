@@ -1,7 +1,10 @@
 // Stage encode: LLVM values and instructions to camada terms. i1 values are
 // Bool terms; every other integer is a bitvector of its width. A struct of
 // integers is one bitvector with its fields packed from the low bits up.
-// Pointers are the memory stage's (object, offset) bitvectors.
+// Pointers are the memory stage's (object, offset) bitvectors. A float in an
+// IEEE format is the bitvector of its bits; an operation views it as
+// camada's bit-vector encoded floating point (FPEncoding::BV), rounding to
+// nearest, ties to even, as C does by default.
 #pragma once
 #include "encode/terms.h"
 #include "memory/memory.h"
@@ -53,6 +56,16 @@ private:
   camada::SMTExprRef binary(unsigned opcode, const llvm::Value *lhs, const llvm::Value *rhs);
   camada::SMTExprRef castTo(unsigned opcode, const llvm::Value *op, llvm::Type *dst);
   camada::SMTExprRef gep(const llvm::GEPOperator &g);
+  camada::SMTSortRef fpSort(llvm::Type *ty);
+  camada::SMTExprRef fp(const llvm::Value *v); // v's bits as a float
+  camada::SMTExprRef bits(const camada::SMTExprRef &fp);
+  camada::SMTExprRef rm(camada::RM mode);
+  camada::SMTExprRef fcmp(llvm::CmpInst::Predicate p, const llvm::Value *a,
+                          const llvm::Value *b);
+  // Whether the float with these bits is in one of the classes of mask, as
+  // llvm.is.fpclass takes it.
+  camada::SMTExprRef fpClass(const camada::SMTExprRef &x, llvm::Type *ty, unsigned mask);
+  bool fpIntrinsic(llvm::CallBase &c);
 
   Terms &t;
   camada::SMTSolver &s;

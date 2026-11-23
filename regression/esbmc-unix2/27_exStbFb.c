@@ -4449,5 +4449,3 @@ for(counter=0; counter<argc; counter++)
 // Imported from ESBMC regression/esbmc-unix2/27_exStbFb
 // RUN: --unwind 1 --no-unwinding-assertions
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

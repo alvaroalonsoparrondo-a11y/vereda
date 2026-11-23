@@ -5,6 +5,7 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/InstIterator.h>
 #include <llvm/IR/InstrTypes.h>
+#include <llvm/IR/Intrinsics.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Operator.h>
@@ -205,6 +206,36 @@ static void lowerCalls(Module &m) {
   }
 }
 
+// Calls to the libm functions LLVM has an intrinsic for become that
+// intrinsic when the program gives no body, so the encoder computes them.
+// errno is not set; clang keeps sqrt and fma as calls only for it.
+static void libmToIntrinsics(Module &m) {
+  static const std::pair<const char *, Intrinsic::ID> names[] = {
+      {"sqrt", Intrinsic::sqrt},   {"fabs", Intrinsic::fabs},
+      {"floor", Intrinsic::floor}, {"ceil", Intrinsic::ceil},
+      {"trunc", Intrinsic::trunc}, {"round", Intrinsic::round},
+      {"rint", Intrinsic::rint},   {"nearbyint", Intrinsic::nearbyint},
+      {"fmin", Intrinsic::minnum}, {"fmax", Intrinsic::maxnum},
+      {"fma", Intrinsic::fma},     {"copysign", Intrinsic::copysign},
+      {"roundeven", Intrinsic::roundeven}};
+  for (auto [base, id] : names)
+    for (const char *suffix : {"", "f", "l"}) {
+      Function *f = m.getFunction(std::string(base) + suffix);
+      if (!f || !f->isDeclaration() || f->isVarArg() || !f->getReturnType()->isFloatingPointTy() ||
+          any_of(f->getFunctionType()->params(),
+                 [&](Type *p) { return p != f->getReturnType(); }))
+        continue;
+      Function *intrinsic =
+          Intrinsic::getOrInsertDeclaration(&m, id, {f->getReturnType()});
+      if (intrinsic->arg_size() != f->arg_size())
+        continue;
+      for (User *u : make_early_inc_range(f->users()))
+        if (auto *c = dyn_cast<CallInst>(u);
+            c && c->getCalledOperand() == f && c->getFunctionType() == f->getFunctionType())
+          c->setCalledFunction(intrinsic);
+    }
+}
+
 // -fno-finite-loops should have kept these out; any left would let LoopInfo
 // and SCEV assume termination.
 static bool hasMustProgress(const Module &m) {
@@ -258,6 +289,7 @@ Expected<std::unique_ptr<Module>> load(StringRef path, LLVMContext &ctx) {
   if (Error e = runPipeline(*module, "function(mem2reg,sroa)"))
     return std::move(e);
   lowerCalls(*module); // before InstCombine, which folds tests of constants
+  libmToIntrinsics(*module);
   // Plain instcombine; the plan wants a "careful" one that folds
   // nothing on undefined behaviour. Revisit when a folded check shows up.
   // no-verify-fixpoint, as LLVM's own pipelines run it: a textual pipeline

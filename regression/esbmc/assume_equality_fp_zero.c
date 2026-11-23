@@ -15,5 +15,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/assume_equality_fp_zero
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

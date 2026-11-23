@@ -14,5 +14,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/github_4780_pointer_bits_as_double
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: unmet EXPECT: ^VERIFICATION SUCCESSFUL$
-// MODE: FUTURE

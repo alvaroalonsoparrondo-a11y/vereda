@@ -16,5 +16,3 @@ int main(void)
 // Imported from ESBMC regression/bitwuzla/ieee_rem_fmod_sign_fail
 // RUN: --solver bitwuzla
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE
