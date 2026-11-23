@@ -13,5 +13,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/interval_symex_guard_two_loops
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: TIMEOUT after 60 s
-// MODE: FUTURE

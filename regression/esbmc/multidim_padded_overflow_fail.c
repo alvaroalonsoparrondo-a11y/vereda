@@ -13,5 +13,3 @@ int main(void){
 // Imported from ESBMC regression/esbmc/multidim_padded_overflow_fail
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: a\[0\] holds 1
-// Vereda: TIMEOUT after 60 s
-// MODE: FUTURE

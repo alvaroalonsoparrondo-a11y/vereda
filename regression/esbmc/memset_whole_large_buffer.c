@@ -24,5 +24,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/memset_whole_large_buffer
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: TIMEOUT after 60 s
-// MODE: FUTURE

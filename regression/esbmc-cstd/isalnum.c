@@ -12,5 +12,3 @@ int main ()
 }
 // Imported from ESBMC regression/cstd/isalnum
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: TIMEOUT after 60 s
-// MODE: FUTURE

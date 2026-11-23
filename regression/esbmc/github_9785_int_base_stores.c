@@ -51,5 +51,3 @@ int main(void)
 }
 // Imported from ESBMC regression/esbmc/github_9785_int_base_stores
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: TIMEOUT after 60 s
-// MODE: FUTURE

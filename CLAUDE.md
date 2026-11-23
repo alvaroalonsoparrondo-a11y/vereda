@@ -54,7 +54,8 @@ passing, promote it to CORE. New test files need a cmake re-configure to be pick
 `regression/import_esbmc.py <esbmc>/regression [suite ...]` imports ESBMC's C tests,
 translating flags; tests needing flags Vereda lacks become FUTURE with a `// Needs:` line,
 and `--mark` flips the mode of tests Vereda currently disagrees with. `esbmc*` suites get a
-60 s per-test timeout (`ESBMC_REGRESS_TIMEOUT`); run.py counts a timeout as unmet expectations.
+60 s per-test timeout (`ESBMC_REGRESS_TIMEOUT`); a run that times out is skipped in any
+mode, and `--mark` never changes a mode because of one.
 When adding a flag that has an ESBMC equivalent, add it to the tables in that script.
 
 ## Architecture

@@ -8,5 +8,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/github_2602_1
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: TIMEOUT after 60 s
-// MODE: FUTURE

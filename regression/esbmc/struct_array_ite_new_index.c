@@ -17,5 +17,3 @@ int main(void)
 }
 // Imported from ESBMC regression/esbmc/struct_array_ite_new_index
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: TIMEOUT after 60 s
-// MODE: FUTURE

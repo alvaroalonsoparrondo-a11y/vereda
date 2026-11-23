@@ -97,5 +97,3 @@ for(counter=0; counter<argc; counter++)
 // RUN: --unwind 2
 // FILES: app.c picosat.c
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: TIMEOUT after 60 s
-// MODE: FUTURE

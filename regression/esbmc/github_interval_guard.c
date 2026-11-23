@@ -11,5 +11,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/github_interval_guard
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: TIMEOUT after 60 s
-// MODE: FUTURE

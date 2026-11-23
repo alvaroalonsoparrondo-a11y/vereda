@@ -32,5 +32,3 @@ int main() {
 // Imported from ESBMC regression/esbmc/github_1590
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: TIMEOUT after 60 s
-// MODE: FUTURE

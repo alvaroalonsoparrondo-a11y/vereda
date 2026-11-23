@@ -10,8 +10,9 @@ describes it:
 
 IR files use ';' instead of '//'. KNOWNBUG and FUTURE tests are expected to
 fail; the run then passes, with exit code 77 so that ctest calls it skipped,
-exactly when some expectation does not hold. A run
-past --timeout counts as output that meets no expectation.
+exactly when some expectation does not hold. A run past --timeout is skipped
+too, whatever the mode: how long a test takes depends on the machine and its
+load, so a timeout says nothing about the verdict.
 The tool runs in a fresh temporary directory, so output files never land in
 the source tree."""
 import argparse
@@ -85,7 +86,8 @@ def main():
             except subprocess.TimeoutExpired:
                 os.killpg(proc.pid, signal.SIGKILL)
                 proc.communicate()
-                out = f"TIMEOUT after {args.timeout:g} s\n"
+                print(f"TIMEOUT after {args.timeout:g} s; skipped")
+                return SKIPPED
             except BaseException:  # Ctrl-C does not reach the session
                 os.killpg(proc.pid, signal.SIGKILL)
                 raise

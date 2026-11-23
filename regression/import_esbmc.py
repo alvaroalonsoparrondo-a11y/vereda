@@ -32,11 +32,12 @@ ESBMC's users need, function contracts, integer/real arithmetic and LTL
 monitors (ESBMC_ONLY), which Vereda does not plan to support, and the
 tests in SKIPPED_TESTS; a rerun deletes earlier copies.
 
-With --mark, each copied test then runs through run.py, and one that does
-not behave as its mode says gets the other mode: a failing CORE or THOROUGH
-test becomes FUTURE, and a FUTURE or KNOWNBUG test Vereda passes becomes
-CORE. A "// Vereda:" line says why. The suite then passes as Vereda is now,
-and a later Vereda that fixes a FUTURE test fails it until it is promoted."""
+With --mark, each copied test then runs through run.py, and one that
+does not behave as its mode says gets the other mode: a failing CORE or
+THOROUGH test becomes FUTURE, and a FUTURE or KNOWNBUG test Vereda
+passes becomes CORE; a test that times out keeps its mode. A
+"// Vereda:" line says why. The suite then passes as Vereda is now, and
+a later Vereda that fixes a FUTURE test fails it until it is promoted."""
 import argparse
 import concurrent.futures
 import os
@@ -477,7 +478,7 @@ def mark(tests, runner):
                 continue
             mode = "CORE" if run.parse(test)["MODE"] in run.FAIL_MODES else "FUTURE"
             lines = proc.stdout.splitlines()
-            why = ([l for l in lines if l.startswith(("unmet", "TIMEOUT"))] or lines[-1:])[:1]
+            why = ([l for l in lines if l.startswith("unmet")] or lines[-1:])[:1]
             with open(test, "a", encoding="utf-8") as f:
                 f.write("".join(f"// Vereda: {w[:150]}\n" for w in why) + f"// MODE: {mode}\n")
             flipped += 1

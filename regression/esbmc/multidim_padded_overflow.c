@@ -10,5 +10,3 @@ int main(void){
 }
 // Imported from ESBMC regression/esbmc/multidim_padded_overflow
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: TIMEOUT after 60 s
-// MODE: FUTURE

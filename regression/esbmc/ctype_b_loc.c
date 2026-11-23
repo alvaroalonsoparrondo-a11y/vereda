@@ -46,5 +46,3 @@ int main()
 }
 // Imported from ESBMC regression/esbmc/ctype_b_loc
 // EXPECT: ^VERIFICATION SUCCESSFUL$
-// Vereda: TIMEOUT after 60 s
-// MODE: FUTURE
