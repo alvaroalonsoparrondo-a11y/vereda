@@ -90,8 +90,8 @@ VERIFICATION FAILED
 
 ## Tests
 
-A test is a C or IR file under `regression/<suite>/`, or
-`regression/<suite>/<name>/main.c` for a test with several files. Its comment
+A test is a C or IR file under `tests/<suite>/`, or
+`tests/<suite>/<name>/main.c` for a test with several files. Its comment
 header says how to run it and what to expect:
 
 ```c
@@ -106,7 +106,7 @@ IR tests use `;` instead of `//`. `ctest -L <suite>` runs one suite, and
 `ctest -R <suite>/<name>` runs one test. KNOWNBUG and FUTURE tests must fail;
 a run that passes asks to be promoted to CORE.
 
-`regression/import_esbmc.py <esbmc>/regression [suite ...]` copies ESBMC's C
+`tests/import_esbmc.py <esbmc>/regression [suite ...]` copies ESBMC's C
 tests into this format, translating the flags Vereda has. Tests that need any
 other flag become FUTURE.
 

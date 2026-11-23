@@ -78,4 +78,4 @@ endforeach()
 add_custom_target(models ALL DEPENDS ${model_libs})
 
 enable_testing()
-add_subdirectory(regression)
+add_subdirectory(tests)

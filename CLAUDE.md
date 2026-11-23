@@ -36,9 +36,9 @@ The binary (`build/vereda`) takes only `.bc`/`.ll`; its flags are `cl::opt`s in
 
 ## Regression tests
 
-A test is a `.c` or `.ll` file directly under `regression/<suite>/`, or
-`regression/<suite>/<name>/main.c` for multi-file tests. Its comment header (`;` in IR)
-drives `regression/run.py`:
+A test is a `.c` or `.ll` file directly under `tests/<suite>/`, or
+`tests/<suite>/<name>/main.c` for multi-file tests. Its comment header (`;` in IR)
+drives `tests/run.py`:
 
 ```c
 // RUN: --unwind 5                 flags for vereda.py
@@ -51,7 +51,7 @@ drives `regression/run.py`:
 KNOWNBUG and FUTURE tests show as skipped while some expectation fails; when one starts
 passing, promote it to CORE. New test files need a cmake re-configure to be picked up
 (the glob uses CONFIGURE_DEPENDS, so `cmake --build` usually handles it).
-`regression/import_esbmc.py <esbmc>/regression [suite ...]` imports ESBMC's C tests,
+`tests/import_esbmc.py <esbmc>/regression [suite ...]` imports ESBMC's C tests,
 translating flags; tests needing flags Vereda lacks become FUTURE with a `// Needs:` line,
 and `--mark` flips the mode of tests Vereda currently disagrees with. `esbmc*` suites get a
 60 s per-test timeout (`ESBMC_REGRESS_TIMEOUT`); a run that times out is skipped in any

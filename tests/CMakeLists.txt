@@ -3,7 +3,7 @@
 # header describes it; see run.py. The suite name is the ctest label, so
 # `ctest -L vereda` runs one suite.
 set(REGRESS_TIMEOUT 300 CACHE STRING "Per-test timeout in seconds")
-# Tests imported from ESBMC (regression/import_esbmc.py) are many, so a test
+# Tests imported from ESBMC (tests/import_esbmc.py) are many, so a test
 # that runs long there is cut short and counts as failed.
 set(ESBMC_REGRESS_TIMEOUT 60 CACHE STRING "Per-test timeout in seconds for suites esbmc*")
 

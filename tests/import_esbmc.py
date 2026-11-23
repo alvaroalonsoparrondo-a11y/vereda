@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Copies ESBMC's C regression tests into Vereda's format.
 
-    regression/import_esbmc.py ~/tools/esbmc/regression [suite ...]
+    tests/import_esbmc.py ~/tools/esbmc/regression [suite ...]
 
-Each ESBMC test <suite>/<test>/ with a C input becomes regression/<name>/
+Each ESBMC test <suite>/<test>/ with a C input becomes tests/<name>/
 <test>.c when the source is its only file, and <test>/main.c next to the
 other files otherwise, where <name> is the suite, prefixed with "esbmc-"
 unless it already starts with "esbmc". The test.desc goes into a comment
@@ -492,7 +492,7 @@ def main():
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("esbmc", help="ESBMC's regression directory")
     parser.add_argument("suites", nargs="*", help="suites to import (default: all but disabled)")
-    parser.add_argument("--out", default=here, help="where suites go (default: regression/)")
+    parser.add_argument("--out", default=here, help="where suites go (default: tests/)")
     parser.add_argument("--mark", action="store_true", help="run each test and flip its mode "
                         "when Vereda disagrees; needs --bin and --clang")
     parser.add_argument("--bin", help="the vereda binary, for --mark")
