@@ -69,3 +69,6 @@ Testing/
 
 # Build tree and downloaded dependencies
 build/
+
+# Python bytecode (bench.py imports run.py)
+__pycache__/

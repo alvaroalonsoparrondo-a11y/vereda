@@ -58,6 +58,11 @@ and `--mark` flips the mode of tests Vereda currently disagrees with. `esbmc*` s
 mode, and `--mark` never changes a mode because of one.
 When adding a flag that has an ESBMC equivalent, add it to the tables in that script.
 
+`tests/bench.py --clang <clang> <base-bin> <head-bin>` runs the tests listed in
+`tests/bench.txt` with two binaries side by side and fails on a time, memory or
+verdict regression; `.github/workflows/perf.yml` runs it on each pull request against its
+base.
+
 ## Architecture
 
 One directory per stage under `src/`, all built into one static library `libvereda`;
