@@ -46,6 +46,9 @@ static cl::opt<unsigned> maxKStep("max-k-step", cl::desc("Largest bound for --in
 static cl::opt<bool> multiProperty("multi-property",
                                    cl::desc("Check every property instead of stopping at the "
                                             "first violation"));
+static cl::opt<bool> fp2bv("fp2bv",
+                           cl::desc("Encode floating point in bit-vectors, as camada does, instead "
+                                    "of the solver's floating-point theory"));
 static cl::opt<std::string> solverName("solver", cl::desc("SMT solver: bitwuzla, z3, cvc5"),
                                        cl::init("bitwuzla"));
 
@@ -106,7 +109,7 @@ static int bmc(Function &fn, unsigned bound) {
   } catch (const vereda::Unsupported &e) {
     return unknown(Twine("unsupported: ") + e.what());
   }
-  vereda::encode::Encoder enc(terms, *memory);
+  vereda::encode::Encoder enc(terms, *memory, fp2bv);
   vereda::checks::Checks checks;
   vereda::walker::Trace trace;
   vereda::walker::Options walkOpts{bound, !noUnwindingAssertions, forceMallocSuccess};

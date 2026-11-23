@@ -19,7 +19,5 @@ int main(void)
   return 0;
 }
 // Imported from ESBMC regression/bitwuzla/fp2bv_arith
-// Needs: --fp2bv
-// RUN: --bitwuzla --fp2bv
-// MODE: FUTURE
+// RUN: --solver bitwuzla --fp2bv
 // EXPECT: ^VERIFICATION SUCCESSFUL$

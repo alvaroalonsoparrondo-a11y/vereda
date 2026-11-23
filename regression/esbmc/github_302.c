@@ -111,5 +111,3 @@ float distance(float aux1[DIM], float aux2[DIM]){
 // Imported from ESBMC regression/esbmc/github_302
 // MODE: THOROUGH
 // EXPECT: ^VERIFICATION FAILED$
-// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
-// MODE: FUTURE

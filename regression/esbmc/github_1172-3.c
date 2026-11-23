@@ -69,8 +69,9 @@ int main(){
     return 0;
 }
 // Imported from ESBMC regression/esbmc/github_1172-3
-// Needs: --fp2bv
 // RUN: --unwind 1 --no-unwinding-assertions --fp2bv
-// MODE: FUTURE
+// MODE: THOROUGH
 // EXPECT: ^VERIFICATION FAILED$
 // EXPECT: \bdivision by zero\b
+// Vereda: unmet EXPECT: ^VERIFICATION FAILED$
+// MODE: FUTURE

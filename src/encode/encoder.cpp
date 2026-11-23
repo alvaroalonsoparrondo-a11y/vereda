@@ -151,14 +151,14 @@ SMTSortRef Encoder::fpSort(Type *ty) {
     throw Unsupported("type " + describe(ty));
   unsigned precision = APFloat::semanticsPrecision(*sem); // with the hidden bit
   return s.mkFPSort(APFloat::semanticsSizeInBits(*sem) - precision, precision - 1,
-                    camada::FPEncoding::BV);
+                    fpEncoding);
 }
 
 SMTExprRef Encoder::fp(const Value *v) { return s.mkBVToIEEEFP(value(v), fpSort(v->getType())); }
 
 SMTExprRef Encoder::bits(const SMTExprRef &f) { return s.mkIEEEFPToBV(f); }
 
-SMTExprRef Encoder::rm(camada::RM mode) { return s.mkRM(mode, camada::FPEncoding::BV); }
+SMTExprRef Encoder::rm(camada::RM mode) { return s.mkRM(mode, fpEncoding); }
 
 SMTExprRef Encoder::fpClass(const SMTExprRef &x, Type *ty, unsigned mask) {
   if (!ieee(ty))

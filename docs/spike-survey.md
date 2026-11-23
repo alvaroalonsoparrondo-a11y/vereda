@@ -412,6 +412,16 @@ mkFPToSBV; float_arith checks it). frem stays unsupported: it is C's fmod,
 which truncates, and SMT-LIB's fp.rem rounds to nearest. x86_fp80 (long
 double) is not an IEEE interchange format and stays unsupported.
 
+Later the same day the default became the solver's own floating-point
+theory (FPEncoding::Native), with `--fp2bv` for camada's encoding, as in
+ESBMC. Values stay bit-vectors either way; only the view inside an
+operation changes. Under the solver's theory a NaN result's bits are some
+NaN, as camada's mkIEEEFPToBV documents, while `--fp2bv` keeps payloads
+(float_nan_payload and float_nan_payload_native pin the difference). The
+float tests give the same verdicts both ways and on Z3 and cvc5; Bitwuzla
+is fastest, Z3 slowest (20 s against 0.5 s on float_intrinsics). With
+`--fp2bv` translated by import_esbmc.py, 10 more imported tests pass.
+
 Clang keeps sqrt and fma as library calls while errno is on, so a pass in
 ir turns calls to bodyless libm functions with an LLVM intrinsic (sqrt,
 fabs, floor, ceil, trunc, round, rint, nearbyint, roundeven, fmin, fmax,

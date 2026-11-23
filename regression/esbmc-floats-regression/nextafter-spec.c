@@ -61,7 +61,7 @@ int main()
    */
 }
 // Imported from ESBMC regression/floats-regression/nextafter-spec
-// Needs: --interval-analysis --fp2bv
+// Needs: --interval-analysis
 // RUN: --interval-analysis -Wno-error=implicit-function-declaration --fp2bv
 // MODE: FUTURE
 // EXPECT: ^VERIFICATION SUCCESSFUL$

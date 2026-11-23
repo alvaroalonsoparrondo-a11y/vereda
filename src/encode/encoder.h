@@ -2,9 +2,11 @@
 // Bool terms; every other integer is a bitvector of its width. A struct of
 // integers is one bitvector with its fields packed from the low bits up.
 // Pointers are the memory stage's (object, offset) bitvectors. A float in an
-// IEEE format is the bitvector of its bits; an operation views it as
-// camada's bit-vector encoded floating point (FPEncoding::BV), rounding to
-// nearest, ties to even, as C does by default. A vector of integers or
+// IEEE format is the bitvector of its bits; an operation views it as a
+// float of the solver's floating-point theory, or of camada's bit-vector
+// encoding with fp2bv, rounding to nearest, ties to even, as C does by
+// default. Under the solver's theory a NaN result's bits are some NaN;
+// camada's encoding propagates payloads as hardware does. A vector of integers or
 // floats is one bitvector with element 0 in the low bits, as memory lays it
 // out; the scalarizer leaves vectors only where they cross calls.
 #pragma once
@@ -27,7 +29,9 @@ using vereda::Unsupported;
 
 class Encoder {
 public:
-  Encoder(Terms &t, memory::Memory &mem) : t(t), s(t.solver()), mem(mem) {}
+  Encoder(Terms &t, memory::Memory &mem, bool fp2bv = false)
+      : t(t), s(t.solver()), mem(mem),
+        fpEncoding(fp2bv ? camada::FPEncoding::BV : camada::FPEncoding::Native) {}
   camada::SMTSolver &solver() { return s; }
   Terms &terms() { return t; }
   unsigned symbolCount() const { return freshCount; }
@@ -72,6 +76,7 @@ private:
   Terms &t;
   camada::SMTSolver &s;
   memory::Memory &mem;
+  camada::FPEncoding fpEncoding;
   llvm::DenseMap<const llvm::Value *, camada::SMTExprRef> env;
   unsigned freshCount = 0;
 };

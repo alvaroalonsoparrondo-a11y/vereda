@@ -15,7 +15,5 @@ int main(void)
   return 0;
 }
 // Imported from ESBMC regression/floats/github_7896_frac_hi_fp2bv
-// Needs: --fp2bv
 // RUN: --fp2bv
-// MODE: FUTURE
 // EXPECT: ^VERIFICATION FAILED$

@@ -44,7 +44,6 @@ int main() {
     return 0;
 }
 // Imported from ESBMC regression/floats/Float25
-// Needs: --fp2bv
-// RUN: --floatbv --unwind 5 --fp2bv
-// MODE: FUTURE
+// RUN: --unwind 5 --fp2bv
+// MODE: THOROUGH
 // EXPECT: ^VERIFICATION SUCCESSFUL$
