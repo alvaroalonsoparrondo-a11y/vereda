@@ -90,7 +90,8 @@ sanitizer checks), and forwards everything else to the binary.
 
 The run ends with a counterexample for each violation, a results list and
 one of `VERIFICATION SUCCESSFUL` (exit 0), `VERIFICATION FAILED` (exit 1) or
-`VERIFICATION UNKNOWN` (exit 2):
+`VERIFICATION UNKNOWN` (exit 2). An error instead of a verdict (a bad option,
+an input that cannot be loaded, a failed compile) exits with 6, as in ESBMC:
 
 ```
 ** Results:

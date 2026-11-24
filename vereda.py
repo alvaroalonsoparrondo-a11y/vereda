@@ -54,6 +54,16 @@ PROPERTIES = {
 CHECK = re.compile(r"CHECK\(\s*init\((\w+)\(\)\)\s*,\s*LTL\((.*)\)\s*\)")
 
 
+# Exit code of an error rather than a verdict, as the binary and ESBMC use;
+# 1 is VERIFICATION FAILED only.
+ERROR_EXIT = 6
+
+
+def fail(message):
+    print(message, file=sys.stderr)
+    sys.exit(ERROR_EXIT)
+
+
 def read_property(path):
     """(entry function, the binary's --property, sanitizers) for an SV-COMP
     property file. Exits on a property the binary cannot check."""
@@ -61,8 +71,8 @@ def read_property(path):
         checks = [CHECK.fullmatch(line.strip()) for line in f if line.strip()]
     formula = " ".join(checks[0].group(2).split()) if len(checks) == 1 and checks[0] else None
     if formula not in PROPERTIES:
-        sys.exit(f"vereda.py: unsupported property in {path}; "
-                 "supported: unreach-call, no-overflow")
+        fail(f"vereda.py: unsupported property in {path}; "
+             "supported: unreach-call, no-overflow")
     return (checks[0].group(1),) + PROPERTIES[formula]
 
 
@@ -72,7 +82,7 @@ def find_binary():
                       shutil.which("vereda")):
         if candidate and os.access(candidate, os.X_OK):
             return candidate
-    sys.exit("vereda.py: verifier binary not found; pass --bin")
+    fail("vereda.py: verifier binary not found; pass --bin")
 
 
 def physical_lines(source, tmp):
@@ -175,10 +185,10 @@ def main():
     if not inputs and "--version" in forwarded:
         return subprocess.call([binary, "--version"])
     if not inputs:
-        sys.exit("vereda.py: no input file (.c .i .ll .bc)")
+        fail("vereda.py: no input file (.c .i .ll .bc)")
     if any(f.startswith("-fsanitize=") for f in flags) and any(i.endswith(IR_EXTS) for i in inputs):
-        sys.exit("vereda.py: clang compiles the overflow checks in, so they need C inputs, "
-                 "not .ll or .bc")
+        fail("vereda.py: clang compiles the overflow checks in, so they need C inputs, "
+             "not .ll or .bc")
 
     def run(cmd):
         if args.verbose:
@@ -190,7 +200,7 @@ def main():
     with tempfile.TemporaryDirectory() as tmp:
         ir = compile_and_link(args, flags, inputs, tmp, run)
         if ir is None:
-            return 1
+            return ERROR_EXIT
         if args.keep_ir:
             shutil.copy(ir, inputs[0] + ".ll")
         return run([binary] + forwarded + [ir])
