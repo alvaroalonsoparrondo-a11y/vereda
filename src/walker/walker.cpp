@@ -2,7 +2,6 @@
 
 #include "analysis/loops.h"
 #include "ir/debug.h"
-#include "ir/load.h"
 #include "ir/sanitizer.h"
 #include "ir/source.h"
 #include "util/log.h"
@@ -137,7 +136,11 @@ public:
     for (Argument &arg : f.args())
       enc.bind(&arg, enc.fresh(arg.getType(), "arg_" + arg.getName().str()));
     Module &m = *f.getParent();
-    mem.allocateGlobals(m);
+    // A global only declared is defined outside the program, which knows
+    // its address.
+    mem.allocateGlobals(m, [this](const GlobalValue *g) {
+      return g->isDeclaration() || exposed(g);
+    });
     memory::State st = mem.initial();
     for (const GlobalVariable &g : m.globals())
       if (unsigned bits = ownsArrays(&g, m.getDataLayout()))
@@ -157,6 +160,36 @@ public:
   }
 
 private:
+  // Whether the address of v, an alloca, a global or a function, may reach
+  // code outside the program or an integer, or be compared with one
+  // (memory.h, #137): any capture but a test against null (stored, passed to
+  // a call, converted to an integer, returned, compared), or it is in a
+  // global's initialiser. A constant getelementptr or cast of v is followed
+  // as an instruction would be.
+  bool exposed(const Value *v) {
+    struct Tracker : CaptureTracker {
+      bool exposed = false;
+      void tooManyUses() override { exposed = true; }
+      Action captured(const Use *u, UseCaptureInfo ci) override {
+        auto *ce = dyn_cast<ConstantExpr>(u->getUser());
+        if (ce && (isa<GEPOperator>(ce) || ce->getOpcode() == Instruction::BitCast ||
+                   ce->getOpcode() == Instruction::AddrSpaceCast)) {
+          PointerMayBeCaptured(ce, this);
+          return exposed ? Stop : ContinueIgnoringReturn;
+        }
+        exposed = !isa<Instruction>(u->getUser()) || !capturesAddressIsNullOnly(ci.UseCC);
+        return exposed ? Stop : Continue;
+      }
+    };
+    auto [it, inserted] = exposes.try_emplace(v, true);
+    if (inserted) {
+      Tracker tracker;
+      PointerMayBeCaptured(v, &tracker);
+      it->second = tracker.exposed;
+    }
+    return it->second;
+  }
+
   // Whether the alloca or global v gets arrays of its own (memory.h, #71):
   // a getelementptr reaches it at a symbolic offset, which is where a short
   // chain and a pointer-width index pay, and no pointer to it is stored or
@@ -735,8 +768,7 @@ private:
     // Bodyless verifier functions, as ESBMC treats them by default: a defined
     // one is an ordinary call, except reach_error under unreach-call, above.
     if (name == "__VERIFIER_nondet_memory") {
-      havoc(st, name, c, c.getArgOperand(0), constantSize(c.getArgOperand(1), guard, name),
-            guard);
+      mem.havoc(st, enc.value(c.getArgOperand(0)), constantSize(c.getArgOperand(1), guard, name));
       return guard;
     }
     if (name.starts_with("__VERIFIER_nondet_")) {
@@ -804,10 +836,10 @@ private:
     // say it only reads. With a constant format without positional
     // arguments, scanf writes its variadic arguments as scan says, and
     // printf none unless the format has a %n. Unless its attributes say it
-    // writes only its arguments' memory, it may also write errno and every
+    // writes only its arguments' memory, it may also write errno, every
     // global the program declares without defining (optind, environ, a
-    // variable of a file not given), as they belong to code Vereda does not
-    // see. It may also write through pointers stored in those objects, which
+    // variable of a file not given) and the memory outside the program, as
+    // they belong to code Vereda does not see. It may also write through pointers stored in those objects, which
     // this does not cover. The mutex and condition-variable calls write only
     // the lock or condition they get, which the program does not read, so
     // they write nothing here and keep the rest of an object holding one.
@@ -826,14 +858,16 @@ private:
         Value *a = c.getArgOperand(i);
         auto *g = dyn_cast<GlobalVariable>(a->stripPointerCasts());
         if (a->getType()->isPointerTy() && !c.onlyReadsMemory(i) && !(g && g->isConstant()))
-          havoc(st, name, c, a, std::nullopt, guard);
+          mem.havoc(st, enc.value(a));
       }
       MemoryEffects effects = c.getMemoryEffects();
       if (errnoObject && isModSet(effects.getModRef(IRMemLocation::ErrnoMem)))
-        havoc(st, name, c, errnoObject, std::nullopt, guard);
-      if (isModSet(effects.getModRef(IRMemLocation::Other)))
+        mem.havoc(st, enc.value(errnoObject));
+      if (isModSet(effects.getModRef(IRMemLocation::Other))) {
         for (GlobalVariable *g : externs)
-          havoc(st, name, c, g, std::nullopt, guard);
+          mem.havoc(st, enc.value(g));
+        mem.havoc(st, mem.outside());
+      }
     }
     if (scanf)
       return scan(c, f, name, tag, guard, st);
@@ -885,7 +919,7 @@ private:
       else if (cv.conv == 's' || cv.conv == '[')
         n = single(t.sub(mem.size(mem.object(enc.value(a))), mem.offset(enc.value(a))), guard);
       memory::State written = st;
-      havoc(written, name, c, a, n, guard);
+      mem.havoc(written, enc.value(a), n);
       st = mem.ite(done, written, st);
     }
     SMTExprRef range = t.land(t.sge(r, t.bv(-1, bits)), t.sle(r, t.bv(assigned, bits)));
@@ -1135,21 +1169,6 @@ private:
     return *n;
   }
 
-  // Gives the n bytes at a, or its whole object, nondet contents (see
-  // Memory::havoc), for a call to name. A pointer whose object the terms
-  // leave open, as after a store at a symbolic address, is accepted when
-  // the object has one value on the path.
-  void havoc(memory::State &st, StringRef name, CallBase &c, Value *a,
-             std::optional<uint64_t> n, SMTExprRef guard) {
-    SMTExprRef p = enc.value(a);
-    if (mem.havoc(st, p, n))
-      return;
-    std::optional<uint64_t> o = single(mem.object(p), guard);
-    if (!o || !mem.havoc(st, mem.ptr(t.bv(*o, mem.object(p)->getWidth()), mem.offset(p)), n))
-      throw Unsupported("call to " + name.str() + " without a body, which may write an "
-                        "object chosen at run time, at " + ir::location(c).str());
-  }
-
   // alloca, load and store, and the atomics. Returns false for any other
   // instruction.
   bool memoryAccess(Instruction &inst, SMTExprRef guard, memory::State &st) {
@@ -1170,7 +1189,7 @@ private:
       SMTExprRef elem = t.bv(elemSize, bits);
       SMTExprRef ok = t.land(t.lnot(t.umulo(count, elem)),
                               mem.fits(t.mul(count, elem)));
-      SMTExprRef p = mem.allocate(t.mul(count, elem), a->getAlign().value(), guard);
+      SMTExprRef p = mem.allocate(t.mul(count, elem), a->getAlign().value(), guard, exposed(a));
       if (unsigned bits = ownsArrays(a, dl))
         mem.own(st, p, bits);
       enc.bind(a, p);
@@ -1187,7 +1206,6 @@ private:
     if (auto *w = dyn_cast<StoreInst>(&inst)) {
       Value *v = w->getValueOperand();
       SMTExprRef p = enc.value(w->getPointerOperand());
-      asmTarget(inst, p);
       mem.store(st, p, enc.toBits(enc.value(v), v->getType()), v->getType());
       if (summary && w == summary->store)
         summary->stored = {guard, enc.toBits(enc.value(v), v->getType())};
@@ -1209,7 +1227,6 @@ private:
       if (!ty->isIntegerTy() || ty->isIntegerTy(1))
         throw Unsupported("instruction " + encode::describe(&inst));
       SMTExprRef p = enc.value(cx->getPointerOperand());
-      asmTarget(inst, p);
       SMTExprRef old = mem.load(st, p, ty);
       SMTExprRef ok = t.eq(old, enc.value(cx->getCompareOperand()));
       if (cx->isWeak()) // may fail even when equal
@@ -1220,21 +1237,6 @@ private:
       return true;
     }
     return isa<FenceInst>(inst);
-  }
-
-  // A write an inline asm became (ir marks it with AsmMD) goes only through
-  // a pointer to a known object, or one of two: any other pointer, such as
-  // one the program read but never set, may point to any object, and a
-  // write there could reach state the asm never touches.
-  void asmTarget(Instruction &inst, const SMTExprRef &p) {
-    MDNode *md = inst.getMetadata(ir::AsmMD);
-    if (!md)
-      return;
-    SMTExprRef obj = mem.object(p), c, x, y;
-    if (!t.constant(obj) && !t.split(obj, c, x, y))
-      throw Unsupported("inline asm `" + cast<MDString>(md->getOperand(0))->getString().str() +
-                        "` through a pointer to an unknown object at " +
-                        ir::location(inst).str());
   }
 
   // The source variable whose memory p points into, when it is a global or
@@ -1266,7 +1268,6 @@ private:
         !(ty->isPointerTy() && op == AtomicRMWInst::Xchg))
       throw Unsupported("instruction " + encode::describe(&rmw));
     SMTExprRef p = enc.value(rmw.getPointerOperand());
-    asmTarget(rmw, p);
     SMTExprRef old = mem.load(st, p, ty), v = enc.value(rmw.getValOperand());
     unsigned w = ty->isIntegerTy() ? ty->getIntegerBitWidth() : 0;
     auto one = [&] { return t.bv(1, w); };
@@ -1420,6 +1421,7 @@ private:
   Trace &trace;
   DenseMap<const Function *, std::unique_ptr<FunctionInfo>> infos;
   DenseMap<const Value *, unsigned> owns; // ownsArrays, per alloca and global
+  DenseMap<const Value *, bool> exposes;  // exposed, per alloca, global and function
   SmallVector<const Function *, 8> stack;
   SmallVector<VarArgs, 2> varArgs; // of the variadic frames on the stack, innermost last
   // The call to the reach_error being walked, if any: the witness puts a
