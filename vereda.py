@@ -144,6 +144,11 @@ def main():
         entry, prop, sanitize = read_property(args.property_file)
         args.sanitize += sanitize
         rest += ["--entry", entry, "--property", prop]
+        # SV-COMP's expected verdicts, its validators and ESBMC round a * b and
+        # the + c apart, as x86-64 without FMA runs it; clang's default
+        # -ffp-contract=on lets a * b + c fuse into one rounding. An explicit
+        # fma() still fuses.
+        flags.append("-ffp-contract=off")
         # As ESBMC's SV-COMP runs (esbmc-wrapper.py): no largest bound, so the
         # time limit ends the run, and a step of 2. A step of 8 answered more
         # of the tasks that stopped at bound 50 but skipped the small bounds
