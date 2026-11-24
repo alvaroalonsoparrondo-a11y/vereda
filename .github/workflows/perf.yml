@@ -33,13 +33,23 @@ jobs:
     # suite (about 30 minutes three at a time) and the side-by-side reruns.
     timeout-minutes: 150
     steps:
+      # A pull request's head is the merge commit CI tests, and its first
+      # parent is main as it was then. The event's base.sha is not: it can
+      # stay at the main of an earlier push, whose numbers may be stale or
+      # missing.
       - uses: actions/checkout@v4
         with:
           path: head
+          fetch-depth: 2
+
+      - name: Find the base
+        id: base
+        if: github.event_name == 'pull_request'
+        run: echo "sha=$(git -C head rev-parse HEAD^1)" >> "$GITHUB_OUTPUT"
 
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.base.sha || inputs.base }}
+          ref: ${{ steps.base.outputs.sha || inputs.base }}
           path: base
           # History to walk back past docs-only commits to numbers on main.
           fetch-depth: 50
@@ -188,7 +198,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           PR: ${{ github.event.pull_request.number }}
-          BASE: ${{ github.event.pull_request.base.sha }}
+          BASE: ${{ steps.base.outputs.sha }}
           HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
           if [ -s changes.md ]; then
