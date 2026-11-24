@@ -152,6 +152,12 @@ def main():
         parser.add_argument(flag, dest="sanitize", action="append_const", const=check,
                             default=[], help=f"check with clang's -fsanitize={check}")
     parser.add_argument("-v", "--verbose", action="store_true", help="echo every command run")
+
+    # argparse exits with 2, the UNKNOWN code, on a bad option.
+    def error(message):
+        parser.print_usage(sys.stderr)
+        fail(f"{parser.prog}: error: {message}")
+    parser.error = error
     args, rest = parser.parse_known_args()
     flags = ["-m32"] * args.m32 + ["-m64"] * args.m64
     if args.property_file:
@@ -207,4 +213,9 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except OSError as e:
+        # A clang, llvm-link or binary that cannot be run, or an input that
+        # cannot be read: an error, not the traceback's exit code 1 (FAILED).
+        fail(f"vereda.py: {e}")
