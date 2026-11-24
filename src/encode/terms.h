@@ -9,6 +9,7 @@
 #include <camada/camada.h>
 #include <llvm/ADT/APInt.h>
 #include <llvm/ADT/DenseMap.h>
+#include <llvm/ADT/STLFunctionalExtras.h>
 #include <llvm/ADT/Twine.h>
 #include <llvm/Support/ErrorHandling.h>
 #include <functional>
@@ -105,12 +106,22 @@ public:
   // Whether guard entails lit by its and/or structure alone: lit is a
   // conjunct of guard, or implied by both sides of a disjunction.
   bool entails(const Ref &guard, const Ref &lit);
+  // Calls f(x, c) for each term x that cond being true, or false when
+  // !holds, makes equal to a bitvector constant c: an x = c found through
+  // the conjuncts of cond, the disjuncts of its negation, and negations.
+  // Only Terms' own = counts, which is equality of the terms: never a
+  // float's fp.eq (+0 equals -0) nor anything opaque.
+  void equalities(const Ref &cond, bool holds,
+                  llvm::function_ref<void(const Ref &, const Ref &)> f) const;
   // e as ite(c, x, y) with constant x and y.
   bool split(const Ref &e, Ref &c, Ref &x, Ref &y) const;
   // Whether e multiplies, divides or takes a remainder, outside of arrays.
   bool arithmetic(const Ref &e);
 
 private:
+  // equalities over at most budget nodes of cond.
+  void equalities(const Ref &cond, bool holds,
+                  llvm::function_ref<void(const Ref &, const Ref &)> f, unsigned &budget) const;
   // The value at constant index i of arr, past stores at other constant
   // indices, which arr moves over, and through joins whose two sides hold
   // the same value there (as a stream pointer does after a branch that
